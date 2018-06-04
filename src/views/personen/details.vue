@@ -168,7 +168,7 @@
           </v-card-actions>
         </v-card>
       </v-tab-item>
-      <v-flex>
+      <v-flex v-if="isElectron">
         <v-btn flat @click="auskunftsRecht">Auskunftsrecht</v-btn>
       </v-flex>
     </v-tabs-items>
@@ -259,6 +259,7 @@
   </div>
 </template>
 <script lang="ts">
+import electron, { isElectron } from '@/plugins/electron'
 import { Component, Vue } from 'vue-property-decorator';
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
@@ -267,6 +268,7 @@ import auth from '@/plugins/auth'
 
 @Component({})
 export default class PersonenDetails extends reloaderBase {
+  isElectron: boolean = isElectron
   data: {person: any} = {
     person: {}
   }
@@ -571,7 +573,7 @@ export default class PersonenDetails extends reloaderBase {
     })
     .then((v:any) => v.data.person)
     .then((v:any) => {
-      const {clipboard, remote} = require('electron')
+      const {clipboard, remote} = electron
       clipboard.writeText(JSON.stringify(v))
       remote.dialog.showMessageBox({title: 'Zwischenspeicher', message: 'Die Daten wurden in den Zwischenspeicher gepackt.'})
     })

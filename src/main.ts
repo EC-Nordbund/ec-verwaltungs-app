@@ -7,16 +7,16 @@ import '@/plugins/lib_extension/componentLib_extension.ts'
 import '@/plugins/qrCode'
 import '@/plugins/widgets/index.ts'
 
-
 // Import Provided Zeug
 import apolloProvider from '@/plugins/apollo'
 import router from '@/plugins/router/router'
 
 // Import Vue
 import Vue from 'vue'
-import Main from './Main.vue'
+import RouteComponent from '@/plugins/router/routes/router.vue'
 
-// require('module').globalPaths.push('A:/ec-git/ec-verwaltungs-app/node_modules')
+// Dev-Electron-Modules
+try {eval("if (process && process.env && process.env.NODE_ENV === 'development') {require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))}")} catch (error) {}
 
 // Set Config
 Vue.config.productionTip = false
@@ -25,8 +25,5 @@ Vue.config.productionTip = false
 new Vue({
   router,
   provide: apolloProvider.provide(),
-  render: h => h(Main)
+  render: h => h(RouteComponent)
 }).$mount('#app')
-
-
-console.log(require('electron'))

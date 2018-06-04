@@ -1,5 +1,5 @@
 <template>
-  <v-app app>
+  <v-app app :dark="dark">
     <v-toolbar fixed app :clipped-left="true" color="primary">
       <v-toolbar-side-icon @click="drawer = !drawer" v-white/>
       <v-spacer/>
@@ -8,6 +8,9 @@
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
+      <v-btn icon v-black @click="dark = !dark">
+        <v-icon>invert_colors</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-navigation-drawer fixed :clipped="true" v-model="drawer" app>
       <v-list>
@@ -73,6 +76,7 @@ export default class App extends Vue {
   loading: boolean = true
   drawer: boolean = false
   version: string = "0.1.0 - alpha"
+  dark: boolean = false
   nav = nav
   auth = auth
   click(route:string) {

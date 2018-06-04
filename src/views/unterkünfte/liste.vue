@@ -21,7 +21,7 @@ export default class UnterkunftListe extends reloaderBase {
       { name: 'land', label: 'Land' }
     ]
   open(item:any) {
-    this.$router.push(`/app/unterkuenfte/${item.unterkunftID}`);
+    this.$router.push(`/app/unterkünfte/${item.unterkunftID}`);
   }
 
   created () {

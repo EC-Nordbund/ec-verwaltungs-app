@@ -72,6 +72,11 @@ export default class formDialog extends Vue {
     this.open = value
   }
 
+  @Watch('value', {immediate: true})
+  onValueChage(value: any) {
+    this.wert = value
+  }
+
   @Watch('open')
   @Emit('openChanged')
   onOpenChange(value: boolean) {}
