@@ -1,0 +1,104 @@
+{
+  "name": "ec-verwaltungs-app",
+  "version": "0.1.0",
+  "description": "EC-Verwaltungs Application",
+  "keywords": [],
+  "homepage": "https://ec-nordbund.de",
+  "bugs": {
+    "url": "https://github.com/ecnordbund/ec-verwaltungs-app/issues"
+  },
+  "license": null,
+  "author": {
+    "name": "EC-Nordbund",
+    "email": "info@ec-nordbund.de",
+    "url": "https://ec-nordbund.de"
+  },
+  "contributors": [
+    {
+      "name": "Sebastian Krüger"
+    },
+    {
+      "name": "Tobias Krause"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ecnordbund/ec-verwaltungs-app"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "main": "src/main/main.js",
+  "private": false,
+  "scripts": {
+    "start": "node ./node_modules/@electron-forge/cli/dist/electron-forge.js start",
+    "package": "node ./node_modules/@electron-forge/cli/dist/electron-forge.js package",
+    "make": "node ./node_modules/@electron-forge/cli/dist/electron-forge.js make",
+    "publish": "node ./node_modules/@electron-forge/cli/dist/electron-forge.js publish",
+    "lint": "echo \"No linting configured\""
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {},
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "platforms": [
+            "win32"
+          ],
+          "config": {
+            "name": "electron"
+          }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "platforms": [
+            "linux"
+          ],
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "platforms": [
+            "linux"
+          ],
+          "config": {}
+        }
+      ],
+      "publishers": [
+        {
+          "name": "@electron-forge/publisher-github",
+          "config": {
+            "repository": {
+              "owner": "ecnordbund",
+              "name": "ec-verwaltungs-app"
+            },
+            "prerelease": true
+          }
+        }
+      ]
+    }
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.1",
+    "@electron-forge/maker-deb": "^6.0.0-beta.1",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.1",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.1",
+    "@electron-forge/maker-zip": "^6.0.0-beta.1",
+    "@electron-forge/publisher-github": "^6.0.0-beta.1",
+    "electron": "2.0.2",
+    "electron-debug": "^2.0.0",
+    "electron-forge": "^5.2.2"
+  }
+}

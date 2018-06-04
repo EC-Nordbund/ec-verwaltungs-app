@@ -1,0 +1,165 @@
+<template>
+  <v-card>
+    <v-card-title>
+      <ec-button-router-back/>
+      <v-spacer/>
+      <h1 v-font v-primary>
+        {{title}}
+      </h1>
+      <v-spacer/>
+      <ec-button-router-back class="hidden"/>
+    </v-card-title>
+    <v-card-text>
+      <v-text-field
+        v-if="suche"
+        label="Suchen"
+        prepend-icon="search"
+        :append-icon="suchString.length > 0 ? 'close' : undefined"
+        v-model="suchString"
+        :append-icon-cb="()=>{suchString = ''}"
+      />
+      <v-data-table
+        rows-per-page-text="Datensätze pro Seite:"
+        :items="items"
+        :headers="headers"
+        :search="suchString">
+
+        <template slot="items" slot-scope="props">
+          <tr @click="open(props.item)">
+            <td class="text-xs-center" v-for="con in config" :key="con.name">
+              <template v-if="!con.handleOutside">
+                {{get(props.item, con.name) }}
+              </template>
+              <template v-if="con.handleOutside">
+                <slot :item="props.item" :config="con" name="handleOutside"/>
+              </template>
+            </td>
+          </tr>
+        </template>
+
+        <template slot="no-data">
+          <v-progress-circular          
+            indeterminate 
+            :size="70" 
+            :width="3" 
+            color="primary" 
+            style="padding-left: 100%"
+          />
+        </template>
+
+        <template slot="pageText" slot-scope="props">
+          Datensätze {{ props.pageStart }} - {{ props.pageStop }} von {{ props.itemsLength }}
+        </template>
+
+        <template slot="no-results">
+          <v-alert :value="true" type="info">
+            Nach dem Filter sind keine {{itemName}} mehr übrig geblieben!
+          </v-alert>
+        </template>
+      </v-data-table>
+    </v-card-text>
+    <slot/>
+  </v-card>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Emit, Watch, Prop } from 'vue-property-decorator';
+
+@Component({})
+export default class Table extends Vue {
+  suchString:string = ''
+  elements:Array<any> = []
+  headers:Array<any> = []
+  
+  @Emit('open')
+  open(item: any) { }
+
+  mounted() {
+    if (this.grosseSuche && !this.suche) {
+      // eslint-disable-next-line
+      throw 'Damit die große suche geht, muss die kleine ebenfalls aktiviert sein...';
+    }
+  }
+
+  @Prop({type: String, required: true})
+  title!:string
+
+  @Prop({type:Boolean, default: false})
+  suche!:boolean
+
+  @Prop({type: Boolean, default: false})
+  grosseSuche!: boolean
+
+  @Prop({type: Array, required: true})
+  items!: Array<any>
+
+  @Prop({type: Array, required: true})
+  config!: Array<any>
+
+  @Prop({type: String, required: true})
+  itemName!:string
+  
+  @Watch('config', {immediate: true})
+  onConfigChange() {
+    this.headers = this.config.map((col) => {
+      let tmp:any = {
+        align: 'center',
+        sortable: col.sortable === undefined || col.sortable,
+        value: col.name,
+        text: col.label,
+      }
+      if (col.width !== undefined) {
+        tmp.width = col.width;
+      }
+      return tmp;
+    })
+  }
+
+  // getProp(item, p) {
+  //   const ar = p.split('.');
+  //   const o = item[ar[0]];
+  //   if (ar.length === 0) {
+  //     return o;
+  //   }
+  //   return this.getProp(o, ar.splice(1));
+  // }
+  get(obj:any, path:any, defaultValue:any):any {
+    if (typeof path === 'number') {
+      path = [path];
+    }
+    if (!path || (<Array<string>>path).length === 0) {
+      return obj;
+    }
+    if (obj == null) {
+      return defaultValue;
+    }
+    if (typeof path === 'string') {
+      return this.get(obj, path.split('.'), defaultValue);
+    }
+
+    const currentPath = this.getKey(path[0]);
+    const nextObj = obj[currentPath];
+    if (nextObj === undefined) {
+      return defaultValue;
+    }
+
+    if (path.length === 1) {
+      return nextObj;
+    }
+
+    return this.get(obj[currentPath], path.slice(1), defaultValue);
+  }
+  getKey(key:string) {
+    const intKey = parseInt(key, 10);
+    if (intKey.toString() === key) {
+      return intKey;
+    }
+    return key;
+  }
+}
+</script>
+<style scoped>
+.hidden {
+  visibility: hidden;
+}
+</style>
