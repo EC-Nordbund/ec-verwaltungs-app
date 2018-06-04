@@ -6,6 +6,7 @@ export default abstract class reloader extends Vue {
   _query: any
   data: any
   query: any
+  auth = auth
   
   created() {
     this.loadData()

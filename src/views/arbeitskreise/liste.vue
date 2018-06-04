@@ -1,6 +1,6 @@
 <template>
   <ec-table title="Arbeitskreise" itemName="Arbeitskreise" :items="data.aks" :config="tableConfig" suche @open="open">
-    <ec-button-add @click="showAddAk = true"/>
+    <ec-button-add @click="showAddAk = true" v-if="auth.isMutationAllowed('addAK')"/>
     <ec-form v-model="showAddAk" title="Arbeitskreis hinzufügen" :fieldConfig="fieldConfig" @save="save"/>
   </ec-table>
 </template>

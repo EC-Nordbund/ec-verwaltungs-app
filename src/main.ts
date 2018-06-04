@@ -11,6 +11,8 @@ import '@/plugins/widgets/index.ts'
 import apolloProvider from '@/plugins/apollo'
 import router from '@/plugins/router/router'
 
+import '@/plugins/router/routeHandler.ts'
+
 // Import Vue
 import Vue from 'vue'
 import RouteComponent from '@/plugins/router/routes/router.vue'

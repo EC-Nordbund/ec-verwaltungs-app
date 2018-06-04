@@ -49,8 +49,7 @@
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
       <v-progress-circular indeterminate color="accent" v-if="loading"/>
       <span v-white>
-        Lizenz gültig bis 
-        für 
+        {{auth.personBeschreibung}}
       </span>
       <v-spacer/>
         <span v-white>Version: {{ version }}</span>
@@ -76,7 +75,7 @@ export default class App extends Vue {
   loading: boolean = true
   drawer: boolean = false
   version: string = "0.1.0 - alpha"
-  dark: boolean = false
+  dark: boolean = true
   nav = nav
   auth = auth
   click(route:string) {

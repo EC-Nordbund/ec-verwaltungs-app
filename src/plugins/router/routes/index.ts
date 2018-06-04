@@ -49,7 +49,10 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '',
-        component: HomeComponent
+        component: HomeComponent,
+        meta: {
+          userGroups: '*'
+        },
       },
       {
         path: 'personen',
@@ -57,11 +60,21 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            component: PersonenListe
+            component: PersonenListe,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           },
           {
             path: ':id',
-            component: PersonenDetails
+            component: PersonenDetails,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           }
         ]
       },
@@ -71,11 +84,21 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            component: AKListe
+            component: AKListe,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           },
           {
             path: ':id',
-            component: AKDetails
+            component: AKDetails,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           }
         ]
       },
@@ -85,11 +108,21 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            component: VerteilerListe
+            component: VerteilerListe,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           },
           {
             path: ':id',
-            component: VerteilerDetails
+            component: VerteilerDetails,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           }
         ]
       },
@@ -99,11 +132,21 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            component: unterkünfteListe
+            component: unterkünfteListe,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           },
           {
             path: ':id',
-            component: unterkünfteDetails
+            component: unterkünfteDetails,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           }
         ]
       },
@@ -113,11 +156,21 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            component: veranstaltungenListe
+            component: veranstaltungenListe,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           },
           {
             path: ':id',
-            component: veranstaltungenDetails
+            component: veranstaltungenDetails,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           }
         ]
       },
@@ -127,25 +180,50 @@ const routes: Array<RouteConfig> = [
         children: [
           {
             path: '',
-            component: anmeldungListe
+            component: anmeldungListe,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           },
           {
             path: ':id',
-            component: anmeldungDetails
+            component: anmeldungDetails,
+            meta: {
+              userGroups: [
+                'admin'
+              ]
+            },
           }
         ]
       },
       {
         path: 'admin',
-        component: AdminComponent
+        component: AdminComponent,
+        meta: {
+          userGroups: [
+            'admin'
+          ]
+        },
       }, 
       {
         path: 'print',
-        component: DruckenComponent
+        component: DruckenComponent,
+        meta: {
+          userGroups: [
+            'admin'
+          ]
+        },
       }, 
       {
         path: 'impressum',
-        component: ImpressumComponent
+        component: ImpressumComponent,
+        meta: {
+          userGroups: [
+            'admin'
+          ]
+        },
       }
     ]
   },

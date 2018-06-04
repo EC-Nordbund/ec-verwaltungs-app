@@ -6,15 +6,15 @@
       <v-spacer/>
       <ec-headline>{{data.ak.bezeichnung}}</ec-headline>
       <v-spacer/>
-      <ec-button-icon @click="editAKStamm_open"/>
+      <ec-button-icon @click="editAKStamm_open" v-if="auth.isMutationAllowed('editAKStamm')"/>
     </v-toolbar>
     <!-- Content -->
     <v-card>
       <!-- Liste -->
-      <ec-list v-if="data.ak.personen" :items="data.ak.personen" :mapper="mapper" edit @edit="edit" icon="person_pin_circle"/>
+      <ec-list v-if="data.ak.personen" :items="data.ak.personen" :mapper="mapper" :edit="auth.isMutationAllowed('editAKPerson')" @edit="edit" icon="person_pin_circle"/>
       <!-- ADD-Button -->
       <v-card-actions>
-        <ec-button-add @click="addAKPerson_show = true"/>
+        <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
       </v-card-actions>
     </v-card>
 

@@ -8,16 +8,16 @@
           </h1>
         </v-card-title>
         <v-card-text>
-          <v-alert :value="true" type="error">
+          <v-alert :value="wrong" type="error">
             Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.
           </v-alert>
           <v-alert :value="true" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
-          <v-alert :value="true" type="info">
+          <!-- <v-alert :value="true" type="info">
             Du wurdest, da die API neugestartet wurde, automatisch abgemeldet. Bitte melde dich neu an! <br>
             Bitte überprüfe ob deine letzte Aktion gespeichert wurde!
-          </v-alert>
+          </v-alert> -->
           <v-form v-model="valid">
             <v-text-field
               label="Username"
@@ -48,6 +48,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
+import auth from '@/plugins/auth'
 
 @Component({})
 export default class loginForm extends Vue {
@@ -55,6 +56,7 @@ export default class loginForm extends Vue {
   password: string = ''
   valid: boolean = false
   checking: boolean = false
+  wrong: boolean = false
   getRules(name:string) {
     return [
       function (value: string) {
@@ -62,7 +64,18 @@ export default class loginForm extends Vue {
       }
     ]
   }
-  login() { }
+  login() {
+    this.checking = true
+    auth.logIn(this.username, this.password).then((val:boolean)=>{
+      if (val) {
+        this.$router.push("/app")
+        this.checking = false
+      } else {
+        this.checking = false
+        this.wrong = true
+      }
+    })
+  }
 }
 </script>
 
