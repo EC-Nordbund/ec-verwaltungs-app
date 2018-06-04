@@ -91,12 +91,12 @@
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.1",
-    "@electron-forge/maker-deb": "^6.0.0-beta.1",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.1",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.1",
-    "@electron-forge/maker-zip": "^6.0.0-beta.1",
-    "@electron-forge/publisher-github": "^6.0.0-beta.1",
+    "@electron-forge/cli": "^6.0.0-beta.17",
+    "@electron-forge/maker-deb": "^6.0.0-beta.17",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.17",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.17",
+    "@electron-forge/maker-zip": "^6.0.0-beta.17",
+    "@electron-forge/publisher-github": "^6.0.0-beta.17",
     "electron": "2.0.2",
     "electron-debug": "^2.0.0",
     "electron-forge": "^5.2.2"
