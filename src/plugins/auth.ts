@@ -9,7 +9,7 @@ const routesWithOutLogIn = [
 ]
 
 class auth {
-  private _authToken: string = '36dd56c18f679199ba56b02954c07fdb6591657f0bed73d15ad14be872622887e195d9bee21fbda2e57c1f0f538715441b2218bd88d17a5e9afbcbf8e80e1e20'
+  private _authToken: string = 'b7045818cde9a90a0656fd49761a8ce77bd8d015c05696f1aeb285a24e0024e0432242d5b677bc4f4e75ac83b980735411a71cd07574076dc92d12b809d5847a'
   private _mutationList: Array<string> = []
   private _userGroupBezeichnung: string = '____'
   private _fieldAccess: Array<{

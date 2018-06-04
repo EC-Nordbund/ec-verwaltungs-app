@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-toolbar ripple tabs>
-      <ec-router-back/>
+      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>
         {{data.veranstaltung.bezeichnung}}
         ({{data.veranstaltung.begin?data.veranstaltung.begin.german:''}} - {{data.veranstaltung.ende?data.veranstaltung.ende.german:''}})
       </ec-headline>
       <v-spacer/>
-      <ec-edit @click="editAKStamm_show = true"/>
+      <ec-button-icon @click="editAKStamm_show = true"/>
       <v-tabs v-model="tabs" fixed-tabs slot="extension">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>

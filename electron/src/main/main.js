@@ -14,7 +14,7 @@ console.log(__dirname)
  * @type String
  * @constant
  */
-const winURL = process.env.NODE_ENV === 'development' ? 'http://localhost:9080' : `file://${__dirname}/../renderer/index.html`;
+const winURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : `file://${__dirname}/../renderer/index.html`;
 
 /**
  * Ermittelt die URL für das Main-Window
@@ -22,7 +22,7 @@ const winURL = process.env.NODE_ENV === 'development' ? 'http://localhost:9080' 
  * @type String
  * @constant
  */
-const loadingURL = process.env.NODE_ENV === 'development' ? 'http://localhost:9080/static/loading.html' : `file://${__dirname}/../renderer/loading.html`;
+const loadingURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/loading.html' : `file://${__dirname}/../renderer/loading.html`;
 
 /**
  * Optionen mit denen das Browserwindow gestartet wird
