@@ -38,7 +38,10 @@ install:
 script:
 #- xvfb-maybe node_modules/.bin/karma start test/unit/karma.conf.js
 #- yarn run pack && xvfb-maybe node_modules/.bin/mocha test/e2
-- yarn run publish
+# - yarn run publish
+- yarn build
+- cd electron
+- yarn publish
 #Publish
 branches:
   only:
