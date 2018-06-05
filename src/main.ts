@@ -7,6 +7,9 @@ import '@/plugins/lib_extension/componentLib_extension.ts'
 import '@/plugins/qrCode'
 import '@/plugins/widgets/index.ts'
 
+// Dev-Electron-Modules
+try { eval("if (process && process.env && process.env.NODE_ENV === 'development') {require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))}") } catch (error) { }
+
 // Import Provided Zeug
 import apolloProvider from '@/plugins/apollo'
 import router from '@/plugins/router/router'
@@ -17,9 +20,6 @@ import '@/plugins/router/routeHandler.ts'
 import Vue from 'vue'
 import RouteComponent from '@/plugins/router/routes/router.vue'
 import { isProduction } from '@/plugins/electron';
-
-// Dev-Electron-Modules
-try {eval("if (process && process.env && process.env.NODE_ENV === 'development') {require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))}")} catch (error) {}
 
 // Set Config
 Vue.config.productionTip = isProduction
