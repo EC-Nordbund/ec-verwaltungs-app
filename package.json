@@ -36,7 +36,7 @@
     "start": "electron .",
     "docs:dev": "yarn docs:api && vuepress dev docs",
     "docs:build": "yarn docs:api && vuepress build docs",
-    "docs:api": "graphql-markdown http://h2778646.stratoserver.net:4000/graphql > ./docs/api/README.md",
+    "docs:api": "graphql-markdown https://h2778646.stratoserver.net:4000/graphql > ./docs/api/README.md",
     ":init": "yarn && cd electron && yarn && cd ..",
     "dev": "concurrently \"yarn serve\" \"yarn docs:dev\"",
     "publish": "yarn build && cd electron && yarn run publish"
