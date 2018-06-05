@@ -38,12 +38,13 @@
     "docs:build": "yarn docs:api && vuepress build docs",
     "docs:api": "graphql-markdown http://h2778646.stratoserver.net:4000/graphql > ./docs/api/README.md",
     ":init": "yarn && cd electron && yarn && cd ..",
-    "dev": "concurrently \"yarn serve\" \"yarn start\"",
+    "dev": "concurrently \"yarn serve\" \"yarn docs:dev\"",
     "publish": "yarn build && cd electron && yarn publish"
   },
   "main": "./electron/src/main/main.dev.js",
   "dependencies": {
     "electron-fetch": "^1.1.0",
+    "electron-settings": "^3.2.0",
     "node-fetch": "^2.1.2",
     "source-map-support": "^0.5.4",
     "vue": "^2.5.16",
@@ -59,6 +60,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@types/electron-settings": "^3.1.1",
     "@types/node": "10.1.2",
     "@types/node-fetch": "^2.1.0",
     "@vue/cli-plugin-typescript": "^3.0.0-beta.15",

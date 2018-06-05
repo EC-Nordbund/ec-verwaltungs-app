@@ -8,7 +8,7 @@
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
-      <v-btn icon v-black @click="dark = !dark">
+      <v-btn icon v-black @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
     </v-toolbar>
@@ -70,16 +70,30 @@ import { Component, Vue } from 'vue-property-decorator';
 import auth from '@/plugins/auth';
 import nav from '@/plugins/config/nav.config'
 
+import settings from '@/plugins/settings'
+import { isElectron } from '@/plugins/electron'
+
 @Component({})
 export default class App extends Vue {
   loading: boolean = true
   drawer: boolean = false
   version: string = "0.1.0 - alpha"
-  dark: boolean = true
+  dark: boolean = false
   nav = nav
   auth = auth
   click(route:string) {
     this.$router.push(route)
+  }
+  created() {
+    if (isElectron) {
+      this.dark = (<any>settings.get('dark', false))
+    }
+  }
+  darkChange() {
+    this.dark = !this.dark
+    if (isElectron) {
+      settings.set('dark', this.dark)
+    }
   }
 }
 </script>

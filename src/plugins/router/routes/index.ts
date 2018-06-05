@@ -220,16 +220,17 @@ const routes: Array<RouteConfig> = [
         path: 'impressum',
         component: ImpressumComponent,
         meta: {
-          userGroups: [
-            'admin'
-          ]
+          userGroups: '*'
         },
       }
     ]
   },
   {
     path: '/help',
-    component: HelpComponent
+    component: HelpComponent,
+    meta: {
+      userGroups: '*'
+    }
   }
 ]
 

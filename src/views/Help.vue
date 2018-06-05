@@ -8,11 +8,21 @@
         <v-spacer/>
         <!-- <ec-button-icon @click="editAKStamm_open"/> -->
       </v-toolbar>
-      <!-- TODO: Change URL -->
-      <iframe src="http://localhost:8081"/>
+      <iframe :src="isProduction?(isElectron?'../docs/index.html':onlinePath):'http://localhost:8081'"/>
     <!-- </div> -->
   </v-app>
 </template>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { isProduction, isElectron } from '@/plugins/electron';
+@Component({})
+export default class Help extends Vue {
+  isProduction = isProduction
+  isElectron = isElectron
+  // TODO: ChangeURL
+  onlinePath = 'http://localhost:8081'
+}
+</script>
 
 <style>
 body {
@@ -25,5 +35,9 @@ html {
 div .application--wrap {
   display: grid;
   grid-template-rows: 60px 1fr;
+}
+iframe {
+  height: 100%;
+  width: 100%;
 }
 </style>

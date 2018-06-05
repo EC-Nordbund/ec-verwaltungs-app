@@ -9,7 +9,7 @@
       </v-avatar>
     </template>
     <ec-button-add @click="addPerson_show = true"/>
-    <ec-form v-model="addPerson_show" title="Person hinzufügen" :fieldConfig="addPerson_config" @save="save"/>
+    <ec-form v-model="addPerson_show" title="Person hinzufügen" :fieldConfig="addPerson_config" @save="save" v-if="auth.isMutationAllowed('addPerson')"/>
   </ec-table>
 </template>
 

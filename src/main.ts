@@ -16,12 +16,13 @@ import '@/plugins/router/routeHandler.ts'
 // Import Vue
 import Vue from 'vue'
 import RouteComponent from '@/plugins/router/routes/router.vue'
+import { isProduction } from '@/plugins/electron';
 
 // Dev-Electron-Modules
 try {eval("if (process && process.env && process.env.NODE_ENV === 'development') {require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))}")} catch (error) {}
 
 // Set Config
-Vue.config.productionTip = false
+Vue.config.productionTip = isProduction
 
 // Create Vue Instance
 new Vue({

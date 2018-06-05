@@ -12,6 +12,7 @@
         {{data.person.vorname || ''}} {{data.person.nachname || ''}} ({{data.person.gebDat ? data.person.gebDat.german : ''}})
       </ec-headline>
       <v-spacer/>
+      <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
       <ec-button-icon @click="editPersonStamm_show = true"/>
       <v-tabs v-model="tabs" fixed-tabs slot="extension">
         <v-tabs-slider/>
@@ -43,7 +44,7 @@
             :items="data.person.adressen || []"
             :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort})"
             icon="location_on"
-            edit
+            :edit="auth.isMutationAllowed('editAdresse')"
             @edit="editAdresse_open"
           />
           <v-divider/>
@@ -52,7 +53,7 @@
             :items="data.person.emails || []"
             :mapper="item=>({title: item.email})"
             icon="mail"
-            edit
+            :edit="auth.isMutationAllowed('editEmail')"
             @edit="editEmail_open"
           />
           <v-divider/>
@@ -61,21 +62,21 @@
             :items="data.person.telefone || []"
             :mapper="item=>({title: item.telefon})"
             icon="local_phone"
-            edit
+            :edit="auth.isMutationAllowed('editTelefon')"
             @edit="editTelefon_open"
           />
           <!-- Add Adresse, Email, Telefon -->
           <v-card-actions>
             <v-spacer/>
-            <v-btn flat @click="addAdresse_show = true">
+            <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addAdresse')">
               <v-icon>add</v-icon>
               Adresse
             </v-btn>
-            <v-btn flat @click="addEmail_show = true">
+            <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addEmail')">
               <v-icon>add</v-icon>
               Email
             </v-btn>
-            <v-btn flat @click="addTelefon_show = true">
+            <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addTelefon')">
               <v-icon>add</v-icon>
               Telefon
             </v-btn>
@@ -106,7 +107,7 @@
                 })"
                 icon="map"
                 @edit="editAK_open"
-                edit
+                :edit="auth.isMutationAllowed('editAKPerson')"
               />
             </v-expansion-panel-content>
             <v-expansion-panel-content ripple>
@@ -116,7 +117,7 @@
                 :mapper="item=>({
                   title: `${item.verteiler.bezeichnung}`,
                   subTitle: `${item.type===1?'TO':''}${item.type===2?'CC':''}${item.type===3?'BCC':''}`,
-                  edit: item.verteiler.isAuto
+                  edit: item.verteiler.isAuto && auth.isMutationAllowed('editVerteilerPerson')
                 })"
                 icon="mail"
                 @edit="editVerteiler_open"
@@ -136,7 +137,7 @@
                   title: item.kommentar,
                   subTitle: `Gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
                 })"
-                edit
+                :edit="true"
                 icon="extension"
               />
             </v-expansion-panel-content>
@@ -146,31 +147,28 @@
                 :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa'}] : []"
                 :mapper="item=>item"
                 icon="extension"
-                edit
+                :edit="true"
               />
             </v-expansion-panel-content>
           </v-expansion-panel>
           <!-- Add AK, Verteiler, FZ, FZ-Antrag -->
           <v-card-actions>
             <v-spacer/>
-            <v-btn flat @click="addAK_show = true">
+            <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('addAKPerson')">
               <v-icon>add</v-icon>
               Arbeitskreis
             </v-btn>
-            <v-btn flat @click="addVerteiler_show = true">
+            <v-btn flat @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('addVerteilerPerson')">
               <v-icon>add</v-icon>
               Verteiler
             </v-btn>
-            <v-btn flat @click="addPersonFZ_show = true">
+            <v-btn flat @click="addPersonFZ_show = true" v-if="true">
               <v-icon>add</v-icon>
               Führungszeugnis
             </v-btn>
           </v-card-actions>
         </v-card>
       </v-tab-item>
-      <v-flex v-if="isElectron">
-        <v-btn flat @click="auskunftsRecht">Auskunftsrecht</v-btn>
-      </v-flex>
     </v-tabs-items>
     <!-- ADD Adresse -->
     <ec-form
@@ -575,7 +573,7 @@ export default class PersonenDetails extends reloaderBase {
     .then((v:any) => {
       const {clipboard, remote} = electron
       clipboard.writeText(JSON.stringify(v))
-      remote.dialog.showMessageBox({title: 'Zwischenspeicher', message: 'Die Daten wurden in den Zwischenspeicher gepackt.'})
+      remote.dialog.showMessageBox({title: 'Zwischenspeicher', message: 'Die Daten wurden in den Zwischenspeicher zwischengespeichert.'})
     })
   }
   editVerteiler_save(value: any) {

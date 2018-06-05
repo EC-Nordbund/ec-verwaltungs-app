@@ -23,5 +23,11 @@ module.exports = {
         ]
       }
     }
-  }
+  },
+  base: './',
+  dest: './electron/src/docs',
+  markdown: {
+    lineNumbers: true
+  },
+  port: 8081
 }

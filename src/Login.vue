@@ -47,6 +47,8 @@
   </v-app>
 </template>
 <script lang="ts">
+import settings from '@/plugins/settings'
+import { isElectron } from '@/plugins/electron'
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 import auth from '@/plugins/auth'
 
@@ -66,6 +68,9 @@ export default class loginForm extends Vue {
   }
   login() {
     this.checking = true
+    if(isElectron) {
+      settings.set('username', this.username)
+    }
     auth.logIn(this.username, this.password).then((val:boolean)=>{
       if (val) {
         this.$router.push("/app")
@@ -75,6 +80,11 @@ export default class loginForm extends Vue {
         this.wrong = true
       }
     })
+  }
+  created() {
+    if(isElectron) {
+      this.username = (<any>settings.get('username', ''))
+    }
   }
 }
 </script>
