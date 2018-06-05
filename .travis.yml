@@ -41,7 +41,7 @@ script:
 # - yarn run publish
 - yarn build
 - cd electron
-- yarn publish
+- yarn run publish
 #Publish
 branches:
   only:
