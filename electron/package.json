@@ -41,7 +41,18 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "arch": "all",
+        "asar": true,
+        "executableName": "EC-Verwaltungs-App",
+        "appCopyright": "(c) EC-Nordbund 2017-2018",
+        "name": "EC-Verwaltungs-App",
+        "overwrite": true,
+        "win32metadata": {
+          "CompanyName": "EC-Nordbund",
+          "FileDescription": "Applikation zur Verwaltung des EC-Nordbundes"
+        }
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
