@@ -72,6 +72,12 @@
             "linux"
           ],
           "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-snap",
+          "platforms": [
+            "linux"
+          ]
         }
       ],
       "publishers": [
