@@ -8,7 +8,7 @@
     suche
     @open="open">
     <!-- ADD-Button -->
-    <ec-button-add @click="addVerteiler_show = true"/>
+    <ec-button-add @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('verteilerList')"/>
     <!-- ADD-Verteiler-Form -->
     <ec-form
       title="Verteiler hinzufügen"

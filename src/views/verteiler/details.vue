@@ -6,7 +6,7 @@
       <v-spacer/>
       <ec-headline>{{data.verteiler.bezeichnung}}{{data.verteiler.isAuto?' (automatisch)':''}}</ec-headline>
       <v-spacer/>
-      <ec-button-icon @click="verteilerStamm_open"/>
+      <ec-button-icon @click="verteilerStamm_open" v-if="auth.isMutationAllowed('editVerteilerStamm')"/>
     </v-toolbar>
     <!-- Content -->
     <v-card>
@@ -16,11 +16,11 @@
           title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
           subTitle: `${item.type===1?'TO':''}${item.type===2?'CC':''}${item.type===3?'BCC':''}`  
         })"
-        :edit="!data.verteiler.isAuto"
+        :edit="!data.verteiler.isAuto && auth.isMutationAllowed('editVerteilerPerson')"
         @edit="editPerson_open"
         icon="mail"
       />
-      <v-card-actions>
+      <v-card-actions v-if="auth.isMutationAllowed('addVerteilerPerson')">
         <ec-button-add v-if="!data.verteiler.isAuto" @click="addPerson_show = true"/>
       </v-card-actions>
     </v-card>

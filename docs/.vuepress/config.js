@@ -20,7 +20,26 @@ module.exports = {
             text: 'APP (Für Entwickler)',
             link: '/app/'
           }
-        ]
+        ],
+        // sidebar: {
+        //   '/hilfe/': [
+        //     {
+        //       title: 'Hilfe',
+        //       collapsable: false,
+        //       children: [
+        //         '',
+        //         'getting-started',
+        //         'basic-config',
+        //         'assets',
+        //         'markdown',
+        //         'using-vue',
+        //         'custom-themes',
+        //         'i18n',
+        //         'deploy'
+        //       ]
+        //     }
+        //   ]
+        // }
       }
     }
   },
