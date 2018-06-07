@@ -61,9 +61,7 @@ export default class loginForm extends Vue {
   wrong: boolean = false
   getRules(name:string) {
     return [
-      function (value: string) {
-        return !value ? `Es muss ein ${name} angegeben werden` : true
-      }
+      (value: string) => !value ? `Es muss ein ${name} angegeben werden` : true
     ]
   }
   login() {

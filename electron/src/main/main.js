@@ -1,12 +1,10 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, shell, dialog } = require('electron')
 
 // import './testServer'
 
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
   app.quit();
 }
-
-console.log(__dirname)
 
 /**
  * Ermittelt die URL für das Main-Window
@@ -87,6 +85,7 @@ function createWindow() {
 
 function createLoadingWindow() {
   loadingWindow = new BrowserWindow(loadingWindowOptions);
+
   loadingWindow.loadURL(loadingURL);
   loadingWindow.on('ready-to-show', () => {
     loadingWindow.show();

@@ -1,6 +1,6 @@
 {
   "name": "ec-verwaltungs-app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "EC-Verwaltungs Application",
   "keywords": [],
   "homepage": "https://ec-nordbund.de",
@@ -42,7 +42,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "arch": "all",
+        "arch": "ia32",
         "asar": true,
         "executableName": "EC-Verwaltungs-App",
         "appCopyright": "(c) EC-Nordbund 2017-2018",
@@ -101,7 +101,8 @@
   },
   "dependencies": {
     "electron-settings": "^3.2.0",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-squirrel-startup": "^1.0.0",
+    "node-fetch": "^2.1.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.17",
