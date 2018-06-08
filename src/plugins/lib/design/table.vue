@@ -84,7 +84,7 @@ export default class Table extends Vue {
   }
 
   created() {
-    this.count = Math.floor((document.body.offsetHeight - 2*64)/48)
+    this.count = Math.floor((document.body.offsetHeight - 2*(64+10) - 80 - (this.suche?80:0) - 100)/48)
   }
 
   @Prop({type: String, required: true})
@@ -120,15 +120,6 @@ export default class Table extends Vue {
       return tmp;
     })
   }
-
-  // getProp(item, p) {
-  //   const ar = p.split('.');
-  //   const o = item[ar[0]];
-  //   if (ar.length === 0) {
-  //     return o;
-  //   }
-  //   return this.getProp(o, ar.splice(1));
-  // }
   get(obj:any, path:any, defaultValue:any):any {
     if (typeof path === 'number') {
       path = [path];

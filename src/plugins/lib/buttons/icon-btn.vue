@@ -5,15 +5,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Emit } from 'vue-property-decorator';
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component({})
 export default class IconButton extends Vue {
   @Prop({
     type: String,
     required: false,
-    default: 'edit'
+    default: "edit"
   })
-  icon!: string
+  icon!: string;
 }
 </script>

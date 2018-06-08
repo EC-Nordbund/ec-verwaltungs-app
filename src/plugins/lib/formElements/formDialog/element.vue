@@ -1,13 +1,13 @@
-lang as script; = "ts" > ;
+<script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class formElement extends Vue {
   @Prop({default: "", required: false, type: [Object, String, Boolean, Number]})
-  public value !; : public any;
+  public value!:any
 
   @Prop({type: String, required: false, default: "v-text-field"})
-  public componentName !; : public string;
+  public componentName!:string;
 
   public render(h: Function) {
     const self = this;
@@ -22,4 +22,4 @@ export default class formElement extends Vue {
     });
   }
 }
-/script> as ;
+</script>

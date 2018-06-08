@@ -2,39 +2,46 @@ import auth from "@/plugins/auth";
 import { CreateElement } from "vue";
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
+/**
+ * Basis-Klasse für Select Components
+ *
+ * @export
+ * @class baseSelect
+ * @extends {Vue}
+ */
 export default class baseSelect extends Vue {
   public select: number = -1;
   public variabels: any;
   public query: any;
-  public queryName !; : public string;
-  public data !; : public Array<any>;
+  public queryName!: string;
+  public data!: Array<any>;
   public items: any[] = [];
 
   @Prop({
     type: [Number, String],
     required: false
   })
-  public value !; : public number;
+  public value!: number
 
-  public mapper !; : (item: any) => {
+  public mapper: (item: any) => {
     id: number;
     beschreibung: string;
-  };
+  } = a => a
 
-@Watch("select")
+  @Watch("select")
   @Emit("input")
-onSelectChange(value: number); {}
+  onSelectChange(value: number) { }
 
-@Watch("value", {immediate: true})
-onValueChange(value: number); {
+  @Watch("value", { immediate: true })
+  onValueChange(value: number) {
     this.select = value;
   }
 
-created(); {
+  created() {
     this.loadData();
   }
 
-loadData(); {
+  loadData() {
     (this.$apollo as any).watchQuery({
       query: this.query,
       variables: this.variabels,
