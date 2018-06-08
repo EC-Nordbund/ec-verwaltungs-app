@@ -15,5 +15,5 @@ export default class IconButton extends Vue {
     default: 'edit'
   })
   icon!: string
-};
+}
 </script>
