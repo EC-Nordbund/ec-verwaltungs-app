@@ -1,50 +1,50 @@
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
-import auth from '@/plugins/auth'
+import auth from "@/plugins/auth";
 import { CreateElement } from "vue";
+import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
 export default class baseSelect extends Vue {
-  select: number = -1
-  variabels: any
-  query: any
-  queryName!: string
-  data!: Array<any>
-  items: Array<any> = []
+  public select: number = -1;
+  public variabels: any;
+  public query: any;
+  public queryName !; : public string;
+  public data !; : public Array<any>;
+  public items: any[] = [];
 
   @Prop({
     type: [Number, String],
     required: false
   })
-  value!: number
+  public value !; : public number;
 
-  mapper!: (item:any) => {
-    id: number
-    beschreibung: string
+  public mapper !; : (item: any) => {
+    id: number;
+    beschreibung: string;
+  };
+
+@Watch("select")
+  @Emit("input")
+onSelectChange(value: number); {}
+
+@Watch("value", {immediate: true})
+onValueChange(value: number); {
+    this.select = value;
   }
 
-  @Watch('select')
-  @Emit('input')
-  onSelectChange(value:number) {}
-
-  @Watch('value', {immediate: true})
-  onValueChange(value:number) {
-    this.select = value
+created(); {
+    this.loadData();
   }
 
-  created() {
-    this.loadData()
-  }
-
-  loadData() {
-    (<any>this.$apollo).watchQuery({
+loadData(); {
+    (this.$apollo as any).watchQuery({
       query: this.query,
       variables: this.variabels,
-      fetchPolicy: 'cache-and-network',
+      fetchPolicy: "cache-and-network",
       pollInterval: auth.pollInterval
-    }).subscribe((val:any) => {
+    }).subscribe((val: any) => {
       if (val.data) {
-        this.data = val.data[this.queryName]
-        this.items = this.data.map(this.mapper)
+        this.data = val.data[this.queryName];
+        this.items = this.data.map(this.mapper);
       }
-    })
+    });
   }
 }

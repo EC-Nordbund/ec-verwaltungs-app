@@ -22,7 +22,8 @@
         rows-per-page-text="Datensätze pro Seite:"
         :items="items"
         :headers="headers"
-        :search="suchString">
+        :search="suchString"
+        :rows-per-page-items="[count]">
 
         <template slot="items" slot-scope="props">
           <tr @click="open(props.item)">
@@ -70,7 +71,8 @@ export default class Table extends Vue {
   suchString:string = ''
   elements:Array<any> = []
   headers:Array<any> = []
-  
+  count:number = -1
+
   @Emit('open')
   open(item: any) { }
 
@@ -79,6 +81,10 @@ export default class Table extends Vue {
       // eslint-disable-next-line
       throw 'Damit die große suche geht, muss die kleine ebenfalls aktiviert sein...';
     }
+  }
+
+  created() {
+    this.count = Math.floor((document.body.offsetHeight - 2*64)/48)
   }
 
   @Prop({type: String, required: true})

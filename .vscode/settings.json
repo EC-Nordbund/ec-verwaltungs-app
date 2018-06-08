@@ -1,0 +1,14 @@
+{
+  "tslint.autoFixOnSave": true,
+  "tslint.configFile": "./tslint.json",
+  "tslint.jsEnable": true,
+  "tslint.packageManager": "yarn",
+  "editor.tabSize": 2,
+  "git.autorefresh": true,
+  "npm.packageManager": "yarn",
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "files.associations": {
+    "*.gql": "graphql"
+  },
+}

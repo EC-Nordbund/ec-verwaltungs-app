@@ -1,41 +1,40 @@
-import { client } from './apollo'
-import router from './router/router'
-import gql from 'graphql-tag'
+import gql from "graphql-tag";
+import { getClient } from "./apollo";
+import router from "./router/router";
 
 class auth {
-  private _authToken: string = ''
-  private _mutationList: Array<string> = []
-  public _userGroupBezeichnung: string = '____'
+  private _authToken: string = "";
+  private _mutationList: string[] = [];
+  public _userGroupBezeichnung: string = "____";
   private _fieldAccess: Array<{
     table: string,
-    field: string
-  }> = []
-  public personBeschreibung = ''
+    field: string,
+  }> = [];
 
-  public pollInterval: number = 60000
+  public personBeschreibung = "";
 
-  constructor() {
-    
-  }
+  public pollInterval: number = 60000;
 
-  public get authToken():string {
+  constructor() { }
+
+  public get authToken(): string {
     if (this.isLogedIn()) {
-      this.extend()
+      this.extend();
     }
-    return this._authToken
+    return this._authToken;
   }
 
-  public extend():void {
+  public extend(): void {
     // Extend
     // TODO:
   }
 
-  public isLogedIn():boolean {
-    return this._authToken.length > 0
+  public isLogedIn(): boolean {
+    return this._authToken.length > 0;
   }
 
-  public logIn(username: string, password: string):Promise<boolean> {
-    return client.mutate({
+  public logIn(username: string, password: string): Promise<boolean> {
+    return getClient().mutate({
       mutation: gql`
         mutation($username: String!, $password: String!){
           logIn(
@@ -48,15 +47,14 @@ class auth {
         username,
         password,
       },
-    }).then(v => (<any>v.data).logIn).then((authToken) => {
+    }).then((v) => (v.data as any).logIn).then((authToken) => {
       this._authToken = authToken;
       this.getRechte();
-      console.log(authToken)
-    }).then(v => true).catch(v => false);
+    }).then((v) => true).catch((v) => false);
   }
 
   private getRechte() {
-    return client.query({
+    return getClient().query({
       query: gql`
         query($authToken: String!) {
           getMyUserData (authToken: $authToken) {
@@ -82,59 +80,59 @@ class auth {
       variables: {
         authToken: this.authToken,
       },
-    }).then(v => (<any>v.data).getMyUserData).then((conf:any) => {
-      this._userGroupBezeichnung = conf.userGroup.bezeichnung
-      this._mutationList = conf.userGroup.mutationRechte
-      this._fieldAccess = conf.userGroup.fieldAccess
-      this.personBeschreibung = `Gültig für ${conf.person.vorname} ${conf.person.nachname} bis ${conf.ablaufDatum.german}`
+    }).then((v) => (v.data as any).getMyUserData).then((conf: any) => {
+      this._userGroupBezeichnung = conf.userGroup.bezeichnung;
+      this._mutationList = conf.userGroup.mutationRechte;
+      this._fieldAccess = conf.userGroup.fieldAccess;
+      this.personBeschreibung = `Gültig für ${conf.person.vorname} ${conf.person.nachname} bis ${conf.ablaufDatum.german}`;
     });
   }
 
-  public logOut():Promise<boolean>|boolean {
+  public logOut(): Promise<boolean> | boolean {
     // TODO:
-    this._authToken = ''
-    return true
+    this._authToken = "";
+    return true;
   }
 
   public isMutationAllowed(mutName: string) {
-    return this._mutationList.indexOf(mutName) !== -1
+    return this._mutationList.indexOf(mutName) !== -1;
   }
 
   public isFieldsAllowed(fields: Array<{
     table: string,
-    field: string
-  }>):boolean{
-    let tmp = true
-    fields.map(this.isFieldAllowed).forEach(v => {
-      tmp = tmp && v
-    })
-    return tmp
+    field: string,
+  }>): boolean {
+    let tmp = true;
+    fields.map(this.isFieldAllowed).forEach((v) => {
+      tmp = tmp && v;
+    });
+    return tmp;
   }
 
   private isFieldAllowed(field: {
     table: string,
-    field: string
-  }):boolean {
+    field: string,
+  }): boolean {
     const allow = [
       {
-        table: '*',
-        field: '*'
+        table: "*",
+        field: "*",
       },
       {
         table: field.table,
-        field: '*'
+        field: "*",
       },
       {
-        table: '*',
-        field: field.field
+        table: "*",
+        field: field.field,
       },
       {
         table: field.table,
-        field: field.field
-      }
-    ].map(v => this._fieldAccess.indexOf(v) !== -1)
-    return allow[0] || allow[1] || allow[2] || allow[3]
+        field: field.field,
+      },
+    ].map((v) => this._fieldAccess.indexOf(v) !== -1);
+    return allow[0] || allow[1] || allow[2] || allow[3];
   }
 }
 
-export default new auth()
+export default new auth();

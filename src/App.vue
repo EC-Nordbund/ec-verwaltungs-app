@@ -41,10 +41,8 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content>
-      <v-container fluid>
+    <v-content style: "display: grid; padding: 10px; margin: 0 64px;">
         <router-view/>
-      </v-container>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
       <v-progress-circular indeterminate color="accent" v-if="loading"/>

@@ -1,0 +1,12 @@
+{
+  "extends": "tslint:recommended",
+  "rules": {
+    
+  },
+  "jsRules": {
+    "comma-dangle": false,
+    "arrow-parens": false,
+    "no-extra-semi": true,
+    "no-eval": false
+  }
+}

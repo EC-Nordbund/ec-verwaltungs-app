@@ -1,5 +1,3 @@
-# Commented sections below can be used to run tests on the CI server
-# https://simulatedgreg.gitbooks.io/electron-vue/content/en/testing.html#on-the-subject-of-ci-testing
 version: '{build}'
 
 branches:
@@ -9,12 +7,14 @@ branches:
 image: Visual Studio 2017
 platform:
   - x64
+  - x86
 
 cache:
   - node_modules
   - '%APPDATA%\npm-cache'
   - '%USERPROFILE%\.electron'
   - '%USERPROFILE%\AppData\Local\Yarn\cache'
+  - electron/node_modules
 
 init:
   - git config --global core.autocrlf input
@@ -26,10 +26,8 @@ install:
   - yarn :init
 
 build_script:
-  #- yarn test
   - yarn build
   - cd electron
   - yarn run publish
-  #Publish
 
 test: off
