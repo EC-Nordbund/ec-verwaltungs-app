@@ -11,4 +11,5 @@
   "files.associations": {
     "*.gql": "graphql"
   },
+  "typescript.tsdk": "node_modules\\typescript\\lib",
 }
