@@ -7,7 +7,7 @@
   "bugs": {
     "url": "https://github.com/ecnordbund/ec-verwaltungs-app/issues"
   },
-  "license": null,
+  "license": "GPL-3.0-or-later",
   "author": {
     "name": "EC-Nordbund",
     "email": "info@ec-nordbund.de",
