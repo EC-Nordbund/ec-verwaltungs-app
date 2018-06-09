@@ -12,17 +12,20 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
+import reloaderBase from '@/baseComponents/reloader';
+import gql from 'graphql-tag';
 
-import auth from '@/plugins/auth'
+import auth from '@/plugins/auth';
 @Component({})
 export default class unterkunftDetails extends reloaderBase {
-  data: {unterkunft:any} = {unterkunft: {}}
+  data: { unterkunft: any } = { unterkunft: {} };
   created() {
     this.query = gql`
-      query($authToken: String!, $unterkunftID: Int!){
-        unterkunft(unterkunftID: $unterkunftID, authToken: $authToken) {
+      query($authToken: String!, $unterkunftID: Int!) {
+        unterkunft(
+          unterkunftID: $unterkunftID
+          authToken: $authToken
+        ) {
           unterkunftID
           bezeichnung
           strasse
@@ -31,12 +34,12 @@ export default class unterkunftDetails extends reloaderBase {
           land
         }
       }
-    `
+    `;
     this.variabels = {
       authToken: auth.authToken,
       unterkunftID: this.$route.params.id
-    }
-    super.created()
+    };
+    super.created();
   }
 }
 </script>

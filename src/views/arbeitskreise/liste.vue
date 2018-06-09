@@ -6,65 +6,75 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
+import reloaderBase from '@/baseComponents/reloader';
+import gql from 'graphql-tag';
 
-import auth from '@/plugins/auth'
+import auth from '@/plugins/auth';
 @Component({})
 export default class AKListe extends reloaderBase {
   data = {
     aks: []
-  }
+  };
   tableConfig = [
-    { name: 'bezeichnung', label: 'Bezeichnung' },
-  ]
-  showAddAk = false
+    { name: 'bezeichnung', label: 'Bezeichnung' }
+  ];
+  showAddAk = false;
   fieldConfig = [
     {
       label: 'Bezeichnung',
       name: 'bezeichnung',
       required: true,
       rules: [
-        (v:string) => (!v ? 'Du musst eine Bezeichnung angeben!' : true),
-        (v:string) => (v && v.length > 50 ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!' : true),
+        (v: string) =>
+          !v ? 'Du musst eine Bezeichnung angeben!' : true,
+        (v: string) =>
+          v && v.length > 50
+            ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!'
+            : true
       ],
-      counter: 50,
-    },
-  ]
-  save(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation ($bezeichnung: String!,$authToken: String!) {
-          addAK(
-            authToken: $authToken,
-            bezeichnung: $bezeichnung
-          )
+      counter: 50
+    }
+  ];
+  save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $bezeichnung: String!
+            $authToken: String!
+          ) {
+            addAK(
+              authToken: $authToken
+              bezeichnung: $bezeichnung
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          bezeichnung: value.bezeichnung
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        bezeichnung: value.bezeichnung,
-      },
-    }).then(v => v.data.addAK).then((akID:number) => {
-      this.$router.push(`/app/arbeitskreise/${akID}`);
-    });
+      })
+      .then(v => v.data.addAK)
+      .then((akID: number) => {
+        this.$router.push(`/app/arbeitskreise/${akID}`);
+      });
   }
-  open($event:any) {
+  open($event: any) {
     this.$router.push(`/app/arbeitskreise/${$event.akID}`);
   }
-  created(){
+  created() {
     this.variabels = {
       authToken: auth.authToken
-    }
+    };
     this.query = gql`
-      query($authToken: String!){
-        aks(authToken:$authToken){
-          akID,
+      query($authToken: String!) {
+        aks(authToken: $authToken) {
+          akID
           bezeichnung
         }
       }
-    `
-    super.created()
+    `;
+    super.created();
   }
 }
 </script>

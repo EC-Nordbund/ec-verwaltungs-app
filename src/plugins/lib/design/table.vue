@@ -64,17 +64,23 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit, Watch, Prop } from 'vue-property-decorator';
+import {
+  Component,
+  Vue,
+  Emit,
+  Watch,
+  Prop
+} from 'vue-property-decorator';
 
 @Component({})
 export default class Table extends Vue {
-  suchString:string = ''
-  elements:Array<any> = []
-  headers:Array<any> = []
-  count:number = -1
+  suchString: string = '';
+  elements: Array<any> = [];
+  headers: Array<any> = [];
+  count: number = -1;
 
   @Emit('open')
-  open(item: any) { }
+  open(item: any) {}
 
   mounted() {
     if (this.grosseSuche && !this.suche) {
@@ -84,43 +90,51 @@ export default class Table extends Vue {
   }
 
   created() {
-    this.count = Math.floor((document.body.offsetHeight - 2*(64+10) - 80 - (this.suche?80:0) - 100)/48)
+    this.count = Math.floor(
+      (document.body.offsetHeight -
+        2 * (64 + 10) -
+        80 -
+        (this.suche ? 80 : 0) -
+        100) /
+        48
+    );
   }
 
-  @Prop({type: String, required: true})
-  title!:string
+  @Prop({ type: String, required: true })
+  title!: string;
 
-  @Prop({type:Boolean, default: false})
-  suche!:boolean
+  @Prop({ type: Boolean, default: false })
+  suche!: boolean;
 
-  @Prop({type: Boolean, default: false})
-  grosseSuche!: boolean
+  @Prop({ type: Boolean, default: false })
+  grosseSuche!: boolean;
 
-  @Prop({type: Array, required: true})
-  items!: Array<any>
+  @Prop({ type: Array, required: true })
+  items!: Array<any>;
 
-  @Prop({type: Array, required: true})
-  config!: Array<any>
+  @Prop({ type: Array, required: true })
+  config!: Array<any>;
 
-  @Prop({type: String, required: true})
-  itemName!:string
-  
-  @Watch('config', {immediate: true})
+  @Prop({ type: String, required: true })
+  itemName!: string;
+
+  @Watch('config', { immediate: true })
   onConfigChange() {
-    this.headers = this.config.map((col) => {
-      let tmp:any = {
+    this.headers = this.config.map(col => {
+      let tmp: any = {
         align: 'center',
-        sortable: col.sortable === undefined || col.sortable,
+        sortable:
+          col.sortable === undefined || col.sortable,
         value: col.name,
-        text: col.label,
-      }
+        text: col.label
+      };
       if (col.width !== undefined) {
         tmp.width = col.width;
       }
       return tmp;
-    })
+    });
   }
-  get(obj:any, path:any, defaultValue:any):any {
+  get(obj: any, path: any, defaultValue: any): any {
     if (typeof path === 'number') {
       path = [path];
     }
@@ -144,9 +158,13 @@ export default class Table extends Vue {
       return nextObj;
     }
 
-    return this.get(obj[currentPath], path.slice(1), defaultValue);
+    return this.get(
+      obj[currentPath],
+      path.slice(1),
+      defaultValue
+    );
   }
-  getKey(key:string) {
+  getKey(key: string) {
     const intKey = parseInt(key, 10);
     if (intKey.toString() === key) {
       return intKey;

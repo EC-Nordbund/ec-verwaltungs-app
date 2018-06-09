@@ -12,5 +12,6 @@
   "files.autoSave": "afterDelay",
   "files.autoSaveDelay": 5000,
   "editor.formatOnPaste": true,
-  "editor.formatOnSaveTimeout": 5000
+  "editor.formatOnSaveTimeout": 5000,
+  "prettier.disableLanguages": []
 }

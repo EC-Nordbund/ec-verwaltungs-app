@@ -47,58 +47,69 @@
   </v-app>
 </template>
 <script lang="ts">
-import settings from '@/plugins/settings'
-import { isElectron } from '@/plugins/electron'
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
-import auth from '@/plugins/auth'
+import settings from '@/plugins/settings';
+import { isElectron } from '@/plugins/electron';
+import {
+  Component,
+  Vue,
+  Prop,
+  Watch,
+  Emit
+} from 'vue-property-decorator';
+import auth from '@/plugins/auth';
 
 @Component({})
 export default class loginForm extends Vue {
-  username: string = ''
-  password: string = ''
-  valid: boolean = false
-  checking: boolean = false
-  wrong: boolean = false
-  getRules(name:string) {
+  username: string = '';
+  password: string = '';
+  valid: boolean = false;
+  checking: boolean = false;
+  wrong: boolean = false;
+  getRules(name: string) {
     return [
-      (value: string) => !value ? `Es muss ein ${name} angegeben werden` : true
-    ]
+      (value: string) =>
+        !value
+          ? `Es muss ein ${name} angegeben werden`
+          : true
+    ];
   }
   login() {
-    this.checking = true
-    if(isElectron) {
-      settings.set('username', this.username)
+    this.checking = true;
+    if (isElectron) {
+      settings.set('username', this.username);
     }
-    auth.logIn(this.username, this.password).then((val:boolean)=>{
-      if (val) {
-        this.$router.push("/app")
-        this.checking = false
-      } else {
-        this.checking = false
-        this.wrong = true
-      }
-    })
+    auth
+      .logIn(this.username, this.password)
+      .then((val: boolean) => {
+        if (val) {
+          this.$router.push('/app');
+          this.checking = false;
+        } else {
+          this.checking = false;
+          this.wrong = true;
+        }
+      });
   }
   created() {
-    if(isElectron) {
-      this.username = (<any>settings.get('username', ''))
+    if (isElectron) {
+      this.username = <any>settings.get('username', '');
     }
   }
 }
 </script>
 
 <style scoped>
-  /** Ausrichtung der Card **/
-  .ec_content {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-rows: 1fr auto 1fr;
-    grid-template-areas: ". . ." ". center ." ". . .";
-    height: 100%;
-    width: 100%;
-    grid-gap: 10px;
-  }
-  .ec_card {
-    grid-area: center;
-  }
+/** Ausrichtung der Card **/
+.ec_content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr auto 1fr;
+  grid-template-areas: '. . .' '. center .' '. . .';
+  height: 100%;
+  width: 100%;
+  grid-gap: 10px;
+}
+.ec_card {
+  grid-area: center;
+}
 </style>

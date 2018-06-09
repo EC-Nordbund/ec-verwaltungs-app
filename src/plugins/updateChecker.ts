@@ -12,10 +12,14 @@ if (isElectron && isProduction) {
   fetch(
     'https://api.github.com/repos/ecnordbund/ec-verwaltungs-app/releases'
   )
-    .then(v => v.json())
-    .then(v => v.filter(v => v.prerelease === isPrerelease))
-    .then(v => v.filter(v => v.tag_name !== 'v' + version))
-    .then(v =>
+    .then((v: any) => v.json())
+    .then((v: Array<any>) =>
+      v.filter(v => v.prerelease === isPrerelease)
+    )
+    .then((v: Array<any>) =>
+      v.filter(v => v.tag_name !== 'v' + version)
+    )
+    .then((v: Array<any>) =>
       v.sort((a, b) => {
         if (a.published_at > b.published_at) {
           return -1;
@@ -27,35 +31,35 @@ if (isElectron && isProduction) {
       })
     )
     .then(
-      v =>
+      (v: Array<any>) =>
         v.length === 0
           ? false
           : v[0].assets
-              .map(v => ({
+              .map((v: any) => ({
                 v,
                 ending: v.name.split('.')[
                   v.name.split('.').length - 1
                 ]
               }))
               .filter(
-                v =>
+                (v: any) =>
                   v.ending ===
-                  {
+                  (<any>{
                     win32: 'exe',
                     darwin: 'dmg',
                     linux: 'deb'
-                  }[window.process.platform]
+                  })[(<any>window).process.platform]
               )[0].v.url
     )
     .then(
-      v =>
+      (v: any) =>
         v
           ? fetch(v)
-              .then(v => v.json())
-              .then(v => v.browser_download_url)
+              .then((v: any) => v.json())
+              .then((v: any) => v.browser_download_url)
           : false
     )
-    .then(v => {
+    .then((v: any) => {
       if (v) {
         eval(
           "require('electron')"
@@ -67,7 +71,7 @@ if (isElectron && isProduction) {
               'Ein Update ist verfügbar. Möchtest du es installieren?\n\nWir empfehlen dir das Update sofort zu installieren!',
             buttons: ['Yes', 'No']
           },
-          res => {
+          (res: number) => {
             if (res === 0) {
               eval(
                 "require('electron')"

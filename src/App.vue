@@ -66,39 +66,39 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import auth from '@/plugins/auth';
-import nav from '@/plugins/config/nav.config'
+import nav from '@/plugins/config/nav.config';
 
-import settings from '@/plugins/settings'
-import { isElectron } from '@/plugins/electron'
+import settings from '@/plugins/settings';
+import { isElectron } from '@/plugins/electron';
 
-import version from '@/plugins/version/version'
+import version from '@/plugins/version/version';
 
 @Component({})
 export default class App extends Vue {
-  loading: boolean = true
-  drawer: boolean = false
-  version: string = version
-  dark: boolean = false
-  nav = nav
-  auth = auth
-  click(route:string) {
-    this.$router.push(route)
+  loading: boolean = true;
+  drawer: boolean = false;
+  version: string = version;
+  dark: boolean = false;
+  nav = nav;
+  auth = auth;
+  click(route: string) {
+    this.$router.push(route);
   }
   created() {
     if (isElectron) {
-      this.dark = (<any>settings.get('dark', false))
+      this.dark = <any>settings.get('dark', false);
     }
   }
   darkChange() {
-    this.dark = !this.dark
+    this.dark = !this.dark;
     if (isElectron) {
-      settings.set('dark', this.dark)
+      settings.set('dark', this.dark);
     }
   }
 }
 </script>
 <style scoped>
-.ec-content{
+.ec-content {
   display: grid;
 }
 </style>
