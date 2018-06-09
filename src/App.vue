@@ -71,11 +71,13 @@ import nav from '@/plugins/config/nav.config'
 import settings from '@/plugins/settings'
 import { isElectron } from '@/plugins/electron'
 
+import version from '@/plugins/version/version'
+
 @Component({})
 export default class App extends Vue {
   loading: boolean = true
   drawer: boolean = false
-  version: string = "0.1.0 - alpha"
+  version: string = version
   dark: boolean = false
   nav = nav
   auth = auth

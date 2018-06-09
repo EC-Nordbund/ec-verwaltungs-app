@@ -1,10 +1,10 @@
-import auth from "@/plugins/auth";
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+import auth from '@/plugins/auth';
+import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
 import { ObservableQuery } from 'apollo-client';
 import { DocumentNode } from 'graphql';
 
 /**
- *
+ * Klasse für Components (Views) with qraphqlconnection... (Including Watchquerry)
  *
  * @export
  * @abstract
@@ -18,7 +18,7 @@ export default abstract class reloader extends Vue {
    * @type {({[key: string]: string|number|boolean})}
    * @memberof reloader
    */
-  public variabels!: {[key: string]: string|number|boolean};
+  public variabels!: { [key: string]: string | number | boolean };
 
   /**
    * Speichert die Query
@@ -38,7 +38,7 @@ export default abstract class reloader extends Vue {
   public data: any;
 
   /**
-   * Speichert 
+   * Speichert
    *
    * @type {DocumentNode}
    * @memberof reloader
@@ -70,8 +70,8 @@ export default abstract class reloader extends Vue {
     this._query = (this.$apollo as any).watchQuery({
       query: this.query,
       variables: this.variabels,
-      fetchPolicy: "cache-and-network",
-      pollInterval: auth.pollInterval,
+      fetchPolicy: 'cache-and-network',
+      pollInterval: auth.pollInterval
     });
     if (this._query !== null) {
       this._query.subscribe((val: any) => {
@@ -90,6 +90,6 @@ export default abstract class reloader extends Vue {
   public refetch() {
     this._query.refetch().then((val: any) => {
       this.data = val.data;
-    })
+    });
   }
 }

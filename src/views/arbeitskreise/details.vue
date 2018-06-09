@@ -77,6 +77,13 @@ export default class AKDetails extends reloaderBase {
   editAKPerson_show = false
   editAKPerson_config = [
     {
+      label: 'Person wählen',
+      name: 'personID',
+      disabled: true,
+      required: true,
+      componentName: 'ec-select-person'
+    },
+    {
       label: 'Eintritt',
       name: 'eintritt',
       required: true,
@@ -127,7 +134,7 @@ export default class AKDetails extends reloaderBase {
       personAKID: item.personAKID,
       personID: item.person.personID,
       eintritt: item.eintritt.input,
-      austritt: item.austritt.input,
+      austritt: (item.austritt || {}).input,
       leiter: item.leiter,
     };
     this.editAKPerson_show = true;

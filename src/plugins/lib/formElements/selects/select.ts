@@ -1,6 +1,11 @@
-import auth from "@/plugins/auth";
-import { CreateElement } from "vue";
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+import auth from '@/plugins/auth';
+import {
+  Emit,
+  Prop,
+  Vue,
+  Watch
+} from 'vue-property-decorator';
+import { CreateElement } from 'vue';
 
 /**
  * Basis-Klasse für Select Components
@@ -21,18 +26,20 @@ export default class baseSelect extends Vue {
     type: [Number, String],
     required: false
   })
-  public value!: number
+  public value!: number;
 
-  public mapper: (item: any) => {
+  public mapper: (
+    item: any
+  ) => {
     id: number;
     beschreibung: string;
-  } = a => a
+  } = a => a;
 
-  @Watch("select")
-  @Emit("input")
-  onSelectChange(value: number) { }
+  @Watch('select')
+  @Emit('input')
+  onSelectChange(value: number) {}
 
-  @Watch("value", { immediate: true })
+  @Watch('value', { immediate: true })
   onValueChange(value: number) {
     this.select = value;
   }
@@ -42,16 +49,18 @@ export default class baseSelect extends Vue {
   }
 
   loadData() {
-    (this.$apollo as any).watchQuery({
-      query: this.query,
-      variables: this.variabels,
-      fetchPolicy: "cache-and-network",
-      pollInterval: auth.pollInterval
-    }).subscribe((val: any) => {
-      if (val.data) {
-        this.data = val.data[this.queryName];
-        this.items = this.data.map(this.mapper);
-      }
-    });
+    (this.$apollo as any)
+      .watchQuery({
+        query: this.query,
+        variables: this.variabels,
+        fetchPolicy: 'cache-and-network',
+        pollInterval: auth.pollInterval
+      })
+      .subscribe((val: any) => {
+        if (val.data) {
+          this.data = val.data[this.queryName];
+          this.items = this.data.map(this.mapper);
+        }
+      });
   }
 }

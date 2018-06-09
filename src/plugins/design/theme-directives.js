@@ -1,22 +1,26 @@
-import Vue from "vue";
-import { theme } from "@/plugins/design/theme";
+import Vue from 'vue';
+import { theme } from '@/plugins/design/theme';
 
-Vue.directive("font", {
+// v-font directive
+Vue.directive('font', {
   bind: el => {
-    el.style.fontFamily = "ec-font";
-  },
+    el.style.fontFamily = 'ec-font';
+  }
 });
 
-Object.keys(theme).forEach((v) => {
+//theme Direktives
+Object.keys(theme).forEach(v => {
+  //Color
   Vue.directive(v, {
     bind: el => {
       el.style.color = theme[v];
-    },
+    }
   });
 
+  //BackgroundColor
   Vue.directive(`${v}-bg`, {
     bind: el => {
       el.style.backgroundColor = theme[v];
-    },
+    }
   });
 });

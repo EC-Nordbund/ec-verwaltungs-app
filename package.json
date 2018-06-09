@@ -64,6 +64,7 @@
     "@vue/cli-service": "^3.0.0-beta.15",
     "concurrently": "^3.5.1",
     "electron": "^2.0.2",
+    "graphql-cli": "^2.16.2",
     "graphql-markdown": "^3.2.0",
     "graphql-tag": "^2.5.0",
     "node-sass": "^4.9.0",

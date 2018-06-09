@@ -1,8 +1,4 @@
 {
-  "tslint.autoFixOnSave": true,
-  "tslint.configFile": "./tslint.json",
-  "tslint.jsEnable": true,
-  "tslint.packageManager": "yarn",
   "editor.tabSize": 2,
   "git.autorefresh": true,
   "npm.packageManager": "yarn",
@@ -12,4 +8,9 @@
     "*.gql": "graphql"
   },
   "typescript.tsdk": "node_modules\\typescript\\lib",
+  "gitlens.historyExplorer.enabled": false,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 5000,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSaveTimeout": 5000
 }

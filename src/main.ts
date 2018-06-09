@@ -26,7 +26,6 @@ import router from "@/plugins/router/router";
 
 // import Vue
 import Vue from "vue";
-
 // set Config
 Vue.config.productionTip = isProduction;
 
