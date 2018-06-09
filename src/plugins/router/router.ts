@@ -1,7 +1,7 @@
 // Import Routes
-import routes from "@/plugins/router/routes/index";
-import Vue from "vue";
-import Router from "vue-router";
+import routes from '@/plugins/router/routes/index';
+import Vue from 'vue';
+import Router from 'vue-router';
 
 // Install Router Plugin
 Vue.use(Router);

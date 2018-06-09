@@ -23,12 +23,14 @@ export default class formElement extends Vue {
 
   public render(h: CreateElement) {
     return h(this.componentName, {
-      props: Object.assign(this.$attrs, {
+      props: {
+        ...this.$attrs,
         value: this.value
-      }),
-      attrs: Object.assign(this.$attrs, {
+      },
+      attrs: {
+        ...this.$attrs,
         value: this.value
-      }),
+      },
       on: {
         input: ($event: any) => {
           this.$emit('input', $event);

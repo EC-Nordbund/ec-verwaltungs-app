@@ -1,13 +1,11 @@
-<script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import {CreateElement} from 'vue'
+import { CreateElement } from 'vue'
 
 @Component({})
-export default class typeRadio extends Vue {
+export default class geschlechtRadio extends Vue {
   items = [
-    {label: "An", value: 1},
-    {label: "CC", value: 2},
-    {label: "BCC", value: 3}
+    {label: "Männlich", value: "m", color: this.$vuetify.theme.male},
+    {label: "Weiblich", value: "w", color: this.$vuetify.theme.female}
   ]
 
   render(h: CreateElement) {
@@ -21,11 +19,10 @@ export default class typeRadio extends Vue {
         attrs: {
           ...this.$attrs
         },
-        on: {
+        on: { 
           ...this.$listeners
         }
       }
     )
   }
 } 
-</script>

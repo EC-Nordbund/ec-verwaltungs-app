@@ -12,7 +12,7 @@ const datePicker = () =>
 const checkbox = () =>
   import(/* webpackChunkName: "lib-formElements-input-checkbox" */ '@/plugins/lib/formElements/inputs/checkbox.vue');
 const radio = () =>
-  import(/* webpackChunkName: "lib-formElements-input-radio" */ '@/plugins/lib/formElements/inputs/radio.vue');
+  import(/* webpackChunkName: "lib-formElements-input-radio" */ '@/plugins/lib/formElements/inputs/radio.ts');
 const switchElement = () =>
   import(/* webpackChunkName: "lib-formElements-input-switch" */ '@/plugins/lib/formElements/inputs/switch.ts');
 const formDialog = () =>

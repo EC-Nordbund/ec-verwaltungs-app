@@ -1,9 +1,9 @@
 import Vue from 'vue';
 // Import Components
 const geschlechtRadio = () =>
-  import(/* webpackChunkName: "lib-extension-radio-geschlecht" */ '@/plugins/lib_extension/radioGroups/geschlecht.vue');
+  import(/* webpackChunkName: "lib-extension-radio-geschlecht" */ '@/plugins/lib_extension/radioGroups/geschlecht.ts');
 const positionRadio = () =>
-  import(/* webpackChunkName: "lib-extension-radio-position" */ '@/plugins/lib_extension/radioGroups/position.vue');
+  import(/* webpackChunkName: "lib-extension-radio-position" */ '@/plugins/lib_extension/radioGroups/position.ts');
 const selectPerson = () =>
   import(/* webpackChunkName: "lib-extension-select-person" */ '@/plugins/lib_extension/selects/personSelect.ts');
 const selectAK = () =>
@@ -11,7 +11,7 @@ const selectAK = () =>
 const selectVerteiler = () =>
   import(/* webpackChunkName: "lib-extension-select-verteiler" */ '@/plugins/lib_extension/selects/verteilerSelect.ts');
 const typeRadio = () =>
-  import(/* webpackChunkName: "lib-extension-radio-verteiler-type" */ '@/plugins/lib_extension/radioGroups/type.vue');
+  import(/* webpackChunkName: "lib-extension-radio-verteiler-type" */ '@/plugins/lib_extension/radioGroups/type.ts');
 
 // Install Components
 Vue.component('ec-radio-geschlecht', geschlechtRadio);
