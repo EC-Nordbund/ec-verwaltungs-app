@@ -1,5 +1,5 @@
 import auth from '@/plugins/auth';
-import { Component, Emit, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
 import { ObservableQuery } from 'apollo-client';
 import { DocumentNode } from 'graphql';
 

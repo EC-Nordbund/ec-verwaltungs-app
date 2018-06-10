@@ -13,5 +13,8 @@
   "files.autoSaveDelay": 5000,
   "editor.formatOnPaste": true,
   "editor.formatOnSaveTimeout": 5000,
-  "prettier.disableLanguages": []
+  "prettier.disableLanguages": [],
+  "importCost.debug": true,
+  "typescript.extension.sortImports.sortMethod": "path",
+  "typescript.extension.sortImports.sortOnSave": true
 }

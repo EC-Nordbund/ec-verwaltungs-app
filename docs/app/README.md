@@ -12,8 +12,6 @@ Der RenderProzess besteht aus Zwei Teilen
 
 #### Aufbau
 
-
-
 ### Sonstiges
 
 In `/public` können für weitere Browser-Windows der `HTML`, `CSS` und `JS` Code angelegt werden. Hier ist z.B. auch das LadeFenster beheimatet.

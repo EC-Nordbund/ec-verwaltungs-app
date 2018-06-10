@@ -1,8 +1,8 @@
-import { isElectron } from '@/plugins/electron';
-import * as _ from 'electron-settings';
+import * as _ from 'electron-settings'
+import { isElectron } from '@/plugins/electron'
 
 const __: typeof _ = isElectron
   ? eval("require('electron-settings')")
-  : null;
+  : null
 
-export default __;
+export default __

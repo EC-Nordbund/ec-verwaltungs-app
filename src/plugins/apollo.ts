@@ -1,17 +1,14 @@
-import { isElectron } from '@/plugins/electron';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import Vue from 'vue';
-// Ein paar Importe
-import VueApollo from 'vue-apollo';
-// import fetch from 'node-fetch';
+import Vue from 'vue'
+import VueApollo from 'vue-apollo'
+import { ApolloClient } from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
 
 // Install Plugin
-Vue.use(VueApollo);
+Vue.use(VueApollo)
 
 // Create Client
-let client: null | ApolloClient<any> = null;
+let client: null | ApolloClient<any> = null
 
 export function getClient() {
   if (client === null) {
@@ -23,14 +20,14 @@ export function getClient() {
       }),
       cache: new InMemoryCache(),
       connectToDevTools: true
-    });
+    })
   }
-  return client;
+  return client
 }
 
 // Create Client
 export default () => {
   return new VueApollo({
     defaultClient: getClient()
-  });
-};
+  })
+}

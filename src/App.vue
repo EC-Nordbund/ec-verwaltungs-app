@@ -64,14 +64,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import auth from '@/plugins/auth';
 import nav from '@/plugins/config/nav.config';
-
-import settings from '@/plugins/settings';
 import { isElectron } from '@/plugins/electron';
-
+import settings from '@/plugins/settings';
 import version from '@/plugins/version/version';
+
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class App extends Vue {

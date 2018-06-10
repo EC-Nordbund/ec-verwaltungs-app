@@ -10,7 +10,7 @@ module.exports = {
         nav: [
           {
             text: 'Hilfe',
-            link: '/hilfe/',
+            link: '/hilfe/'
           },
           {
             text: 'API (Für Entwickler)',
@@ -20,26 +20,7 @@ module.exports = {
             text: 'APP (Für Entwickler)',
             link: '/app/'
           }
-        ],
-        // sidebar: {
-        //   '/hilfe/': [
-        //     {
-        //       title: 'Hilfe',
-        //       collapsable: false,
-        //       children: [
-        //         '',
-        //         'getting-started',
-        //         'basic-config',
-        //         'assets',
-        //         'markdown',
-        //         'using-vue',
-        //         'custom-themes',
-        //         'i18n',
-        //         'deploy'
-        //       ]
-        //     }
-        //   ]
-        // }
+        ]
       }
     }
   },
@@ -49,4 +30,4 @@ module.exports = {
     lineNumbers: true
   },
   port: 8081
-}
+};

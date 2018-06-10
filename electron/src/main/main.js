@@ -1,18 +1,24 @@
-const { app, BrowserWindow, shell, dialog } = require('electron')
+const { app, BrowserWindow } = require('electron');
 
-if (require('electron-squirrel-startup')) { // eslint-disable-line global-require
+if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
 //=================================================================================================================================================
-const winURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080' : `file://${__dirname}/../renderer/index.html`;
-const loadingURL = process.env.NODE_ENV === 'development' ? 'http://localhost:8080/loading.html' : `file://${__dirname}/../renderer/loading.html`;
+const winURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8080'
+    : `file://${__dirname}/../renderer/index.html`;
+const loadingURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8080/loading.html'
+    : `file://${__dirname}/../renderer/loading.html`;
 
 const mainWindowOptions = {
   height: 563,
   useContentSize: true,
   width: 1000,
-  show: false,
+  show: false
 };
 const loadingWindowOptions = {
   height: 250,
@@ -21,7 +27,7 @@ const loadingWindowOptions = {
   width: 470,
   show: false,
   closable: false,
-  resizable: false,
+  resizable: false
 };
 //=================================================================================================================================================
 
@@ -31,7 +37,6 @@ let mainWindow;
 function createWindow() {
   mainWindow = new BrowserWindow(mainWindowOptions);
   mainWindow.loadURL(winURL);
-  mainWindow.webContents.openDevTools()
   mainWindow.on('ready-to-show', () => {
     loadingWindow.setClosable(true);
     loadingWindow.close();

@@ -1,14 +1,13 @@
 import version, {
   isPrerelease
-} from '@/plugins/version/version';
-
+} from '@/plugins/version/version'
 import {
   isElectron,
   isProduction
-} from '@/plugins/electron';
+} from '@/plugins/electron'
 
 if (isElectron && isProduction) {
-  let fetch = eval("require('node-fetch')");
+  let fetch = eval("require('node-fetch')")
   fetch(
     'https://api.github.com/repos/ecnordbund/ec-verwaltungs-app/releases'
   )
@@ -22,12 +21,12 @@ if (isElectron && isProduction) {
     .then((v: Array<any>) =>
       v.sort((a, b) => {
         if (a.published_at > b.published_at) {
-          return -1;
+          return -1
         }
         if (a.published_at < b.published_at) {
-          return 1;
+          return 1
         }
-        return 0;
+        return 0
       })
     )
     .then(
@@ -75,10 +74,10 @@ if (isElectron && isProduction) {
             if (res === 0) {
               eval(
                 "require('electron')"
-              ).shell.openExternal(v);
+              ).shell.openExternal(v)
             }
           }
-        );
+        )
       }
-    });
+    })
 }

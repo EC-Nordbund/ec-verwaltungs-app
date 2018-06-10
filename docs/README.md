@@ -1,4 +1,5 @@
 # EC-Verwaltungs-App
+
 > Vielen Dank, dass du im EC-Nordbund Mitarbeitest!
 
 ## Hilfe + Dokumentation
