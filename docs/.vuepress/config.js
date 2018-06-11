@@ -10,7 +10,7 @@ module.exports = {
         nav: [
           {
             text: 'Hilfe',
-            link: '/hilfe/',
+            link: '/hilfe/'
           },
           {
             text: 'API (Für Entwickler)',
@@ -23,5 +23,11 @@ module.exports = {
         ]
       }
     }
-  }
-}
+  },
+  base: './',
+  dest: './electron/src/docs',
+  markdown: {
+    lineNumbers: true
+  },
+  port: 8081
+};

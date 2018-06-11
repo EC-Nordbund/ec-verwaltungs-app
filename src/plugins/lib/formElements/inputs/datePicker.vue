@@ -23,36 +23,49 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
+import {
+  Component,
+  Vue,
+  Prop,
+  Watch,
+  Emit
+} from 'vue-property-decorator';
 
 @Component({})
 export default class DatePicker extends Vue {
-  dialog_open: boolean = false
-  date_input: string = ''
+  dialog_open: boolean = false;
+  date_input: string = '';
 
-  inheritAttrs = false
+  inheritAttrs = false;
 
   @Prop({
     type: String,
     required: false,
     default: ''
   })
-  value!:string 
+  value!: string;
 
-  @Watch('value', { immediate: true})
+  @Watch('value', { immediate: true })
   onValueChange(value: string) {
-    this.date_input = value
+    this.date_input = value;
   }
 
   @Watch('date')
   @Emit('input')
   onDateChange(val: string) {}
 
-  get german():string {
-    if (this.date_input === '' || this.date_input === null || this.date_input === undefined) {
-      return ''
+  get german(): string {
+    if (
+      this.date_input === '' ||
+      this.date_input === null ||
+      this.date_input === undefined
+    ) {
+      return '';
     } else {
-      return this.date_input.split('-').reverse().join('.')
+      return this.date_input
+        .split('-')
+        .reverse()
+        .join('.');
     }
   }
 }

@@ -6,26 +6,32 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
+import {
+  Component,
+  Vue,
+  Prop,
+  Watch,
+  Emit
+} from 'vue-property-decorator';
 
 @Component({})
 export default class checkBox extends Vue {
-  intern_value: boolean = false
+  intern_value: boolean = false;
 
   @Prop({
     type: Boolean,
     required: false,
     default: false
   })
-  value!: boolean
+  value!: boolean;
 
-  @Watch('value', {immediate: true})
+  @Watch('value', { immediate: true })
   onValueChange(value: boolean) {
-    this.intern_value = value
+    this.intern_value = value;
   }
 
   @Watch('intern_value')
   @Emit('input')
-  onInternValueChange(value:boolean) {}
+  onInternValueChange(value: boolean) {}
 }
 </script>

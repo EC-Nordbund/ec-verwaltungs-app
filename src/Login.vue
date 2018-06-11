@@ -8,16 +8,16 @@
           </h1>
         </v-card-title>
         <v-card-text>
-          <v-alert :value="true" type="error">
+          <v-alert :value="wrong" type="error">
             Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.
           </v-alert>
           <v-alert :value="true" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
-          <v-alert :value="true" type="info">
+          <!-- <v-alert :value="true" type="info">
             Du wurdest, da die API neugestartet wurde, automatisch abgemeldet. Bitte melde dich neu an! <br>
             Bitte überprüfe ob deine letzte Aktion gespeichert wurde!
-          </v-alert>
+          </v-alert> -->
           <v-form v-model="valid">
             <v-text-field
               label="Username"
@@ -47,37 +47,69 @@
   </v-app>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
+import settings from '@/plugins/settings';
+import { isElectron } from '@/plugins/electron';
+import {
+  Component,
+  Vue,
+  Prop,
+  Watch,
+  Emit
+} from 'vue-property-decorator';
+import auth from '@/plugins/auth';
 
 @Component({})
 export default class loginForm extends Vue {
-  username: string = ''
-  password: string = ''
-  valid: boolean = false
-  checking: boolean = false
-  getRules(name:string) {
+  username: string = '';
+  password: string = '';
+  valid: boolean = false;
+  checking: boolean = false;
+  wrong: boolean = false;
+  getRules(name: string) {
     return [
-      function (value: string) {
-        return !value ? `Es muss ein ${name} angegeben werden` : true
-      }
-    ]
+      (value: string) =>
+        !value
+          ? `Es muss ein ${name} angegeben werden`
+          : true
+    ];
   }
-  login() { }
+  login() {
+    this.checking = true;
+    if (isElectron) {
+      settings.set('username', this.username);
+    }
+    auth
+      .logIn(this.username, this.password)
+      .then((val: boolean) => {
+        if (val) {
+          this.$router.push('/app');
+          this.checking = false;
+        } else {
+          this.checking = false;
+          this.wrong = true;
+        }
+      });
+  }
+  created() {
+    if (isElectron) {
+      this.username = <any>settings.get('username', '');
+    }
+  }
 }
 </script>
 
 <style scoped>
-  /** Ausrichtung der Card **/
-  .ec_content {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    grid-template-rows: 1fr auto 1fr;
-    grid-template-areas: ". . ." ". center ." ". . .";
-    height: 100%;
-    width: 100%;
-    grid-gap: 10px;
-  }
-  .ec_card {
-    grid-area: center;
-  }
+/** Ausrichtung der Card **/
+.ec_content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: 1fr auto 1fr;
+  grid-template-areas: '. . .' '. center .' '. . .';
+  height: 100%;
+  width: 100%;
+  grid-gap: 10px;
+}
+.ec_card {
+  grid-area: center;
+}
 </style>

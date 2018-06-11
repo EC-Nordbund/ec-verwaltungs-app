@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "ec-verwaltungs-app": {
+      "schemaPath": "schema.graphql",
+      "extensions": {
+        "endpoints": {
+          "default": "https://h2778646.stratoserver.net:4000/graphql"
+        }
+      }
+    }
+  }
+}

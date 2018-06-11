@@ -1,50 +1,66 @@
-import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
-import auth from '@/plugins/auth'
-import { CreateElement } from "vue";
+import auth from '@/plugins/auth';
+import {
+  Emit,
+  Prop,
+  Vue,
+  Watch
+} from 'vue-property-decorator';
+import { CreateElement } from 'vue';
 
+/**
+ * Basis-Klasse für Select Components
+ *
+ * @export
+ * @class baseSelect
+ * @extends {Vue}
+ */
 export default class baseSelect extends Vue {
-  select: number = -1
-  variabels: any
-  query: any
-  queryName!: string
-  data!: Array<any>
-  items: Array<any> = []
+  public select: number = -1;
+  public variabels: any;
+  public query: any;
+  public queryName!: string;
+  public data!: Array<any>;
+  public items: any[] = [];
 
   @Prop({
     type: [Number, String],
     required: false
   })
-  value!: number
+  public value!: number;
 
-  mapper!: (item:any) => {
-    id: number
-    beschreibung: string
-  }
+  public mapper: (
+    item: any
+  ) => {
+    id: number;
+    beschreibung: string;
+  } = a => a;
 
   @Watch('select')
   @Emit('input')
-  onSelectChange(value:number) {}
+  onSelectChange(value: number) {}
 
-  @Watch('value', {immediate: true})
-  onValueChange(value:number) {
-    this.select = value
+  @Watch('value', { immediate: true })
+  onValueChange(value: number) {
+    this.select = value;
   }
 
   created() {
-    this.loadData()
+    this.loadData();
   }
 
   loadData() {
-    (<any>this.$apollo).watchQuery({
-      query: this.query,
-      variables: this.variabels,
-      fetchPolicy: 'cache-and-network',
-      pollInterval: auth.pollInterval
-    }).subscribe((val:any) => {
-      if (val.data) {
-        this.data = val.data[this.queryName]
-        this.items = this.data.map(this.mapper)
-      }
-    })
+    (this.$apollo as any)
+      .watchQuery({
+        query: this.query,
+        variables: this.variabels,
+        fetchPolicy: 'cache-and-network',
+        pollInterval: auth.pollInterval
+      })
+      .subscribe((val: any) => {
+        if (val.data) {
+          this.data = val.data[this.queryName];
+          this.items = this.data.map(this.mapper);
+        }
+      });
   }
 }

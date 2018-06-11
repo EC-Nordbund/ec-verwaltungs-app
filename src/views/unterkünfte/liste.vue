@@ -5,28 +5,30 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
+import reloaderBase from '@/baseComponents/reloader';
+import gql from 'graphql-tag';
 
-import auth from '@/plugins/auth'
+import auth from '@/plugins/auth';
 @Component({})
 export default class UnterkunftListe extends reloaderBase {
-  data: {unterkuenfte: Array<any>} = {
+  data: { unterkuenfte: Array<any> } = {
     unterkuenfte: []
-  }
+  };
   tableConfig = [
-      { name: 'bezeichnung', label: 'Bezeichnung' },
-      { name: 'plz', label: 'PLZ' },
-      { name: 'ort', label: 'Ort' },
-      { name: 'land', label: 'Land' }
-    ]
-  open(item:any) {
-    this.$router.push(`/app/unterkünfte/${item.unterkunftID}`);
+    { name: 'bezeichnung', label: 'Bezeichnung' },
+    { name: 'plz', label: 'PLZ' },
+    { name: 'ort', label: 'Ort' },
+    { name: 'land', label: 'Land' }
+  ];
+  open(item: any) {
+    this.$router.push(
+      `/app/unterkünfte/${item.unterkunftID}`
+    );
   }
 
-  created () {
+  created() {
     this.query = gql`
-      query($authToken: String!){
+      query($authToken: String!) {
         unterkuenfte(authToken: $authToken) {
           unterkunftID
           bezeichnung
@@ -35,11 +37,11 @@ export default class UnterkunftListe extends reloaderBase {
           land
         }
       }
-    `
+    `;
     this.variabels = {
       authToken: auth.authToken
-    }
-    super.created()
+    };
+    super.created();
   }
 }
 </script>

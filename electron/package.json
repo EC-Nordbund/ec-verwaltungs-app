@@ -1,13 +1,13 @@
 {
   "name": "ec-verwaltungs-app",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "EC-Verwaltungs Application",
   "keywords": [],
   "homepage": "https://ec-nordbund.de",
   "bugs": {
     "url": "https://github.com/ecnordbund/ec-verwaltungs-app/issues"
   },
-  "license": null,
+  "license": "GPL-3.0-or-later",
   "author": {
     "name": "EC-Nordbund",
     "email": "info@ec-nordbund.de",
@@ -41,7 +41,18 @@
   },
   "config": {
     "forge": {
-      "packagerConfig": {},
+      "packagerConfig": {
+        "arch": "ia32",
+        "asar": true,
+        "executableName": "EC-Verwaltungs-App",
+        "appCopyright": "(c) EC-Nordbund 2017-2018",
+        "name": "EC-Verwaltungs-App",
+        "overwrite": true,
+        "win32metadata": {
+          "CompanyName": "EC-Nordbund",
+          "FileDescription": "Applikation zur Verwaltung des EC-Nordbundes"
+        }
+      },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
@@ -49,24 +60,25 @@
             "win32"
           ],
           "config": {
-            "name": "electron"
+            "name": "EC-Verwaltungs-App"
           }
         },
         {
           "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin",
+            "linux",
+            "win32"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-dmg",
           "platforms": [
             "darwin"
           ]
         },
         {
           "name": "@electron-forge/maker-deb",
-          "platforms": [
-            "linux"
-          ],
-          "config": {}
-        },
-        {
-          "name": "@electron-forge/maker-rpm",
           "platforms": [
             "linux"
           ],
@@ -88,17 +100,20 @@
     }
   },
   "dependencies": {
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-settings": "^3.2.0",
+    "electron-squirrel-startup": "^1.0.0",
+    "node-fetch": "^2.1.2"
   },
   "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.1",
-    "@electron-forge/maker-deb": "^6.0.0-beta.1",
-    "@electron-forge/maker-rpm": "^6.0.0-beta.1",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.1",
-    "@electron-forge/maker-zip": "^6.0.0-beta.1",
-    "@electron-forge/publisher-github": "^6.0.0-beta.1",
+    "@electron-forge/cli": "^6.0.0-beta.17",
+    "@electron-forge/maker-deb": "^6.0.0-beta.17",
+    "@electron-forge/maker-dmg": "^6.0.0-beta.17",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.17",
+    "@electron-forge/maker-zip": "^6.0.0-beta.17",
+    "@electron-forge/publisher-github": "^6.0.0-beta.17",
     "electron": "2.0.2",
     "electron-debug": "^2.0.0",
+    "electron-devtools-installer": "^2.2.4",
     "electron-forge": "^5.2.2"
   }
 }

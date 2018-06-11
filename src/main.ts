@@ -1,29 +1,36 @@
-// Using Plugins
-import '@/plugins/auth.ts'
-import '@/plugins/design/vuetify.ts'
-import '@/plugins/design/theme-directives'
-import '@/plugins/lib/componentLib.ts'
-import '@/plugins/lib_extension/componentLib_extension.ts'
-import '@/plugins/qrCode'
-import '@/plugins/widgets/index.ts'
+import apolloProvider from '@/plugins/apollo';
+import '@/plugins/auth.ts';
+import '@/plugins/design/theme-directives.ts';
+import '@/plugins/design/vuetify.ts';
+import { isElectron, isProduction } from '@/plugins/electron';
+import '@/plugins/lib_extension/componentLib_extension.ts';
+import '@/plugins/lib/componentLib.ts';
+import '@/plugins/qrCode';
+import '@/plugins/router/routeHandler.ts';
+import router from '@/plugins/router/router';
+import '@/plugins/updateChecker.ts';
+import '@/plugins/widgets/index.ts';
+import '@/plugins/widgets/widgets/losungen.vue';
+import '@/plugins/widgets/widgets/message.vue';
+import Vue from 'vue';
 
-// Import Provided Zeug
-import apolloProvider from '@/plugins/apollo'
-import router from '@/plugins/router/router'
+// dev-Electron-Modules
+if (isElectron && !isProduction) {
+  eval(
+    "require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))"
+  )
+}
+if (isElectron) {
+  eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")
+  eval("window.fetch = require('node-fetch')")
+}
 
-// Import Vue
-import Vue from 'vue'
-import RouteComponent from '@/plugins/router/routes/router.vue'
+// set Config
+Vue.config.productionTip = isProduction
 
-// Dev-Electron-Modules
-try {eval("if (process && process.env && process.env.NODE_ENV === 'development') {require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))}")} catch (error) {}
-
-// Set Config
-Vue.config.productionTip = false
-
-// Create Vue Instance
+// create Vue Instance
 new Vue({
-  router,
-  provide: apolloProvider.provide(),
-  render: h => h(RouteComponent)
+  provide: apolloProvider().provide(),
+  render: h => h('router-view'),
+  router
 }).$mount('#app')

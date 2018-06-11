@@ -1,8 +1,4 @@
-<template>
-  <ec-form-radio :items="items" v-bind="$attrs" v-on="$listeners"/>
-</template>
-
-<script lang="ts">
+import {CreateElement} from 'vue'
 import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
@@ -15,5 +11,22 @@ export default class geschlechtRadio extends Vue {
     {label: "Leiter", value: 5},
     {label: "Hauptleiter", value: 6}
   ]
+
+  render(h: CreateElement) {
+    return h(
+      'ec-form-radio',
+      {
+        props: {
+          ...this.$attrs,
+          items: this.items
+        },
+        attrs: {
+          ...this.$attrs
+        },
+        on: { 
+          ...this.$listeners
+        }
+      }
+    )
+  }
 } 
-</script>

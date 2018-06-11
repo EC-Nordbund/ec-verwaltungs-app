@@ -8,7 +8,7 @@
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
-      <v-btn icon v-black @click="dark = !dark">
+      <v-btn icon v-black @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
     </v-toolbar>
@@ -41,16 +41,13 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content>
-      <v-container fluid>
-        <router-view/>
-      </v-container>
+    <v-content style="display: grid; padding: 10px; margin: 64px 0;" class="ec-content">
+      <router-view/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
       <v-progress-circular indeterminate color="accent" v-if="loading"/>
       <span v-white>
-        Lizenz gültig bis 
-        für 
+        {{auth.personBeschreibung}}
       </span>
       <v-spacer/>
         <span v-white>Version: {{ version }}</span>
@@ -67,20 +64,40 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
 import auth from '@/plugins/auth';
-import nav from '@/plugins/config/nav.config'
+import nav from '@/plugins/config/nav.config';
+import { isElectron } from '@/plugins/electron';
+import settings from '@/plugins/settings';
+import version from '@/plugins/version/version';
+
+import { Component, Vue } from 'vue-property-decorator';
 
 @Component({})
 export default class App extends Vue {
-  loading: boolean = true
-  drawer: boolean = false
-  version: string = "0.1.0 - alpha"
-  dark: boolean = false
-  nav = nav
-  auth = auth
-  click(route:string) {
-    this.$router.push(route)
+  loading: boolean = true;
+  drawer: boolean = false;
+  version: string = version;
+  dark: boolean = false;
+  nav = nav;
+  auth = auth;
+  click(route: string) {
+    this.$router.push(route);
+  }
+  created() {
+    if (isElectron) {
+      this.dark = <any>settings.get('dark', false);
+    }
+  }
+  darkChange() {
+    this.dark = !this.dark;
+    if (isElectron) {
+      settings.set('dark', this.dark);
+    }
   }
 }
 </script>
+<style scoped>
+.ec-content {
+  display: grid;
+}
+</style>

@@ -27,8 +27,8 @@ export default [
         action: 'email',
         route: '/app/verteiler',
         userGroups: '*'
-      },
-    ],
+      }
+    ]
   },
   {
     title: 'Veranstaltungen',
@@ -52,8 +52,8 @@ export default [
         action: 'home',
         route: '/app/anmeldung',
         userGroups: '*'
-      },
-    ],
+      }
+    ]
   },
   {
     title: 'Drucken',
@@ -78,5 +78,5 @@ export default [
     action: 'https',
     route: '/app/impressum',
     userGroups: '*'
-  },
-]
+  }
+];

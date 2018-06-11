@@ -1,15 +1,22 @@
-<template>
-  <v-switch
-    v-model="intern_value"
-    v-bind="$attrs"
-  />
-</template>
-
-<script lang="ts">
+import { CreateElement } from 'vue';
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
 @Component({})
 export default class switchEl extends Vue {
+  render(h: CreateElement) {
+    return h('v-switch', {
+      props: {
+        ...this.$attrs,
+        value: this.intern_value
+      },
+      on: {
+        change: (val: boolean) => {
+          this.intern_value = val;
+        }
+      }
+    });
+  }
+
   intern_value: boolean = false
 
   @Prop({
@@ -28,4 +35,3 @@ export default class switchEl extends Vue {
   @Emit('input')
   onInternValueChange(value:boolean) {}
 }
-</script>

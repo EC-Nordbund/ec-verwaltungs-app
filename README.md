@@ -8,11 +8,13 @@ Nach dem Clonen des Projekts sollte als erstes
 ```
 ausgeführt werden.
 
-Zum starten der App in zwei Terminals die folgenden Befhele eingeben.
+Zum starten der App in zwei Terminals die folgenden Befehle eingeben.
 
 ```sh
-  yarn start
   yarn serve
+  # Und wenn der Initale Compile-Vorgang fertig kann Electron mit
+  yarn start
+  # gestartet werden
 ```
 
 ## MainProzess
