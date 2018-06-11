@@ -1,12 +1,12 @@
+import formElement from '@/plugins/lib/formElements/formDialog/element.ts';
 import { CreateElement } from 'vue';
 import {
   Component,
-  Vue,
+  Emit,
   Prop,
-  Watch,
-  Emit
-} from 'vue-property-decorator';
-import formElement from '@/plugins/lib/formElements/formDialog/element.ts';
+  Vue,
+  Watch
+  } from 'vue-property-decorator';
 
 @Component({
   model: {
@@ -63,7 +63,7 @@ export default class formDialog extends Vue {
                 ref: 'form',
                 on: {
                   input: (val: boolean) => {
-                    this.valid = val;
+                    this.valid = val
                   }
                 }
               },
@@ -79,10 +79,10 @@ export default class formDialog extends Vue {
                     },
                     on: {
                       input: (val: any) => {
-                        this.wert[el.name] = val;
+                        this.wert[el.name] = val
                       }
                     }
-                  });
+                  })
                 })
               ]
             )
@@ -153,40 +153,40 @@ export default class formDialog extends Vue {
           ])
         ])
       ]
-    );
+    )
   }
 
-  valid = false;
-  open = false;
-  wert: any = {};
+  valid = false
+  open = false
+  wert: any = {}
 
   @Prop({ type: Boolean, required: true })
-  show!: boolean;
+  show!: boolean
 
   @Prop({ type: Array, required: true })
-  fieldConfig!: Array<any>;
+  fieldConfig!: Array<any>
 
   @Prop({ type: Boolean, required: false, default: false })
-  deleteBtn!: boolean;
+  deleteBtn!: boolean
 
   @Prop({ type: String, required: false, default: '' })
-  title!: string;
+  title!: string
 
   @Prop({
     type: Object,
     required: false,
     default: () => ({})
   })
-  value!: any;
+  value!: any
 
   @Watch('show', { immediate: true })
   onShowChange(value: boolean) {
-    this.open = value;
+    this.open = value
   }
 
   @Watch('value', { immediate: true })
   onValueChage(value: any) {
-    this.wert = value;
+    this.wert = value
   }
 
   @Watch('open')
@@ -195,27 +195,27 @@ export default class formDialog extends Vue {
 
   @Emit('cancel')
   cancel() {
-    this.open = false;
-    setTimeout(this.reset, 500);
+    this.open = false
+    setTimeout(this.reset, 500)
   }
 
   delete() {
-    this.open = false;
-    this.$emit('delete', this.wert);
-    setTimeout(this.reset, 500);
+    this.open = false
+    this.$emit('delete', this.wert)
+    setTimeout(this.reset, 500)
   }
 
   save() {
-    this.open = false;
-    this.$emit('save', this.wert);
-    setTimeout(this.reset, 500);
+    this.open = false
+    this.$emit('save', this.wert)
+    setTimeout(this.reset, 500)
   }
   reset() {
     Object.keys(this.wert).forEach(v => {
-      this.wert[v] = '';
-    });
+      this.wert[v] = ''
+    })
     if (this.$refs && this.$refs.form) {
-      (<any>this.$refs.form).reset();
+      ;(<any>this.$refs.form).reset()
     }
   }
 

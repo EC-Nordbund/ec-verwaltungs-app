@@ -10,6 +10,8 @@ import '@/plugins/router/routeHandler.ts';
 import router from '@/plugins/router/router';
 import '@/plugins/updateChecker.ts';
 import '@/plugins/widgets/index.ts';
+import '@/plugins/widgets/widgets/losungen.vue';
+import '@/plugins/widgets/widgets/message.vue';
 import Vue from 'vue';
 
 // dev-Electron-Modules
@@ -23,11 +25,6 @@ if (isElectron) {
   eval("window.fetch = require('node-fetch')")
 }
 
-// using Plugins
-
-// import Provided Zeug
-
-// import Vue
 // set Config
 Vue.config.productionTip = isProduction
 
