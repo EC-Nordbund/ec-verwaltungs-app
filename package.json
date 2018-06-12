@@ -47,7 +47,7 @@
     "node-fetch": "^2.1.2",
     "source-map-support": "^0.5.4",
     "vue": "^2.5.16",
-    "vue-apollo": "^3.0.0-beta.16",
+    "vue-apollo": "https://github.com/baohouse/vue-apollo",
     "vue-class-component": "^6.0.0",
     "vue-property-decorator": "^6.0.0",
     "vue-qriously": "^1.1.1",
