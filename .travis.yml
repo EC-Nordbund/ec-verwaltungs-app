@@ -40,7 +40,8 @@ script:
 - yarn build
 - cd electron
 - if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then yarn run make; fi
-- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then yarn run publish; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then if [ "$TRAVIS_BRANCH" = "master" ]; yarn run publish; fi; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then if [ "$TRAVIS_BRANCH" != "master" ]; yarn make; fi; fi
 
 branches:
   only:
