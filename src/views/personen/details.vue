@@ -284,7 +284,7 @@ export default class PersonenDetails extends reloaderBase {
     this.editPersonStamm_show = true
   }
   editPersonStamm_value = {}
-  editPersonStamm_save(value) {
+  editPersonStamm_save(value: any) {
     console.log(value)
     // TODO:
   }
@@ -332,7 +332,8 @@ export default class PersonenDetails extends reloaderBase {
       name: 'geschlecht',
       required: true,
       rules: [
-        (v: string) =>!v ? 'Du musst ein Geschlecht angeben!' : true        
+        (v: string) =>
+          !v ? 'Du musst ein Geschlecht angeben!' : true
       ],
       componentName: 'ec-radio-geschlecht'
     }
