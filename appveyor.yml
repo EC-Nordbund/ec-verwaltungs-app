@@ -28,7 +28,7 @@ install:
 build_script:
   - yarn build
   - cd electron
-  - IF "%APPVEYOR_PULL_REQUEST_NUMBER%"="" yarn run publish
+  - IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" yarn run publish
   - IF "%APPVEYOR_PULL_REQUEST_NUMBER%"!="" yarn run make
 
 test: off
