@@ -13,7 +13,7 @@
       </ec-headline>
       <v-spacer/>
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
-      <ec-button-icon @click="editPersonStamm_show = true"/>
+      <ec-button-icon @click="editPersonStamm_open"/>
       <v-tabs v-model="tabs" fixed-tabs slot="extension">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
@@ -250,6 +250,7 @@
     <!-- EDIT PersonStamm -->
     <ec-form
       title="Personenstamm editieren"
+      :value="editPersonStamm_value"
       v-model="editPersonStamm_show"
       @save="editPersonStamm_save"
       :fieldConfig="editPersonStamm_config"
@@ -257,21 +258,36 @@
   </div>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron';
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import gql from 'graphql-tag';
+import electron, { isElectron } from '@/plugins/electron'
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import gql from 'graphql-tag'
 
-import auth from '@/plugins/auth';
+import auth from '@/plugins/auth'
 
 @Component({})
 export default class PersonenDetails extends reloaderBase {
-  isElectron: boolean = isElectron;
+  isElectron: boolean = isElectron
   data: { person: any } = {
     person: {}
-  };
-  editPersonStamm_show = false;
-  editPersonStamm_save() {}
+  }
+  editPersonStamm_show = false
+  editPersonStamm_open() {
+    this.editPersonStamm_value = {}
+    this.editPersonStamm_value = {
+      vorname: this.data.person.vorname,
+      nachname: this.data.person.nachname,
+      gebDat: this.data.person.gebDat.input,
+      geschlecht: this.data.person.geschlecht
+    }
+    console.log(this.editPersonStamm_value)
+    this.editPersonStamm_show = true
+  }
+  editPersonStamm_value = {}
+  editPersonStamm_save(value: any) {
+    console.log(value)
+    // TODO:
+  }
   editPersonStamm_config = [
     {
       label: 'Vorname',
@@ -321,10 +337,10 @@ export default class PersonenDetails extends reloaderBase {
       ],
       componentName: 'ec-radio-geschlecht'
     }
-  ];
-  auskunftsRechtContent = {};
-  auskunftsRecht_show = false;
-  addVerteiler_show = false;
+  ]
+  auskunftsRechtContent = {}
+  auskunftsRecht_show = false
+  addVerteiler_show = false
   addVerteiler_config = [
     {
       name: 'verteiler',
@@ -333,14 +349,14 @@ export default class PersonenDetails extends reloaderBase {
     },
     {
       name: 'type',
-      label: 'Type'
-      // componentName: 'ec-select-type',
+      label: 'Type',
+      componentName: 'ec-radio-type'
     }
-  ];
-  editVerteiler_show = false;
-  editVerteiler_value = {};
-  addAK_show = false;
-  editAK_show = false;
+  ]
+  editVerteiler_show = false
+  editVerteiler_value = {}
+  addAK_show = false
+  editAK_show = false
   addAK_config = [
     {
       name: 'ak',
@@ -371,7 +387,7 @@ export default class PersonenDetails extends reloaderBase {
       label: 'Leiter',
       componentName: 'ec-form-checkbox'
     }
-  ];
+  ]
   editAK_config = [
     {
       name: 'ak',
@@ -408,15 +424,15 @@ export default class PersonenDetails extends reloaderBase {
       label: 'Leiter',
       componentName: 'ec-form-checkbox'
     }
-  ];
-  editAK_value = {};
-  editTelefon_show = false;
-  editEmail_show = false;
-  editAdresse_show = false;
-  editTelefon_value = {};
-  editEmail_value = {};
-  editAdresse_value = {};
-  addTelefon_show = false;
+  ]
+  editAK_value = {}
+  editTelefon_show = false
+  editEmail_show = false
+  editAdresse_show = false
+  editTelefon_value = {}
+  editEmail_value = {}
+  editAdresse_value = {}
+  addTelefon_show = false
   addTelefon_config = [
     {
       name: 'telefon',
@@ -434,8 +450,8 @@ export default class PersonenDetails extends reloaderBase {
             : true
       ]
     }
-  ];
-  addEmail_show = false;
+  ]
+  addEmail_show = false
   addEmail_config = [
     {
       name: 'email',
@@ -453,8 +469,8 @@ export default class PersonenDetails extends reloaderBase {
             : true
       ]
     }
-  ];
-  addAdresse_show = false;
+  ]
+  addAdresse_show = false
   addAdresse_config = [
     {
       name: 'strasse',
@@ -500,10 +516,10 @@ export default class PersonenDetails extends reloaderBase {
             : true
       ]
     }
-  ];
-  tabs = null;
+  ]
+  tabs = null
   auskunftsRecht() {
-    (<any>this.$apollo)
+    ;(<any>this.$apollo)
       .getClient()
       .query({
         query: gql`
@@ -624,14 +640,14 @@ export default class PersonenDetails extends reloaderBase {
       })
       .then((v: any) => v.data.person)
       .then((v: any) => {
-        const { clipboard, remote } = electron;
-        clipboard.writeText(JSON.stringify(v));
+        const { clipboard, remote } = electron
+        clipboard.writeText(JSON.stringify(v))
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:
             'Die Daten wurden in den Zwischenspeicher zwischengespeichert.'
-        });
-      });
+        })
+      })
   }
   editVerteiler_save(value: any) {
     this.$apollo
@@ -661,16 +677,16 @@ export default class PersonenDetails extends reloaderBase {
           verteilerID: value.verteiler
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editVerteiler_open(item: any) {
-    this.editVerteiler_value = {};
+    this.editVerteiler_value = {}
     this.editVerteiler_value = {
       verteilerPersonenID: item.verteilerPersonenID,
       verteiler: item.verteiler.verteilerID,
       type: item.type
-    };
-    this.editVerteiler_show = true;
+    }
+    this.editVerteiler_show = true
   }
   editVerteiler_delete(value: any) {
     this.$apollo
@@ -692,7 +708,7 @@ export default class PersonenDetails extends reloaderBase {
           type: value.type
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   addVerteiler_save(value: any) {
     this.$apollo
@@ -716,7 +732,7 @@ export default class PersonenDetails extends reloaderBase {
           verteilerID: value.verteiler
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editAK_save(value: any) {
     this.$apollo
@@ -753,18 +769,18 @@ export default class PersonenDetails extends reloaderBase {
             value.leiter === null ? false : value.leiter
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editAK_open(item: any) {
-    this.editAK_value = {};
+    this.editAK_value = {}
     this.editAK_value = {
       personAKID: item.personAKID,
       ak: item.ak.akID,
       eintritt: item.eintritt.input,
       austritt: (item.austritt || {}).input,
       leiter: item.leiter
-    };
-    this.editAK_show = true;
+    }
+    this.editAK_show = true
   }
   addAK_save(value: any) {
     this.$apollo
@@ -795,7 +811,7 @@ export default class PersonenDetails extends reloaderBase {
             value.leiter === null ? false : value.leiter
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   addAdresse_save(value: any) {
     this.$apollo
@@ -825,7 +841,7 @@ export default class PersonenDetails extends reloaderBase {
           ort: value.ort
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   addTelefon_save(value: any) {
     this.$apollo
@@ -849,7 +865,7 @@ export default class PersonenDetails extends reloaderBase {
           telefon: value.telefon
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   addEmail_save(value: any) {
     this.$apollo
@@ -873,7 +889,7 @@ export default class PersonenDetails extends reloaderBase {
           email: value.email
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editAdresse_save(value: any) {
     this.$apollo
@@ -906,7 +922,7 @@ export default class PersonenDetails extends reloaderBase {
           ort: value.ort
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editTelefon_save(value: any) {
     this.$apollo
@@ -933,7 +949,7 @@ export default class PersonenDetails extends reloaderBase {
           telefon: value.telefon
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editEmail_save(value: any) {
     this.$apollo
@@ -960,49 +976,49 @@ export default class PersonenDetails extends reloaderBase {
           email: value.email
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   editAdresse_open(item: {
-    adressID: number;
-    strasse: string;
-    plz: string;
-    ort: string;
+    adressID: number
+    strasse: string
+    plz: string
+    ort: string
   }) {
-    console.log(item);
-    this.editAdresse_value = {};
+    console.log(item)
+    this.editAdresse_value = {}
     this.editAdresse_value = {
       adressID: item.adressID,
       strasse: item.strasse,
       plz: item.plz,
       ort: item.ort
-    };
-    console.log(this.editAdresse_value);
-    this.editAdresse_show = true;
+    }
+    console.log(this.editAdresse_value)
+    this.editAdresse_show = true
   }
   editTelefon_open(item: {
-    telefonID: number;
-    telefon: string;
+    telefonID: number
+    telefon: string
   }) {
-    this.editTelefon_value = {};
+    this.editTelefon_value = {}
     this.editTelefon_value = {
       telefonID: item.telefonID,
       telefon: item.telefon
-    };
-    this.editTelefon_show = true;
+    }
+    this.editTelefon_show = true
   }
   editEmail_open(item: { emailID: number; email: string }) {
-    this.editEmail_value = {};
+    this.editEmail_value = {}
     this.editEmail_value = {
       emailID: item.emailID,
       email: item.email
-    };
-    this.editEmail_show = true;
+    }
+    this.editEmail_show = true
   }
   created() {
     this.variabels = {
       authToken: auth.authToken,
       personID: this.$route.params.id
-    };
+    }
     this.query = gql`
       query($authToken: String!, $personID: Int!) {
         person(authToken: $authToken, personID: $personID) {
@@ -1086,8 +1102,8 @@ export default class PersonenDetails extends reloaderBase {
           }
         }
       }
-    `;
-    super.created();
+    `
+    super.created()
   }
 }
 </script>
