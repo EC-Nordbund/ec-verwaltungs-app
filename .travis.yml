@@ -39,7 +39,8 @@ install:
 script:
 - yarn build
 - cd electron
-- yarn run publish
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash yarn run make; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then yarn run publish; fi
 
 branches:
   only:
