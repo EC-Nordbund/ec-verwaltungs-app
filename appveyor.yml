@@ -3,7 +3,6 @@ version: '{build}'
 branches:
   only:
     - master
-    - dev
 
 image: Visual Studio 2017
 platform:
@@ -28,6 +27,6 @@ install:
 build_script:
   - yarn build
   - cd electron
-  - IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (IF "%APPVEYOR_REPO_BRANCH%"=="master" (yarn run publish) ELSE (yarn make)) ELSE (yarn make)
+  - IF "%APPVEYOR_PULL_REQUEST_NUMBER%"=="" (yarn run publish) ELSE (yarn run make)
 
 test: off
