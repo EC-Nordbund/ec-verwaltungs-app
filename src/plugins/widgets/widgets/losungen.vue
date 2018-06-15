@@ -1,20 +1,28 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <h2 v-font style="text-align: center" v-primary>Losung</h2>
-    </v-card-title>
-    <v-card-text style="display: grid; grid-template-rows: 1fr 1fr 1fr">
-      <div>
-        <span v-primary v-html="losung[0]" :style="{fontSize: '16px'}"/><br>
-        <b class="right" v-html="losung[1]"/>
-      </div>
-      <div/>
-      <div>
-        <span v-primary v-html="losung[2]" :style="{fontSize: '16px'}"/><br>
-        <b class="right" v-html="losung[3]"/>
-      </div>
-    </v-card-text>
-  </v-card>
+  <div>
+    <v-card class="elevation-10">
+      <v-card-title>
+        <h1 v-font v-primary :style="{ textAlign: 'center' }">
+          Losung von Heute
+        </h1>
+      </v-card-title>
+      <v-card-text v-if="losung.length > 0" :style="{ display: 'grid', gridTemplateRows: 'auto auto', gridGap: '20px' }">
+        <div>
+          <span v-font v-primary v-html="losung[0]" :style="{ fontSize: '16px' }" />
+          <br/>
+          <b v-font v-html="losung[1]" class="right"/>
+        </div>
+        <div>
+           <span v-font v-primary v-html="losung[2]" :style="{ fontSize: '16px' }"/>
+          <br/>
+          <b v-font v-html="losung[3]" class="right"/>
+        </div>
+      </v-card-text>
+      <v-card-text v-if="losung.length === 0" :style="{display: 'grid', gridTemplateColumns: 'auto 1fr', gridGap: '10px'}">
+        <v-progress-circular indeterminate color="primary"/><div v-font v-primary :style="{ fontSize: '22px' }">Loading...</div>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 <script lang="ts">
 import {
@@ -27,28 +35,24 @@ import { Component, Vue } from 'vue-property-decorator'
 class losungen extends widgetComponent {
   losung: Array<string> = []
 
-  created() {
-    window
-      .fetch('http://www.losungen.de/heute.php')
-      .then((v: any) => v.text())
-      .then((v: any) => v.split('tr'))
-      .then((v: any) => {
-        return [
-          v[9].split('<b>')[1].split('</b>')[0],
-          v[9]
-            .split('<b>')[1]
-            .split('<br>')[1]
-            .split('</font>')[0],
-          v[13].split('<b>')[1].split('</b>')[0],
-          v[13]
-            .split('<b>')[1]
-            .split('<br>')[1]
-            .split('</font>')[0]
-        ]
-      })
-      .then((v: any) => {
-        this.losung = v
-      })
+  async created() {
+    const res = await window.fetch(
+      'https://www.losungen.de/heute.php'
+    )
+    const html = await res.text()
+    const tableRows = html.split('tr')
+    this.losung = [
+      tableRows[9].split('<b>')[1].split('</b>')[0],
+      tableRows[9]
+        .split('<b>')[1]
+        .split('<br>')[1]
+        .split('</font>')[0],
+      tableRows[13].split('<b>')[1].split('</b>')[0],
+      tableRows[13]
+        .split('<b>')[1]
+        .split('<br>')[1]
+        .split('</font>')[0]
+    ]
   }
 }
 

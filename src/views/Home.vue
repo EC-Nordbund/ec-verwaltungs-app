@@ -19,7 +19,9 @@ import { IConf } from '@/plugins/widgets/types.ts'
 
 @Component({})
 export default class Home extends Vue {
+  window = window
   public edit: boolean = false
+  public widgetSettings_open: boolean = false
   public config: Array<IConf> = [
     {
       id: 1,
@@ -27,7 +29,7 @@ export default class Home extends Vue {
       height: 5,
       width: 5,
       areas:
-        "'danke danke danke danke danke' '. . losung . .' '. . losung . .' '. . . . .' '. . . . .'",
+        "'danke danke danke danke danke' 'losung losung . . .' 'losung losung . . .' 'losung losung . . .' 'losung losung . . .'",
       elements: [
         {
           id: 1,
@@ -35,7 +37,8 @@ export default class Home extends Vue {
           area: 'danke',
           widgetName: 'msg',
           config: {
-            msg: 'Vielen Dank für deinen Einsatz für den EC-Nordbund.'
+            msg:
+              'Vielen Dank für deinen Einsatz für den EC-Nordbund.'
           }
         },
         {
