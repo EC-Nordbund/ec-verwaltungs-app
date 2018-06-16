@@ -1,7 +1,7 @@
 <template>
   <v-app app :dark="dark">
-    <v-toolbar fixed app :clipped-left="true" color="primary">
-      <v-toolbar-side-icon @click="drawer = !drawer" v-white/>
+    <v-toolbar fixed app clipped-left color="primary">
+      <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
       <v-spacer/>
       <v-avatar size="30px">
         <img src="./assets/logo.png">
@@ -12,7 +12,7 @@
         <v-icon>invert_colors</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-navigation-drawer fixed :clipped="true" v-model="drawer" app>
+    <v-navigation-drawer fixed clipped v-model="drawer" app>
       <v-list>
         <template v-for="item in nav" v-if="item.userGroups === '*' || item.userGroups.indexOf(auth._userGroupBezeichnung) !== -1">
           <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.action" no-action>
@@ -41,7 +41,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content style="display: grid; padding: 10px; margin: 64px 0;" class="ec-content">
+    <v-content style="display: grid; padding: 10px; margin: 64px 0;">
       <router-view/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
@@ -60,6 +60,18 @@
           T. Krause + S. Krüger
         </span>
     </v-footer>
+    <v-dialog v-model="soonLogOut" width="500px">
+      <v-card>
+        <v-card-title>
+          <h1 v-font v-primary>
+            Automatischer LogOut...
+          </h1>
+        </v-card-title>
+        <v-card-text v-accent :style="{fontSize: '18px'}">
+          <b>Achtung!</b> Du wirst automatisch in {{sec}} Sekunden abgemeldet...<br/> Um das zu verhindern musst du nur irgendwoanders hnklicken.
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
@@ -70,16 +82,24 @@ import { isElectron } from '@/plugins/electron'
 import settings from '@/plugins/settings'
 import version from '@/plugins/version/version'
 
-import { Component, Vue } from 'vue-property-decorator'
+import {
+  Component,
+  Vue,
+  Watch
+} from 'vue-property-decorator'
+import event from '@/plugins/eventbus'
 
 @Component({})
 export default class App extends Vue {
-  loading: boolean = true
+  sec: number = 0
+  loading: boolean = false
   drawer: boolean = false
   version: string = version
   dark: boolean = false
+  soonLogOut: boolean = false
   nav = nav
   auth = auth
+  event = event
   click(route: string) {
     this.$router.push(route)
     this.drawer = false
@@ -88,6 +108,19 @@ export default class App extends Vue {
     if (isElectron) {
       this.dark = <any>settings.get('dark', false)
     }
+    this.event.on('showLoading', () => {
+      this.loading = true
+    })
+    this.event.on('hideLoading', () => {
+      this.loading = false
+    })
+    this.event.on('soonLogout', () => {
+      this.soonLogOut = true
+      this.sec = 5 * 60
+    })
+    setInterval(() => {
+      this.sec--
+    }, 1000)
   }
   darkChange() {
     this.dark = !this.dark
@@ -95,10 +128,11 @@ export default class App extends Vue {
       settings.set('dark', this.dark)
     }
   }
+  @Watch('soonLogOut')
+  onSoonLogOutChange(val: boolean) {
+    if (!val) {
+      this.auth.extend()
+    }
+  }
 }
 </script>
-<style scoped>
-.ec-content {
-  display: grid;
-}
-</style>

@@ -3,6 +3,8 @@ import { Vue } from 'vue-property-decorator'
 import { ObservableQuery } from 'apollo-client'
 import { DocumentNode } from 'graphql'
 
+import event from '@/plugins/eventbus'
+
 /**
  * Klasse für Components (Views) with qraphqlconnection... (Including Watchquerry)
  *
@@ -69,6 +71,7 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public loadData() {
+    event.emit('showLoading')
     this._query = (this.$apollo as any).watchQuery({
       query: this.query,
       variables: this.variabels,
@@ -79,6 +82,7 @@ export default abstract class reloader extends Vue {
       this._query.subscribe((val: any) => {
         if (val.data) {
           this.data = val.data
+          event.emit('hideLoading')
         }
       })
     }
@@ -90,8 +94,10 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public refetch() {
+    event.emit('showLoading')
     this._query.refetch().then((val: any) => {
       this.data = val.data
+      event.emit('hideLoading')
     })
   }
 }

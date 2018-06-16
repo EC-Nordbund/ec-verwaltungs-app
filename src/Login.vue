@@ -11,7 +11,7 @@
           <v-alert :value="wrong" type="error">
             Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.
           </v-alert>
-          <v-alert :value="true" type="info">
+          <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
           <!-- <v-alert :value="true" type="info">
@@ -65,6 +65,7 @@ export default class loginForm extends Vue {
   valid: boolean = false
   checking: boolean = false
   wrong: boolean = false
+  auth = auth
   getRules(name: string) {
     return [
       (value: string) =>
