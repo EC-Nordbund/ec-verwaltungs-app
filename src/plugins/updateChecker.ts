@@ -1,25 +1,36 @@
 import version, {
   isPrerelease
 } from '@/plugins/version/version'
-import {
+
+import electron, {
   isElectron,
   isProduction
 } from '@/plugins/electron'
 
 if (isElectron && isProduction) {
-  let fetch = eval("require('node-fetch')")
-  fetch(
-    'https://api.github.com/repos/ecnordbund/ec-verwaltungs-app/releases'
-  )
-    .then((v: any) => v.json())
-    .then((v: Array<any>) =>
-      v.filter(v => v.prerelease === isPrerelease)
+  ;(async () => {
+    const fetch = eval("require('node-fetch')")
+
+    const res = await fetch(
+      'https://api.github.com/repos/ecnordbund/ec-verwaltungs-app/releases'
     )
-    .then((v: Array<any>) =>
-      v.filter(v => v.tag_name !== 'v' + version)
-    )
-    .then((v: Array<any>) =>
-      v.sort((a, b) => {
+
+    const resultJSON: Array<{
+      prerelease: boolean
+      tag_name: string
+      published_at: string
+      assets: Array<{
+        name: string
+        browser_download_url: string
+      }>
+    }> = await res.json()
+
+    const filterdResult = resultJSON
+      .filter(v => v.prerelease === isPrerelease)
+      .filter(v => v.tag_name !== 'v' + version)
+
+    const sortedFilterdResult = filterdResult.sort(
+      (a, b) => {
         if (a.published_at > b.published_at) {
           return -1
         }
@@ -27,57 +38,48 @@ if (isElectron && isProduction) {
           return 1
         }
         return 0
-      })
-    )
-    .then(
-      (v: Array<any>) =>
-        v.length === 0
-          ? false
-          : v[0].assets
-              .map((v: any) => ({
-                v,
-                ending: v.name.split('.')[
-                  v.name.split('.').length - 1
-                ]
-              }))
-              .filter(
-                (v: any) =>
-                  v.ending ===
-                  (<any>{
-                    win32: 'exe',
-                    darwin: 'dmg',
-                    linux: 'deb'
-                  })[(<any>window).process.platform]
-              )[0].v.url
-    )
-    .then(
-      (v: any) =>
-        v
-          ? fetch(v)
-              .then((v: any) => v.json())
-              .then((v: any) => v.browser_download_url)
-          : false
-    )
-    .then((v: any) => {
-      if (v) {
-        eval(
-          "require('electron')"
-        ).remote.dialog.showMessageBox(
-          {
-            title: 'Update',
-            type: 'info',
-            message:
-              'Ein Update ist verfügbar. Möchtest du es installieren?\n\nWir empfehlen dir das Update sofort zu installieren!',
-            buttons: ['Yes', 'No']
-          },
-          (res: number) => {
-            if (res === 0) {
-              eval(
-                "require('electron')"
-              ).shell.openExternal(v)
-            }
-          }
-        )
       }
+    )
+
+    if (sortedFilterdResult.length === 0) {
+      return
+    }
+
+    const currentVersion = sortedFilterdResult[0]
+
+    const assets = currentVersion.assets.filter(v => {
+      const endung = v.name.split('.')[1]
+
+      return (
+        endung ===
+        (<any>{
+          win32: 'exe',
+          darwin: 'dmg',
+          linux: 'deb'
+        })[(<any>window).process.platform]
+      )
     })
+
+    if (assets.length !== 1) {
+      return
+    }
+
+    const url = assets[0].browser_download_url
+
+    electron.remote.dialog.showMessageBox(
+      {
+        title: 'Update',
+        type: 'info',
+        message: `Ein Update ist verfügbar. Möchtest du es installieren?
+          
+Wir empfehlen dir das Update sofort zu installieren! (Dauer: wenige Minuten)`,
+        buttons: ['Yes', 'No']
+      },
+      res => {
+        if (res === 0) {
+          electron.shell.openExternal(url)
+        }
+      }
+    )
+  })()
 }
