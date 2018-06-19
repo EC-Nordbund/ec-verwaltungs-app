@@ -1,9 +1,9 @@
-import { Component } from 'vue-property-decorator';
-import select_base from '@/plugins/lib/formElements/selects/select';
-import auth from '@/plugins/auth';
+import { Component } from 'vue-property-decorator'
+import select_base from '@/plugins/lib/formElements/selects/select'
+import auth from '@/plugins/auth'
 
-import gql from 'graphql-tag';
-import { CreateElement } from 'vue';
+import gql from 'graphql-tag'
+import { CreateElement } from 'vue'
 
 @Component({})
 export default class akSelect extends select_base {
@@ -15,25 +15,25 @@ export default class akSelect extends select_base {
           bezeichnung
         }
       }
-    `;
+    `
 
-    this.queryName = 'aks';
+    this.queryName = 'aks'
 
     this.variabels = {
       authToken: auth.authToken
-    };
+    }
 
     this.mapper = (item: {
-      akID: number;
-      bezeichnung: string;
+      akID: number
+      bezeichnung: string
     }) => {
       return {
         id: item.akID,
         beschreibung: item.bezeichnung
-      };
-    };
+      }
+    }
 
-    super.created();
+    super.created()
   }
   render(h: CreateElement) {
     return h('v-select', {
@@ -43,17 +43,17 @@ export default class akSelect extends select_base {
         'single-line': true,
         'item-text': 'beschreibung',
         'item-value': 'id',
-        ...this.$attrs,
-        autocomplete: true
+        autocomplete: true,
+        ...this.$attrs
       },
       attrs: {
         ...this.$attrs
       },
       on: {
         input: (val: any) => {
-          this.select = val;
+          this.select = val
         }
       }
-    });
+    })
   }
 }

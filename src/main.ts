@@ -1,18 +1,19 @@
-import apolloProvider from '@/plugins/apollo';
-import '@/plugins/auth.ts';
-import '@/plugins/design/theme-directives.ts';
-import '@/plugins/design/vuetify.ts';
-import { isElectron, isProduction } from '@/plugins/electron';
-import '@/plugins/lib_extension/componentLib_extension.ts';
-import '@/plugins/lib/componentLib.ts';
-import '@/plugins/qrCode';
-import '@/plugins/router/routeHandler.ts';
-import router from '@/plugins/router/router';
-import '@/plugins/updateChecker.ts';
-import '@/plugins/widgets/index.ts';
-import '@/plugins/widgets/widgets/losungen.vue';
-import '@/plugins/widgets/widgets/message.vue';
-import Vue from 'vue';
+import apolloProvider from '@/plugins/apollo'
+import '@/plugins/auth.ts'
+import '@/plugins/design/theme-directives.ts'
+import '@/plugins/design/vuetify.ts'
+import {
+  isElectron,
+  isProduction
+} from '@/plugins/electron'
+import '@/plugins/lib_extension/componentLib_extension.ts'
+import '@/plugins/lib/componentLib.ts'
+import '@/plugins/qrCode'
+import '@/plugins/router/routeHandler.ts'
+import router from '@/plugins/router/router'
+import '@/plugins/updateChecker.ts'
+import '@/plugins/widgets/index.ts'
+import Vue from 'vue'
 
 // dev-Electron-Modules
 if (isElectron && !isProduction) {

@@ -2,8 +2,8 @@ import {
   Component,
   Prop,
   Vue
-} from 'vue-property-decorator';
-import { CreateElement } from 'vue';
+} from 'vue-property-decorator'
+import { CreateElement } from 'vue'
 
 @Component({})
 export default class formElement extends Vue {
@@ -12,30 +12,29 @@ export default class formElement extends Vue {
     required: false,
     type: [Object, String, Boolean, Number]
   })
-  public value!: any;
+  public value!: any
 
   @Prop({
     type: String,
     required: false,
     default: 'v-text-field'
   })
-  public componentName!: string;
+  public componentName!: string
 
   public render(h: CreateElement) {
     return h(this.componentName, {
       props: {
-        ...this.$attrs,
-        value: this.value
+        value: this.value,
+        ...this.$attrs
       },
       attrs: {
-        ...this.$attrs,
-        value: this.value
+        ...this.$attrs
       },
       on: {
         input: ($event: any) => {
-          this.$emit('input', $event);
+          this.$emit('input', $event)
         }
       }
-    });
+    })
   }
 }

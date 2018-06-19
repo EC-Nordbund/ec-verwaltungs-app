@@ -1,14 +1,14 @@
-import auth from '@/plugins/auth';
-import router from '@/plugins/router/router';
+import auth from '@/plugins/auth'
+import router from '@/plugins/router/router'
+import eventbus from '@/plugins/eventbus'
 
-const startPage = '/app';
-const loginPage = '/login';
+const startPage = '/app'
+const loginPage = '/login'
 
-const routesWithOutLogIn = [loginPage];
+const routesWithOutLogIn = [loginPage]
 
 router.beforeEach((to, from, next) => {
   // wenn /login und angemeldet -> startpage
-  // console.log(to)
   if (auth.isLogedIn()) {
     if (
       to.meta.userGroups !== undefined &&
@@ -17,15 +17,19 @@ router.beforeEach((to, from, next) => {
           auth._userGroupBezeichnung
         ) !== -1)
     ) {
-      next();
+      next()
     } else {
-      next(startPage);
+      next(startPage)
     }
   } else {
     if (routesWithOutLogIn.indexOf(to.fullPath) !== -1) {
-      next();
+      next()
     } else {
-      next(loginPage);
+      next(loginPage)
     }
   }
-});
+})
+
+eventbus.on('logedOut', () => {
+  router.push(loginPage)
+})

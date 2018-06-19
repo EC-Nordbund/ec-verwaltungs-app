@@ -11,7 +11,7 @@
           <v-alert :value="wrong" type="error">
             Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.
           </v-alert>
-          <v-alert :value="true" type="info">
+          <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
           <!-- <v-alert :value="true" type="info">
@@ -47,52 +47,53 @@
   </v-app>
 </template>
 <script lang="ts">
-import settings from '@/plugins/settings';
-import { isElectron } from '@/plugins/electron';
+import settings from '@/plugins/settings'
+import { isElectron } from '@/plugins/electron'
 import {
   Component,
   Vue,
   Prop,
   Watch,
   Emit
-} from 'vue-property-decorator';
-import auth from '@/plugins/auth';
+} from 'vue-property-decorator'
+import auth from '@/plugins/auth'
 
 @Component({})
 export default class loginForm extends Vue {
-  username: string = '';
-  password: string = '';
-  valid: boolean = false;
-  checking: boolean = false;
-  wrong: boolean = false;
+  username: string = ''
+  password: string = ''
+  valid: boolean = false
+  checking: boolean = false
+  wrong: boolean = false
+  auth = auth
   getRules(name: string) {
     return [
       (value: string) =>
         !value
           ? `Es muss ein ${name} angegeben werden`
           : true
-    ];
+    ]
   }
   login() {
-    this.checking = true;
+    this.checking = true
     if (isElectron) {
-      settings.set('username', this.username);
+      settings.set('username', this.username)
     }
     auth
       .logIn(this.username, this.password)
       .then((val: boolean) => {
         if (val) {
-          this.$router.push('/app');
-          this.checking = false;
+          this.$router.push('/app')
+          this.checking = false
         } else {
-          this.checking = false;
-          this.wrong = true;
+          this.checking = false
+          this.wrong = true
         }
-      });
+      })
   }
   created() {
     if (isElectron) {
-      this.username = <any>settings.get('username', '');
+      this.username = <any>settings.get('username', '')
     }
   }
 }

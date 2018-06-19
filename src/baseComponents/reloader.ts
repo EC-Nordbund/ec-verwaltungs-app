@@ -1,7 +1,9 @@
-import auth from '@/plugins/auth';
-import { Vue } from 'vue-property-decorator';
-import { ObservableQuery } from 'apollo-client';
-import { DocumentNode } from 'graphql';
+import auth from '@/plugins/auth'
+import { Vue } from 'vue-property-decorator'
+import { ObservableQuery } from 'apollo-client'
+import { DocumentNode } from 'graphql'
+
+import event from '@/plugins/eventbus'
 
 /**
  * Klasse für Components (Views) with qraphqlconnection... (Including Watchquerry)
@@ -18,7 +20,9 @@ export default abstract class reloader extends Vue {
    * @type {({[key: string]: string|number|boolean})}
    * @memberof reloader
    */
-  public variabels!: { [key: string]: string | number | boolean };
+  public variabels!: {
+    [key: string]: string | number | boolean
+  }
 
   /**
    * Speichert die Query
@@ -27,7 +31,7 @@ export default abstract class reloader extends Vue {
    * @type {ObservableQuery<any>}
    * @memberof reloader
    */
-  private _query!: ObservableQuery<any>;
+  private _query!: ObservableQuery<any>
 
   /**
    * Speichert die Daten
@@ -35,7 +39,7 @@ export default abstract class reloader extends Vue {
    * @type {*}
    * @memberof reloader
    */
-  public data: any;
+  public data: any
 
   /**
    * Speichert
@@ -43,14 +47,14 @@ export default abstract class reloader extends Vue {
    * @type {DocumentNode}
    * @memberof reloader
    */
-  public query!: DocumentNode;
+  public query!: DocumentNode
 
   /**
    * Authentication-Class-Instance
    *
    * @memberof reloader
    */
-  public auth = auth;
+  public auth = auth
 
   /**
    * On Created
@@ -58,7 +62,7 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public created() {
-    this.loadData();
+    this.loadData()
   }
 
   /**
@@ -67,18 +71,20 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public loadData() {
+    event.emit('showLoading')
     this._query = (this.$apollo as any).watchQuery({
       query: this.query,
       variables: this.variabels,
       fetchPolicy: 'cache-and-network',
       pollInterval: auth.pollInterval
-    });
+    })
     if (this._query !== null) {
       this._query.subscribe((val: any) => {
         if (val.data) {
-          this.data = val.data;
+          this.data = val.data
+          event.emit('hideLoading')
         }
-      });
+      })
     }
   }
 
@@ -88,8 +94,10 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public refetch() {
+    event.emit('showLoading')
     this._query.refetch().then((val: any) => {
-      this.data = val.data;
-    });
+      this.data = val.data
+      event.emit('hideLoading')
+    })
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <v-card :style="{height: '100%', display: 'grid', 'grid-template-rows': `repeat(${config.height}, 1fr)`, gridTemplateColumns: `repeat(${config.width}, 1fr)`, gridTemplateAreas: config.areas, gridGap: '10px'}">
+  <v-card :style="{height: '100%', display: 'grid', 'grid-template-rows': `repeat(${config.height}, 1fr)`, gridTemplateColumns: `repeat(${config.width}, 1fr)`, gridTemplateAreas: config.areas, gridGap: '10px', padding: '5px'}">
     <ec-widget-element v-for="el in config.elements" :key="el.id" :config="el"/>
   </v-card>
 </template>

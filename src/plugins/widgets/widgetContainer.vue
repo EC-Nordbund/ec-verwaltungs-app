@@ -12,7 +12,7 @@
     </v-tabs>
     <ec-widget-tab v-else-if="config.length === 1" :config="config[0]"/>
     <div v-else>Keine Widget-Configuration gefunden...</div>
-    <ec-widget-container-settings/>
+    <ec-widget-container-settings v-model="showDialog" :config="config"/>
   </div>
 </template>
 <script lang="ts">
@@ -30,7 +30,7 @@ import { IConf } from '@/plugins/widgets/types.ts'
 export default class widgetContainer extends Vue {
   showDialog: boolean = false
 
-  @Prop({ required: true, type: [Array, Object] })
+  @Prop({ required: true, type: Array })
   config!: Array<IConf>
 
   @Prop({ required: true, type: Boolean })

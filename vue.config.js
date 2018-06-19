@@ -1,5 +1,12 @@
 const { BannerPlugin } = require('webpack')
 
+let toYear = new Date()
+  .getFullYear()
+  .toString()
+  .split('')
+  .slice(2)
+  .join('')
+
 module.exports = {
   baseUrl:
     process.env.NODE_ENV === 'development'
@@ -12,10 +19,19 @@ module.exports = {
     port: 8080
   },
   configureWebpack: {
+    module: {
+      rules: [
+        {
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: 'graphql-tag/loader'
+        }
+      ]
+    },
     plugins: [
       new BannerPlugin({
         banner: `EC-Verwaltungs-App
-Copyright (C) 2017-18 EC-Nordbund (Sebastian Krüger & Tobias Krause)
+Copyright (C) 2017-${toYear} EC-Nordbund (Sebastian Krüger & Tobias Krause)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
