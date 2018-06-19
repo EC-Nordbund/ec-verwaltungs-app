@@ -1,25 +1,32 @@
-const { app, BrowserWindow } = require('electron');
+// Import Electron
+const { app, BrowserWindow } = require('electron')
 
+// On Install do Stuff
 if (require('electron-squirrel-startup')) {
-  app.quit();
+  app.quit()
 }
 
 //=================================================================================================================================================
+
+//Get URL's
 const winURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080'
-    : `file://${__dirname}/../renderer/index.html`;
+    : `file://${__dirname}/../renderer/index.html`
+
 const loadingURL =
   process.env.NODE_ENV === 'development'
     ? 'http://localhost:8080/loading.html'
-    : `file://${__dirname}/../renderer/loading.html`;
+    : `file://${__dirname}/../renderer/loading.html`
 
+//Get Settings
 const mainWindowOptions = {
   height: 563,
   useContentSize: true,
   width: 1000,
   show: false
-};
+}
+
 const loadingWindowOptions = {
   height: 250,
   frame: false,
@@ -28,48 +35,52 @@ const loadingWindowOptions = {
   show: false,
   closable: false,
   resizable: false
-};
+}
+
 //=================================================================================================================================================
 
-let loadingWindow;
-let mainWindow;
+let loadingWindow
+let mainWindow
 
 function createWindow() {
-  mainWindow = new BrowserWindow(mainWindowOptions);
-  mainWindow.loadURL(winURL);
+  mainWindow = new BrowserWindow(mainWindowOptions)
+  mainWindow.loadURL(winURL)
   mainWindow.on('ready-to-show', () => {
-    loadingWindow.setClosable(true);
-    loadingWindow.close();
-    mainWindow.maximize();
-  });
+    loadingWindow.setClosable(true)
+    loadingWindow.close()
+    mainWindow.maximize()
+  })
   mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
+    mainWindow = null
+  })
 }
 
 function createLoadingWindow() {
-  loadingWindow = new BrowserWindow(loadingWindowOptions);
-  loadingWindow.loadURL(loadingURL);
+  loadingWindow = new BrowserWindow(loadingWindowOptions)
+  loadingWindow.loadURL(loadingURL)
   loadingWindow.on('ready-to-show', () => {
-    loadingWindow.show();
+    loadingWindow.show()
     setTimeout(() => {
-      createWindow();
-    }, 2000);
-  });
+      createWindow()
+    }, 2000)
+  })
 }
 
 //=================================================================================================================================================
 
-app.on('ready', createLoadingWindow);
+// Wenn Bereit dann erzeuge Window
+app.once('ready', createLoadingWindow)
 
+// Wenn alle Fenster zu dann quit (außer macOS)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    app.quit()
   }
-});
+})
 
+// Wenn activate unter macOS recreate Windows
 app.on('activate', () => {
   if (mainWindow === null) {
-    createWindow();
+    createLoadingWindow()
   }
-});
+})

@@ -1,3 +1,6 @@
+/**
+ * Used Theme
+ */
 export const theme = {
   primary: '#8FB217',
   secondary: '#46A215',
@@ -11,4 +14,4 @@ export const theme = {
   bg: '#eef3dc',
   male: '#4697BA',
   female: '#C243AA'
-};
+}

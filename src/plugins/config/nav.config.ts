@@ -1,3 +1,6 @@
+/**
+ * Linke Navigation Einstellungen
+ */
 export default [
   {
     title: 'Statistik',
@@ -79,4 +82,4 @@ export default [
     route: '/app/impressum',
     userGroups: '*'
   }
-];
+]

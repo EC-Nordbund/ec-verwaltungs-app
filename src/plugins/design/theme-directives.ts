@@ -10,6 +10,7 @@ Vue.directive('font', {
 
 for (const key in theme) {
   if (theme.hasOwnProperty(key)) {
+    //get Element
     const element: string = (<{ [name: string]: string }>(
       theme
     ))[key];

@@ -1,8 +1,15 @@
-import { Component, Vue } from 'vue-property-decorator';
-import { CreateElement } from 'vue';
+import { Component, Vue } from 'vue-property-decorator'
+import { CreateElement } from 'vue'
 
+/**
+ *
+ */
 @Component({})
 export default class AddButton extends Vue {
+  /**
+   * Render Funktion
+   * @param h Create Element
+   */
   render(h: CreateElement) {
     return h(
       'v-btn',
@@ -24,6 +31,6 @@ export default class AddButton extends Vue {
         }
       },
       [h('v-icon', ['add'])]
-    );
+    )
   }
 }
