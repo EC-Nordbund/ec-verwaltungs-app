@@ -42,7 +42,7 @@
   "config": {
     "forge": {
       "packagerConfig": {
-        "arch": "ia32",
+        "arch": "all",
         "asar": true,
         "executableName": "EC-Verwaltungs-App",
         "appCopyright": "(c) EC-Nordbund 2017-2018",

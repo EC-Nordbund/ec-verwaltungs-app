@@ -4,8 +4,8 @@ import {
   Prop,
   Watch,
   Emit
-} from 'vue-property-decorator';
-import { CreateElement } from 'vue';
+} from 'vue-property-decorator'
+import { CreateElement } from 'vue'
 
 @Component({})
 export default class radio extends Vue {
@@ -22,7 +22,7 @@ export default class radio extends Vue {
         },
         on: {
           change: (val: any) => {
-            this.intern_value = val;
+            this.intern_value = val
           }
         }
       },
@@ -36,19 +36,19 @@ export default class radio extends Vue {
           style: {
             color: item.color
           }
-        });
+        })
       })
-    );
+    )
   }
 
-  intern_value: string | number = '';
+  intern_value: string | number = ''
 
   @Prop({
     type: [String, Number],
     required: false,
     default: ''
   })
-  value!: string | number;
+  value!: string | number
 
   @Prop({
     type: Array,
@@ -56,14 +56,14 @@ export default class radio extends Vue {
     default: () => []
   })
   items!: Array<{
-    label: string;
-    value: string;
-    color: string;
-  }>;
+    label: string
+    value: string
+    color: string
+  }>
 
   @Watch('value', { immediate: true })
   onValueChange(value: string) {
-    this.intern_value = value;
+    this.intern_value = value
   }
 
   @Watch('intern_value')

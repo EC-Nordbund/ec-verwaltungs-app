@@ -28,7 +28,7 @@
     <v-tabs-items v-model="tabs" class="white elevation-1">
       <v-tab-item id="tab-2">
         <v-list two-line>
-          <v-list-tile @click="">
+          <v-list-tile @click="()=>{}">
             <v-list-tile-action>
               <v-icon color="indigo">
                 account_box
@@ -43,7 +43,7 @@
               </v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="">
+          <v-list-tile @click="()=>{}">
             <v-list-tile-action>
               <v-icon color="indigo">
                 event
@@ -58,7 +58,7 @@
               </v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="">
+          <v-list-tile @click="()=>{}">
             <v-list-tile-action>
               <v-icon color="indigo">
               </v-icon>

@@ -1,12 +1,20 @@
-import formElement from '@/plugins/lib/formElements/formDialog/element.ts';
-import { CreateElement } from 'vue';
+import formElement from '@/plugins/lib/formElements/formDialog/element.ts'
+import { CreateElement } from 'vue'
 import {
   Component,
   Emit,
   Prop,
   Vue,
   Watch
-  } from 'vue-property-decorator';
+} from 'vue-property-decorator'
+
+const directiveArgs = {
+  value: undefined,
+  oldValue: undefined,
+  expression: undefined,
+  arg: '',
+  modifiers: {}
+}
 
 @Component({
   model: {
@@ -22,7 +30,7 @@ export default class formDialog extends Vue {
         props: {
           width: '500px',
           value: this.open,
-          peristent: true
+          persistent: true
         }
       },
       [
@@ -34,19 +42,11 @@ export default class formDialog extends Vue {
                 directives: [
                   {
                     name: 'font',
-                    value: undefined,
-                    oldValue: undefined,
-                    expression: undefined,
-                    arg: '',
-                    modifiers: {}
+                    ...directiveArgs
                   },
                   {
                     name: 'primary',
-                    value: undefined,
-                    oldValue: undefined,
-                    expression: undefined,
-                    arg: '',
-                    modifiers: {}
+                    ...directiveArgs
                   }
                 ]
               },
@@ -67,24 +67,22 @@ export default class formDialog extends Vue {
                   }
                 }
               },
-              [
-                ...this.fieldConfig.map(el => {
-                  return h(formElement, {
-                    attrs: {
-                      ...el
-                    },
-                    props: {
-                      ...el,
-                      value: this.wert[el.name]
-                    },
-                    on: {
-                      input: (val: any) => {
-                        this.wert[el.name] = val
-                      }
+              this.fieldConfig.map(el =>
+                h(formElement, {
+                  attrs: {
+                    ...el
+                  },
+                  props: {
+                    ...el,
+                    value: this.wert[el.name]
+                  },
+                  on: {
+                    input: (val: any) => {
+                      this.wert[el.name] = val
                     }
-                  })
+                  }
                 })
-              ]
+              )
             )
           ]),
           h('v-card-actions', [
@@ -132,19 +130,11 @@ export default class formDialog extends Vue {
                 directives: [
                   {
                     name: 'secondary-bg',
-                    value: undefined,
-                    oldValue: undefined,
-                    expression: undefined,
-                    arg: '',
-                    modifiers: {}
+                    ...directiveArgs
                   },
                   {
                     name: 'white',
-                    value: undefined,
-                    oldValue: undefined,
-                    expression: undefined,
-                    arg: '',
-                    modifiers: {}
+                    ...directiveArgs
                   }
                 ]
               },
@@ -214,9 +204,9 @@ export default class formDialog extends Vue {
     Object.keys(this.wert).forEach(v => {
       this.wert[v] = ''
     })
-    if (this.$refs && this.$refs.form) {
-      ;(<any>this.$refs.form).reset()
-    }
+
+    if (this.$refs && this.$refs.form)
+      (<any>this.$refs.form).reset()
   }
 
   @Watch('wert')

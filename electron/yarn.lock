@@ -6,9 +6,9 @@
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/7zip/-/7zip-0.0.6.tgz#9cafb171af82329490353b4816f03347aa150a30"
 
-"@electron-forge/async-ora@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/async-ora/-/async-ora-6.0.0-beta.17.tgz#b5e0205f93c6235d7e86f77e3eb2bf6428301e45"
+"@electron-forge/async-ora@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/async-ora/-/async-ora-6.0.0-beta.18.tgz#0f6c09cb2061d51b4918427e5214f3889348f2c5"
   dependencies:
     colors "^1.2.0"
     debug "^3.0.0"
@@ -16,11 +16,11 @@
     ora "^2.0.0"
 
 "@electron-forge/cli@^6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/cli/-/cli-6.0.0-beta.17.tgz#2f40bb300172f79a13459e3a6166e48fe4344849"
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/cli/-/cli-6.0.0-beta.18.tgz#75496bfea33afe34f66c6872bc9e51f2818779d6"
   dependencies:
-    "@electron-forge/async-ora" "6.0.0-beta.17"
-    "@electron-forge/core" "6.0.0-beta.17"
+    "@electron-forge/async-ora" "6.0.0-beta.18"
+    "@electron-forge/core" "6.0.0-beta.18"
     colors "^1.2.0"
     commander "^2.9.0"
     debug "^3.0.0"
@@ -28,21 +28,21 @@
     inquirer "^5.0.0"
     semver "^5.3.0"
 
-"@electron-forge/core@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/core/-/core-6.0.0-beta.17.tgz#8f80cae23755932cffc4a09362193641e24b999f"
+"@electron-forge/core@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/core/-/core-6.0.0-beta.18.tgz#06069560d4414095ef0f5419a1c8e6496ee8b3cd"
   dependencies:
-    "@electron-forge/async-ora" "6.0.0-beta.17"
-    "@electron-forge/installer-base" "6.0.0-beta.17"
-    "@electron-forge/installer-deb" "6.0.0-beta.17"
-    "@electron-forge/installer-dmg" "6.0.0-beta.17"
-    "@electron-forge/installer-exe" "6.0.0-beta.17"
-    "@electron-forge/installer-rpm" "6.0.0-beta.17"
-    "@electron-forge/installer-zip" "6.0.0-beta.17"
-    "@electron-forge/maker-base" "6.0.0-beta.17"
-    "@electron-forge/plugin-base" "6.0.0-beta.17"
-    "@electron-forge/publisher-base" "6.0.0-beta.17"
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/async-ora" "6.0.0-beta.18"
+    "@electron-forge/installer-base" "6.0.0-beta.18"
+    "@electron-forge/installer-deb" "6.0.0-beta.18"
+    "@electron-forge/installer-dmg" "6.0.0-beta.18"
+    "@electron-forge/installer-exe" "6.0.0-beta.18"
+    "@electron-forge/installer-rpm" "6.0.0-beta.18"
+    "@electron-forge/installer-zip" "6.0.0-beta.18"
+    "@electron-forge/maker-base" "6.0.0-beta.18"
+    "@electron-forge/plugin-base" "6.0.0-beta.18"
+    "@electron-forge/publisher-base" "6.0.0-beta.18"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
     colors "^1.2.0"
     cross-spawn-promise "^0.10.1"
     debug "^3.0.0"
@@ -62,146 +62,146 @@
     username "^3.0.0"
     yarn-or-npm "^2.0.2"
 
-"@electron-forge/installer-base@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-base/-/installer-base-6.0.0-beta.17.tgz#69654bcf0c838fbfed8ec77e76f35fc160ada30a"
+"@electron-forge/installer-base@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-base/-/installer-base-6.0.0-beta.18.tgz#4e32d4c7342be2ad9938912bc35e6296d804bad8"
   dependencies:
-    "@electron-forge/async-ora" "6.0.0-beta.17"
+    "@electron-forge/async-ora" "6.0.0-beta.18"
 
-"@electron-forge/installer-darwin@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-darwin/-/installer-darwin-6.0.0-beta.17.tgz#49f3ab39860ffd13dc8498d3ef84e581d32bc433"
+"@electron-forge/installer-darwin@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-darwin/-/installer-darwin-6.0.0-beta.18.tgz#4c918ef83e485c882add88771831d4c7985148b1"
   dependencies:
-    "@electron-forge/async-ora" "6.0.0-beta.17"
-    "@electron-forge/installer-base" "6.0.0-beta.17"
+    "@electron-forge/async-ora" "6.0.0-beta.18"
+    "@electron-forge/installer-base" "6.0.0-beta.18"
     fs-extra "^5.0.0"
     pify "^3.0.0"
     sudo-prompt "^8.0.0"
 
-"@electron-forge/installer-deb@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-deb/-/installer-deb-6.0.0-beta.17.tgz#85c157875c7d1bd2d264190c3e60334f8c22d23a"
+"@electron-forge/installer-deb@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-deb/-/installer-deb-6.0.0-beta.18.tgz#1ea9e7ab86eea3a5b3d6db55c4c8b2016064bd71"
   dependencies:
-    "@electron-forge/installer-linux" "6.0.0-beta.17"
+    "@electron-forge/installer-linux" "6.0.0-beta.18"
 
-"@electron-forge/installer-dmg@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-dmg/-/installer-dmg-6.0.0-beta.17.tgz#93b42702cc77414dd5ca0b6ad8febbad794a7610"
+"@electron-forge/installer-dmg@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-dmg/-/installer-dmg-6.0.0-beta.18.tgz#c0f813c593dd7880454f69be728765478a37507a"
   dependencies:
-    "@electron-forge/installer-darwin" "6.0.0-beta.17"
+    "@electron-forge/installer-darwin" "6.0.0-beta.18"
     cross-spawn-promise "^0.10.1"
     debug "^3.0.0"
     fs-extra "^5.0.0"
 
-"@electron-forge/installer-exe@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-exe/-/installer-exe-6.0.0-beta.17.tgz#9bd53c508b04f1d22bc3b08087576505601789b9"
+"@electron-forge/installer-exe@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-exe/-/installer-exe-6.0.0-beta.18.tgz#935b9e463d54a8925e1699443db886dabbe3401d"
   dependencies:
-    "@electron-forge/installer-base" "6.0.0-beta.17"
+    "@electron-forge/installer-base" "6.0.0-beta.18"
     opn "^5.0.0"
 
-"@electron-forge/installer-linux@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-linux/-/installer-linux-6.0.0-beta.17.tgz#74fb6984a9d92665ae45b7b58bb6d60bf5c3b57b"
+"@electron-forge/installer-linux@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-linux/-/installer-linux-6.0.0-beta.18.tgz#5a36e5e381f84a359342b6020e83d2132a9b98a7"
   dependencies:
-    "@electron-forge/installer-base" "6.0.0-beta.17"
+    "@electron-forge/installer-base" "6.0.0-beta.18"
     pify "^3.0.0"
     sudo-prompt "^8.0.0"
 
-"@electron-forge/installer-rpm@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-rpm/-/installer-rpm-6.0.0-beta.17.tgz#6b3ced02f065b2685c4b3dbadeaa6f76fd199d0c"
+"@electron-forge/installer-rpm@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-rpm/-/installer-rpm-6.0.0-beta.18.tgz#f08f5c0fea4edd0d3c8028f24b325050e6812fed"
   dependencies:
-    "@electron-forge/installer-linux" "6.0.0-beta.17"
+    "@electron-forge/installer-linux" "6.0.0-beta.18"
 
-"@electron-forge/installer-zip@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/installer-zip/-/installer-zip-6.0.0-beta.17.tgz#029ef76bb774a77b9fe85c567ea21f74e756c7c6"
+"@electron-forge/installer-zip@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/installer-zip/-/installer-zip-6.0.0-beta.18.tgz#52ffacb1cbcdce38a13be575a42e919a576fb929"
   dependencies:
-    "@electron-forge/installer-darwin" "6.0.0-beta.17"
+    "@electron-forge/installer-darwin" "6.0.0-beta.18"
     cross-spawn-promise "^0.10.1"
     fs-extra "^5.0.0"
 
-"@electron-forge/maker-base@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-base/-/maker-base-6.0.0-beta.17.tgz#3c4e7ceddc0de6f25a948d988a6562815b66db09"
+"@electron-forge/maker-base@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-base/-/maker-base-6.0.0-beta.18.tgz#6b39daa8886c09d599a89dfd4636382cf88ca089"
   dependencies:
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
     fs-extra "^5.0.0"
 
 "@electron-forge/maker-deb@^6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-deb/-/maker-deb-6.0.0-beta.17.tgz#1d7d13ad5dd6b101202834d5ea23536e685a2d7d"
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-deb/-/maker-deb-6.0.0-beta.18.tgz#94638299b9365a3e55e6ee05c2ff327fd6ef8c5b"
   dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.17"
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/maker-base" "6.0.0-beta.18"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
   optionalDependencies:
     electron-installer-debian "^0.8.0"
 
 "@electron-forge/maker-dmg@^6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-dmg/-/maker-dmg-6.0.0-beta.17.tgz#1c0d41b6dd20837de9e6a2af4bd9e166c882453f"
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-dmg/-/maker-dmg-6.0.0-beta.18.tgz#29467a90726f39a7f9276999d57095773ea68f1c"
   dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.17"
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/maker-base" "6.0.0-beta.18"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
     fs-extra "^5.0.0"
     pify "^3.0.0"
   optionalDependencies:
     electron-installer-dmg "^0.2.0"
 
 "@electron-forge/maker-squirrel@^6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.0-beta.17.tgz#3c92c2cfedc18701761a848bf960439105f7f486"
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-squirrel/-/maker-squirrel-6.0.0-beta.18.tgz#f2da351d11e727a75ffd0880d06826e2a992c6fe"
   dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.17"
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/maker-base" "6.0.0-beta.18"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
     fs-extra "^5.0.0"
   optionalDependencies:
     electron-winstaller "^2.5.0"
 
 "@electron-forge/maker-zip@^6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0-beta.17.tgz#81e578bf7c96a753f59a999f77344019fd299ec2"
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0-beta.18.tgz#495772f5ee6bd888630934d79b52a07b3384816a"
   dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.17"
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/maker-base" "6.0.0-beta.18"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
     cross-zip "^2.1.5"
     fs-extra "^5.0.0"
     pify "^3.0.0"
 
-"@electron-forge/plugin-base@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-base/-/plugin-base-6.0.0-beta.17.tgz#394c5db6a03d41d1e22af73f9f5d3f5eaa6967a2"
+"@electron-forge/plugin-base@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/plugin-base/-/plugin-base-6.0.0-beta.18.tgz#f8ed30f21669bf21a2775ac0ae35a80ca28ca424"
   dependencies:
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
 
-"@electron-forge/publisher-base@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-base/-/publisher-base-6.0.0-beta.17.tgz#a054a864cb3f615b28e4ba8c16e214713e086a7a"
+"@electron-forge/publisher-base@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-base/-/publisher-base-6.0.0-beta.18.tgz#2b8d876fceeea8840dbdb0d912c5988a33553b46"
 
 "@electron-forge/publisher-github@^6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-github/-/publisher-github-6.0.0-beta.17.tgz#356c00c029f9fd7766894e24e24e27e4d4ce1afd"
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/publisher-github/-/publisher-github-6.0.0-beta.18.tgz#aa6c05773a8beb141737580e74ca9c40f66fa00e"
   dependencies:
-    "@electron-forge/async-ora" "6.0.0-beta.17"
-    "@electron-forge/publisher-base" "6.0.0-beta.17"
-    "@electron-forge/shared-types" "6.0.0-beta.17"
+    "@electron-forge/async-ora" "6.0.0-beta.18"
+    "@electron-forge/publisher-base" "6.0.0-beta.18"
+    "@electron-forge/shared-types" "6.0.0-beta.18"
     "@octokit/rest" "^15.2.6"
     fs-extra "^5.0.0"
     lodash.merge "^4.6.0"
     mime-types "^2.1.17"
 
-"@electron-forge/shared-types@6.0.0-beta.17":
-  version "6.0.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.0.0-beta.17.tgz#59fe89a51bb93e910403c572d87a3beadd504cf3"
+"@electron-forge/shared-types@6.0.0-beta.18":
+  version "6.0.0-beta.18"
+  resolved "https://registry.yarnpkg.com/@electron-forge/shared-types/-/shared-types-6.0.0-beta.18.tgz#7c719293e3387137384a8a5b81a38b2d8c9c687a"
   dependencies:
     "@types/electron-packager" "^10.1.0"
     electron-rebuild "^1.6.0"
     ora "^2.0.0"
 
 "@octokit/rest@^15.2.6":
-  version "15.8.2"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.8.2.tgz#9da2c71bda88d93313b8a8f96b21e27a0b1386fb"
+  version "15.9.0"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.9.0.tgz#47863d114cd56a398b0774b4e6f9f942b3ffd2fd"
   dependencies:
     before-after-hook "^1.1.0"
     btoa-lite "^1.0.0"
@@ -219,8 +219,8 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "10.3.3"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.3.tgz#8798d9e39af2fa604f715ee6a6b19796528e46c3"
+  version "10.3.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-10.3.4.tgz#c74e8aec19e555df44609b8057311052a2c84d9e"
 
 "@types/node@^8.0.24":
   version "8.10.20"
@@ -895,8 +895,8 @@ env-paths@^1.0.0:
   resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-1.0.0.tgz#4168133b42bb05c38a35b1ae4397c8298ab369e0"
 
 error-ex@^1.2.0:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/error-ex/-/error-ex-1.3.1.tgz#f855a86ce61adc4e8621c3cda21e7a7612c3a8dc"
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/error-ex/-/error-ex-1.3.2.tgz#b4ac40648107fdcdcfae242f428bea8a14d4f1bf"
   dependencies:
     is-arrayish "^0.2.1"
 
@@ -2225,8 +2225,8 @@ resolve-package@^1.0.1:
     get-installed-path "^2.0.3"
 
 resolve@^1.1.6:
-  version "1.7.1"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.7.1.tgz#aadd656374fd298aee895bc026b8297418677fd3"
+  version "1.8.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.8.1.tgz#82f1ec19a423ac1fbd080b0bab06ba36e84a7a26"
   dependencies:
     path-parse "^1.0.5"
 

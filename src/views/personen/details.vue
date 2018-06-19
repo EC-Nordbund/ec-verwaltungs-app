@@ -363,7 +363,7 @@ export default class PersonenDetails extends reloaderBase {
       label: 'Wähle einen Arbeitskreis',
       componentName: 'ec-select-ak',
       rules: [
-        (v: string) =>
+        (v: number) =>
           !v
             ? 'Es muss ein Arbeitskreis gewählt werden!'
             : true
