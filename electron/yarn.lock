@@ -159,16 +159,6 @@
   optionalDependencies:
     electron-winstaller "^2.5.0"
 
-"@electron-forge/maker-zip@^6.0.0-beta.17":
-  version "6.0.0-beta.18"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0-beta.18.tgz#495772f5ee6bd888630934d79b52a07b3384816a"
-  dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.18"
-    "@electron-forge/shared-types" "6.0.0-beta.18"
-    cross-zip "^2.1.5"
-    fs-extra "^5.0.0"
-    pify "^3.0.0"
-
 "@electron-forge/plugin-base@6.0.0-beta.18":
   version "6.0.0-beta.18"
   resolved "https://registry.yarnpkg.com/@electron-forge/plugin-base/-/plugin-base-6.0.0-beta.18.tgz#f8ed30f21669bf21a2775ac0ae35a80ca28ca424"
@@ -628,12 +618,6 @@ cross-spawn@^5.0.0, cross-spawn@^5.0.1, cross-spawn@^5.1.0:
 cross-unzip@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/cross-unzip/-/cross-unzip-0.0.2.tgz#5183bc47a09559befcf98cc4657964999359372f"
-
-cross-zip@^2.1.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/cross-zip/-/cross-zip-2.1.5.tgz#c5d1a06a4b1a12a033064f946eb5ae6d4bdcf3e1"
-  dependencies:
-    rimraf "^2.5.2"
 
 cryptiles@2.x.x:
   version "2.0.5"
