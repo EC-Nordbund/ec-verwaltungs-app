@@ -36,14 +36,13 @@ export default class akSelect extends select_base {
     super.created()
   }
   render(h: CreateElement) {
-    return h('v-select', {
+    return h('v-autocomplete', {
       props: {
         items: this.items,
         value: this.select,
         'single-line': true,
         'item-text': 'beschreibung',
         'item-value': 'id',
-        autocomplete: true,
         ...this.$attrs
       },
       attrs: {

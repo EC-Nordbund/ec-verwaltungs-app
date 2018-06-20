@@ -14,7 +14,7 @@
       <v-spacer/>
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
       <ec-button-icon @click="editPersonStamm_open"/>
-      <v-tabs v-model="tabs" fixed-tabs slot="extension">
+      <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
           <v-icon v-accent>contacts</v-icon>

@@ -8206,9 +8206,9 @@ vuepress@^0.10.0:
     webpackbar "^2.6.1"
     workbox-build "^3.1.0"
 
-vuetify@^1.0.16:
-  version "1.0.19"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.0.19.tgz#fb6d123dd1c217795fc2333e912c0ecbed2ed69e"
+vuetify@^1.1.0-rc.1:
+  version "1.1.0-rc.1"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.0-rc.1.tgz#b9e9cb6d3f6f43a04004c73ab0ddecabb3b525f1"
 
 watchpack@^1.5.0:
   version "1.6.0"

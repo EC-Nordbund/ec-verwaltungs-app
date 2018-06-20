@@ -1,11 +1,10 @@
-import auth from '@/plugins/auth';
+import auth from '@/plugins/auth'
 import {
   Emit,
   Prop,
   Vue,
   Watch
-} from 'vue-property-decorator';
-import { CreateElement } from 'vue';
+} from 'vue-property-decorator'
 
 /**
  * Basis-Klasse für Select Components
@@ -15,25 +14,25 @@ import { CreateElement } from 'vue';
  * @extends {Vue}
  */
 export default class baseSelect extends Vue {
-  public select: number = -1;
-  public variabels: any;
-  public query: any;
-  public queryName!: string;
-  public data!: Array<any>;
-  public items: any[] = [];
+  public select: number = -1
+  public variabels: any
+  public query: any
+  public queryName!: string
+  public data!: Array<any>
+  public items: any[] = []
 
   @Prop({
     type: [Number, String],
     required: false
   })
-  public value!: number;
+  public value!: number
 
   public mapper: (
     item: any
   ) => {
-    id: number;
-    beschreibung: string;
-  } = a => a;
+    id: number
+    beschreibung: string
+  } = a => a
 
   @Watch('select')
   @Emit('input')
@@ -41,15 +40,15 @@ export default class baseSelect extends Vue {
 
   @Watch('value', { immediate: true })
   onValueChange(value: number) {
-    this.select = value;
+    this.select = value
   }
 
   created() {
-    this.loadData();
+    this.loadData()
   }
 
   loadData() {
-    (this.$apollo as any)
+    ;(this.$apollo as any)
       .watchQuery({
         query: this.query,
         variables: this.variabels,
@@ -58,9 +57,9 @@ export default class baseSelect extends Vue {
       })
       .subscribe((val: any) => {
         if (val.data) {
-          this.data = val.data[this.queryName];
-          this.items = this.data.map(this.mapper);
+          this.data = val.data[this.queryName]
+          this.items = this.data.map(this.mapper)
         }
-      });
+      })
   }
 }
