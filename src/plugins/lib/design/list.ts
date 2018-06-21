@@ -1,13 +1,27 @@
-import { CreateElement } from 'vue';
+import { CreateElement } from 'vue'
 import {
   Component,
   Vue,
   Watch,
   Prop
-} from 'vue-property-decorator';
+} from 'vue-property-decorator'
 
+/**
+ * Erzeugt eine Editierbare Liste
+ *
+ * @export
+ * @class Liste
+ * @extends {Vue}
+ */
 @Component({})
 export default class Liste extends Vue {
+  /**
+   * Renderfunktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof Liste
+   */
   render(h: CreateElement) {
     return h(
       'v-list',
@@ -19,7 +33,7 @@ export default class Liste extends Vue {
             key: index,
             on: {
               click: () => {
-                this.$emit('click', mapItem.item);
+                this.$emit('click', mapItem.item)
               }
             }
           },
@@ -55,8 +69,8 @@ export default class Liste extends Vue {
                     h('ec-button-icon', {
                       on: {
                         click: ($event: any) => {
-                          $event.stopPropagation();
-                          this.$emit('edit', mapItem.item);
+                          $event.stopPropagation()
+                          this.$emit('edit', mapItem.item)
                         }
                       }
                     })
@@ -64,18 +78,36 @@ export default class Liste extends Vue {
                 ]
               : [])
           ]
-        );
+        )
       })
-    );
+    )
   }
-  itemMap: Array<any> = [];
 
+  /**
+   * Gibt einen MAP der Items an
+   *
+   * @type {Array<any>}
+   * @memberof Liste
+   */
+  itemMap: Array<any> = []
+
+  /**
+   * Anzuzeigende Elemente
+   *
+   * @type {Array<any>}
+   * @memberof Liste
+   */
   @Prop({
     type: Array,
     required: true
   })
-  items!: Array<any>;
+  items!: Array<any>
 
+  /**
+   * mapper der aus items mapItems macht
+   *
+   * @memberof Liste
+   */
   @Prop({
     type: Function,
     required: true
@@ -83,24 +115,41 @@ export default class Liste extends Vue {
   mapper!: (
     item: any
   ) => {
-    icon?: string;
-    title: string;
-    subTitle?: string;
-    edit?: boolean;
-  };
+    icon?: string
+    title: string
+    subTitle?: string
+    edit?: boolean
+  }
 
+  /**
+   * Can edit items
+   *
+   * @type {boolean}
+   * @memberof Liste
+   */
   @Prop({
     type: Boolean,
     default: false
   })
-  edit!: boolean;
+  edit!: boolean
 
+  /**
+   * icon, dass vorne ist
+   *
+   * @type {string}
+   * @memberof Liste
+   */
   @Prop({
     type: String,
-    default: '.'
+    default: ''
   })
-  icon!: boolean;
+  icon!: boolean
 
+  /**
+   * Wenn Items changed (via Prop)
+   *
+   * @memberof Liste
+   */
   @Watch('items', {
     immediate: true
   })
@@ -108,6 +157,6 @@ export default class Liste extends Vue {
     this.itemMap = this.items.map(item => ({
       item,
       map: this.mapper(item)
-    }));
+    }))
   }
 }

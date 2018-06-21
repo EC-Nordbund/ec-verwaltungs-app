@@ -1,8 +1,22 @@
-import { CreateElement } from 'vue';
-import { Component, Vue } from 'vue-property-decorator';
+import { CreateElement } from 'vue'
+import { Component, Vue } from 'vue-property-decorator'
 
+/**
+ * Kopfzeile
+ *
+ * @export
+ * @class Headline
+ * @extends {Vue}
+ */
 @Component({})
 export default class Headline extends Vue {
+  /**
+   * Renderfunktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof Headline
+   */
   render(h: CreateElement) {
     return h(
       'span',
@@ -29,6 +43,6 @@ export default class Headline extends Vue {
         }
       },
       [this.$slots.default]
-    );
+    )
   }
 }

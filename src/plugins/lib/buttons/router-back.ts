@@ -1,8 +1,22 @@
-import { CreateElement } from 'vue';
-import { Component, Vue } from 'vue-property-decorator';
+import { CreateElement } from 'vue'
+import { Component, Vue } from 'vue-property-decorator'
 
+/**
+ * Zurückbutton (router)
+ *
+ * @export
+ * @class RouterBack
+ * @extends {Vue}
+ */
 @Component({})
 export default class RouterBack extends Vue {
+  /**
+   * Render Funktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof RouterBack
+   */
   render(h: CreateElement) {
     return h(
       'v-btn',
@@ -16,7 +30,7 @@ export default class RouterBack extends Vue {
         },
         on: {
           click: () => {
-            this.$router.back();
+            this.$router.back()
           },
           ...this.$listeners
         },
@@ -32,6 +46,6 @@ export default class RouterBack extends Vue {
         ]
       },
       [h('v-icon', ['keyboard_arrow_left']), 'Zurück']
-    );
+    )
   }
 }
