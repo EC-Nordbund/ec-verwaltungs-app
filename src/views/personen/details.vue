@@ -641,7 +641,25 @@ export default class PersonenDetails extends reloaderBase {
       .then((v: any) => v.data.person)
       .then((v: any) => {
         const { clipboard, remote } = electron
-        clipboard.writeText(JSON.stringify(v))
+
+        const typeName = (obj: any) => {
+          let newObj:any = {}
+          for (const key in obj) {
+            if (key !== '__typename') {
+              if(typeof obj[key] === 'object') {
+                newObj[key] = typeName(obj[key])
+              } else {
+                newObj[key] = obj[key]
+              }
+            } else {
+              console.log(key)
+            }
+          }
+          return newObj
+        }
+
+
+        clipboard.writeText(JSON.stringify(typeName(v), null, 2))
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:

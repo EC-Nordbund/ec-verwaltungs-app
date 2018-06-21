@@ -78,9 +78,10 @@
 <script lang="ts">
 import auth from '@/plugins/auth'
 import nav from '@/plugins/config/nav.config'
-import { isElectron } from '@/plugins/electron'
+import electron, { isElectron, isProduction } from '@/plugins/electron'
 import settings from '@/plugins/settings'
 import version from '@/plugins/version/version'
+import {BrowserWindow} from 'electron'
 
 import {
   Component,
@@ -101,6 +102,18 @@ export default class App extends Vue {
   auth = auth
   event = event
   click(route: string) {
+    if(route === '_hilfe') {
+      let win:BrowserWindow = new electron.remote.BrowserWindow({
+        show: false
+      })
+      const onlinePath = 'http://localhost:8081'
+      const url = isProduction?(isElectron?'../docs/index.html':onlinePath):'http://localhost:8081'
+      win.loadURL(url)
+      win.on('ready-to-show', () => {
+        win.show()
+      })
+      return
+    }
     this.$router.push(route)
     this.drawer = false
   }
