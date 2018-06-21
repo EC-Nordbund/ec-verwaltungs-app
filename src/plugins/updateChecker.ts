@@ -48,7 +48,9 @@ if (isElectron && isProduction) {
     const currentVersion = sortedFilterdResult[0]
 
     const assets = currentVersion.assets.filter(v => {
-      const endung = v.name.split('.')[1]
+      const endung = v.name.split('.')[
+        v.name.split('.').length - 1
+      ]
 
       return (
         endung ===
