@@ -2,12 +2,11 @@ import { Component, Vue } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 
 /**
- * Element hinzufügen-Button (floating Button)
+ * Button for adding elments (floatingActionButton)
  */
 @Component({})
 export default class AddButton extends Vue {
   /**
-   * Render Funktion
    * @param h Create Element
    */
   render(h: CreateElement) {

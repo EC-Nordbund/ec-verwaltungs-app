@@ -4,27 +4,29 @@ import { getClient } from './apollo'
 import eventbus from '@/plugins/eventbus'
 
 /**
- * Klasse die sämtliche Authentifizierung handelt
+ * Class with handels the authentication.
  *
  * @class auth
  */
 class auth {
   /**
-   * AuthToken (intern)
+   * Authentication token
    *
    * @private
    * @type {string}
    * @memberof auth
    */
   private _authToken: string = ''
+
   /**
-   * Allowed Mutations
+   * List of allowed mutations
    *
    * @private
    * @type {string[]}
    * @memberof auth
    */
   private _mutationList: string[] = []
+
   /**
    * UserGruppenBezeichnung
    *
@@ -32,8 +34,9 @@ class auth {
    * @memberof auth
    */
   public _userGroupBezeichnung: string = '____'
+
   /**
-   * Wurde automatisch abgemeldet
+   * `ture` if user automatically was loged out. Otherwise `false`
    *
    * @type {boolean}
    * @memberof auth
@@ -41,7 +44,7 @@ class auth {
   public autoLogOut: boolean = false
 
   /**
-   * Erlaubte Felder
+   * Array which specifies the accessable fields
    *
    * @private
    * @type {Array<{
@@ -71,20 +74,25 @@ class auth {
   public pollInterval: number = 60000
 
   /**
-   * TimerA
+   * Timer to schedule Logout-Soon-Message
    *
    * @private
    * @type {(NodeJS.Timer | null)}
    * @memberof auth
    */
-  private timer: NodeJS.Timer | null = null
-  /**
-   * TimerB
-   */
-  private timer2: NodeJS.Timer | null = null
+  private timeout_logout_soon: NodeJS.Timer | null = null
 
   /**
-   * GetAuthTokenn
+   * Timer to schedule logout
+   *
+   * @private
+   * @type {(NodeJS.Timer | null)}
+   * @memberof auth
+   */
+  private timeout_logout: NodeJS.Timer | null = null
+
+  /**
+   * Getter of `_authToken`
    *
    * @readonly
    * @type {string}
@@ -98,19 +106,19 @@ class auth {
   }
 
   /**
-   * Extend Time
+   * Extends timeout
    *
    * @memberof auth
    */
   public extend(): void {
-    clearTimeout(<NodeJS.Timer>this.timer)
-    clearTimeout(<NodeJS.Timer>this.timer2)
+    clearTimeout(<NodeJS.Timer>this.timeout_logout_soon)
+    clearTimeout(<NodeJS.Timer>this.timeout_logout)
 
-    this.timer = setTimeout(() => {
+    this.timeout_logout_soon = setTimeout(() => {
       eventbus.emit('soonLogout')
     }, 25 * 60 * 1000)
 
-    this.timer2 = setTimeout(() => {
+    this.timeout_logout = setTimeout(() => {
       this.logOut(true)
     }, 30 * 60 * 1000)
 
@@ -129,7 +137,7 @@ class auth {
   }
 
   /**
-   * Check if si logedOut
+   * Checks if user is loged out.
    *
    * @returns {boolean}
    * @memberof auth
@@ -139,7 +147,7 @@ class auth {
   }
 
   /**
-   * Login User
+   * Logs in specified user
    *
    * @param {string} username
    * @param {string} password
@@ -165,20 +173,20 @@ class auth {
       .then(v => (v.data as any).logIn)
       .then(authToken => {
         this._authToken = authToken
-        this.getRechte()
+        this.getRights()
       })
       .then(v => true)
       .catch(v => false)
   }
 
   /**
-   * Get Rechte
+   * Get rights for current user
    *
    * @private
    * @returns
    * @memberof auth
    */
-  private getRechte() {
+  private getRights() {
     return getClient()
       .query({
         query: gql`
@@ -222,7 +230,7 @@ class auth {
   }
 
   /**
-   * LogOut
+   * Logs current user out.
    *
    * @param {boolean} [auto=false] is AutoLogout
    * @returns {(Promise<boolean> | boolean)}
@@ -251,7 +259,7 @@ class auth {
   }
 
   /**
-   * Check if is mujtation Allowed
+   * Checks if specified mujtation is allowed
    *
    * @param {string} mutName
    * @returns
@@ -262,7 +270,7 @@ class auth {
   }
 
   /**
-   *Check uf fieldAllowed
+   * Checks if specified field is allowed
    *
    * @param {Array<{
    *       table: string
@@ -277,15 +285,13 @@ class auth {
       field: string
     }>
   ): boolean {
-    let tmp = true
-    fields.map(this.isFieldAllowed).forEach(v => {
-      tmp = tmp && v
-    })
-    return tmp
+    return fields
+      .map(this.isFieldAllowed)
+      .reduce((prev, curr) => prev && curr)
   }
 
   /**
-   * is Field Allowed
+   * Checks if field is allowed
    *
    * @private
    * @param {{

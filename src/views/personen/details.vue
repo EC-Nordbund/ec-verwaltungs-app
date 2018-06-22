@@ -643,10 +643,10 @@ export default class PersonenDetails extends reloaderBase {
         const { clipboard, remote } = electron
 
         const typeName = (obj: any) => {
-          let newObj:any = {}
+          let newObj: any = {}
           for (const key in obj) {
             if (key !== '__typename') {
-              if(typeof obj[key] === 'object') {
+              if (typeof obj[key] === 'object') {
                 newObj[key] = typeName(obj[key])
               } else {
                 newObj[key] = obj[key]
@@ -658,8 +658,9 @@ export default class PersonenDetails extends reloaderBase {
           return newObj
         }
 
-
-        clipboard.writeText(JSON.stringify(typeName(v), null, 2))
+        clipboard.writeText(
+          JSON.stringify(typeName(v), null, 2)
+        )
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:

@@ -6,7 +6,7 @@ import { DocumentNode } from 'graphql'
 import event from '@/plugins/eventbus'
 
 /**
- * Klasse für Components (Views) with qraphqlconnection... (Including Watchquerry)
+ * Class of components (views) with GraphQL connection including a query watcher
  *
  * @export
  * @abstract
@@ -15,7 +15,7 @@ import event from '@/plugins/eventbus'
  */
 export default abstract class reloader extends Vue {
   /**
-   * Speichert die Variablen
+   * Stores variables as key-value-pairs
    *
    * @type {({[key: string]: string|number|boolean})}
    * @memberof reloader
@@ -25,7 +25,7 @@ export default abstract class reloader extends Vue {
   }
 
   /**
-   * Speichert die Query
+   * Current query
    *
    * @private
    * @type {ObservableQuery<any>}
@@ -34,7 +34,7 @@ export default abstract class reloader extends Vue {
   private _query!: ObservableQuery<any>
 
   /**
-   * Speichert die Daten
+   * Stores any type of data
    *
    * @type {*}
    * @memberof reloader
@@ -42,7 +42,7 @@ export default abstract class reloader extends Vue {
   public data: any
 
   /**
-   * Speichert
+   * Saves
    *
    * @type {DocumentNode}
    * @memberof reloader
@@ -50,14 +50,14 @@ export default abstract class reloader extends Vue {
   public query!: DocumentNode
 
   /**
-   * Authentication-Class-Instance
+   * Getter of authentication instance
    *
    * @memberof reloader
    */
   public auth = auth
 
   /**
-   * On Created
+   * Contains task to be done on creation
    *
    * @memberof reloader
    */
@@ -66,24 +66,30 @@ export default abstract class reloader extends Vue {
   }
 
   /**
-   * Lade Daten
+   * Loads data form server by creating a new `_query` and subscribe to it.
+   * If data is recieved, it will be saved in `data`.
+   * Provides a loading indicator for the user.
    *
    * @memberof reloader
    */
   public loadData() {
-    //Start LoadingSpinner
+    // start LoadingSpinner
     event.emit('showLoading')
+
     this._query = (this.$apollo as any).watchQuery({
       query: this.query,
       variables: this.variabels,
       fetchPolicy: 'cache-and-network',
       pollInterval: auth.pollInterval
     })
+
     if (this._query !== null) {
+      // subscribe to response
       this._query.subscribe((val: any) => {
         if (val.data) {
           this.data = val.data
-          //Stop LoadingSpinner
+
+          // stop LoadingSpinner
           event.emit('hideLoading')
         }
       })
@@ -91,16 +97,19 @@ export default abstract class reloader extends Vue {
   }
 
   /**
-   * Reload Daten
+   * Refetch data form last `_query` and save it in `data`.
+   * Provides a loading indicator for the user.
    *
    * @memberof reloader
    */
   public refetch() {
-    //Start LoadingSpinner
+    // start LoadingSpinner
     event.emit('showLoading')
+
     this._query.refetch().then((val: any) => {
       this.data = val.data
-      ///Stop LoadingSpinner
+
+      // stop LoadingSpinner
       event.emit('hideLoading')
     })
   }
