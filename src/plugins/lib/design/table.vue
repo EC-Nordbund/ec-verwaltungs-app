@@ -16,10 +16,11 @@
         prepend-icon="search"
         :append-icon="suchString.length > 0 ? 'close' : undefined"
         v-model="suchString"
-        :append-icon-cb="()=>{suchString = ''}"
+        @click:append="()=>{suchString = ''}"
       />
       <v-data-table
         rows-per-page-text="Datensätze pro Seite:"
+        :customFilter="customFilter"
         :items="items"
         :headers="headers"
         :search="suchString"
@@ -64,20 +65,26 @@
 </template>
 
 <script lang="ts">
+import filter from 'lazyfilter'
+
 import {
   Component,
   Vue,
   Emit,
   Watch,
   Prop
-} from 'vue-property-decorator';
+} from 'vue-property-decorator'
 
 @Component({})
 export default class Table extends Vue {
-  suchString: string = '';
-  elements: Array<any> = [];
-  headers: Array<any> = [];
-  count: number = -1;
+  suchString: string = ''
+  elements: Array<any> = []
+  headers: Array<any> = []
+  count: number = -1
+
+  // Hier muss evtl 1/2 noch ausgetauscht werden
+  customFilter = (items: any, search: string) =>
+    items.filter((item: any) => filter(item, search, 1 / 2))
 
   @Emit('open')
   open(item: any) {}
@@ -85,7 +92,7 @@ export default class Table extends Vue {
   mounted() {
     if (this.grosseSuche && !this.suche) {
       // eslint-disable-next-line
-      throw 'Damit die große suche geht, muss die kleine ebenfalls aktiviert sein...';
+      throw 'Damit die große suche geht, muss die kleine ebenfalls aktiviert sein...'
     }
   }
 
@@ -97,26 +104,26 @@ export default class Table extends Vue {
         (this.suche ? 80 : 0) -
         100) /
         48
-    );
+    )
   }
 
   @Prop({ type: String, required: true })
-  title!: string;
+  title!: string
 
   @Prop({ type: Boolean, default: false })
-  suche!: boolean;
+  suche!: boolean
 
   @Prop({ type: Boolean, default: false })
-  grosseSuche!: boolean;
+  grosseSuche!: boolean
 
   @Prop({ type: Array, required: true })
-  items!: Array<any>;
+  items!: Array<any>
 
   @Prop({ type: Array, required: true })
-  config!: Array<any>;
+  config!: Array<any>
 
   @Prop({ type: String, required: true })
-  itemName!: string;
+  itemName!: string
 
   @Watch('config', { immediate: true })
   onConfigChange() {
@@ -127,49 +134,49 @@ export default class Table extends Vue {
           col.sortable === undefined || col.sortable,
         value: col.name,
         text: col.label
-      };
-      if (col.width !== undefined) {
-        tmp.width = col.width;
       }
-      return tmp;
-    });
+      if (col.width !== undefined) {
+        tmp.width = col.width
+      }
+      return tmp
+    })
   }
   get(obj: any, path: any, defaultValue: any): any {
     if (typeof path === 'number') {
-      path = [path];
+      path = [path]
     }
     if (!path || (<Array<string>>path).length === 0) {
-      return obj;
+      return obj
     }
     if (obj == null) {
-      return defaultValue;
+      return defaultValue
     }
     if (typeof path === 'string') {
-      return this.get(obj, path.split('.'), defaultValue);
+      return this.get(obj, path.split('.'), defaultValue)
     }
 
-    const currentPath = this.getKey(path[0]);
-    const nextObj = obj[currentPath];
+    const currentPath = this.getKey(path[0])
+    const nextObj = obj[currentPath]
     if (nextObj === undefined) {
-      return defaultValue;
+      return defaultValue
     }
 
     if (path.length === 1) {
-      return nextObj;
+      return nextObj
     }
 
     return this.get(
       obj[currentPath],
       path.slice(1),
       defaultValue
-    );
+    )
   }
   getKey(key: string) {
-    const intKey = parseInt(key, 10);
+    const intKey = parseInt(key, 10)
     if (intKey.toString() === key) {
-      return intKey;
+      return intKey
     }
-    return key;
+    return key
   }
 }
 </script>
