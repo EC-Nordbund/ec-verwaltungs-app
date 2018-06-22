@@ -71,7 +71,7 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public loadData() {
-    //Start LoadiingSpinner
+    //Start LoadingSpinner
     event.emit('showLoading')
     this._query = (this.$apollo as any).watchQuery({
       query: this.query,
@@ -83,7 +83,7 @@ export default abstract class reloader extends Vue {
       this._query.subscribe((val: any) => {
         if (val.data) {
           this.data = val.data
-          //Stop LoadiingSpinner
+          //Stop LoadingSpinner
           event.emit('hideLoading')
         }
       })
@@ -96,11 +96,11 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public refetch() {
-    //Start LoadiingSpinner
+    //Start LoadingSpinner
     event.emit('showLoading')
     this._query.refetch().then((val: any) => {
       this.data = val.data
-      ///Stop LoadiingSpinner
+      ///Stop LoadingSpinner
       event.emit('hideLoading')
     })
   }
