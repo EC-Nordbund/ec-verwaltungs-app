@@ -3,25 +3,93 @@ import { getClient } from './apollo'
 // import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
+/**
+ * Klasse die sämtliche Authentifizierung handelt
+ *
+ * @class auth
+ */
 class auth {
+  /**
+   * AuthToken (intern)
+   *
+   * @private
+   * @type {string}
+   * @memberof auth
+   */
   private _authToken: string = ''
+  /**
+   * Allowed Mutations
+   *
+   * @private
+   * @type {string[]}
+   * @memberof auth
+   */
   private _mutationList: string[] = []
+  /**
+   * UserGruppenBezeichnung
+   *
+   * @type {string}
+   * @memberof auth
+   */
   public _userGroupBezeichnung: string = '____'
+  /**
+   * Wurde automatisch abgemeldet
+   *
+   * @type {boolean}
+   * @memberof auth
+   */
   public autoLogOut: boolean = false
+
+  /**
+   * Erlaubte Felder
+   *
+   * @private
+   * @type {Array<{
+   *     table: string
+   *     field: string
+   *   }>}
+   * @memberof auth
+   */
   private _fieldAccess: Array<{
     table: string
     field: string
   }> = []
 
+  /**
+   * Beschreibung der Person
+   *
+   * @memberof auth
+   */
   public personBeschreibung = ''
 
+  /**
+   * Refetch Intervall
+   *
+   * @type {number}
+   * @memberof auth
+   */
   public pollInterval: number = 60000
 
+  /**
+   * TimerA
+   *
+   * @private
+   * @type {(NodeJS.Timer | null)}
+   * @memberof auth
+   */
   private timer: NodeJS.Timer | null = null
+  /**
+   * TimerB
+   */
   private timer2: NodeJS.Timer | null = null
 
-  constructor() {}
-
+  /**
+   * GetAuthTokenn
+   *
+   * @readonly
+   * @type {string}
+   * @memberof auth
+   */
   public get authToken(): string {
     if (this.isLogedIn()) {
       this.extend()
@@ -29,6 +97,11 @@ class auth {
     return this._authToken
   }
 
+  /**
+   * Extend Time
+   *
+   * @memberof auth
+   */
   public extend(): void {
     clearTimeout(<NodeJS.Timer>this.timer)
     clearTimeout(<NodeJS.Timer>this.timer2)
@@ -55,10 +128,24 @@ class auth {
     })
   }
 
+  /**
+   * Check if si logedOut
+   *
+   * @returns {boolean}
+   * @memberof auth
+   */
   public isLogedIn(): boolean {
     return this._authToken.length > 0
   }
 
+  /**
+   * Login User
+   *
+   * @param {string} username
+   * @param {string} password
+   * @returns {Promise<boolean>}
+   * @memberof auth
+   */
   public logIn(
     username: string,
     password: string
@@ -84,6 +171,13 @@ class auth {
       .catch(v => false)
   }
 
+  /**
+   * Get Rechte
+   *
+   * @private
+   * @returns
+   * @memberof auth
+   */
   private getRechte() {
     return getClient()
       .query({
@@ -127,6 +221,13 @@ class auth {
       })
   }
 
+  /**
+   * LogOut
+   *
+   * @param {boolean} [auto=false] is AutoLogout
+   * @returns {(Promise<boolean> | boolean)}
+   * @memberof auth
+   */
   public logOut(
     auto: boolean = false
   ): Promise<boolean> | boolean {
@@ -149,10 +250,27 @@ class auth {
       })
   }
 
+  /**
+   * Check if is mujtation Allowed
+   *
+   * @param {string} mutName
+   * @returns
+   * @memberof auth
+   */
   public isMutationAllowed(mutName: string) {
     return this._mutationList.indexOf(mutName) !== -1
   }
 
+  /**
+   *Check uf fieldAllowed
+   *
+   * @param {Array<{
+   *       table: string
+   *       field: string
+   *     }>} fields
+   * @returns {boolean}
+   * @memberof auth
+   */
   public isFieldsAllowed(
     fields: Array<{
       table: string
@@ -166,6 +284,17 @@ class auth {
     return tmp
   }
 
+  /**
+   * is Field Allowed
+   *
+   * @private
+   * @param {{
+   *     table: string
+   *     field: string
+   *   }} field
+   * @returns {boolean}
+   * @memberof auth
+   */
   private isFieldAllowed(field: {
     table: string
     field: string
@@ -192,4 +321,5 @@ class auth {
   }
 }
 
+// Export instance
 export default new auth()

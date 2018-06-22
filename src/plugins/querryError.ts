@@ -1,5 +1,8 @@
 import electron, { isElectron } from '@/plugins/electron'
 
+/**
+ * Query-Error Handler
+ */
 export default (err: string) => {
   if (isElectron) {
     electron.remote.dialog.showErrorBox(
