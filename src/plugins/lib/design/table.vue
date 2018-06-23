@@ -84,7 +84,7 @@ export default class Table extends Vue {
 
   // Hier muss evtl 1/2 noch ausgetauscht werden
   customFilter = (items: any, search: string) =>
-    items.filter((item: any) => filter(item, search, 1 / 2))
+    items.filter((item: any) => filter(item, search, 1 / 3))
 
   @Emit('open')
   open(item: any) {}
