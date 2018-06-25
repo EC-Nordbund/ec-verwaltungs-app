@@ -16,10 +16,11 @@
         prepend-icon="search"
         :append-icon="suchString.length > 0 ? 'close' : undefined"
         v-model="suchString"
-        :append-icon-cb="()=>{suchString = ''}"
+        @click:append="()=>{suchString = ''}"
       />
       <v-data-table
         rows-per-page-text="Datensätze pro Seite:"
+        :customFilter="customFilter"
         :items="items"
         :headers="headers"
         :search="suchString"
@@ -54,7 +55,7 @@
 
         <template slot="no-results">
           <v-alert :value="true" type="info">
-            Nach dem Filter sind keine {{itemName}} mehr übrig geblieben!
+            Es wurden keine <i>{{itemName}}</i> mit deiner Suchanfrage "<strong>{{suchString}}</strong>" gefunden.
           </v-alert>
         </template>
       </v-data-table>
@@ -64,6 +65,8 @@
 </template>
 
 <script lang="ts">
+import filter from 'lazyfilter'
+
 import {
   Component,
   Vue,
@@ -78,6 +81,10 @@ export default class Table extends Vue {
   elements: Array<any> = []
   headers: Array<any> = []
   count: number = -1
+
+  // Hier kann die Tolleranz der Suche geändert werden
+  customFilter = (items: any, search: string) =>
+    items.filter((item: any) => filter(item, search, 1 / 3))
 
   @Emit('open')
   open(item: any) {}

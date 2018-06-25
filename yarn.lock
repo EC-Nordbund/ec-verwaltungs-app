@@ -4497,6 +4497,10 @@ js-base64@^2.1.8, js-base64@^2.1.9:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.5.tgz#e293cd3c7c82f070d700fc7a1ca0a2e69f101f92"
 
+js-levenshtein@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.3.tgz#3ef627df48ec8cf24bacf05c0f184ff30ef413c5"
+
 js-message@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/js-message/-/js-message-1.0.5.tgz#2300d24b1af08e89dd095bc1a4c9c9cfcb892d15"
@@ -4758,6 +4762,12 @@ launch-editor@^2.2.1:
   dependencies:
     chalk "^2.3.0"
     shell-quote "^1.6.1"
+
+"lazyfilter@https://github.com/ecnordbund/lazyFilter.git":
+  version "0.0.1"
+  resolved "https://github.com/ecnordbund/lazyFilter.git#874d5122d3166eddb78f98f8a70faa0355fb617e"
+  dependencies:
+    js-levenshtein "^1.1.3"
 
 lcid@^1.0.0:
   version "1.0.0"
