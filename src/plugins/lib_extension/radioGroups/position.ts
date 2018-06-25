@@ -1,8 +1,20 @@
 import {CreateElement} from 'vue'
 import { Component, Vue } from 'vue-property-decorator';
 
+/**
+ * PositionsRadioButton
+ *
+ * @export
+ * @class geschlechtRadio
+ * @extends {Vue}
+ */
 @Component({})
-export default class geschlechtRadio extends Vue {
+export default class positionRadio extends Vue {
+  /**
+   * Items
+   *
+   * @memberof positionRadio
+   */
   items = [
     {label: "Teilnehmer", value: 1},
     {label: "Mitarbeiter", value: 2},
@@ -12,6 +24,13 @@ export default class geschlechtRadio extends Vue {
     {label: "Hauptleiter", value: 6}
   ]
 
+  /**
+   * Render Funktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof positionRadio
+   */
   render(h: CreateElement) {
     return h(
       'ec-form-radio',

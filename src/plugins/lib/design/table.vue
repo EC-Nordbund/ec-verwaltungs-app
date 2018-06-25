@@ -85,7 +85,7 @@ export default class Table extends Vue {
   // Hier kann die Tolleranz der Suche geändert werden
   customFilter = (items: any, search: string) =>
     items.filter((item: any) =>
-      filter(item, search, 1 / 100)
+      filter(item, search, 1 / 3)
     )
 
   @Emit('open')
@@ -94,7 +94,8 @@ export default class Table extends Vue {
   mounted() {
     if (this.grosseSuche && !this.suche) {
       // eslint-disable-next-line
-      throw 'Damit die große Suche geht, muss die kleine ebenfalls aktiviert sein...'
+      throw 'Damit die große suche geht, muss die kleine ebenfalls aktiviert sein...'
+
     }
   }
 
