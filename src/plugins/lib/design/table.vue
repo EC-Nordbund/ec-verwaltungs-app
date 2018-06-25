@@ -55,7 +55,7 @@
 
         <template slot="no-results">
           <v-alert :value="true" type="info">
-            Nach dem Filter sind keine {{itemName}} mehr übrig geblieben!
+            Es wurden keine <i>{{itemName}}</i> mit deiner Suchanfrage "<strong>{{suchString}}</strong>" gefunden.
           </v-alert>
         </template>
       </v-data-table>
@@ -84,7 +84,9 @@ export default class Table extends Vue {
 
   // Hier muss evtl 1/2 noch ausgetauscht werden
   customFilter = (items: any, search: string) =>
-    items.filter((item: any) => filter(item, search, 1 / 2))
+    items.filter((item: any) =>
+      filter(item, search, 1 / 100)
+    )
 
   @Emit('open')
   open(item: any) {}
