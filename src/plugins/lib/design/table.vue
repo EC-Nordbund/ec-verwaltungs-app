@@ -84,9 +84,7 @@ export default class Table extends Vue {
 
   // Hier kann die Tolleranz der Suche geändert werden
   customFilter = (items: any, search: string) =>
-    items.filter((item: any) =>
-      filter(item, search, 1 / 100)
-    )
+    items.filter((item: any) => filter(item, search, 1 / 3))
 
   @Emit('open')
   open(item: any) {}
