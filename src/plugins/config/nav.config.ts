@@ -73,7 +73,7 @@ export default [
   {
     title: 'Hilfe',
     action: 'help',
-    route: '/help',
+    route: '_hilfe',
     userGroups: '*'
   },
   {

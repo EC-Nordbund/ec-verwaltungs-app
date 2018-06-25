@@ -159,16 +159,6 @@
   optionalDependencies:
     electron-winstaller "^2.5.0"
 
-"@electron-forge/maker-zip@^6.0.0-beta.17":
-  version "6.0.0-beta.18"
-  resolved "https://registry.yarnpkg.com/@electron-forge/maker-zip/-/maker-zip-6.0.0-beta.18.tgz#495772f5ee6bd888630934d79b52a07b3384816a"
-  dependencies:
-    "@electron-forge/maker-base" "6.0.0-beta.18"
-    "@electron-forge/shared-types" "6.0.0-beta.18"
-    cross-zip "^2.1.5"
-    fs-extra "^5.0.0"
-    pify "^3.0.0"
-
 "@electron-forge/plugin-base@6.0.0-beta.18":
   version "6.0.0-beta.18"
   resolved "https://registry.yarnpkg.com/@electron-forge/plugin-base/-/plugin-base-6.0.0-beta.18.tgz#f8ed30f21669bf21a2775ac0ae35a80ca28ca424"
@@ -200,8 +190,8 @@
     ora "^2.0.0"
 
 "@octokit/rest@^15.2.6":
-  version "15.9.0"
-  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.9.0.tgz#47863d114cd56a398b0774b4e6f9f942b3ffd2fd"
+  version "15.9.1"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-15.9.1.tgz#d1abd3e8b9c1b4cf647d94b59dd476cc34bb3d9e"
   dependencies:
     before-after-hook "^1.1.0"
     btoa-lite "^1.0.0"
@@ -628,12 +618,6 @@ cross-spawn@^5.0.0, cross-spawn@^5.0.1, cross-spawn@^5.1.0:
 cross-unzip@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/cross-unzip/-/cross-unzip-0.0.2.tgz#5183bc47a09559befcf98cc4657964999359372f"
-
-cross-zip@^2.1.5:
-  version "2.1.5"
-  resolved "https://registry.yarnpkg.com/cross-zip/-/cross-zip-2.1.5.tgz#c5d1a06a4b1a12a033064f946eb5ae6d4bdcf3e1"
-  dependencies:
-    rimraf "^2.5.2"
 
 cryptiles@2.x.x:
   version "2.0.5"
@@ -1729,8 +1713,8 @@ nested-error-stacks@^1.0.1:
     inherits "~2.0.1"
 
 node-abi@^2.0.0:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.4.1.tgz#7628c4d4ec4e9cd3764ceb3652f36b2e7f8d4923"
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/node-abi/-/node-abi-2.4.3.tgz#43666b7b17e57863e572409edbb82115ac7af28b"
   dependencies:
     semver "^5.4.1"
 
@@ -2556,8 +2540,8 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
 universalify@^0.1.0:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.1.tgz#fa71badd4437af4c148841e3b3b165f9e9e590b7"
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
 
 unorm@^1.4.1:
   version "1.4.1"

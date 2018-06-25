@@ -5,8 +5,20 @@ import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
 import { CreateElement } from 'vue'
 
+/**
+ * AK-Select
+ *
+ * @export
+ * @class akSelect
+ * @extends {select_base}
+ */
 @Component({})
 export default class akSelect extends select_base {
+  /**
+   * Created
+   *
+   * @memberof akSelect
+   */
   created() {
     this.query = gql`
       query($authToken: String!) {
@@ -35,15 +47,22 @@ export default class akSelect extends select_base {
 
     super.created()
   }
+
+  /**
+   * RenderFunktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof akSelect
+   */
   render(h: CreateElement) {
-    return h('v-select', {
+    return h('v-autocomplete', {
       props: {
         items: this.items,
         value: this.select,
         'single-line': true,
         'item-text': 'beschreibung',
         'item-value': 'id',
-        autocomplete: true,
         ...this.$attrs
       },
       attrs: {

@@ -7,8 +7,22 @@ import {
 } from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 
+/**
+ * Radio-Button-Base
+ *
+ * @export
+ * @class radio
+ * @extends {Vue}
+ */
 @Component({})
 export default class radio extends Vue {
+  /**
+   * Render Funktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof radio
+   */
   render(h: CreateElement) {
     return h(
       'v-radio-group',
@@ -41,8 +55,20 @@ export default class radio extends Vue {
     )
   }
 
+  /**
+   * Interner VValue
+   *
+   * @type {(string | number)}
+   * @memberof radio
+   */
   intern_value: string | number = ''
 
+  /**
+   * Value-Prop
+   *
+   * @type {(string | number)}
+   * @memberof radio
+   */
   @Prop({
     type: [String, Number],
     required: false,
@@ -50,6 +76,16 @@ export default class radio extends Vue {
   })
   value!: string | number
 
+  /**
+   * Items
+   *
+   * @type {Array<{
+   *     label: string
+   *     value: string
+   *     color: string
+   *   }>}
+   * @memberof radio
+   */
   @Prop({
     type: Array,
     required: true,

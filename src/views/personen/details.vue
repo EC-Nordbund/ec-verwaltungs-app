@@ -14,7 +14,7 @@
       <v-spacer/>
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
       <ec-button-icon @click="editPersonStamm_open"/>
-      <v-tabs v-model="tabs" fixed-tabs slot="extension">
+      <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
           <v-icon v-accent>contacts</v-icon>
@@ -641,7 +641,26 @@ export default class PersonenDetails extends reloaderBase {
       .then((v: any) => v.data.person)
       .then((v: any) => {
         const { clipboard, remote } = electron
-        clipboard.writeText(JSON.stringify(v))
+
+        const typeName = (obj: any) => {
+          let newObj: any = {}
+          for (const key in obj) {
+            if (key !== '__typename') {
+              if (typeof obj[key] === 'object') {
+                newObj[key] = typeName(obj[key])
+              } else {
+                newObj[key] = obj[key]
+              }
+            } else {
+              console.log(key)
+            }
+          }
+          return newObj
+        }
+
+        clipboard.writeText(
+          JSON.stringify(typeName(v), null, 2)
+        )
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:

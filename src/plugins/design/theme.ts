@@ -1,5 +1,7 @@
 /**
  * Used Theme
+ * Man kann belibige weitere Farben definieren.
+ * Alle Farbdefinitionen sollten hier passieren.
  */
 export const theme = {
   primary: '#8FB217',
