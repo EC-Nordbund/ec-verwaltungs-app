@@ -1,12 +1,23 @@
 import { Component } from 'vue-property-decorator'
 import select_base from '@/plugins/lib/formElements/selects/select'
 import auth from '@/plugins/auth'
-
 import gql from 'graphql-tag'
 import { CreateElement } from 'vue'
 
+/**
+ * Verteiler Select
+ *
+ * @export
+ * @class verteilerSelect
+ * @extends {select_base}
+ */
 @Component({})
 export default class verteilerSelect extends select_base {
+  /**
+   * Created Hook
+   *
+   * @memberof verteilerSelect
+   */
   created() {
     this.query = gql`
       query($authToken: String!) {
@@ -35,6 +46,14 @@ export default class verteilerSelect extends select_base {
 
     super.created()
   }
+
+  /**
+   * Render Funktion
+   *
+   * @param {CreateElement} h
+   * @returns
+   * @memberof verteilerSelect
+   */
   render(h: CreateElement) {
     return h('v-autocomplete', {
       props: {
