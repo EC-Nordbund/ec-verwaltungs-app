@@ -6,6 +6,7 @@ import '@/plugins/widgets/widgets/message.vue'
 import widgetTab from '@/plugins/widgets/widgetTab.vue'
 import Vue from 'vue'
 
+// Component Register
 Vue.component('ec-widget-container', widgetContainer)
 Vue.component('ec-widget-tab', widgetTab)
 Vue.component('ec-widget-element', widgetElement)

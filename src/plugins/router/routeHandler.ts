@@ -7,6 +7,7 @@ const loginPage = '/login'
 
 const routesWithOutLogIn = [loginPage]
 
+// Router Guard
 router.beforeEach((to, from, next) => {
   // wenn /login und angemeldet -> startpage
   if (auth.isLogedIn()) {

@@ -3,25 +3,101 @@ import { getClient } from './apollo'
 // import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
+/**
+ * Class with handels the authentication.
+ *
+ * @class auth
+ */
 class auth {
+  /**
+   * Authentication token
+   *
+   * @private
+   * @type {string}
+   * @memberof auth
+   */
   private _authToken: string = ''
+
+  /**
+   * List of allowed mutations
+   *
+   * @private
+   * @type {string[]}
+   * @memberof auth
+   */
   private _mutationList: string[] = []
+
+  /**
+   * UserGruppenBezeichnung
+   *
+   * @type {string}
+   * @memberof auth
+   */
   public _userGroupBezeichnung: string = '____'
+
+  /**
+   * `ture` if user automatically was loged out. Otherwise `false`
+   *
+   * @type {boolean}
+   * @memberof auth
+   */
   public autoLogOut: boolean = false
+
+  /**
+   * Array which specifies the accessable fields
+   *
+   * @private
+   * @type {Array<{
+   *     table: string
+   *     field: string
+   *   }>}
+   * @memberof auth
+   */
   private _fieldAccess: Array<{
     table: string
     field: string
   }> = []
 
+  /**
+   * Beschreibung der Person
+   *
+   * @memberof auth
+   */
   public personBeschreibung = ''
 
+  /**
+   * Refetch Intervall
+   *
+   * @type {number}
+   * @memberof auth
+   */
   public pollInterval: number = 60000
 
-  private timer: NodeJS.Timer | null = null
-  private timer2: NodeJS.Timer | null = null
+  /**
+   * Timer to schedule Logout-Soon-Message
+   *
+   * @private
+   * @type {(NodeJS.Timer | null)}
+   * @memberof auth
+   */
+  private timeout_logout_soon: NodeJS.Timer | null = null
 
-  constructor() {}
+  /**
+   * Timer to schedule logout
+   *
+   * @private
+   * @type {(NodeJS.Timer | null)}
+   * @memberof auth
+   */
+  private timeout_logout: NodeJS.Timer | null = null
 
+  /**
+   * Getter of `_authToken`
+   *
+   * @readonly
+   * @type {string}
+   * @memberof auth
+   */
   public get authToken(): string {
     if (this.isLogedIn()) {
       this.extend()
@@ -29,15 +105,20 @@ class auth {
     return this._authToken
   }
 
+  /**
+   * Extends timeout
+   *
+   * @memberof auth
+   */
   public extend(): void {
-    clearTimeout(<NodeJS.Timer>this.timer)
-    clearTimeout(<NodeJS.Timer>this.timer2)
+    clearTimeout(<NodeJS.Timer>this.timeout_logout_soon)
+    clearTimeout(<NodeJS.Timer>this.timeout_logout)
 
-    this.timer = setTimeout(() => {
+    this.timeout_logout_soon = setTimeout(() => {
       eventbus.emit('soonLogout')
     }, 25 * 60 * 1000)
 
-    this.timer2 = setTimeout(() => {
+    this.timeout_logout = setTimeout(() => {
       this.logOut(true)
     }, 30 * 60 * 1000)
 
@@ -55,10 +136,24 @@ class auth {
     })
   }
 
+  /**
+   * Checks if user is loged out.
+   *
+   * @returns {boolean}
+   * @memberof auth
+   */
   public isLogedIn(): boolean {
     return this._authToken.length > 0
   }
 
+  /**
+   * Logs in specified user
+   *
+   * @param {string} username
+   * @param {string} password
+   * @returns {Promise<boolean>}
+   * @memberof auth
+   */
   public logIn(
     username: string,
     password: string
@@ -78,13 +173,20 @@ class auth {
       .then(v => (v.data as any).logIn)
       .then(authToken => {
         this._authToken = authToken
-        this.getRechte()
+        this.getRights()
       })
       .then(v => true)
       .catch(v => false)
   }
 
-  private getRechte() {
+  /**
+   * Get rights for current user
+   *
+   * @private
+   * @returns
+   * @memberof auth
+   */
+  private getRights() {
     return getClient()
       .query({
         query: gql`
@@ -127,6 +229,13 @@ class auth {
       })
   }
 
+  /**
+   * Logs current user out.
+   *
+   * @param {boolean} [auto=false] is AutoLogout
+   * @returns {(Promise<boolean> | boolean)}
+   * @memberof auth
+   */
   public logOut(
     auto: boolean = false
   ): Promise<boolean> | boolean {
@@ -149,23 +258,49 @@ class auth {
       })
   }
 
+  /**
+   * Checks if specified mujtation is allowed
+   *
+   * @param {string} mutName
+   * @returns
+   * @memberof auth
+   */
   public isMutationAllowed(mutName: string) {
     return this._mutationList.indexOf(mutName) !== -1
   }
 
+  /**
+   * Checks if specified field is allowed
+   *
+   * @param {Array<{
+   *       table: string
+   *       field: string
+   *     }>} fields
+   * @returns {boolean}
+   * @memberof auth
+   */
   public isFieldsAllowed(
     fields: Array<{
       table: string
       field: string
     }>
   ): boolean {
-    let tmp = true
-    fields.map(this.isFieldAllowed).forEach(v => {
-      tmp = tmp && v
-    })
-    return tmp
+    return fields
+      .map(this.isFieldAllowed)
+      .reduce((prev, curr) => prev && curr)
   }
 
+  /**
+   * Checks if field is allowed
+   *
+   * @private
+   * @param {{
+   *     table: string
+   *     field: string
+   *   }} field
+   * @returns {boolean}
+   * @memberof auth
+   */
   private isFieldAllowed(field: {
     table: string
     field: string
@@ -192,4 +327,5 @@ class auth {
   }
 }
 
+// Export instance
 export default new auth()

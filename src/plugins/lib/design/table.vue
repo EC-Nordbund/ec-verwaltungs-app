@@ -92,7 +92,7 @@ export default class Table extends Vue {
   mounted() {
     if (this.grosseSuche && !this.suche) {
       // eslint-disable-next-line
-      throw 'Damit die große Suche geht, muss die kleine ebenfalls aktiviert sein...'
+      throw 'Damit die große suche geht, muss die kleine ebenfalls aktiviert sein...'
     }
   }
 
