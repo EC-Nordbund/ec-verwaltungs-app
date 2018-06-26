@@ -1,8 +1,17 @@
 // Import Electron
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, Tray } = require('electron')
 
 // On Install do Stuff
 if (require('electron-squirrel-startup')) {
+  app.quit()
+}
+
+//Single Instance
+const isSecondInstance = app.makeSingleInstance(() => {
+  BrowserWindow.getAllWindows()[0].show()
+})
+
+if (isSecondInstance) {
   app.quit()
 }
 
@@ -19,12 +28,18 @@ const loadingURL =
     ? 'http://localhost:8080/loading.html'
     : `file://${__dirname}/../renderer/loading.html`
 
+const logoURL =
+  process.env.NODE_ENV === 'development'
+    ? `${__dirname}/../../../public/ec-logo-512.png`
+    : `${__dirname}/../renderer/ec-logo-512.png`
+
 //Get Settings
 const mainWindowOptions = {
   height: 563,
   useContentSize: true,
   width: 1000,
-  show: false
+  show: false,
+  icon: logoURL
 }
 
 const loadingWindowOptions = {
@@ -34,7 +49,8 @@ const loadingWindowOptions = {
   width: 470,
   show: false,
   closable: false,
-  resizable: false
+  resizable: false,
+  icon: logoURL
 }
 
 //=================================================================================================================================================
@@ -64,6 +80,17 @@ function createLoadingWindow() {
       createWindow()
     }, 2000)
   })
+  setupTray()
+}
+
+let tray
+
+function setupTray() {
+  tray = new Tray(logoURL)
+  tray.setToolTip('EC-Verwaltungs-Application')
+  tray.on('click', () => {
+    BrowserWindow.getAllWindows()[0].show()
+  })
 }
 
 //=================================================================================================================================================
@@ -74,6 +101,7 @@ app.once('ready', createLoadingWindow)
 // Wenn alle Fenster zu dann quit (außer macOS)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
+    tray.destroy()
     app.quit()
   }
 })
