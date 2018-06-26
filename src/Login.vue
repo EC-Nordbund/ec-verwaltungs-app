@@ -3,6 +3,7 @@
     <div class="ec_content">
       <v-card class="ec_card" width="500px">
         <v-card-title>
+          <img width="64px" src="../public/ec-logo-512.png" style="margin-right: 15px"/>
           <h1 v-font v-primary>
             Login
           </h1>

@@ -3,8 +3,8 @@
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
       <v-spacer/>
-      <v-avatar size="30px">
-        <img src="./assets/logo.png">
+      <v-avatar size="60px" style="margin-right: 10px" class="elevation-5">
+        <img src="../public/ec-logo-512.png">
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
@@ -67,8 +67,9 @@
             Automatischer LogOut...
           </h1>
         </v-card-title>
-        <v-card-text v-accent :style="{fontSize: '18px'}">
-          <b>Achtung!</b> Du wirst automatisch in {{sec}} Sekunden abgemeldet...<br/> Um das zu verhindern musst du nur irgendwoanders hnklicken.
+        <v-card-text :style="{fontSize: '18px'}">
+          <b>Achtung!</b> Du wirst automatisch in {{sec}} Sekunden abgemeldet...<br/>
+          Um das zu verhindern musst du nur irgendwoanders hnklicken.
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -78,10 +79,13 @@
 <script lang="ts">
 import auth from '@/plugins/auth'
 import nav from '@/plugins/config/nav.config'
-import electron, { isElectron, isProduction } from '@/plugins/electron'
+import electron, {
+  isElectron,
+  isProduction
+} from '@/plugins/electron'
 import settings from '@/plugins/settings'
 import version from '@/plugins/version/version'
-import {BrowserWindow} from 'electron'
+import { BrowserWindow } from 'electron'
 
 import {
   Component,
@@ -102,12 +106,18 @@ export default class App extends Vue {
   auth = auth
   event = event
   click(route: string) {
-    if(route === '_hilfe') {
-      let win:BrowserWindow = new electron.remote.BrowserWindow({
-        show: false
-      })
+    if (route === '_hilfe') {
+      let win: BrowserWindow = new electron.remote.BrowserWindow(
+        {
+          show: false
+        }
+      )
       const onlinePath = 'http://localhost:8081'
-      const url = isProduction?(isElectron?'../docs/index.html':onlinePath):'http://localhost:8081'
+      const url = isProduction
+        ? isElectron
+          ? '../docs/index.html'
+          : onlinePath
+        : 'http://localhost:8081'
       win.loadURL(url)
       win.on('ready-to-show', () => {
         win.show()
