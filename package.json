@@ -39,7 +39,8 @@
     "docs:api": "graphql-markdown http://localhost:4000/graphql > ./docs/api/README.md",
     ":init": "yarn && cd electron && yarn && cd ..",
     "dev": "concurrently \"yarn serve\" \"yarn docs:dev\"",
-    "publish": "yarn build && cd electron && yarn run publish"
+    "publish": "yarn build && cd electron && yarn run publish",
+    "update": "node ./updateVersion.js"
   },
   "main": "./electron/src/main/main.dev.js",
   "dependencies": {

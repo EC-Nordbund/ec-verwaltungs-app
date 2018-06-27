@@ -1,19 +1,19 @@
 <template>
   <ec-table title="Veranstaltungen" itemName="Veranstaltungen" :items="data.veranstaltungen" :config="tableConfig" suche @open="open">
-    <ec-add/>
+    <ec-button-add/>
   </ec-table>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import gql from 'graphql-tag';
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import gql from 'graphql-tag'
 
-import auth from '@/plugins/auth';
+import auth from '@/plugins/auth'
 @Component({})
 export default class VeranstaltungsListe extends reloaderBase {
   data: { veranstaltungen: Array<any> } = {
     veranstaltungen: []
-  };
+  }
   tableConfig = [
     { name: 'bezeichnung', label: 'Bezeichnung' },
     {
@@ -23,7 +23,7 @@ export default class VeranstaltungsListe extends reloaderBase {
     },
     { name: 'ende.german', label: 'Ende', width: '175px' },
     { name: 'unterkunft.bezeichnung', label: 'Unterkunft' }
-  ];
+  ]
   created() {
     this.query = gql`
       query($authToken: String!) {
@@ -41,17 +41,17 @@ export default class VeranstaltungsListe extends reloaderBase {
           }
         }
       }
-    `;
+    `
     this.variabels = {
       authToken: auth.authToken
-    };
-    super.created();
+    }
+    super.created()
   }
 
   open(item: any) {
     this.$router.push(
       `/app/veranstaltungen/${item.veranstaltungsID}`
-    );
+    )
   }
 }
 </script>

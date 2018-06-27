@@ -46,13 +46,16 @@ export default class widgetContainer extends Vue {
   onShowDialofChange(val: boolean) {}
 }
 </script>
-<style scoped>
+<style lang="scss">
 .ec-widgetContainer-grid {
   display: grid;
   grid-template-rows: auto 1fr;
   height: 100%;
-}
-.tabs__content {
-  height: 100%;
+  .v-tabs__items {
+    display: grid;
+    .tabs__content {
+      height: 100%;
+    }
+  }
 }
 </style>

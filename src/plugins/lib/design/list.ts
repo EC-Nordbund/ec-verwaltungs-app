@@ -48,7 +48,7 @@ export default class Liste extends Vue {
                           color: 'indigo'
                         }
                       },
-                      [mapItem.icon || this.icon]
+                      [mapItem.map.icon || this.icon]
                     )
                   ])
                 ]
