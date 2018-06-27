@@ -14,17 +14,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import gql from 'graphql-tag';
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import gql from 'graphql-tag'
 
-import auth from '@/plugins/auth';
+import auth from '@/plugins/auth'
 
 @Component({})
 export default class PersonenListe extends reloaderBase {
   data = {
     personen: []
-  };
+  }
   tableConfig = [
     {
       name: 'geschlecht',
@@ -39,8 +39,8 @@ export default class PersonenListe extends reloaderBase {
       label: 'Geburtsdatum',
       width: '175px'
     }
-  ];
-  addPerson_show = false;
+  ]
+  addPerson_show = false
   addPerson_config = [
     {
       label: 'Vorname',
@@ -90,24 +90,43 @@ export default class PersonenListe extends reloaderBase {
       ],
       componentName: 'ec-radio-geschlecht'
     }
-  ];
+  ]
 
   save(value: any) {
-    console.log(
-      'save',
-      value,
-      value.gebDat,
-      value.geschlecht
-    );
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $vorname: String!
+          $nachname: String!
+          $gebDat: String!
+          $geschlecht: String!
+          $authToken: String!
+        ) {
+          addPerson(
+            authToken: $authToken
+            vorname: $vorname
+            nachname: $nachname
+            gebDat: $gebDat
+            geschlecht: $geschlecht
+          )
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(()=>{
+      this.refetch()
+    })
   }
   open(item: any) {
-    this.$router.push(`/app/personen/${item.personID}`);
+    this.$router.push(`/app/personen/${item.personID}`)
   }
 
   created() {
     this.variabels = {
       authToken: auth.authToken
-    };
+    }
     this.query = gql`
       query($authToken: String!) {
         personen(authToken: $authToken) {
@@ -120,8 +139,8 @@ export default class PersonenListe extends reloaderBase {
           geschlecht
         }
       }
-    `;
-    super.created();
+    `
+    super.created()
   }
 }
 </script>
