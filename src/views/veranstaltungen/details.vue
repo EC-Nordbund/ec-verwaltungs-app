@@ -37,69 +37,69 @@
               icon: 'home'
             },
             {
-              title: '',
+              title: '100€ _',
               subTitle: 'Preis Frühbucher',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '100€ _',
               subTitle: 'Preis Normal',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '100€ _',
               subTitle: 'Preis Last Minute',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '100€ _',
               subTitle: 'Anzahlung Frühbucher',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '100€ _',
               subTitle: 'Anzahlung Normal',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '100€ _',
               subTitle: 'Anzahlung Last Minute',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '01.01.2000 _',
               subTitle: 'Frühbucher gilt bis',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: '01.01.2000 _',
               subTitle: 'Last Minute gilt ab',
-              icon: ''
+              icon: 'attach_money'
             },
             {
-              title: '',
+              title: 'Nein _',
               subTitle: 'Vorort bezahlen möglich?',
-              icon: ''
+              icon: 'money_off'
             },
             {
-              title: '',
+              title: 'Aktiviert',
               subTitle: 'Warteliste Geschlechterspezifisch',
-              icon: ''
+              icon: 'group'
             },
             {
-              title: '',
+              title: '50',
               subTitle: 'Anzahl Plätze',
-              icon: ''
+              icon: 'group'
             },
             {
-              title: '',
+              title: '25',
               subTitle: 'Anzahl Plätze männlich',
-              icon: ''
+              icon: 'group'
             },
             {
-              title: '',
+              title: '25',
               subTitle: 'Anzahl Plätze weiblich',
-              icon: ''
+              icon: 'group'
             }
           ]"
           :mapper="v=>v"
