@@ -145,3 +145,21 @@ export const verteilerTypeConfig: IConfig = {
     inArray('einen Verteilertyp', 'An', 'CC', 'BCC')
   ]
 }
+
+export const bezeichnungConfig: IConfig = {
+  name: 'bezeichnung',
+  label: 'Bezeichnung',
+  required: true,
+  rules: [
+    required('eine Bezeichnung'),
+    maxLength('eine Bezeichnung', 'die', 50)
+  ]
+}
+
+export const personConfig: IConfig = {
+  name: 'personID',
+  label: 'Person wählen',
+  required: true,
+  rules: [required('eine Person')],
+  componentName: 'ec-select-person'
+}

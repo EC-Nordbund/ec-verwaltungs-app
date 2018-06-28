@@ -16,13 +16,17 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
 
-import {vornameConfig, nachnameConfig, gebDatConfig, geschlechtConfig} from '@/plugins/formConfig/index'
+import {
+  vornameConfig,
+  nachnameConfig,
+  gebDatConfig,
+  geschlechtConfig
+} from '@/plugins/formConfig/index'
 
 import auth from '@/plugins/auth'
 
-import {query} from '@/graphql/index';
+import { query } from '@/graphql/index'
 
 @Component({})
 export default class PersonenListe extends reloaderBase {
@@ -50,34 +54,20 @@ export default class PersonenListe extends reloaderBase {
     nachnameConfig,
     gebDatConfig,
     geschlechtConfig
-  ];
+  ]
 
   save(value: any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation(
-          $vorname: String!
-          $nachname: String!
-          $gebDat: String!
-          $geschlecht: String!
-          $authToken: String!
-        ) {
-          addPerson(
-            authToken: $authToken
-            vorname: $vorname
-            nachname: $nachname
-            gebDat: $gebDat
-            geschlecht: $geschlecht
-          )
+    this.$apollo
+      .mutate({
+        mutation: query.personen.liste.addPerson,
+        variables: {
+          authToken: auth.authToken,
+          ...value
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        ...value
-      }
-    }).then(()=>{
-      this.refetch()
-    })
+      })
+      .then(() => {
+        this.refetch()
+      })
   }
   open(item: any) {
     this.$router.push(`/app/personen/${item.personID}`)
@@ -86,9 +76,10 @@ export default class PersonenListe extends reloaderBase {
   created() {
     this.variabels = {
       authToken: auth.authToken
-    };
-    this.query = query.personen.liste.load;
-    super.created();
+    }
+    this.query = query.personen.liste.load
+    super.created()
   }
 }
 </script>
+ 

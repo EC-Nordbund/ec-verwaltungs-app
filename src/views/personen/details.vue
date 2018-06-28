@@ -261,7 +261,6 @@
 import electron, { isElectron } from '@/plugins/electron'
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
 
@@ -294,25 +293,7 @@ export default class PersonenDetails extends reloaderBase {
   editPersonStamm_value = {}
   editPersonStamm_save(value: any) {
     this.$apollo.mutate({
-      mutation: gql`
-        mutation(
-          $personID: Int!
-          $vorname: String!
-          $nachname: String!
-          $gebDat: String!
-          $geschlecht: String!
-          $authToken: String!
-        ) {
-          editPersonStamm(
-            authToken: $authToken
-            personID: $personID
-            vorname: $vorname
-            nachname: $nachname
-            gebDat: $gebDat
-            geschlecht: $geschlecht
-          )
-        }
-      `,
+      mutation: query.personen.details.editStamm,
       variables: {
         authToken: this.auth.authToken,
         personID: this.$route.params.id,
@@ -452,11 +433,9 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.editVerteiler,
         variables: {
-          verteilerPersonenID: value.verteilerPersonenID,
+          ...value,
           personID: this.data.person.personID,
-          authToken: auth.authToken,
-          type: value.type,
-          verteilerID: value.verteiler
+          authToken: auth.authToken
         }
       })
       .then(this.refetch)
@@ -475,9 +454,8 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.deleteVerteiler,
         variables: {
-          verteilerPersonID: value.verteilerPersonenID,
           authToken: auth.authToken,
-          type: value.type
+          ...value
         }
       })
       .then(this.refetch)
@@ -489,8 +467,7 @@ export default class PersonenDetails extends reloaderBase {
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          type: value.type,
-          verteilerID: value.verteiler
+          ...value
         }
       })
       .then(this.refetch)
@@ -500,12 +477,9 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.editAK,
         variables: {
-          personAKID: value.personAKID,
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          eintritt: value.eintritt,
-          austritt: value.austritt,
-          akID: value.ak,
+          ...value,
           leiter:
             value.leiter === null ? false : value.leiter
         }
@@ -530,8 +504,7 @@ export default class PersonenDetails extends reloaderBase {
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          eintritt: value.eintritt,
-          akID: value.ak,
+          ...value,
           leiter:
             value.leiter === null ? false : value.leiter
         }
@@ -545,9 +518,7 @@ export default class PersonenDetails extends reloaderBase {
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          strasse: value.strasse,
-          plz: value.plz,
-          ort: value.ort
+          ...value
         }
       })
       .then(this.refetch)
@@ -559,7 +530,7 @@ export default class PersonenDetails extends reloaderBase {
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          telefon: value.telefon
+          ...value
         }
       })
       .then(this.refetch)
@@ -571,7 +542,7 @@ export default class PersonenDetails extends reloaderBase {
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          email: value.email
+          ...value
         }
       })
       .then(this.refetch)
@@ -581,12 +552,9 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.editAdresse,
         variables: {
-          adressID: value.adressID,
-          personID: this.data.person.personID,
+                    personID: this.data.person.personID,
           authToken: auth.authToken,
-          strasse: value.strasse,
-          plz: value.plz,
-          ort: value.ort
+          ...value
         }
       })
       .then(this.refetch)
@@ -596,23 +564,21 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.editTelefon,
         variables: {
-          telefonID: value.telefonID,
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          telefon: value.telefon
+          ...value
         }
       })
       .then(this.refetch)
-  }
+  } 
   editEmail_save(value: any) {
     this.$apollo
       .mutate({
         mutation: query.personen.details.editEmail,
         variables: {
-          emailID: value.emailID,
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          email: value.email
+          ...value
         }
       })
       .then(this.refetch)
@@ -623,7 +589,6 @@ export default class PersonenDetails extends reloaderBase {
     plz: string
     ort: string
   }) {
-    console.log(item)
     this.editAdresse_value = {}
     this.editAdresse_value = {
       adressID: item.adressID,
@@ -631,7 +596,6 @@ export default class PersonenDetails extends reloaderBase {
       plz: item.plz,
       ort: item.ort
     }
-    console.log(this.editAdresse_value)
     this.editAdresse_show = true
   }
   editTelefon_open(item: {

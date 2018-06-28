@@ -15,9 +15,45 @@ export const query = {
             geschlecht
           }
         }
+      `,
+      addPerson: gql`
+        mutation(
+          $vorname: String!
+          $nachname: String!
+          $gebDat: String!
+          $geschlecht: String!
+          $authToken: String!
+        ) {
+          addPerson(
+            authToken: $authToken
+            vorname: $vorname
+            nachname: $nachname
+            gebDat: $gebDat
+            geschlecht: $geschlecht
+          )
+        }
       `
     },
     details: {
+      editStamm: gql`
+        mutation(
+          $personID: Int!
+          $vorname: String!
+          $nachname: String!
+          $gebDat: String!
+          $geschlecht: String!
+          $authToken: String!
+        ) {
+          editPersonStamm(
+            authToken: $authToken
+            personID: $personID
+            vorname: $vorname
+            nachname: $nachname
+            gebDat: $gebDat
+            geschlecht: $geschlecht
+          )
+        }
+      `,
       editTelefon: gql`
         mutation(
           $personID: Int!
@@ -383,6 +419,110 @@ export const query = {
             personID: $personID
             email: $email
             authToken: $authToken
+          )
+        }
+      `
+    }
+  },
+  ak: {
+    liste: {
+      load: gql`
+        query($authToken: String!) {
+          aks(authToken: $authToken) {
+            akID
+            bezeichnung
+          }
+        }
+      `,
+      addAK: gql`
+        mutation(
+          $bezeichnung: String!
+          $authToken: String!
+        ) {
+          addAK(
+            authToken: $authToken
+            bezeichnung: $bezeichnung
+          )
+        }
+      `
+    },
+    details: {
+      load: gql`
+        query($authToken: String!, $akID: Int!) {
+          ak(akID: $akID, authToken: $authToken) {
+            akID
+            bezeichnung
+            personen {
+              personAKID
+              eintritt {
+                german
+                input
+              }
+              austritt {
+                german
+                input
+              }
+              leiter
+              person {
+                personID
+                vorname
+                nachname
+                gebDat {
+                  german
+                }
+              }
+            }
+          }
+        }
+      `,
+      editPerson: gql`
+        mutation(
+          $akID: Int!
+          $personAKID: Int!
+          $personID: Int!
+          $eintritt: String!
+          $austritt: String
+          $leiter: Boolean!
+          $authToken: String!
+        ) {
+          editAKPerson(
+            authToken: $authToken
+            akID: $akID
+            personAKID: $personAKID
+            personID: $personID
+            eintritt: $eintritt
+            austritt: $austritt
+            leiter: $leiter
+          )
+        }
+      `,
+      addPerson: gql`
+        mutation(
+          $akID: Int!
+          $personID: Int!
+          $eintritt: String!
+          $leiter: Boolean!
+          $authToken: String!
+        ) {
+          addAKPerson(
+            authToken: $authToken
+            akID: $akID
+            personID: $personID
+            eintritt: $eintritt
+            leiter: $leiter
+          )
+        }
+      `,
+      editStamm: gql`
+        mutation(
+          $akID: Int!
+          $bezeichnung: String!
+          $authToken: String!
+        ) {
+          editAKStamm(
+            authToken: $authToken
+            akID: $akID
+            bezeichnung: $bezeichnung
           )
         }
       `

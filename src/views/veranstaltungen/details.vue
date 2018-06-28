@@ -37,47 +37,47 @@
               icon: 'home'
             },
             {
-              title: '100€ _',
+              title: '100€',
               subTitle: 'Preis Frühbucher',
               icon: 'attach_money'
             },
             {
-              title: '100€ _',
+              title: '100€',
               subTitle: 'Preis Normal',
               icon: 'attach_money'
             },
             {
-              title: '100€ _',
+              title: '100€',
               subTitle: 'Preis Last Minute',
               icon: 'attach_money'
             },
             {
-              title: '100€ _',
+              title: '100€',
               subTitle: 'Anzahlung Frühbucher',
               icon: 'attach_money'
             },
             {
-              title: '100€ _',
+              title: '100€',
               subTitle: 'Anzahlung Normal',
               icon: 'attach_money'
             },
             {
-              title: '100€ _',
+              title: '100€',
               subTitle: 'Anzahlung Last Minute',
               icon: 'attach_money'
             },
             {
-              title: '01.01.2000 _',
+              title: '01.01.2000',
               subTitle: 'Frühbucher gilt bis',
               icon: 'attach_money'
             },
             {
-              title: '01.01.2000 _',
+              title: '01.01.2000',
               subTitle: 'Last Minute gilt ab',
               icon: 'attach_money'
             },
             {
-              title: 'Nein _',
+              title: 'Nein',
               subTitle: 'Vorort bezahlen möglich?',
               icon: 'money_off'
             },
