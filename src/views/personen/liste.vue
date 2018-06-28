@@ -18,7 +18,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import reloaderBase from '@/baseComponents/reloader';
 import gql from 'graphql-tag';
 
+import {vornameConfig, nachnameConfig, gebDatConfig, geschlechtConfig} from '@/plugins/formConfig/index'
+
 import auth from '@/plugins/auth';
+
+import {query} from '@/graphql/index';
 
 @Component({})
 export default class PersonenListe extends reloaderBase {
@@ -42,54 +46,10 @@ export default class PersonenListe extends reloaderBase {
   ];
   addPerson_show = false;
   addPerson_config = [
-    {
-      label: 'Vorname',
-      name: 'vorname',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst einen Vornamen angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Der Vorname darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    },
-    {
-      label: 'Nachname',
-      name: 'nachname',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst einen Nachname angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Der Nachname darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    },
-    {
-      label: 'Geburtsdatum',
-      name: 'gebDat',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Geburtsdatum angeben!' : true
-      ],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Geschecht',
-      name: 'geschlecht',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Geschlecht angeben!' : true
-      ],
-      componentName: 'ec-radio-geschlecht'
-    }
+    vornameConfig,
+    nachnameConfig,
+    gebDatConfig,
+    geschlechtConfig
   ];
 
   save(value: any) {
@@ -108,19 +68,7 @@ export default class PersonenListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     };
-    this.query = gql`
-      query($authToken: String!) {
-        personen(authToken: $authToken) {
-          personID
-          vorname
-          nachname
-          gebDat {
-            german
-          }
-          geschlecht
-        }
-      }
-    `;
+    this.query = query.personen.liste.load;
     super.created();
   }
 }
