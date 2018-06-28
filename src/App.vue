@@ -3,8 +3,8 @@
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
       <v-spacer/>
-      <v-avatar size="60px" style="margin-right: 10px" class="elevation-5">
-        <img src="../public/ec-logo-512.png">
+      <v-avatar size="60px" style="margin-right: 10px">
+        <img src="../public/_ec-logo-64.png">
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
@@ -69,7 +69,7 @@
         </v-card-title>
         <v-card-text :style="{fontSize: '18px'}">
           <b>Achtung!</b> Du wirst automatisch in {{sec}} Sekunden abgemeldet...<br/>
-          Um das zu verhindern musst du nur irgendwoanders hnklicken.
+          Um das zu verhindern musst du nur irgendwoanders hinklicken.
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -114,9 +114,7 @@ export default class App extends Vue {
       )
       const onlinePath = 'http://localhost:8081'
       const url = isProduction
-        ? isElectron
-          ? '../docs/index.html'
-          : onlinePath
+        ? isElectron ? '../docs/index.html' : onlinePath
         : 'http://localhost:8081'
       win.loadURL(url)
       win.on('ready-to-show', () => {

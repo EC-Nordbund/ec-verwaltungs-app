@@ -30,8 +30,8 @@ const loadingURL =
 
 const logoURL =
   process.env.NODE_ENV === 'development'
-    ? `${__dirname}/../../../public/ec-logo-512.png`
-    : `${__dirname}/../renderer/ec-logo-512.png`
+    ? `${__dirname}/../../../public/ec-logo-128.png`
+    : `${__dirname}/../renderer/ec-logo-128.png`
 
 //Get Settings
 const mainWindowOptions = {
