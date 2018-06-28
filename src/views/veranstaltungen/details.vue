@@ -9,7 +9,7 @@
       </ec-headline>
       <v-spacer/>
       <ec-button-icon @click="editAKStamm_show = true"/>
-      <v-tabs v-model="tabs" fixed-tabs slot="extension">
+      <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
           <v-icon v-accent>contacts</v-icon>
@@ -27,18 +27,89 @@
     </v-toolbar>
     <v-tabs-items v-model="tabs" class="white elevation-1">
       <v-tab-item id="tab-2">
-        <ec-list 
+        <ec-list
+          edit 
+          icon="."
           :items="[
             {
               title: `${(data.veranstaltung.unterkunft || {}).bezeichnung}`, 
               subTitle: `${(data.veranstaltung.unterkunft || {}).plz} ${(data.veranstaltung.unterkunft || {}).ort} (${(data.veranstaltung.unterkunft || {}).land})`, 
               icon: 'home'
             },
-            {title: 'Es muss erst geklärt werden welche Daten gespeichert werden!', icon: 'info'}
+            {
+              title: '100€ _',
+              subTitle: 'Preis Frühbucher',
+              icon: 'attach_money'
+            },
+            {
+              title: '100€ _',
+              subTitle: 'Preis Normal',
+              icon: 'attach_money'
+            },
+            {
+              title: '100€ _',
+              subTitle: 'Preis Last Minute',
+              icon: 'attach_money'
+            },
+            {
+              title: '100€ _',
+              subTitle: 'Anzahlung Frühbucher',
+              icon: 'attach_money'
+            },
+            {
+              title: '100€ _',
+              subTitle: 'Anzahlung Normal',
+              icon: 'attach_money'
+            },
+            {
+              title: '100€ _',
+              subTitle: 'Anzahlung Last Minute',
+              icon: 'attach_money'
+            },
+            {
+              title: '01.01.2000 _',
+              subTitle: 'Frühbucher gilt bis',
+              icon: 'attach_money'
+            },
+            {
+              title: '01.01.2000 _',
+              subTitle: 'Last Minute gilt ab',
+              icon: 'attach_money'
+            },
+            {
+              title: 'Nein _',
+              subTitle: 'Vorort bezahlen möglich?',
+              icon: 'money_off'
+            },
+            {
+              title: 'Aktiviert',
+              subTitle: 'Warteliste Geschlechterspezifisch',
+              icon: 'group'
+            },
+            {
+              title: '50',
+              subTitle: 'Anzahl Plätze',
+              icon: 'group'
+            },
+            {
+              title: '25',
+              subTitle: 'Anzahl Plätze männlich',
+              icon: 'group'
+            },
+            {
+              title: '25',
+              subTitle: 'Anzahl Plätze weiblich',
+              icon: 'group'
+            }
           ]"
           :mapper="v=>v"
-          icon="map"
         />
+        <v-card>
+          <v-card-text>
+            <v-btn>Edit Infobrief</v-btn>
+            <v-btn>Edit Bestätigungsbrief</v-btn>
+          </v-card-text/>
+        </v-card>
       </v-tab-item>
       <v-tab-item id="tab-3">
         <ec-list
@@ -54,19 +125,22 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
 @Component({})
 export default class VeranstaltungDetails extends reloaderBase {
-  data: {veranstaltung: any} = {veranstaltung: {}}
+  data: { veranstaltung: any } = { veranstaltung: {} }
   tabs = null
   created() {
     this.query = gql`
-      query($authToken: String!, $veranstaltungsID: Int!){
-        veranstaltung(veranstaltungsID:$veranstaltungsID, authToken:$authToken) {
+      query($authToken: String!, $veranstaltungsID: Int!) {
+        veranstaltung(
+          veranstaltungsID: $veranstaltungsID
+          authToken: $authToken
+        ) {
           veranstaltungsID
           bezeichnung
           begin {
