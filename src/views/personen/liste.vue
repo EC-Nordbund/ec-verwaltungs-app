@@ -14,13 +14,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import gql from 'graphql-tag';
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import gql from 'graphql-tag'
 
 import {vornameConfig, nachnameConfig, gebDatConfig, geschlechtConfig} from '@/plugins/formConfig/index'
 
-import auth from '@/plugins/auth';
+import auth from '@/plugins/auth'
 
 import {query} from '@/graphql/index';
 
@@ -28,7 +28,7 @@ import {query} from '@/graphql/index';
 export default class PersonenListe extends reloaderBase {
   data = {
     personen: []
-  };
+  }
   tableConfig = [
     {
       name: 'geschlecht',
@@ -43,8 +43,8 @@ export default class PersonenListe extends reloaderBase {
       label: 'Geburtsdatum',
       width: '175px'
     }
-  ];
-  addPerson_show = false;
+  ]
+  addPerson_show = false
   addPerson_config = [
     vornameConfig,
     nachnameConfig,
@@ -53,15 +53,34 @@ export default class PersonenListe extends reloaderBase {
   ];
 
   save(value: any) {
-    console.log(
-      'save',
-      value,
-      value.gebDat,
-      value.geschlecht
-    );
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $vorname: String!
+          $nachname: String!
+          $gebDat: String!
+          $geschlecht: String!
+          $authToken: String!
+        ) {
+          addPerson(
+            authToken: $authToken
+            vorname: $vorname
+            nachname: $nachname
+            gebDat: $gebDat
+            geschlecht: $geschlecht
+          )
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(()=>{
+      this.refetch()
+    })
   }
   open(item: any) {
-    this.$router.push(`/app/personen/${item.personID}`);
+    this.$router.push(`/app/personen/${item.personID}`)
   }
 
   created() {

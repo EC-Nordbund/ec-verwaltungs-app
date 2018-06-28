@@ -289,13 +289,38 @@ export default class PersonenDetails extends reloaderBase {
       gebDat: this.data.person.gebDat.input,
       geschlecht: this.data.person.geschlecht
     }
-    console.log(this.editPersonStamm_value)
     this.editPersonStamm_show = true
   }
   editPersonStamm_value = {}
   editPersonStamm_save(value: any) {
-    console.log(value)
-    // TODO:
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $personID: Int!
+          $vorname: String!
+          $nachname: String!
+          $gebDat: String!
+          $geschlecht: String!
+          $authToken: String!
+        ) {
+          editPersonStamm(
+            authToken: $authToken
+            personID: $personID
+            vorname: $vorname
+            nachname: $nachname
+            gebDat: $gebDat
+            geschlecht: $geschlecht
+          )
+        }
+      `,
+      variables: {
+        authToken: this.auth.authToken,
+        personID: this.$route.params.id,
+        ...value
+      }
+    }).then(()=>{
+      this.refetch()
+    })
   }
   editPersonStamm_config = [
     vornameConfig,
@@ -407,8 +432,6 @@ export default class PersonenDetails extends reloaderBase {
               } else {
                 newObj[key] = obj[key]
               }
-            } else {
-              console.log(key)
             }
           }
           return newObj

@@ -2,10 +2,11 @@
   <v-app app>
     <div class="ec_content">
       <v-card class="ec_card" width="500px">
-        <v-card-title>
+        <v-card-title class="justify-space-between">
           <h1 v-font v-primary>
             Login
           </h1>
+          <img width="64px" src="../public/ec-logo-512.png" style="margin-right: 15px"/>
         </v-card-title>
         <v-card-text>
           <v-alert :value="wrong" type="error">
@@ -31,6 +32,7 @@
               type="password"
               v-model="password"
               required
+              v-on:keyup.enter="login"
               :rules="getRules('Passwort')"
               :disabled="checking"
             />
