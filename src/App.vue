@@ -4,7 +4,7 @@
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
       <v-spacer/>
       <v-avatar size="60px" style="margin-right: 10px">
-        <img src="../public/_ec-logo-64.png">
+        <img src="../public/ec-logo-64.png">
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
