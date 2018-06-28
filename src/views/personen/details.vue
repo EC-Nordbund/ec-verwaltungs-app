@@ -651,8 +651,6 @@ export default class PersonenDetails extends reloaderBase {
               } else {
                 newObj[key] = obj[key]
               }
-            } else {
-              console.log(key)
             }
           }
           return newObj
