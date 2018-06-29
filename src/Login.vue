@@ -27,15 +27,21 @@
               :rules="getRules('Username')"
               :disabled="checking"
             />
-            <v-text-field
-              label="Passwort"
-              type="password"
-              v-model="password"
-              required
-              v-on:keyup.enter="login"
-              :rules="getRules('Passwort')"
-              :disabled="checking"
-            />
+            <v-tooltip :value="caps" top :disabled="!caps">
+              <v-text-field
+                slot="activator"
+                label="Passwort"
+                type="password"
+                v-model="password"
+                required
+                @keyup="checkCaps"
+                :append-icon="caps ? 'keyboard_capslock': undefined"
+                v-on:keyup.enter="login"
+                :rules="getRules('Passwort')"
+                :disabled="checking"
+              />
+              <span>Caps-Lock ist aktiviert</span>
+            </v-tooltip>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -64,10 +70,26 @@ import auth from '@/plugins/auth'
 export default class loginForm extends Vue {
   username: string = ''
   password: string = ''
+  caps: boolean = false
   valid: boolean = false
   checking: boolean = false
   wrong: boolean = false
   auth = auth
+
+  checkCaps(ev: KeyboardEvent) {
+    const s = ev.key
+    if (s.length === 1) {
+      this.caps =
+        s.toUpperCase() === s &&
+        s.toLowerCase() !== s &&
+        !ev.shiftKey
+    } else {
+      if (s === 'CapsLock') {
+        this.caps = !this.caps
+      }
+    }
+  }
+
   getRules(name: string) {
     return [
       (value: string) =>
