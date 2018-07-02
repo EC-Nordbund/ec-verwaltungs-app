@@ -48,8 +48,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import reloaderBase from '@/baseComponents/reloader';
-import gql from 'graphql-tag';
-
+import {personConfig,bezeichnungConfig} from '@/plugins/formConfig/index'
+import {query} from '@/graphql/index';
 import auth from '@/plugins/auth';
 @Component({})
 export default class AKDetails extends reloaderBase {
@@ -66,30 +66,14 @@ export default class AKDetails extends reloaderBase {
   });
   editAKStamm_show = false;
   editAKStamm_config = [
-    {
-      label: 'Bezeichnung',
-      name: 'bezeichnung',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst eine Bezeichnung angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    }
+    bezeichnungConfig
   ];
   editAKStamm_value = {};
   editAKPerson_show = false;
   editAKPerson_config = [
     {
-      label: 'Person wählen',
-      name: 'personID',
-      disabled: true,
-      required: true,
-      componentName: 'ec-select-person'
+      ...personConfig,
+      disabled: true
     },
     {
       label: 'Eintritt',
@@ -118,17 +102,7 @@ export default class AKDetails extends reloaderBase {
   editAKPerson_value = {};
   addAKPerson_show = false;
   addAKPerson_config = [
-    {
-      label: 'Person',
-      name: 'personID',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst eine Person angeben!' : true
-      ],
-      componentName: 'ec-select-person',
-      type: 'select'
-    },
+    personConfig,
     {
       label: 'Eintritt',
       name: 'eintritt',
@@ -165,58 +139,22 @@ export default class AKDetails extends reloaderBase {
   }
   editAKStamm_save(value: any) {
     this.$apollo.mutate({
-      mutation: gql`
-        mutation(
-          $akID: Int!
-          $bezeichnung: String!
-          $authToken: String!
-        ) {
-          editAKStamm(
-            authToken: $authToken
-            akID: $akID
-            bezeichnung: $bezeichnung
-          )
-        }
-      `,
+      mutation: query.ak.details.editStamm,
       variables: {
         authToken: auth.authToken,
         akID: this.$route.params.id,
-        bezeichnung: value.bezeichnung
+        ...value
       }
     });
   }
   editAKPerson_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $akID: Int!
-            $personAKID: Int!
-            $personID: Int!
-            $eintritt: String!
-            $austritt: String
-            $leiter: Boolean!
-            $authToken: String!
-          ) {
-            editAKPerson(
-              authToken: $authToken
-              akID: $akID
-              personAKID: $personAKID
-              personID: $personID
-              eintritt: $eintritt
-              austritt: $austritt
-              leiter: $leiter
-            )
-          }
-        `,
+        mutation: query.ak.details.editPerson,
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-          personID: value.personID,
-          personAKID: value.personAKID,
-          eintritt: value.eintritt,
-          austritt: value.austritt,
-          leiter: value.leiter
+        ...value
         }
       })
       .then(this.refetch);
@@ -224,29 +162,11 @@ export default class AKDetails extends reloaderBase {
   addPersonAK_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $akID: Int!
-            $personID: Int!
-            $eintritt: String!
-            $leiter: Boolean!
-            $authToken: String!
-          ) {
-            addAKPerson(
-              authToken: $authToken
-              akID: $akID
-              personID: $personID
-              eintritt: $eintritt
-              leiter: $leiter
-            )
-          }
-        `,
+        mutation: query.ak.details.addPerson,
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-          personID: value.personID,
-          eintritt: value.eintritt,
-          leiter: value.leiter
+          ...value
         }
       })
       .then(this.refetch);
@@ -257,34 +177,7 @@ export default class AKDetails extends reloaderBase {
       authToken: auth.authToken,
       akID: this.$route.params.id
     };
-    this.query = gql`
-      query($authToken: String!, $akID: Int!) {
-        ak(akID: $akID, authToken: $authToken) {
-          akID
-          bezeichnung
-          personen {
-            personAKID
-            eintritt {
-              german
-              input
-            }
-            austritt {
-              german
-              input
-            }
-            leiter
-            person {
-              personID
-              vorname
-              nachname
-              gebDat {
-                german
-              }
-            }
-          }
-        }
-      }
-    `;
+    this.query = query.ak.details.load;
     super.created();
   }
 }

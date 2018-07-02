@@ -261,9 +261,17 @@
 import electron, { isElectron } from '@/plugins/electron'
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
+
+import {vornameConfig,
+    nachnameConfig, telefonConfig, eMailConfig,
+    gebDatConfig, akConfig,strasseConfig,
+    plzConfig,
+    ortConfig,
+    geschlechtConfig, verteilerConfig, verteilerTypeConfig} from '@/plugins/formConfig/index'
+
+import {query} from '@/graphql/index';
 
 @Component({})
 export default class PersonenDetails extends reloaderBase {
@@ -285,25 +293,7 @@ export default class PersonenDetails extends reloaderBase {
   editPersonStamm_value = {}
   editPersonStamm_save(value: any) {
     this.$apollo.mutate({
-      mutation: gql`
-        mutation(
-          $personID: Int!
-          $vorname: String!
-          $nachname: String!
-          $gebDat: String!
-          $geschlecht: String!
-          $authToken: String!
-        ) {
-          editPersonStamm(
-            authToken: $authToken
-            personID: $personID
-            vorname: $vorname
-            nachname: $nachname
-            gebDat: $gebDat
-            geschlecht: $geschlecht
-          )
-        }
-      `,
+      mutation: query.personen.details.editStamm,
       variables: {
         authToken: this.auth.authToken,
         personID: this.$route.params.id,
@@ -314,87 +304,24 @@ export default class PersonenDetails extends reloaderBase {
     })
   }
   editPersonStamm_config = [
-    {
-      label: 'Vorname',
-      name: 'vorname',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst einen Vornamen angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Der Vorname darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    },
-    {
-      label: 'Nachname',
-      name: 'nachname',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst einen Nachname angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Der Nachname darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    },
-    {
-      label: 'Geburtsdatum',
-      name: 'gebDat',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Geburtsdatum angeben!' : true
-      ],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Geschecht',
-      name: 'geschlecht',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Geschlecht angeben!' : true
-      ],
-      componentName: 'ec-radio-geschlecht'
-    }
+    vornameConfig,
+    nachnameConfig,
+    gebDatConfig,
+    geschlechtConfig
   ]
   auskunftsRechtContent = {}
   auskunftsRecht_show = false
   addVerteiler_show = false
   addVerteiler_config = [
-    {
-      name: 'verteiler',
-      label: 'Verteiler auswählen',
-      componentName: 'ec-select-verteiler'
-    },
-    {
-      name: 'type',
-      label: 'Type',
-      componentName: 'ec-radio-type'
-    }
+    verteilerConfig,
+    verteilerTypeConfig
   ]
   editVerteiler_show = false
   editVerteiler_value = {}
   addAK_show = false
   editAK_show = false
   addAK_config = [
-    {
-      name: 'ak',
-      label: 'Wähle einen Arbeitskreis',
-      componentName: 'ec-select-ak',
-      rules: [
-        (v: number) =>
-          !v
-            ? 'Es muss ein Arbeitskreis gewählt werden!'
-            : true
-      ],
-      required: true
-    },
+    akConfig,
     {
       name: 'eintritt',
       label: 'Eintritt',
@@ -415,16 +342,7 @@ export default class PersonenDetails extends reloaderBase {
   ]
   editAK_config = [
     {
-      name: 'ak',
-      label: 'Wähle einen Arbeitskreis',
-      componentName: 'ec-select-ak',
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss ein Arbeitskreis gewählt werden!'
-            : true
-      ],
-      required: true,
+      ...akConfig,
       disabled: true
     },
     {
@@ -459,205 +377,24 @@ export default class PersonenDetails extends reloaderBase {
   editAdresse_value = {}
   addTelefon_show = false
   addTelefon_config = [
-    {
-      name: 'telefon',
-      label: 'Telefon',
-      counter: 20,
-      required: true,
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss eine Telefonnummer angegeben werden!'
-            : true,
-        (v: string) =>
-          v && v.length > 20
-            ? 'Die Telefonnummer darf maximal 20 Zeichen lang sein!'
-            : true
-      ]
-    }
+    telefonConfig
   ]
   addEmail_show = false
   addEmail_config = [
-    {
-      name: 'email',
-      label: 'E-Mail',
-      counter: 20,
-      required: true,
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss eine E-Mail angegeben werden!'
-            : true,
-        (v: string) =>
-          v && v.length > 20
-            ? 'Die Mail darf maximal 20 Zeichen lang sein!'
-            : true
-      ]
-    }
+    eMailConfig
   ]
   addAdresse_show = false
   addAdresse_config = [
-    {
-      name: 'strasse',
-      label: 'Straße',
-      counter: 50,
-      required: true,
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss eine Straße angegeben werden!'
-            : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Die Straße darf maximal 50 Zeichen lang sein!'
-            : true
-      ]
-    },
-    {
-      name: 'plz',
-      label: 'PostLeitZahl',
-      counter: 5,
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Es muss eine PLZ angegeben werden!' : true,
-        (v: string) =>
-          v && v.length !== 5
-            ? 'Die Straße PLZ muss genau 5 Zeichen lang sein!'
-            : true
-      ]
-    },
-    {
-      name: 'ort',
-      label: 'Ort',
-      counter: 50,
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Es muss ein Ort angegeben werden!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Der Ort darf maximal 50 Zeichen lang sein!'
-            : true
-      ]
-    }
+    strasseConfig,
+    plzConfig,
+    ortConfig
   ]
   tabs = null
   auskunftsRecht() {
     ;(<any>this.$apollo)
       .getClient()
       .query({
-        query: gql`
-          query($authToken: String!, $personID: Int!) {
-            person(
-              authToken: $authToken
-              personID: $personID
-            ) {
-              vorname
-              nachname
-              gebDat {
-                german
-              }
-              alter
-              geschlecht
-              juLeiCaNr
-              adressen {
-                strasse
-                plz
-                ort
-                letzteAenderung {
-                  german
-                }
-                erstellt {
-                  german
-                }
-              }
-              emails {
-                email
-                letzteAenderung {
-                  german
-                }
-                erstellt {
-                  german
-                }
-              }
-              telefone {
-                telefon
-                letzteAenderung {
-                  german
-                }
-                erstellt {
-                  german
-                }
-              }
-              anmeldungen {
-                veranstaltung {
-                  bezeichnung
-                  begin {
-                    german
-                  }
-                  ende {
-                    german
-                  }
-                }
-                position
-                #letzteAenderung {
-                #  german
-                #}
-                #erstellt {
-                #  german
-                #}
-              }
-              fzs {
-                gesehenAm {
-                  german
-                }
-                gesehenVon {
-                  vorname
-                  nachname
-                }
-                kommentar
-                #letzteAenderung {
-                #  german
-                #}
-                #erstellt {
-                #  german
-                #}
-              }
-              aks {
-                eintritt {
-                  german
-                }
-                austritt {
-                  german
-                }
-                leiter
-                ak {
-                  bezeichnung
-                }
-                letzteAenderung {
-                  german
-                }
-                erstellt {
-                  german
-                }
-              }
-              verteiler {
-                type
-                verteiler {
-                  bezeichnung
-                  isAuto
-                }
-                #letzteAenderung {
-                #  german
-                #}
-                #erstellt {
-                #  german
-                #}
-              }
-            }
-          }
-        `,
+        query: query.personen.details.auskunft,
         variables: {
           authToken: auth.authToken,
           personID: this.$route.params.id
@@ -694,29 +431,11 @@ export default class PersonenDetails extends reloaderBase {
   editVerteiler_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $verteilerID: Int!
-            $authToken: String!
-            $personID: Int!
-            $type: Int!
-            $verteilerPersonID: Int!
-          ) {
-            editVerteilerPerson(
-              verteilerPersonID: $verteilerPersonID
-              personID: $personID
-              verteilerID: $verteilerID
-              type: $type
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.editVerteiler,
         variables: {
-          verteilerPersonenID: value.verteilerPersonenID,
+          ...value,
           personID: this.data.person.personID,
-          authToken: auth.authToken,
-          type: value.type,
-          verteilerID: value.verteiler
+          authToken: auth.authToken
         }
       })
       .then(this.refetch)
@@ -733,21 +452,10 @@ export default class PersonenDetails extends reloaderBase {
   editVerteiler_delete(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $authToken: String!
-            $verteilerPersonID: Int!
-          ) {
-            deleteVerteilerPerson(
-              authToken: $authToken
-              verteilerPersonID: $verteilerPersonID
-            )
-          }
-        `,
+        mutation: query.personen.details.deleteVerteiler,
         variables: {
-          verteilerPersonID: value.verteilerPersonenID,
           authToken: auth.authToken,
-          type: value.type
+          ...value
         }
       })
       .then(this.refetch)
@@ -755,23 +463,11 @@ export default class PersonenDetails extends reloaderBase {
   addVerteiler_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $authToken: String!
-            $bezeichnung: String!
-          ) {
-            addVerteiler(
-              authToken: $authToken
-              autoSql: ""
-              bezeichnung: $bezeichnung
-            )
-          }
-        `,
+        mutation: query.personen.details.addVerteiler,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          type: value.type,
-          verteilerID: value.verteiler
+          ...value
         }
       })
       .then(this.refetch)
@@ -779,34 +475,11 @@ export default class PersonenDetails extends reloaderBase {
   editAK_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $akID: Int!
-            $personAKID: Int!
-            $personID: Int!
-            $eintritt: String!
-            $austritt: String
-            $leiter: Boolean!
-            $authToken: String!
-          ) {
-            editAKPerson(
-              authToken: $authToken
-              akID: $akID
-              personAKID: $personAKID
-              personID: $personID
-              eintritt: $eintritt
-              austritt: $austritt
-              leiter: $leiter
-            )
-          }
-        `,
+        mutation: query.personen.details.editAK,
         variables: {
-          personAKID: value.personAKID,
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          eintritt: value.eintritt,
-          austritt: value.austritt,
-          akID: value.ak,
+          ...value,
           leiter:
             value.leiter === null ? false : value.leiter
         }
@@ -827,28 +500,11 @@ export default class PersonenDetails extends reloaderBase {
   addAK_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $akID: Int!
-            $personID: Int!
-            $eintritt: String!
-            $leiter: Boolean!
-            $authToken: String!
-          ) {
-            addAKPerson(
-              authToken: $authToken
-              akID: $akID
-              personID: $personID
-              eintritt: $eintritt
-              leiter: $leiter
-            )
-          }
-        `,
+        mutation: query.personen.details.addAK,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          eintritt: value.eintritt,
-          akID: value.ak,
+          ...value,
           leiter:
             value.leiter === null ? false : value.leiter
         }
@@ -858,29 +514,11 @@ export default class PersonenDetails extends reloaderBase {
   addAdresse_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $personID: Int!
-            $strasse: String!
-            $plz: String!
-            $ort: String!
-            $authToken: String!
-          ) {
-            addAdresse(
-              personID: $personID
-              strasse: $strasse
-              plz: $plz
-              ort: $ort
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.addAdresse,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          strasse: value.strasse,
-          plz: value.plz,
-          ort: value.ort
+          ...value
         }
       })
       .then(this.refetch)
@@ -888,23 +526,11 @@ export default class PersonenDetails extends reloaderBase {
   addTelefon_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $personID: Int!
-            $telefon: String!
-            $authToken: String!
-          ) {
-            addTelefon(
-              personID: $personID
-              telefon: $telefon
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.addTelefon,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          telefon: value.telefon
+          ...value
         }
       })
       .then(this.refetch)
@@ -912,23 +538,11 @@ export default class PersonenDetails extends reloaderBase {
   addEmail_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $personID: Int!
-            $email: String!
-            $authToken: String!
-          ) {
-            addEmail(
-              personID: $personID
-              email: $email
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.addEmail,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          email: value.email
+          ...value
         }
       })
       .then(this.refetch)
@@ -936,32 +550,11 @@ export default class PersonenDetails extends reloaderBase {
   editAdresse_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $personID: Int!
-            $strasse: String!
-            $plz: String!
-            $ort: String!
-            $authToken: String!
-            $adressID: Int!
-          ) {
-            editAdresse(
-              adressID: $adressID
-              personID: $personID
-              strasse: $strasse
-              plz: $plz
-              ort: $ort
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.editAdresse,
         variables: {
-          adressID: value.adressID,
-          personID: this.data.person.personID,
+                    personID: this.data.person.personID,
           authToken: auth.authToken,
-          strasse: value.strasse,
-          plz: value.plz,
-          ort: value.ort
+          ...value
         }
       })
       .then(this.refetch)
@@ -969,53 +562,23 @@ export default class PersonenDetails extends reloaderBase {
   editTelefon_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $personID: Int!
-            $telefon: String!
-            $authToken: String!
-            $telefonID: Int!
-          ) {
-            editTelefon(
-              telefonID: $telefonID
-              personID: $personID
-              telefon: $telefon
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.editTelefon,
         variables: {
-          telefonID: value.telefonID,
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          telefon: value.telefon
+          ...value
         }
       })
       .then(this.refetch)
-  }
+  } 
   editEmail_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $personID: Int!
-            $email: String!
-            $authToken: String!
-            $emailID: Int!
-          ) {
-            editEmail(
-              emailID: $emailID
-              personID: $personID
-              email: $email
-              authToken: $authToken
-            )
-          }
-        `,
+        mutation: query.personen.details.editEmail,
         variables: {
-          emailID: value.emailID,
           personID: this.data.person.personID,
           authToken: auth.authToken,
-          email: value.email
+          ...value
         }
       })
       .then(this.refetch)
@@ -1026,7 +589,6 @@ export default class PersonenDetails extends reloaderBase {
     plz: string
     ort: string
   }) {
-    console.log(item)
     this.editAdresse_value = {}
     this.editAdresse_value = {
       adressID: item.adressID,
@@ -1034,7 +596,6 @@ export default class PersonenDetails extends reloaderBase {
       plz: item.plz,
       ort: item.ort
     }
-    console.log(this.editAdresse_value)
     this.editAdresse_show = true
   }
   editTelefon_open(item: {
@@ -1061,90 +622,7 @@ export default class PersonenDetails extends reloaderBase {
       authToken: auth.authToken,
       personID: this.$route.params.id
     }
-    this.query = gql`
-      query($authToken: String!, $personID: Int!) {
-        person(authToken: $authToken, personID: $personID) {
-          personID
-          vorname
-          nachname
-          gebDat {
-            german
-            input
-          }
-          alter
-          geschlecht
-          juLeiCaNr
-          adressen {
-            adressID
-            strasse
-            plz
-            ort
-          }
-          emails {
-            emailID
-            email
-          }
-          telefone {
-            telefonID
-            telefon
-          }
-          anmeldungen {
-            anmeldeID
-            veranstaltung {
-              veranstaltungsID
-              bezeichnung
-              begin {
-                german
-                input
-              }
-              ende {
-                german
-                input
-              }
-            }
-            position
-          }
-          fzs {
-            fzID
-            gesehenAm {
-              german
-              input
-            }
-            gesehenVon {
-              personID
-              vorname
-              nachname
-            }
-            kommentar
-          }
-          aks {
-            personAKID
-            eintritt {
-              german
-              input
-            }
-            austritt {
-              german
-              input
-            }
-            leiter
-            ak {
-              akID
-              bezeichnung
-            }
-          }
-          verteiler {
-            verteilerPersonenID
-            type
-            verteiler {
-              verteilerID
-              bezeichnung
-              isAuto
-            }
-          }
-        }
-      }
-    `
+    this.query = query.personen.details.load
     super.created()
   }
 }

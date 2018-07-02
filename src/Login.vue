@@ -1,12 +1,12 @@
 <template>
-  <v-app app>
+  <v-app app :dark="dark">
     <div class="ec_content">
       <v-card class="ec_card" width="500px">
         <v-card-title class="justify-space-between">
           <h1 v-font v-primary>
             Login
           </h1>
-          <img width="64px" src="../public/ec-logo-512.png" style="margin-right: 15px"/>
+          <img width="80px" src="../public/ec-logo-512.png" style="margin-right: 15px"/>
         </v-card-title>
         <v-card-text>
           <v-alert :value="wrong" type="error">
@@ -15,10 +15,6 @@
           <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
-          <!-- <v-alert :value="true" type="info">
-            Du wurdest, da die API neugestartet wurde, automatisch abgemeldet. Bitte melde dich neu an! <br>
-            Bitte überprüfe ob deine letzte Aktion gespeichert wurde!
-          </v-alert> -->
           <v-form v-model="valid">
             <v-text-field
               label="Username"
@@ -58,8 +54,11 @@
   </v-app>
 </template>
 <script lang="ts">
+import electron, {
+  isElectron,
+  isProduction
+} from '@/plugins/electron'
 import settings from '@/plugins/settings'
-import { isElectron } from '@/plugins/electron'
 import {
   Component,
   Vue,
@@ -78,6 +77,7 @@ export default class loginForm extends Vue {
   valid: boolean = false
   checking: boolean = false
   wrong: boolean = false
+  dark: boolean = false
   auth = auth
 
   checkCaps(ev: KeyboardEvent) {
@@ -122,6 +122,7 @@ export default class loginForm extends Vue {
   created() {
     if (isElectron) {
       this.username = <any>settings.get('username', '')
+      this.dark = <any>settings.get('dark', false)
     }
     window.addEventListener('keyup', this.checkCaps)
   }

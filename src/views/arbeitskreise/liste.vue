@@ -9,6 +9,10 @@ import { Component, Vue } from 'vue-property-decorator';
 import reloaderBase from '@/baseComponents/reloader';
 import gql from 'graphql-tag';
 
+import {bezeichnungConfig} from '@/plugins/formConfig/index'
+
+import {query} from '@/graphql/index';
+
 import auth from '@/plugins/auth';
 @Component({})
 export default class AKListe extends reloaderBase {
@@ -20,38 +24,15 @@ export default class AKListe extends reloaderBase {
   ];
   showAddAk = false;
   fieldConfig = [
-    {
-      label: 'Bezeichnung',
-      name: 'bezeichnung',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst eine Bezeichnung angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    }
+    bezeichnungConfig
   ];
   save(value: any) {
     this.$apollo
       .mutate({
-        mutation: gql`
-          mutation(
-            $bezeichnung: String!
-            $authToken: String!
-          ) {
-            addAK(
-              authToken: $authToken
-              bezeichnung: $bezeichnung
-            )
-          }
-        `,
+        mutation: query.ak.liste.addAK,
         variables: {
           authToken: auth.authToken,
-          bezeichnung: value.bezeichnung
+          ...value
         }
       })
       .then(v => v.data.addAK)
@@ -66,14 +47,7 @@ export default class AKListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     };
-    this.query = gql`
-      query($authToken: String!) {
-        aks(authToken: $authToken) {
-          akID
-          bezeichnung
-        }
-      }
-    `;
+    this.query = query.ak.liste.load;
     super.created();
   }
 }
