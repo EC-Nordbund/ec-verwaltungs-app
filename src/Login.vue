@@ -35,6 +35,9 @@
                 required
                 :color="caps && !wrong ? 'info' : undefined"
                 :append-outer-icon="caps ? 'keyboard_capslock': undefined"
+                :append-icon="show_pw ? 'visibility_off' : 'visibility' "
+                :append-icon-cb="() => (show_pw = !show_pw) "
+                :type="show_pw ? 'text' : 'password' "
                 v-on:keyup.enter="login"
                 :rules="getRules('Passwort')"
                 :disabled="checking"
@@ -70,6 +73,7 @@ export default class loginForm extends Vue {
   username: string = ''
   password: string = ''
   caps: boolean = false
+  show_pw: boolean = false
   valid: boolean = false
   checking: boolean = false
   wrong: boolean = false
