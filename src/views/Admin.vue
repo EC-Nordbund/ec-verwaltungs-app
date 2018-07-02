@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
@@ -67,11 +67,11 @@ export default class verteilerDetails extends reloaderBase {
   tabs = null
   created() {
     this.variabels = {
-      authToken: auth.authToken,
+      authToken: auth.authToken
     }
     this.query = gql`
-      query ($authToken: String!) {
-        users (authToken: $authToken) {
+      query($authToken: String!) {
+        users(authToken: $authToken) {
           userID
           userName
           person {
@@ -87,7 +87,7 @@ export default class verteilerDetails extends reloaderBase {
             bezeichnung
           }
         }
-        userGroups (authToken: $authToken) {
+        userGroups(authToken: $authToken) {
           userGroupID
           bezeichnung
           mutationRechte

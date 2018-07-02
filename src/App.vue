@@ -12,7 +12,7 @@
         <v-icon>invert_colors</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-navigation-drawer fixed clipped v-model="drawer" app>
+    <v-navigation-drawer clipped v-model="drawer" app>
       <v-list>
         <template v-for="item in nav" v-if="item.userGroups === '*' || item.userGroups.indexOf(auth._userGroupBezeichnung) !== -1">
           <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.action" no-action>
@@ -41,7 +41,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content style="display: grid; padding: 10px; margin: 64px 0;">
+    <v-content style="display: grid;">
       <router-view/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
@@ -98,7 +98,7 @@ import event from '@/plugins/eventbus'
 export default class App extends Vue {
   sec: number = 0
   loading: boolean = false
-  drawer: boolean = false
+  drawer: boolean = true
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
@@ -123,7 +123,6 @@ export default class App extends Vue {
       return
     }
     this.$router.push(route)
-    this.drawer = false
   }
   created() {
     if (isElectron) {
