@@ -23,6 +23,7 @@
               label="Username"
               v-model="username"
               required
+              autofocus
               :rules="getRules('Username')"
               :disabled="checking"
             />
