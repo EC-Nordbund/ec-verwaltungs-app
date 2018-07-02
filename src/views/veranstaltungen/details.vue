@@ -108,7 +108,7 @@
           <v-card-text>
             <v-btn>Edit Infobrief</v-btn>
             <v-btn>Edit Bestätigungsbrief</v-btn>
-          </v-card-text/>
+          </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item id="tab-3">
