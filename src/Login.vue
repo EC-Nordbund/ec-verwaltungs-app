@@ -27,7 +27,7 @@
               :rules="getRules('Username')"
               :disabled="checking"
             />
-            <v-tooltip v-model="caps" bottom color='info'>
+            <v-tooltip :value="caps" :disabled="!caps" bottom color='info'>
               <v-text-field
                 slot="activator" 
                 label="Passwort"
