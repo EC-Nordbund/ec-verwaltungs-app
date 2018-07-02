@@ -27,15 +27,23 @@
               :rules="getRules('Username')"
               :disabled="checking"
             />
-            <v-text-field
-              label="Passwort"
-              type="password"
-              v-model="password"
-              required
-              v-on:keyup.enter="login"
-              :rules="getRules('Passwort')"
-              :disabled="checking"
-            />
+            <v-tooltip :value="caps" :disabled="!caps" bottom color='info'>
+              <v-text-field
+                slot="activator" 
+                label="Passwort"
+                v-model="password"
+                required
+                :color="caps && !wrong ? 'info' : undefined"
+                :append-outer-icon="caps ? 'keyboard_capslock': undefined"
+                :append-icon="show_pw ? 'visibility_off' : 'visibility' "
+                @click:append="() => (show_pw = !show_pw)"
+                :type="show_pw ? 'text' : 'password' "
+                v-on:keyup.enter="login"
+                :rules="getRules('Passwort')"
+                :disabled="checking"
+              />
+              <span>Caps-Lock ist aktiviert</span>
+            </v-tooltip>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -64,10 +72,27 @@ import auth from '@/plugins/auth'
 export default class loginForm extends Vue {
   username: string = ''
   password: string = ''
+  caps: boolean = false
+  show_pw: boolean = false
   valid: boolean = false
   checking: boolean = false
   wrong: boolean = false
   auth = auth
+
+  checkCaps(ev: KeyboardEvent) {
+    const s = ev.key
+    if (s.length === 1) {
+      this.caps =
+        s.toUpperCase() === s &&
+        s.toLowerCase() !== s &&
+        !ev.shiftKey
+    } else {
+      if (s === 'CapsLock') {
+        this.caps = !this.caps
+      }
+    }
+  }
+
   getRules(name: string) {
     return [
       (value: string) =>
@@ -97,6 +122,10 @@ export default class loginForm extends Vue {
     if (isElectron) {
       this.username = <any>settings.get('username', '')
     }
+    window.addEventListener('keyup', this.checkCaps)
+  }
+  destroyed() {
+    window.removeEventListener('keyup', this.checkCaps)
   }
 }
 </script>
