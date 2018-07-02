@@ -1,36 +1,34 @@
 <template>
-  <div>
-    <v-card class="elevation-10">
-      <v-card-title>
-        <h1 v-font v-primary :style="{ textAlign: 'center' }">
-          Die Losungen
-        </h1>
-        <v-spacer/>
-        <img width="64px" src="../../../../public/losung.png"/>
-      </v-card-title>
-      <v-card-text v-if="losung.length > 0" :style="{ display: 'grid', gridTemplateRows: 'auto auto auto', gridGap: '20px' }">
-        <div>
-          <span v-font v-primary v-html="losung[0]" :style="{ fontSize: '16px' }" />
-          <br/>
-          <b v-font v-html="losung[1]" class="right"/>
-        </div>
-        <div>
-          <span v-font v-primary v-html="losung[2]" :style="{ fontSize: '16px' }"/>
-          <br/>
-          <b v-font v-html="losung[3]" class="right"/>
-        </div>
-        <div v-font :style="{fontSize: '12px'}">
-          © Evangelische Brüder-Unität – Herrnhuter Brüdergemeine
-        </div>
-      </v-card-text>
-      <v-card-text v-if="losung.length === 0" :style="{display: 'grid', gridTemplateColumns: 'auto 1fr', gridGap: '10px'}">
-        <v-progress-circular indeterminate color="primary"/>
-        <div v-font v-primary :style="{ fontSize: '22px' }">
-          Loading...
-        </div>
-      </v-card-text>
-    </v-card>
-  </div>
+  <v-card class="elevation-10" style="margin: 5px">
+    <v-card-title>
+      <h1 v-font v-primary :style="{ textAlign: 'center' }">
+        Die Losungen
+      </h1>
+      <v-spacer/>
+      <img width="64px" src="../../../../public/losung.png"/>
+    </v-card-title>
+    <v-card-text v-if="losung.length > 0" :style="{ display: 'grid', gridTemplateRows: 'auto auto auto', gridGap: '20px' }">
+      <div>
+        <span v-font v-primary v-html="losung[0]" :style="{ fontSize: '16px' }" />
+        <br/>
+        <b v-font v-html="losung[1]" class="right"/>
+      </div>
+      <div>
+        <span v-font v-primary v-html="losung[2]" :style="{ fontSize: '16px' }"/>
+        <br/>
+        <b v-font v-html="losung[3]" class="right"/>
+      </div>
+      <div v-font :style="{fontSize: '12px'}">
+        © Evangelische Brüder-Unität – Herrnhuter Brüdergemeine
+      </div>
+    </v-card-text>
+    <v-card-text v-if="losung.length === 0" :style="{display: 'grid', gridTemplateColumns: 'auto 1fr', gridGap: '10px'}">
+      <v-progress-circular indeterminate color="primary"/>
+      <div v-font v-primary :style="{ fontSize: '22px' }">
+        Loading...
+      </div>
+    </v-card-text>
+  </v-card>
 </template>
 <script lang="ts">
 import {

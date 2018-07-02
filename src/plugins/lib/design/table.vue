@@ -19,7 +19,6 @@
         @click:append="()=>{suchString = ''}"
       />
       <v-data-table
-        rows-per-page-text="Datensätze pro Seite:"
         :customFilter="customFilter"
         :items="items"
         :headers="headers"
@@ -47,16 +46,6 @@
             color="primary" 
             style="padding-left: 100%"
           />
-        </template>
-
-        <template slot="pageText" slot-scope="props">
-          Datensätze {{ props.pageStart }} - {{ props.pageStop }} von {{ props.itemsLength }}
-        </template>
-
-        <template slot="no-results">
-          <v-alert :value="true" type="info">
-            Es wurden keine <i>{{itemName}}</i> mit deiner Suchanfrage "<strong>{{suchString}}</strong>" gefunden.
-          </v-alert>
         </template>
       </v-data-table>
     </v-card-text>
