@@ -27,15 +27,14 @@
               :rules="getRules('Username')"
               :disabled="checking"
             />
-            <v-tooltip :value="caps" top :disabled="!caps">
+            <v-tooltip v-model="caps" bottom color='info'>
               <v-text-field
-                slot="activator"
+                slot="activator" 
                 label="Passwort"
-                type="password"
                 v-model="password"
                 required
-                @keyup="checkCaps"
-                :append-icon="caps ? 'keyboard_capslock': undefined"
+                :color="caps && !wrong ? 'info' : undefined"
+                :append-outer-icon="caps ? 'keyboard_capslock': undefined"
                 v-on:keyup.enter="login"
                 :rules="getRules('Passwort')"
                 :disabled="checking"
@@ -119,6 +118,10 @@ export default class loginForm extends Vue {
     if (isElectron) {
       this.username = <any>settings.get('username', '')
     }
+    window.addEventListener('keyup', this.checkCaps)
+  }
+  destroyed() {
+    window.removeEventListener('keyup', this.checkCaps)
   }
 }
 </script>
