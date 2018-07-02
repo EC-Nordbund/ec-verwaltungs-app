@@ -36,7 +36,7 @@
                 :color="caps && !wrong ? 'info' : undefined"
                 :append-outer-icon="caps ? 'keyboard_capslock': undefined"
                 :append-icon="show_pw ? 'visibility_off' : 'visibility' "
-                :append-icon-cb="() => (show_pw = !show_pw) "
+                @click:append="() => (show_pw = !show_pw)"
                 :type="show_pw ? 'text' : 'password' "
                 v-on:keyup.enter="login"
                 :rules="getRules('Passwort')"
