@@ -3,8 +3,8 @@
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
       <v-spacer/>
-      <v-avatar size="30px">
-        <img src="./assets/logo.png">
+      <v-avatar size="60px" style="margin-right: 10px">
+        <img src="../public/ec-logo-without-bg-64.png">
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
@@ -12,7 +12,7 @@
         <v-icon>invert_colors</v-icon>
       </v-btn>
     </v-toolbar>
-    <v-navigation-drawer fixed clipped v-model="drawer" app>
+    <v-navigation-drawer clipped v-model="drawer" app>
       <v-list>
         <template v-for="item in nav" v-if="item.userGroups === '*' || item.userGroups.indexOf(auth._userGroupBezeichnung) !== -1">
           <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.action" no-action>
@@ -41,7 +41,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content style="display: grid; padding: 10px; margin: 64px 0;">
+    <v-content style="display: grid;">
       <router-view/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
@@ -57,7 +57,7 @@
           <v-icon>keyboard_arrow_right</v-icon>
           EC-Nordbund
           <v-icon>keyboard_arrow_right</v-icon>
-          T. Krause + S. Krüger
+          T. Krause + S. Krüger{{$route.path}}
         </span>
     </v-footer>
     <v-dialog v-model="soonLogOut" width="500px">
@@ -67,8 +67,9 @@
             Automatischer LogOut...
           </h1>
         </v-card-title>
-        <v-card-text v-accent :style="{fontSize: '18px'}">
-          <b>Achtung!</b> Du wirst automatisch in {{sec}} Sekunden abgemeldet...<br/> Um das zu verhindern musst du nur irgendwoanders hnklicken.
+        <v-card-text :style="{fontSize: '18px'}">
+          <b>Achtung!</b> Du wirst automatisch in {{sec}} Sekunden abgemeldet...<br/>
+          Um das zu verhindern musst du nur irgendwoanders hinklicken.
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -78,10 +79,13 @@
 <script lang="ts">
 import auth from '@/plugins/auth'
 import nav from '@/plugins/config/nav.config'
-import electron, { isElectron, isProduction } from '@/plugins/electron'
+import electron, {
+  isElectron,
+  isProduction
+} from '@/plugins/electron'
 import settings from '@/plugins/settings'
 import version from '@/plugins/version/version'
-import {BrowserWindow} from 'electron'
+import { BrowserWindow } from 'electron'
 
 import {
   Component,
@@ -94,7 +98,7 @@ import event from '@/plugins/eventbus'
 export default class App extends Vue {
   sec: number = 0
   loading: boolean = false
-  drawer: boolean = false
+  drawer: boolean = true
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
@@ -102,12 +106,16 @@ export default class App extends Vue {
   auth = auth
   event = event
   click(route: string) {
-    if(route === '_hilfe') {
-      let win:BrowserWindow = new electron.remote.BrowserWindow({
-        show: false
-      })
+    if (route === '_hilfe') {
+      let win: BrowserWindow = new electron.remote.BrowserWindow(
+        {
+          show: false
+        }
+      )
       const onlinePath = 'http://localhost:8081'
-      const url = isProduction?(isElectron?'../docs/index.html':onlinePath):'http://localhost:8081'
+      const url = isProduction
+        ? isElectron ? '../docs/index.html' : onlinePath
+        : 'http://localhost:8081'
       win.loadURL(url)
       win.on('ready-to-show', () => {
         win.show()
@@ -115,7 +123,6 @@ export default class App extends Vue {
       return
     }
     this.$router.push(route)
-    this.drawer = false
   }
   created() {
     if (isElectron) {

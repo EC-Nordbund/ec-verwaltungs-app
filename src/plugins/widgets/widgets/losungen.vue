@@ -5,6 +5,8 @@
         <h1 v-font v-primary :style="{ textAlign: 'center' }">
           Die Losungen
         </h1>
+        <v-spacer/>
+        <img width="64px" src="../../../../public/losung.png"/>
       </v-card-title>
       <v-card-text v-if="losung.length > 0" :style="{ display: 'grid', gridTemplateRows: 'auto auto auto', gridGap: '20px' }">
         <div>

@@ -1,11 +1,12 @@
 <template>
-  <v-app app>
+  <v-app app :dark="dark">
     <div class="ec_content">
       <v-card class="ec_card" width="500px">
-        <v-card-title>
+        <v-card-title class="justify-space-between">
           <h1 v-font v-primary>
             Login
           </h1>
+          <img width="80px" src="../public/ec-logo-512.png" style="margin-right: 15px"/>
         </v-card-title>
         <v-card-text>
           <v-alert :value="wrong" type="error">
@@ -14,26 +15,32 @@
           <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
-          <!-- <v-alert :value="true" type="info">
-            Du wurdest, da die API neugestartet wurde, automatisch abgemeldet. Bitte melde dich neu an! <br>
-            Bitte überprüfe ob deine letzte Aktion gespeichert wurde!
-          </v-alert> -->
           <v-form v-model="valid">
             <v-text-field
               label="Username"
               v-model="username"
               required
+              autofocus
               :rules="getRules('Username')"
               :disabled="checking"
             />
-            <v-text-field
-              label="Passwort"
-              type="password"
-              v-model="password"
-              required
-              :rules="getRules('Passwort')"
-              :disabled="checking"
-            />
+            <v-tooltip :value="caps" :disabled="!caps" bottom color='info'>
+              <v-text-field
+                slot="activator" 
+                label="Passwort"
+                v-model="password"
+                required
+                :color="caps && !wrong ? 'info' : undefined"
+                :append-outer-icon="caps ? 'keyboard_capslock': undefined"
+                :append-icon="show_pw ? 'visibility_off' : 'visibility' "
+                @click:append="() => (show_pw = !show_pw)"
+                :type="show_pw ? 'text' : 'password' "
+                v-on:keyup.enter="login"
+                :rules="getRules('Passwort')"
+                :disabled="checking"
+              />
+              <span>Caps-Lock ist aktiviert</span>
+            </v-tooltip>
           </v-form>
         </v-card-text>
         <v-card-actions>
@@ -47,8 +54,11 @@
   </v-app>
 </template>
 <script lang="ts">
+import electron, {
+  isElectron,
+  isProduction
+} from '@/plugins/electron'
 import settings from '@/plugins/settings'
-import { isElectron } from '@/plugins/electron'
 import {
   Component,
   Vue,
@@ -62,10 +72,28 @@ import auth from '@/plugins/auth'
 export default class loginForm extends Vue {
   username: string = ''
   password: string = ''
+  caps: boolean = false
+  show_pw: boolean = false
   valid: boolean = false
   checking: boolean = false
   wrong: boolean = false
+  dark: boolean = false
   auth = auth
+
+  checkCaps(ev: KeyboardEvent) {
+    const s = ev.key
+    if (s.length === 1) {
+      this.caps =
+        s.toUpperCase() === s &&
+        s.toLowerCase() !== s &&
+        !ev.shiftKey
+    } else {
+      if (s === 'CapsLock') {
+        this.caps = !this.caps
+      }
+    }
+  }
+
   getRules(name: string) {
     return [
       (value: string) =>
@@ -94,7 +122,12 @@ export default class loginForm extends Vue {
   created() {
     if (isElectron) {
       this.username = <any>settings.get('username', '')
+      this.dark = <any>settings.get('dark', false)
     }
+    window.addEventListener('keyup', this.checkCaps)
+  }
+  destroyed() {
+    window.removeEventListener('keyup', this.checkCaps)
   }
 }
 </script>
