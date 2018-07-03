@@ -13,3 +13,25 @@
 html {
   overflow: hidden !important;
 }
+
+.child-routing {
+  transition: all 0.3s ease-in-out;
+}
+
+.fade-enter,
+.fade-leave-active {
+  opacity: 0;
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translateX(80%);
+  transform: translatex(80%);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+  /* opacity: 0; */
+  -webkit-transform: translateX(-100%);
+  transform: translateX(-100%);
+}
