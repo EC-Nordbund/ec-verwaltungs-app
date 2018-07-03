@@ -625,6 +625,7 @@ export default class PersonenDetails extends reloaderBase {
       personID: this.$route.params.id
     }
     this.query = query.personen.details.load
+    super.created()
 
     setTimeout(() => {
       this.addRouter(
@@ -635,7 +636,6 @@ export default class PersonenDetails extends reloaderBase {
         }]`
       )
     }, 3000)
-    super.created()
   }
 }
 </script>
