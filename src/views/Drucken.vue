@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar tabs>
-      <ec-button-router-back/>
+      <ec-button-router-back showOnlyOnMobile/>
       <v-spacer/>
       <ec-headline>
         Liste von Druckaufträgen

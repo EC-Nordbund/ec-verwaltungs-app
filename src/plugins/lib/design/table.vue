@@ -1,13 +1,12 @@
 <template>
   <v-card>
     <v-card-title>
-      <ec-button-router-back/>
+      <ec-button-router-back showOnlyOnMobile/>
       <v-spacer/>
       <h1 v-font v-primary>
         {{title}}
       </h1>
       <v-spacer/>
-      <ec-button-router-back class="hidden"/>
     </v-card-title>
     <v-card-text>
       <v-text-field
