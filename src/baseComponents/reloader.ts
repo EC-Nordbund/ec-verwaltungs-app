@@ -5,6 +5,8 @@ import { DocumentNode } from 'graphql'
 
 import event from '@/plugins/eventbus'
 
+import { addRoute } from '@/plugins/routerBack/index'
+
 /**
  * Class of components (views) with GraphQL connection including a query watcher
  *
@@ -112,5 +114,9 @@ export default abstract class reloader extends Vue {
       // stop LoadingSpinner
       event.emit('hideLoading')
     })
+  }
+
+  public addRouter(beschreibung: string) {
+    addRoute(this.$route.path, beschreibung)
   }
 }
