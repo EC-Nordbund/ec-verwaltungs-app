@@ -9,6 +9,16 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:100:300,400,500,700,900|Material+Icons" rel="stylesheet">
   <base href="./">
   <title>EC-Verwaltungs-App</title>
+
+  <script>
+    // dev-Electron-Modules
+    if (
+      window.require !== undefined &&
+      process.env.NODE_ENV === 'development'
+    ) {
+      require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))
+    }
+  </script>
 </head>
 
 <body>

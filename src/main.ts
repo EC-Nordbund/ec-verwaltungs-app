@@ -15,12 +15,6 @@ import '@/plugins/updateChecker'
 import '@/plugins/widgets'
 import Vue from 'vue'
 
-// dev-Electron-Modules
-if (isElectron && !isProduction) {
-  eval(
-    "require('module').globalPaths.push(require('path').join(__dirname, '../../../../../../electron/node_modules'))"
-  )
-}
 if (isElectron) {
   eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")
   eval("window.fetch = require('node-fetch')")
