@@ -47,7 +47,9 @@ export default class Router extends Vue {
     this.routingAnimation =
       depthCommonRoute <= 2
         ? ''
-        : toDepth < fromDepth ? 'slide-right' : 'slide-left'
+        : toDepth < fromDepth
+          ? 'slide-right'
+          : 'slide-left'
   }
 }
 </script>

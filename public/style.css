@@ -17,8 +17,7 @@ html {
 .route-animation {
   position: absolute;
   width: 100%;
-  transition: -webkit-transform 0.3s ease,
-    transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .no-route-animation {
@@ -33,13 +32,9 @@ html {
 
 .slide-left-enter,
 .slide-right-leave-active {
-  /* opacity: 0; */
-  -webkit-transform: translateX(100%);
-  transform: translatex(100%);
+  transform: translateX(100%);
 }
 .slide-left-leave-active,
 .slide-right-enter {
-  /* opacity: 0; */
-  -webkit-transform: translateX(-100%);
   transform: translateX(-100%);
 }
