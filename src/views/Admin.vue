@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar tabs>
-      <ec-button-router-back showOnlyOnMobile/>
+      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>
         Administration
