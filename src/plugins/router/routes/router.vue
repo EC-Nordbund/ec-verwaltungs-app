@@ -1,11 +1,10 @@
 <template>
   <transition :name="routingAnimation">
-    <router-view :class="viewClass"/>
+    <router-view :class="viewClass" :key="$route.fullPath"/>
   </transition>
 </template>
 
 <script lang="ts">
-import { CreateElement } from 'vue'
 import {
   Component,
   Vue,

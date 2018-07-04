@@ -180,6 +180,15 @@ export default class VeranstaltungDetails extends reloaderBase {
       veranstaltungsID: this.$route.params.id
     }
     super.created()
+
+    setTimeout(() => {
+      this.addRouter(
+        `${this.data.veranstaltung.bezeichnung} (${
+          this.data.veranstaltung.begin.input.split('-')[0]
+        })
+        [ID: ${this.$route.params.id}]`
+      )
+    }, 3000)
   }
 }
 </script>

@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import { getClient } from './apollo'
+import { getClient } from '@/plugins/apollo'
 // import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
