@@ -1,28 +1,17 @@
 import Vue from 'vue'
 
 // Import Components
-const addButton = () =>
-  import(/* webpackChunkName: "lib-buttons-add" */ '@/plugins/lib/buttons/add')
-const iconButton = () =>
-  import(/* webpackChunkName: "lib-buttons-icon" */ '@/plugins/lib/buttons/icon-btn')
-const routerBack = () =>
-  import(/* webpackChunkName: "lib-buttons-router-back" */ '@/plugins/lib/buttons/routerBack.vue')
-const datePicker = () =>
-  import(/* webpackChunkName: "lib-formElements-input-datePicker" */ '@/plugins/lib/formElements/inputs/datePicker.vue')
-const checkbox = () =>
-  import(/* webpackChunkName: "lib-formElements-input-checkbox" */ '@/plugins/lib/formElements/inputs/checkbox.vue')
-const radio = () =>
-  import(/* webpackChunkName: "lib-formElements-input-radio" */ '@/plugins/lib/formElements/inputs/radio')
-const switchElement = () =>
-  import(/* webpackChunkName: "lib-formElements-input-switch" */ '@/plugins/lib/formElements/inputs/switch')
-const formDialog = () =>
-  import(/* webpackChunkName: "lib-formElements-formDialog" */ '@/plugins/lib/formElements/formDialog/form')
-const headline = () =>
-  import(/* webpackChunkName: "lib-design-headline" */ '@/plugins/lib/design/headline')
-const table = () =>
-  import(/* webpackChunkName: "lib-design-table" */ '@/plugins/lib/design/table.vue')
-const liste = () =>
-  import(/* webpackChunkName: "lib-design-liste" */ '@/plugins/lib/design/list')
+import addButton from '@/plugins/lib/buttons/add'
+import iconButton from '@/plugins/lib/buttons/icon-btn'
+import routerBack from '@/plugins/lib/buttons/routerBack.vue'
+import datePicker from '@/plugins/lib/formElements/inputs/datePicker.vue'
+import checkbox from '@/plugins/lib/formElements/inputs/checkbox.vue'
+import radio from '@/plugins/lib/formElements/inputs/radio'
+import switchElement from '@/plugins/lib/formElements/inputs/switch'
+import formDialog from '@/plugins/lib/formElements/formDialog/form'
+import headline from '@/plugins/lib/design/headline'
+import table from '@/plugins/lib/design/table.vue'
+import liste from '@/plugins/lib/design/list'
 
 // Install Components
 Vue.component('ec-button-add', addButton)
