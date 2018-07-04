@@ -66,10 +66,16 @@ const routes: RouteConfig[] = [
     children: [
       {
         path: '',
-        component: HomeComponent,
-        meta: {
-          userGroups: '*'
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: HomeComponent,
+            meta: {
+              userGroups: '*'
+            }
+          }
+        ]
       },
       {
         path: 'personen',
@@ -193,24 +199,42 @@ const routes: RouteConfig[] = [
       },
       {
         path: 'admin',
-        component: AdminComponent,
-        meta: {
-          userGroups: ['admin']
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: AdminComponent,
+            meta: {
+              userGroups: ['admin']
+            }
+          }
+        ]
       },
       {
         path: 'print',
-        component: DruckenComponent,
-        meta: {
-          userGroups: ['admin']
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: DruckenComponent,
+            meta: {
+              userGroups: ['admin']
+            }
+          }
+        ]
       },
       {
         path: 'impressum',
-        component: ImpressumComponent,
-        meta: {
-          userGroups: '*'
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: ImpressumComponent,
+            meta: {
+              userGroups: '*'
+            }
+          }
+        ]
       }
     ]
   }

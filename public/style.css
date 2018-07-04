@@ -14,8 +14,16 @@ html {
   overflow: hidden !important;
 }
 
-.child-routing {
-  transition: all 0.3s ease-in-out;
+.route-animation {
+  position: absolute;
+  width: 100%;
+  transition: -webkit-transform 0.3s ease,
+    transform 0.3s ease;
+}
+
+.no-route-animation {
+  position: absolute;
+  width: 100%;
 }
 
 .fade-enter,
@@ -25,9 +33,9 @@ html {
 
 .slide-left-enter,
 .slide-right-leave-active {
-  opacity: 0;
-  -webkit-transform: translateX(80%);
-  transform: translatex(80%);
+  /* opacity: 0; */
+  -webkit-transform: translateX(100%);
+  transform: translatex(100%);
 }
 .slide-left-leave-active,
 .slide-right-enter {
