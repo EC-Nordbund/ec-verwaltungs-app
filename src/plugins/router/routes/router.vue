@@ -19,7 +19,7 @@ export default class Router extends Vue {
 
   @Watch('$route')
   onRouteChange(to: any, from: any) {
-    console.log('from ' + from.path + ' to ' + to.path)
+    // console.log('from ' + from.path + ' to ' + to.path)
 
     const toA = to.path.split('/')
     const fromA = from.path.split('/')
@@ -47,9 +47,7 @@ export default class Router extends Vue {
     this.routingAnimation =
       depthCommonRoute <= 2
         ? ''
-        : toDepth < fromDepth
-          ? 'slide-right'
-          : 'slide-left'
+        : toDepth < fromDepth ? 'slide-right' : 'slide-left'
   }
 }
 </script>
