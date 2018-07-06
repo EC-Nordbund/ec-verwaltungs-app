@@ -13,6 +13,7 @@
       </ec-headline>
       <v-spacer/>
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
+      <ec-lesezeichen-add route="testing" label="cool"/>
       <ec-button-icon @click="editPersonStamm_open"/>
       <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent">
         <v-tabs-slider/>
@@ -264,14 +265,22 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import {vornameConfig,
-    nachnameConfig, telefonConfig, eMailConfig,
-    gebDatConfig, akConfig,strasseConfig,
-    plzConfig,
-    ortConfig,
-    geschlechtConfig, verteilerConfig, verteilerTypeConfig} from '@/plugins/formConfig/index'
+import {
+  vornameConfig,
+  nachnameConfig,
+  telefonConfig,
+  eMailConfig,
+  gebDatConfig,
+  akConfig,
+  strasseConfig,
+  plzConfig,
+  ortConfig,
+  geschlechtConfig,
+  verteilerConfig,
+  verteilerTypeConfig
+} from '@/plugins/formConfig/index'
 
-import {query} from '@/graphql/index';
+import { query } from '@/graphql/index'
 
 @Component({})
 export default class PersonenDetails extends reloaderBase {
@@ -292,16 +301,18 @@ export default class PersonenDetails extends reloaderBase {
   }
   editPersonStamm_value = {}
   editPersonStamm_save(value: any) {
-    this.$apollo.mutate({
-      mutation: query.personen.details.editStamm,
-      variables: {
-        authToken: this.auth.authToken,
-        personID: this.$route.params.id,
-        ...value
-      }
-    }).then(()=>{
-      this.refetch()
-    })
+    this.$apollo
+      .mutate({
+        mutation: query.personen.details.editStamm,
+        variables: {
+          authToken: this.auth.authToken,
+          personID: this.$route.params.id,
+          ...value
+        }
+      })
+      .then(() => {
+        this.refetch()
+      })
   }
   editPersonStamm_config = [
     vornameConfig,
@@ -376,19 +387,11 @@ export default class PersonenDetails extends reloaderBase {
   editEmail_value = {}
   editAdresse_value = {}
   addTelefon_show = false
-  addTelefon_config = [
-    telefonConfig
-  ]
+  addTelefon_config = [telefonConfig]
   addEmail_show = false
-  addEmail_config = [
-    eMailConfig
-  ]
+  addEmail_config = [eMailConfig]
   addAdresse_show = false
-  addAdresse_config = [
-    strasseConfig,
-    plzConfig,
-    ortConfig
-  ]
+  addAdresse_config = [strasseConfig, plzConfig, ortConfig]
   tabs = null
   auskunftsRecht() {
     ;(<any>this.$apollo)
@@ -552,7 +555,7 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.editAdresse,
         variables: {
-                    personID: this.data.person.personID,
+          personID: this.data.person.personID,
           authToken: auth.authToken,
           ...value
         }
@@ -570,7 +573,7 @@ export default class PersonenDetails extends reloaderBase {
         }
       })
       .then(this.refetch)
-  } 
+  }
   editEmail_save(value: any) {
     this.$apollo
       .mutate({

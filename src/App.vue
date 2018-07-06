@@ -2,12 +2,20 @@
   <v-app app :dark="dark">
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
+      <v-btn icon @click="$router.back()">
+        <v-icon>keyboard_arrow_left</v-icon>
+      </v-btn>
+      <v-btn icon @click="$router.forward()">
+        <v-icon>keyboard_arrow_right</v-icon>
+      </v-btn>
       <v-spacer/>
       <v-avatar size="60px" style="margin-right: 10px">
         <img src="../public/ec-logo-without-bg-64.png">
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
+      <ec-lesezeichen-show/>
+      <div style="padding-right: 20px"/>
       <v-btn icon v-black @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
@@ -98,7 +106,7 @@ import event from '@/plugins/eventbus'
 export default class App extends Vue {
   sec: number = 0
   loading: boolean = false
-  drawer: boolean = true
+  drawer: boolean | null = null
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
