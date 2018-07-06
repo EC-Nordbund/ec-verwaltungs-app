@@ -20,7 +20,7 @@
               label="Username"
               v-model="username"
               required
-              autofocus
+              :autofocus="username === ''"
               :rules="getRules('Username')"
               :disabled="checking"
             />
@@ -30,6 +30,7 @@
                 label="Passwort"
                 v-model="password"
                 required
+                :autofocus="username !== ''"
                 :color="caps && !wrong ? 'info' : undefined"
                 :append-outer-icon="caps ? 'keyboard_capslock': undefined"
                 :append-icon="show_pw ? 'visibility_off' : 'visibility' "
@@ -39,7 +40,7 @@
                 :rules="getRules('Passwort')"
                 :disabled="checking"
               />
-              <span>Caps-Lock ist aktiviert</span>
+              <span>Die Feststelltaste ist aktiviert</span>
             </v-tooltip>
           </v-form>
         </v-card-text>
