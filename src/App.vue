@@ -98,7 +98,7 @@ import event from '@/plugins/eventbus'
 export default class App extends Vue {
   sec: number = 0
   loading: boolean = false
-  drawer: boolean = true
+  drawer: boolean | null = null
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
