@@ -1,8 +1,7 @@
 <template>
-  <div>
+  <div style="padding: 10px" class="elevation-10">
     <v-toolbar tabs>
       <ec-x-btn/>
-      <ec-lesezeichen-add :route="$route.path" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person" :elID="$route.params.id"/>
       <v-spacer/>
       <ec-headline>
         <v-avatar :style="{ background: (data.person.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }">
@@ -14,6 +13,7 @@
       </ec-headline>
       <v-spacer/>
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>      
+      <ec-lesezeichen-add :route="$route.path" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person" :elID="$route.params.id"/>
       <ec-button-icon @click="editPersonStamm_open"/>
       <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent">
         <v-tabs-slider/>
