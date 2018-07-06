@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 10px" class="elevation-10">
+  <div style="margin: 10px" class="elevation-10">
     <v-toolbar tabs>
       <ec-x-btn/>
       <v-spacer/>
