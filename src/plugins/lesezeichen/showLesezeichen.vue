@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y>
+  <v-menu offset-y width="512px">
     <template slot="activator">
       <v-badge color="red" v-if="lesezeichen.liste.length > 0 ">
         <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
@@ -13,9 +13,51 @@
     </template>
     <v-card>
       <v-card-title>
-        Hier kommt die Liste mit Lesezeichen hin. Voretst nur JSON
-        {{lesezeichen.liste}}
+        <h1 v-font>Lesezeichen</h1>
       </v-card-title>
+      <v-card-text>
+        <v-data-table
+          :headers="[
+            {
+              text: 'Typ',
+              value: 'type',
+              width: '30px'
+            },
+            {
+              text: 'Beschreibung',
+              value: 'label'
+            },
+            {
+              text: 'ID',
+              width: '25px',
+              value: 'id'
+            },
+            {
+              text: '',
+              width: '25px',
+              value: 'id',
+              sortable: false
+            }
+          ]"
+          :items="lesezeichen.liste"
+          :rows-per-page-items="[10]"
+          class="elevation-1"
+          disable-initial-sort
+        >
+          <template slot="items" slot-scope="props">
+            <tr @click="xButtonLogic.reset();$router.push(props.item.route)">
+              <td>{{ props.item.type }}</td>
+              <td>{{ props.item.label }}</td>
+              <td>{{ props.item.id }}</td>
+              <td>
+                <v-btn icon @click="lesezeichen.delete(props.item.route)">
+                  <v-icon>delete</v-icon>
+                </v-btn>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card-text>
     </v-card>
   </v-menu>
 </template>
@@ -31,15 +73,11 @@ import lesezeichen, {
   Lesezeichen
 } from '@/plugins/lesezeichen/lesezeichen.ts'
 
+import xButtonLogic from '@/plugins/xButton/logic'
+
 @Component({})
 export default class App extends Vue {
   lesezeichen = lesezeichen
-
-  @Watch('lesezeichen.liste', {
-    immediate: true
-  })
-  onLesezeichenChange() {
-   
-  }
+  xButtonLogic = xButtonLogic
 }
 </script>

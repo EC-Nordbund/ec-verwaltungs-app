@@ -2,11 +2,11 @@
   <v-app app :dark="dark">
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
-      <v-btn icon @click="$router.back()">
-        <v-icon>keyboard_arrow_left</v-icon>
+      <v-btn icon @click="xButtonLogic.back($router)">
+        <v-icon>navigate_before</v-icon>
       </v-btn>
-      <v-btn icon @click="$router.forward()">
-        <v-icon>keyboard_arrow_right</v-icon>
+      <v-btn icon @click="xButtonLogic.forward($router)">
+        <v-icon>navigate_next</v-icon>
       </v-btn>
       <v-spacer/>
       <v-avatar size="60px" style="margin-right: 10px">
@@ -102,6 +102,8 @@ import {
 } from 'vue-property-decorator'
 import event from '@/plugins/eventbus'
 
+import xButtonLogic from '@/plugins/xButton/logic'
+
 @Component({})
 export default class App extends Vue {
   sec: number = 0
@@ -113,6 +115,7 @@ export default class App extends Vue {
   nav = nav
   auth = auth
   event = event
+  xButtonLogic = xButtonLogic
   click(route: string) {
     if (route === '_hilfe') {
       let win: BrowserWindow = new electron.remote.BrowserWindow(
@@ -131,6 +134,7 @@ export default class App extends Vue {
       return
     }
     this.$router.push(route)
+    this.xButtonLogic.reset()
   }
   created() {
     if (isElectron) {

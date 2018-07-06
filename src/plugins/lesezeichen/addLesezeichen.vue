@@ -36,7 +36,7 @@ export default class App extends Vue {
     if (this.isInLesezeichen) {
       this.lesezeichen.delete(this.route)
     } else {
-      new Lesezeichen(this.route, this.label)
+      new Lesezeichen(this.route, this.label, this.type, this.elID)
     }
   }
 
@@ -51,5 +51,17 @@ export default class App extends Vue {
     required: true
   })
   label!: string
+
+  @Prop({
+    type: String,
+    required: true
+  })
+  type!: string
+
+  @Prop({
+    type: [String, Number],
+    required: true
+  })
+  elID!: string
 }
 </script>
