@@ -2,7 +2,6 @@
     <div>
     <!-- Header -->
     <v-toolbar ripple tabs>
-      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>{{data.verteiler.bezeichnung}}{{data.verteiler.isAuto?' (automatisch)':''}}</ec-headline>
       <v-spacer/>

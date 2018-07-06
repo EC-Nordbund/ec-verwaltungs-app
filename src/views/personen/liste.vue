@@ -26,6 +26,8 @@ import {
 
 import auth from '@/plugins/auth'
 
+import xButtonLogik from '@/plugins/xButton/logic'
+
 import { query } from '@/graphql/index'
 
 @Component({})
@@ -33,6 +35,7 @@ export default class PersonenListe extends reloaderBase {
   data = {
     personen: []
   }
+  xButtonLogik = xButtonLogik
   tableConfig = [
     {
       name: 'geschlecht',
@@ -70,6 +73,7 @@ export default class PersonenListe extends reloaderBase {
       })
   }
   open(item: any) {
+    this.xButtonLogik.addItem(this.$route.path, {})
     this.$router.push(`/app/personen/${item.personID}`)
   }
 

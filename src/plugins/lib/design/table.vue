@@ -1,7 +1,6 @@
 <template>
   <v-card>
     <v-card-title>
-      <ec-button-router-back showOnlyOnMobile/>
       <v-spacer/>
       <h1 v-font v-primary>
         {{title}}

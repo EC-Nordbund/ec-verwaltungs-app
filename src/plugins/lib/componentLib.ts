@@ -5,8 +5,6 @@ const addButton = () =>
   import(/* webpackChunkName: "lib-buttons-add" */ '@/plugins/lib/buttons/add')
 const iconButton = () =>
   import(/* webpackChunkName: "lib-buttons-icon" */ '@/plugins/lib/buttons/icon-btn')
-const routerBack = () =>
-  import(/* webpackChunkName: "lib-buttons-router-back" */ '@/plugins/lib/buttons/router-back')
 const datePicker = () =>
   import(/* webpackChunkName: "lib-formElements-input-datePicker" */ '@/plugins/lib/formElements/inputs/datePicker.vue')
 const checkbox = () =>
@@ -27,7 +25,6 @@ const liste = () =>
 // Install Components
 Vue.component('ec-button-add', addButton)
 Vue.component('ec-button-icon', iconButton)
-Vue.component('ec-button-router-back', routerBack)
 Vue.component('ec-form-datePicker', datePicker)
 Vue.component('ec-form-checkbox', checkbox)
 Vue.component('ec-form-radio', radio)

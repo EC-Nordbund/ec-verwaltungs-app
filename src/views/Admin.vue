@@ -1,13 +1,11 @@
 <template>
   <div>
     <v-toolbar tabs>
-      <ec-button-router-back showOnlyOnMobile/>
       <v-spacer/>
       <ec-headline>
         Administration
       </ec-headline>
       <v-spacer/>
-      <ec-button-router-back class="hidden"/>
       <v-tabs v-model="tabs" fixed-tabs slot="extension">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>

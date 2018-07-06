@@ -2,7 +2,6 @@
   <div>
     <!-- Header -->
     <v-toolbar ripple tabs>
-      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>{{data.ak.bezeichnung}}</ec-headline>
       <v-spacer/>

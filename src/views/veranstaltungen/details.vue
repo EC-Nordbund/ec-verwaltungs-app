@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar ripple tabs>
-      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>
         {{data.veranstaltung.bezeichnung}}
