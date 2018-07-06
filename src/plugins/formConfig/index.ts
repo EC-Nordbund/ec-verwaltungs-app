@@ -4,7 +4,7 @@ import {
   maxLength,
   inArray,
   exactLength
-} from '../rules/index'
+} from '@/plugins/rules'
 
 interface IConfig {
   label?: string

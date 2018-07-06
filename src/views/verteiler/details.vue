@@ -52,7 +52,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
@@ -60,7 +60,7 @@ import auth from '@/plugins/auth'
 
 @Component({})
 export default class verteilerDetails extends reloaderBase {
-  data: {verteiler: any} = {verteiler: {}}
+  data: { verteiler: any } = { verteiler: {} }
   verteilerStamm_show = false
   verteilerStamm_value = {}
   verteilerStamm_config = [
@@ -69,11 +69,15 @@ export default class verteilerDetails extends reloaderBase {
       name: 'bezeichnung',
       required: true,
       rules: [
-        (v:string) => (!v ? 'Du musst eine Bezeichnung angeben!' : true),
-        (v:string) => (v && v.length > 50 ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!' : true),
+        (v: string) =>
+          !v ? 'Du musst eine Bezeichnung angeben!' : true,
+        (v: string) =>
+          v && v.length > 50
+            ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!'
+            : true
       ],
-      counter: 50,
-    },
+      counter: 50
+    }
   ]
   addPerson_show = false
   addPerson_config = [
@@ -82,19 +86,21 @@ export default class verteilerDetails extends reloaderBase {
       name: 'person',
       required: true,
       rules: [
-        (v:string) => (!v ? 'Du musst eine Person auswählen!' : true),
+        (v: string) =>
+          !v ? 'Du musst eine Person auswählen!' : true
       ],
-      componentName: 'ec-select-person',
+      componentName: 'ec-select-person'
     },
     {
       label: 'Type',
       name: 'type',
       required: true,
       rules: [
-        (v:number) => (!v ? 'Du musst einen Typ auswählen!' : true),
+        (v: number) =>
+          !v ? 'Du musst einen Typ auswählen!' : true
       ],
-      componentName: 'ec-radio-type',
-    },
+      componentName: 'ec-radio-type'
+    }
   ]
   editPerson_show = false
   editPerson_value = {}
@@ -104,112 +110,140 @@ export default class verteilerDetails extends reloaderBase {
       name: 'person',
       required: true,
       rules: [
-        (v:string) => (!v ? 'Du musst eine Person auswählen!' : true),
+        (v: string) =>
+          !v ? 'Du musst eine Person auswählen!' : true
       ],
       componentName: 'ec-select-person',
-      disabled: true,
+      disabled: true
     },
     {
       label: 'Type',
       name: 'type',
       required: true,
       rules: [
-        (v:number) => (!v ? 'Du musst einen Typ auswählen!' : true),
+        (v: number) =>
+          !v ? 'Du musst einen Typ auswählen!' : true
       ],
-      componentName: 'ec-radio-type',
+      componentName: 'ec-radio-type'
     }
   ]
-  verteilerStamm_save(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation ($verteilerID:Int!, $authToken:String!, $bezeichnung:String!) {
-          editVerteilerStamm(
-            verteilerID: $verteilerID,
-            authToken: $authToken,
-            bezeichnung: $bezeichnung
-          )
+  verteilerStamm_save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $verteilerID: Int!
+            $authToken: String!
+            $bezeichnung: String!
+          ) {
+            editVerteilerStamm(
+              verteilerID: $verteilerID
+              authToken: $authToken
+              bezeichnung: $bezeichnung
+            )
+          }
+        `,
+        variables: {
+          verteilerID: this.data.verteiler.verteilerID,
+          bezeichnung: value.bezeichnung,
+          authToken: auth.authToken
         }
-      `,
-      variables: {
-        verteilerID: this.data.verteiler.verteilerID,
-        bezeichnung: value.bezeichnung,
-        authToken: auth.authToken,
-      },
-    }).then(this.refetch);
+      })
+      .then(this.refetch)
   }
   verteilerStamm_open() {
-    this.verteilerStamm_value = {};
+    this.verteilerStamm_value = {}
     this.verteilerStamm_value = {
-      bezeichnung: this.data.verteiler.bezeichnung,
-    };
-    this.verteilerStamm_show = true;
+      bezeichnung: this.data.verteiler.bezeichnung
+    }
+    this.verteilerStamm_show = true
   }
-  addPerson_save(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation ($verteilerID:Int!, $authToken:String!, $personID:Int!, $type:Int!) {
-          addVerteilerPerson(
-            verteilerID: $verteilerID,
-            authToken: $authToken,
-            personID: $personID,
-            type: $type
-          )
+  addPerson_save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $verteilerID: Int!
+            $authToken: String!
+            $personID: Int!
+            $type: Int!
+          ) {
+            addVerteilerPerson(
+              verteilerID: $verteilerID
+              authToken: $authToken
+              personID: $personID
+              type: $type
+            )
+          }
+        `,
+        variables: {
+          verteilerID: this.data.verteiler.verteilerID,
+          authToken: auth.authToken,
+          type: value.type,
+          personID: value.person
         }
-      `,
-      variables: {
-        verteilerID: this.data.verteiler.verteilerID,
-        authToken: auth.authToken,
-        type: value.type,
-        personID: value.person,
-      },
-    }).then(this.refetch);
+      })
+      .then(this.refetch)
   }
-  editPerson_save(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation ($verteilerID:Int!, $authToken:String!, $personID:Int!, $type:Int!, $verteilerPersonID:Int!) {
-          editVerteilerPerson(
-            verteilerPersonID: $verteilerPersonID,
-            personID: $personID,
-            verteilerID: $verteilerID,
-            type: $type,
-            authToken: $authToken
-          )
+  editPerson_save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $verteilerID: Int!
+            $authToken: String!
+            $personID: Int!
+            $type: Int!
+            $verteilerPersonID: Int!
+          ) {
+            editVerteilerPerson(
+              verteilerPersonID: $verteilerPersonID
+              personID: $personID
+              verteilerID: $verteilerID
+              type: $type
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          verteilerID: this.data.verteiler.verteilerID,
+          authToken: auth.authToken,
+          type: value.type,
+          personID: value.person,
+          verteilerPersonID: value.verteilerPersonenID
         }
-      `,
-      variables: {
-        verteilerID: this.data.verteiler.verteilerID,
-        authToken: auth.authToken,
-        type: value.type,
-        personID: value.person,
-        verteilerPersonID: value.verteilerPersonenID,
-      },
-    }).then(this.refetch);
+      })
+      .then(this.refetch)
   }
-  editPerson_delete(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation ($authToken:String!, $verteilerPersonID:Int!) {
-          deleteVerteilerPerson(
-            authToken: $authToken,
-            verteilerPersonID: $verteilerPersonID
-          )
+  editPerson_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $verteilerPersonID: Int!
+          ) {
+            deleteVerteilerPerson(
+              authToken: $authToken
+              verteilerPersonID: $verteilerPersonID
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          verteilerPersonID: value.verteilerPersonenID
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        verteilerPersonID: value.verteilerPersonenID,
-      },
-    }).then(this.refetch);
+      })
+      .then(this.refetch)
   }
-  editPerson_open(item:any) {
-    this.editPerson_value = {};
+  editPerson_open(item: any) {
+    this.editPerson_value = {}
     this.editPerson_value = {
       person: item.person.personID,
       type: item.type,
-      verteilerPersonenID: item.verteilerPersonenID,
-    };
-    this.editPerson_show = true;
+      verteilerPersonenID: item.verteilerPersonenID
+    }
+    this.editPerson_show = true
   }
   created() {
     this.variabels = {
@@ -217,8 +251,11 @@ export default class verteilerDetails extends reloaderBase {
       verteilerID: this.$route.params.id
     }
     this.query = gql`
-      query($authToken: String!, $verteilerID: Int!){
-        verteiler(verteilerID: $verteilerID, authToken: $authToken) {
+      query($authToken: String!, $verteilerID: Int!) {
+        verteiler(
+          verteilerID: $verteilerID
+          authToken: $authToken
+        ) {
           verteilerID
           bezeichnung
           autoSQL
@@ -239,6 +276,14 @@ export default class verteilerDetails extends reloaderBase {
       }
     `
     super.created()
+
+    setTimeout(() => {
+      this.addRouter(
+        `Verteiler: ${
+          this.data.verteiler.bezeichnung
+        } [ID: ${this.$route.params.id}]`
+      )
+    }, 3000)
   }
 }
 </script>

@@ -57,7 +57,7 @@
           <v-icon>keyboard_arrow_right</v-icon>
           EC-Nordbund
           <v-icon>keyboard_arrow_right</v-icon>
-          T. Krause + S. Krüger{{$route.path}}
+          T. Krause + S. Krüger
         </span>
     </v-footer>
     <v-dialog v-model="soonLogOut" width="500px">
