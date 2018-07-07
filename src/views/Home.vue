@@ -6,7 +6,7 @@
         Startseite
       </ec-headline>
       <v-spacer/>
-      <ec-button-icon @click="edit = true"/>
+      <ec-button-icon @click="edit = true" v-if="false"/>
     </v-toolbar>
     <ec-widget-container :config="config" v-model="edit"/>
   </div>

@@ -1,6 +1,6 @@
 <template>
   <transition :name="routingAnimation">
-    <router-view class="child-routing"/>
+    <router-view :class="viewClass"/>
   </transition>
 </template>
 
@@ -15,9 +15,12 @@ import {
 @Component({})
 export default class Router extends Vue {
   routingAnimation: string = ''
+  viewClass: string = 'child-routing'
 
   @Watch('$route')
   onRouteChange(to: any, from: any) {
+    // console.log('from ' + from.path + ' to ' + to.path)
+
     const toA = to.path.split('/')
     const fromA = from.path.split('/')
 
@@ -36,9 +39,14 @@ export default class Router extends Vue {
       }
     }
 
+    this.viewClass =
+      depthCommonRoute <= 2
+        ? 'no-route-animation'
+        : 'route-animation'
+
     this.routingAnimation =
       depthCommonRoute <= 2
-        ? 'fade'
+        ? ''
         : toDepth < fromDepth ? 'slide-right' : 'slide-left'
   }
 }
