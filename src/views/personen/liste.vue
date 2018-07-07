@@ -1,5 +1,5 @@
 <template>
-  <ec-table title="Personen" itemName="Personen" :items="data.personen" :config="tableConfig" suche @open="open">
+  <ec-table title="Personen" itemName="Personen" :items="data.personen" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" :sucheVal="suchstring">
     <template slot="handleOutside" slot-scope="slotProps">
       <!-- Handle Geschlecht Col -->
        <v-avatar :style="{ background: (slotProps.item.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }" :size="32">
@@ -73,8 +73,13 @@ export default class PersonenListe extends reloaderBase {
       })
   }
   open(item: any) {
-    this.xButtonLogik.addItem(this.$route.path, {})
+    this.xButtonLogik.addItem(this.$route.path, {suche: this.suchstring})
     this.$router.push(`/app/personen/${item.personID}`)
+  }
+
+  suchstring: string = ""
+  suchStringUpdate(val: string) {
+    this.suchstring = val
   }
 
   created() {
@@ -82,6 +87,8 @@ export default class PersonenListe extends reloaderBase {
       authToken: auth.authToken
     }
     this.query = query.personen.liste.load
+    // console.log(this.$route)
+    this.suchstring = this.$route.query.suche || ''
     super.created()
   }
 }

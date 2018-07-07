@@ -69,6 +69,18 @@ export default class Table extends Vue {
   headers: Array<any> = []
   count: number = -1
 
+  @Prop({ type: String, required: false})
+  sucheVal!: string
+
+  @Watch('sucheVal', {immediate: true})
+  onSuchValChanged(val:string) {
+    this.suchString = val
+  }
+
+  @Watch('suchString')
+  @Emit('sucheChanged')
+  onSuchStringChanged(val:string) {}
+
   // Hier kann die Tolleranz der Suche geändert werden
   customFilter = (items: any, search: string) =>
     items.filter((item: any) => filter(item, search, 1 / 3))
