@@ -286,9 +286,51 @@ import {
 
 import { query } from '@/graphql/index'
 
-@Component({})
+import {getClient} from '@/plugins/apollo'
+import event from '@/plugins/eventbus'
+
+@Component({
+  beforeRouteEnter (to, from, next) {
+    event.emit('showLoading')
+    getClient().query(
+      {
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+      }
+    ).then((v:any)=>{
+      next(vm=>{
+        (<any>vm).data = v.data
+        event.emit('hideLoading')
+      })
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    event.emit('showLoading')
+    getClient().query(
+      {
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+      }
+    ).then((v:any)=>{
+      (<any>this).data = v.data
+      (<any>this).variabels = {
+        authToken: auth.authToken,
+        personID: to.params.id
+      }
+      next()
+      event.emit('hideLoading')
+    })
+  }
+})
 export default class PersonenDetails extends reloaderBase {
   isElectron: boolean = isElectron
+  data:any = {person: {}}
   editPersonStamm_show = false
   editPersonStamm_open() {
     this.editPersonStamm_value = {}
@@ -628,7 +670,6 @@ export default class PersonenDetails extends reloaderBase {
     }
     this.query = query.personen.details.load
     super.created()
-    console.log(this)
   }
 }
 </script>

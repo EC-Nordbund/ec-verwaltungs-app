@@ -45,7 +45,7 @@
           disable-initial-sort
         >
           <template slot="items" slot-scope="props">
-            <tr @click="xButtonLogic.reset();$router.push(props.item.route)">
+            <tr @click="xButtonLogic.reset(props.item.xButton);$router.push(props.item.route)">
               <td>{{ props.item.type }}</td>
               <td>{{ props.item.label }}</td>
               <td>{{ props.item.id }}</td>

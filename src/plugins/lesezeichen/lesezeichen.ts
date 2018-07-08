@@ -1,9 +1,20 @@
 import { isElectron } from '@/plugins/electron'
 import settings from '@/plugins/settings'
 
+import _xButton from '@/plugins/xButton/logic'
+
 export class Lesezeichen {
-  constructor(public route: string, public label: string, public type: string, public id: number|string) {
+  constructor(
+    public route: string,
+    public label: string,
+    public type: string,
+    public id: number | string,
+    public xButton: any = false
+  ) {
     liste.delete(route)
+    if (!xButton) {
+      this.xButton = _xButton.liste
+    }
     liste.addLesezeichen(this)
   }
 
@@ -21,6 +32,7 @@ class LesezeichenList {
   }
 
   save() {
+    console.log(this.liste)
     settings.set('lesezeichen', JSON.stringify(this.liste))
   }
 
@@ -42,7 +54,7 @@ const liste = new LesezeichenList()
 ;(<Array<any>>(
   JSON.parse(<string>settings.get('lesezeichen', '[]'))
 )).forEach((v: any) => {
-  new Lesezeichen(v.route, v.label, v.type, v.id)
+  new Lesezeichen(v.route, v.label, v.type, v.id, v.xButton)
 })
 
 export default liste
