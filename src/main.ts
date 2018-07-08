@@ -16,11 +16,13 @@ import '@/plugins/widgets'
 import lesezeichenToggele from '@/plugins/lesezeichen/addLesezeichen.vue'
 import lesezeichenShow from '@/plugins/lesezeichen/showLesezeichen.vue'
 import xButton from '@/plugins/xButton/btn.vue'
+import wrapper from '@/plugins/wrapper.vue'
 import Vue from 'vue'
 
 Vue.component('ec-lesezeichen-add', lesezeichenToggele)
 Vue.component('ec-lesezeichen-show', lesezeichenShow)
 Vue.component('ec-x-btn', xButton)
+Vue.component('ec-wrapper', wrapper)
 
 if (isElectron) {
   eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")

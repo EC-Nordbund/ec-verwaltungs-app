@@ -23,7 +23,6 @@ export default abstract class reloader extends Vue {
   public variabels!: {
     [key: string]: string | number | boolean
   }
-
   /**
    * Current query
    *
@@ -32,7 +31,6 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   private _query!: ObservableQuery<any>
-
   /**
    * Stores any type of data
    *
@@ -40,7 +38,6 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public data: any
-
   /**
    * Saves
    *
@@ -48,14 +45,12 @@ export default abstract class reloader extends Vue {
    * @memberof reloader
    */
   public query!: DocumentNode
-
   /**
    * Getter of authentication instance
    *
    * @memberof reloader
    */
   public auth = auth
-
   /**
    * Contains task to be done on creation
    *
