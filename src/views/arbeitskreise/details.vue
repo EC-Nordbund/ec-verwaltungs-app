@@ -1,48 +1,52 @@
 <template>
-  <div>
-    <!-- Header -->
-    <v-toolbar ripple tabs>
-      <v-spacer/>
-      <ec-headline>{{data.ak.bezeichnung}}</ec-headline>
-      <v-spacer/>
+  <ec-wrapper
+    title="Arbeitskreis Details"
+    :label="data.ak.bezeichnung || ''"
+    type="ak">
+    
+    <template slot="label">
+      <ec-headline>
+        {{data.ak.bezeichnung}}
+      </ec-headline>
       <ec-button-icon @click="editAKStamm_open" v-if="auth.isMutationAllowed('editAKStamm')"/>
-    </v-toolbar>
-    <!-- Content -->
-    <v-card>
-      <!-- Liste -->
+    </template>
+
+    <template>
       <ec-list v-if="data.ak.personen" :items="data.ak.personen" :mapper="mapper" :edit="auth.isMutationAllowed('editAKPerson')" @edit="edit" icon="person_pin_circle"/>
-      <!-- ADD-Button -->
-      <v-card-actions>
-        <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
-      </v-card-actions>
-    </v-card>
+    </template>
 
-    <!-- Edit AK-Stamm -->
-    <ec-form
-      title="Arbeitskreis editieren"
-      v-model="editAKStamm_show"
-      :fieldConfig="editAKStamm_config"
-      :value="editAKStamm_value"
-      @save="editAKStamm_save"
-    />
+    <template slot="actions">
+      <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
+    </template>
 
-    <!-- Edit AK-Person -->
-    <ec-form
-      title="Editiere Personenzuordnung"
-      v-model="editAKPerson_show"
-      :fieldConfig="editAKPerson_config"
-      :value="editAKPerson_value"
-      @save="editAKPerson_save"
-    />
+    <template slot="forms">
+      <!-- Edit AK-Stamm -->
+      <ec-form
+        title="Arbeitskreis editieren"
+        v-model="editAKStamm_show"
+        :fieldConfig="editAKStamm_config"
+        :value="editAKStamm_value"
+        @save="editAKStamm_save"
+      />
 
-    <!-- ADD AK-Person -->
-    <ec-form
-      title="Person hinzufügen"
-      v-model="addAKPerson_show"
-      :fieldConfig="addAKPerson_config"
-      @save="addPersonAK_save"
-    />
-  </div>
+      <!-- Edit AK-Person -->
+      <ec-form
+        title="Editiere Personenzuordnung"
+        v-model="editAKPerson_show"
+        :fieldConfig="editAKPerson_config"
+        :value="editAKPerson_value"
+        @save="editAKPerson_save"
+      />
+
+      <!-- ADD AK-Person -->
+      <ec-form
+        title="Person hinzufügen"
+        v-model="addAKPerson_show"
+        :fieldConfig="addAKPerson_config"
+        @save="addPersonAK_save"
+      />
+    </template>
+  </ec-wrapper>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -50,7 +54,52 @@ import reloaderBase from '@/baseComponents/reloader';
 import {personConfig,bezeichnungConfig} from '@/plugins/formConfig/index'
 import {query} from '@/graphql/index';
 import auth from '@/plugins/auth';
-@Component({})
+
+import {getClient} from '@/plugins/apollo'
+import event from '@/plugins/eventbus'
+@Component({
+  beforeRouteEnter (to, from, next) {
+    event.emit('showLoading')
+    getClient().query(
+      {
+        query: query.ak.details.load,
+        variables: {
+          authToken: auth.authToken,
+          akID: to.params.id
+        }
+      }
+    ).then((v:any)=>{
+      next(vm=>{
+        (<any>vm).data = v.data
+        setTimeout(()=>{
+          event.emit('hideLoading')
+        }, 500)
+      })
+    })
+  },
+  beforeRouteUpdate (to, from, next) {
+    event.emit('showLoading')
+    getClient().query(
+      {
+        query: query.ak.details.load,
+        variables: {
+          authToken: auth.authToken,
+          akID: to.params.id
+        }
+      }
+    ).then((v:any)=>{
+      (<any>this).data = v.data
+      (<any>this).variabels = {
+        authToken: auth.authToken,
+        personID: to.params.id
+      }
+      next()
+      setTimeout(()=>{
+        event.emit('hideLoading')
+      }, 500)
+    })
+  }
+})
 export default class AKDetails extends reloaderBase {
   data: { ak: any } = {
     ak: {}

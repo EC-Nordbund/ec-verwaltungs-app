@@ -10,7 +10,6 @@ class xButton {
   }> = []
 
   reset(liste: Array<any> = []) {
-    console.log(liste)
     this.liste = liste
     this.liste2 = []
   }

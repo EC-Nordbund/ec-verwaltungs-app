@@ -1,5 +1,6 @@
 <template>
-  <ec-wrapper v-if="true" title="Personen Details" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person">
+  <ec-wrapper title="Personen Details" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person">
+
     <template slot="label">
       <ec-headline>
         <v-avatar :style="{ background: (data.person.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }">
@@ -11,6 +12,7 @@
         <ec-button-icon @click="editPersonStamm_open"/>
       </ec-headline>
     </template>
+
     <template slot="extension">
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
@@ -34,6 +36,7 @@
         </v-tab>
       </v-tabs>
     </template>
+
     <template>
       <v-tabs-items v-model="tabs" class="white">
         <v-tab-item id="tab-2">
@@ -170,9 +173,11 @@
         </v-tab-item>
       </v-tabs-items>
     </template>
+
     <template slot="actions">
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
     </template>
+
     <template slot="forms">
       <!-- ADD Adresse -->
       <ec-form
@@ -260,6 +265,7 @@
         :fieldConfig="editPersonStamm_config"
       />
     </template>
+
   </ec-wrapper>
 </template>
 <script lang="ts">
@@ -303,7 +309,9 @@ import event from '@/plugins/eventbus'
     ).then((v:any)=>{
       next(vm=>{
         (<any>vm).data = v.data
-        event.emit('hideLoading')
+        setTimeout(()=>{
+          event.emit('hideLoading')
+        }, 500)
       })
     })
   },
@@ -324,7 +332,9 @@ import event from '@/plugins/eventbus'
         personID: to.params.id
       }
       next()
-      event.emit('hideLoading')
+      setTimeout(()=>{
+        event.emit('hideLoading')
+      }, 500)
     })
   }
 })
