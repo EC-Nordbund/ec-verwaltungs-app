@@ -61,7 +61,7 @@ export default class Table extends Vue {
   headers: Array<any> = []
   count: number = -1
 
-  @Prop({ type: String, required: false })
+  @Prop({ type: String, required: false, default: '' })
   sucheVal!: string
 
   @Watch('sucheVal', { immediate: true })

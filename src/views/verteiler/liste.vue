@@ -66,6 +66,7 @@ export default class verteilerList extends reloaderBase {
       this.$router.push(`/app/verteiler/${id}`);
     });
   }
+  
   created() {
     this.variabels = {
       authToken: auth.authToken
