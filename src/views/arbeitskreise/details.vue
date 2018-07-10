@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <v-toolbar ripple tabs>
+    <v-toolbar ripple extension-height="72px">
       <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>{{data.ak.bezeichnung}}</ec-headline>
@@ -46,16 +46,19 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import {personConfig,bezeichnungConfig} from '@/plugins/formConfig/index'
-import {query} from '@/graphql/index';
-import auth from '@/plugins/auth';
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import {
+  personConfig,
+  bezeichnungConfig
+} from '@/plugins/formConfig/index'
+import { query } from '@/graphql/index'
+import auth from '@/plugins/auth'
 @Component({})
 export default class AKDetails extends reloaderBase {
   data: { ak: any } = {
     ak: {}
-  };
+  }
   mapper = (item: any) => ({
     title: `${item.person.vorname} ${
       item.person.nachname
@@ -63,13 +66,11 @@ export default class AKDetails extends reloaderBase {
     subTitle: `${item.eintritt.german}${
       item.austritt ? ` ${item.austritt.german}` : ''
     }${item.leiter ? ' (Leiter)' : ''}`
-  });
-  editAKStamm_show = false;
-  editAKStamm_config = [
-    bezeichnungConfig
-  ];
-  editAKStamm_value = {};
-  editAKPerson_show = false;
+  })
+  editAKStamm_show = false
+  editAKStamm_config = [bezeichnungConfig]
+  editAKStamm_value = {}
+  editAKPerson_show = false
   editAKPerson_config = [
     {
       ...personConfig,
@@ -98,9 +99,9 @@ export default class AKDetails extends reloaderBase {
       type: 'checkbox',
       componentName: 'ec-form-checkbox'
     }
-  ];
-  editAKPerson_value = {};
-  addAKPerson_show = false;
+  ]
+  editAKPerson_value = {}
+  addAKPerson_show = false
   addAKPerson_config = [
     personConfig,
     {
@@ -119,7 +120,7 @@ export default class AKDetails extends reloaderBase {
       type: 'checkbox',
       componentName: 'ec-form-checkbox'
     }
-  ];
+  ]
   edit(item: any) {
     this.editAKPerson_value = {
       personAKID: item.personAKID,
@@ -127,15 +128,15 @@ export default class AKDetails extends reloaderBase {
       eintritt: item.eintritt.input,
       austritt: (item.austritt || {}).input,
       leiter: item.leiter
-    };
-    this.editAKPerson_show = true;
+    }
+    this.editAKPerson_show = true
   }
   editAKStamm_open() {
-    this.editAKStamm_value = {};
+    this.editAKStamm_value = {}
     this.editAKStamm_value = {
       bezeichnung: this.data.ak.bezeichnung
-    };
-    this.editAKStamm_show = true;
+    }
+    this.editAKStamm_show = true
   }
   editAKStamm_save(value: any) {
     this.$apollo.mutate({
@@ -145,7 +146,7 @@ export default class AKDetails extends reloaderBase {
         akID: this.$route.params.id,
         ...value
       }
-    });
+    })
   }
   editAKPerson_save(value: any) {
     this.$apollo
@@ -154,10 +155,10 @@ export default class AKDetails extends reloaderBase {
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-        ...value
+          ...value
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   addPersonAK_save(value: any) {
     this.$apollo
@@ -169,16 +170,16 @@ export default class AKDetails extends reloaderBase {
           ...value
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
 
   created() {
     this.variabels = {
       authToken: auth.authToken,
       akID: this.$route.params.id
-    };
-    this.query = query.ak.details.load;
-    super.created();
+    }
+    this.query = query.ak.details.load
+    super.created()
   }
 }
 </script>

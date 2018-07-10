@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar ripple tabs>
+    <v-toolbar ripple extension-height="72px">
       <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>

@@ -8,14 +8,14 @@
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
-      <v-btn icon v-black @click="darkChange">
+      <v-btn icon v-white @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
     </v-toolbar>
     <v-navigation-drawer clipped v-model="drawer" app>
       <v-list>
         <template v-for="item in nav" v-if="item.userGroups === '*' || item.userGroups.indexOf(auth._userGroupBezeichnung) !== -1">
-          <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.action" no-action>
+          <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.icon" no-action>
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title v-font>{{ item.title }}</v-list-tile-title>
@@ -26,13 +26,13 @@
                 <v-list-tile-title v-font>{{ subItem.title }}</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-icon>{{ subItem.action }}</v-icon>
+                <v-icon>{{ subItem.icon }}</v-icon>
               </v-list-tile-action>
             </v-list-tile>
           </v-list-group>
           <v-list-tile v-if="!item.items" @click="click(item.route)" :key="item.title">
             <v-list-tile-action>
-              <v-icon>{{ item.action }}</v-icon>
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title v-font>{{ item.title }}</v-list-tile-title>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-toolbar tabs>
+    <v-toolbar ripple extension-height="72px">
       <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>
@@ -14,25 +14,19 @@
       <v-spacer/>
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
       <ec-button-icon @click="editPersonStamm_open"/>
-      <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent">
+      <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent"  icons-and-text>
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
-          <v-icon v-accent>contacts</v-icon>
-          <v-spacer/>
-          <span>Kontaktdaten</span>
-          <v-spacer/>
+          Kontaktdaten
+          <v-icon v-accent>ballot</v-icon>
         </v-tab>
         <v-tab href="#tab-3" v-secondary>
-          <v-icon v-accent>event</v-icon>
-          <v-spacer/>
-          <span>Anmeldungen</span>
-          <v-spacer/>
+          Veranstaltungen
+          <v-icon v-accent>assignment_ind</v-icon>
         </v-tab>
         <v-tab href="#tab-4" v-secondary>
-          <v-icon v-accent>extension</v-icon>
-          <v-spacer/>
-          <span>Sonstiges</span>
-          <v-spacer/>
+          Sonstiges
+          <v-icon v-accent>settings</v-icon>
         </v-tab>
       </v-tabs>
     </v-toolbar>
@@ -264,14 +258,22 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import {vornameConfig,
-    nachnameConfig, telefonConfig, eMailConfig,
-    gebDatConfig, akConfig,strasseConfig,
-    plzConfig,
-    ortConfig,
-    geschlechtConfig, verteilerConfig, verteilerTypeConfig} from '@/plugins/formConfig/index'
+import {
+  vornameConfig,
+  nachnameConfig,
+  telefonConfig,
+  eMailConfig,
+  gebDatConfig,
+  akConfig,
+  strasseConfig,
+  plzConfig,
+  ortConfig,
+  geschlechtConfig,
+  verteilerConfig,
+  verteilerTypeConfig
+} from '@/plugins/formConfig/index'
 
-import {query} from '@/graphql/index';
+import { query } from '@/graphql/index'
 
 @Component({})
 export default class PersonenDetails extends reloaderBase {
@@ -292,16 +294,18 @@ export default class PersonenDetails extends reloaderBase {
   }
   editPersonStamm_value = {}
   editPersonStamm_save(value: any) {
-    this.$apollo.mutate({
-      mutation: query.personen.details.editStamm,
-      variables: {
-        authToken: this.auth.authToken,
-        personID: this.$route.params.id,
-        ...value
-      }
-    }).then(()=>{
-      this.refetch()
-    })
+    this.$apollo
+      .mutate({
+        mutation: query.personen.details.editStamm,
+        variables: {
+          authToken: this.auth.authToken,
+          personID: this.$route.params.id,
+          ...value
+        }
+      })
+      .then(() => {
+        this.refetch()
+      })
   }
   editPersonStamm_config = [
     vornameConfig,
@@ -376,19 +380,11 @@ export default class PersonenDetails extends reloaderBase {
   editEmail_value = {}
   editAdresse_value = {}
   addTelefon_show = false
-  addTelefon_config = [
-    telefonConfig
-  ]
+  addTelefon_config = [telefonConfig]
   addEmail_show = false
-  addEmail_config = [
-    eMailConfig
-  ]
+  addEmail_config = [eMailConfig]
   addAdresse_show = false
-  addAdresse_config = [
-    strasseConfig,
-    plzConfig,
-    ortConfig
-  ]
+  addAdresse_config = [strasseConfig, plzConfig, ortConfig]
   tabs = null
   auskunftsRecht() {
     ;(<any>this.$apollo)
@@ -552,7 +548,7 @@ export default class PersonenDetails extends reloaderBase {
       .mutate({
         mutation: query.personen.details.editAdresse,
         variables: {
-                    personID: this.data.person.personID,
+          personID: this.data.person.personID,
           authToken: auth.authToken,
           ...value
         }
@@ -570,7 +566,7 @@ export default class PersonenDetails extends reloaderBase {
         }
       })
       .then(this.refetch)
-  } 
+  }
   editEmail_save(value: any) {
     this.$apollo
       .mutate({
