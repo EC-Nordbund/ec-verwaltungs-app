@@ -27,7 +27,6 @@ import auth from '@/plugins/auth'
         }
       })
       .then((v: any) => {
-        console.log(v, 'testing')
         next(vm => {
           ;(<AKListe>vm).data = v.data
           setTimeout(() => {

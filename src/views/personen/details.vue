@@ -270,7 +270,7 @@
 </template>
 <script lang="ts">
 import electron, { isElectron } from '@/plugins/electron'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
@@ -639,18 +639,10 @@ export default class PersonenDetails extends reloaderBase {
       })
       .then(this.refetch)
   }
-  editAdresse_open(item: {
-    adressID: number
-    strasse: string
-    plz: string
-    ort: string
-  }) {
+  editAdresse_open(item: any) {
     this.editAdresse_value = {}
     this.editAdresse_value = {
-      adressID: item.adressID,
-      strasse: item.strasse,
-      plz: item.plz,
-      ort: item.ort
+      ...item
     }
     this.editAdresse_show = true
   }
@@ -660,16 +652,14 @@ export default class PersonenDetails extends reloaderBase {
   }) {
     this.editTelefon_value = {}
     this.editTelefon_value = {
-      telefonID: item.telefonID,
-      telefon: item.telefon
+      ...item
     }
     this.editTelefon_show = true
   }
   editEmail_open(item: { emailID: number; email: string }) {
     this.editEmail_value = {}
     this.editEmail_value = {
-      emailID: item.emailID,
-      email: item.email
+      ...item
     }
     this.editEmail_show = true
   }

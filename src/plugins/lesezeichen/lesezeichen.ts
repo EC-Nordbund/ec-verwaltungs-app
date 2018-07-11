@@ -32,7 +32,6 @@ class LesezeichenList {
   }
 
   save() {
-    console.log(this.liste)
     settings.set('lesezeichen', JSON.stringify(this.liste))
   }
 
