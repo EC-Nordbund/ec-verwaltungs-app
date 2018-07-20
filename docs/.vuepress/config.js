@@ -2,7 +2,7 @@ module.exports = {
   title: 'EC-Nordbund',
   description: 'Hilfe und Dokumentation',
   themeConfig: {
-    repo: 'ecnordbund/ec-verwaltung',
+    repo: 'ecnordbund/ec-verwaltungs-app',
     docsDir: 'docs',
     locales: {
       '/': {
@@ -30,4 +30,4 @@ module.exports = {
     lineNumbers: true
   },
   port: 8081
-};
+}

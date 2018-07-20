@@ -477,6 +477,7 @@ export default class PersonenDetails extends reloaderBase {
         clipboard.writeText(
           JSON.stringify(typeName(v), null, 2)
         )
+        
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:

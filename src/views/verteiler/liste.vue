@@ -6,7 +6,9 @@
     :items="data.verteilerList"
     :config="tableConfig"
     suche
-    @open="open">
+    @open="open"
+    @sucheChanged="suchStringUpdate" 
+    :sucheVal="suchstring">
     <!-- ADD-Button -->
     <ec-button-add @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('verteilerList')"/>
     <!-- ADD-Verteiler-Form -->
@@ -19,13 +21,44 @@
   </ec-table>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
+
+import {
+  vornameConfig,
+  nachnameConfig,
+  gebDatConfig,
+  geschlechtConfig
+} from '@/plugins/formConfig/index'
 
 import auth from '@/plugins/auth'
 
-@Component({})
+import xButtonLogik from '@/plugins/xButton/logic'
+import event from '@/plugins/eventbus'
+import { query } from '@/graphql/index'
+import { getClient } from '@/plugins/apollo'
+
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.verteiler.liste.load,
+        variables: {
+          authToken: auth.authToken
+        }
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<verteilerList>vm).data = v.data
+           setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  }
+})
 export default class verteilerList extends reloaderBase {
   data:{verteilerList:Array<any>} = {verteilerList: []}
   tableConfig = [
@@ -44,41 +77,44 @@ export default class verteilerList extends reloaderBase {
       counter: 50,
     },
   ]
+
+  xButtonLogik = xButtonLogik
+
   open(item:any) {
-      this.$router.push(`/app/verteiler/${item.verteilerID}`);
-    }
+     this.xButtonLogik.addItem(this.$route.path, {
+      suche: this.suchstring
+    })
+    this.$router.push(`/app/verteiler/${item.verteilerID}`);
+  }
+
+
   addVerteiler_save(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation ($authToken:String!, $bezeichnung:String!) {
-          addVerteiler(
-            authToken: $authToken,
-            autoSql: "",
-            bezeichnung: $bezeichnung
-          )
+    this.$apollo
+      .mutate({
+        mutation: query.verteiler.liste.addVerteiler,
+        variables: {
+          authToken: auth.authToken,
+          ...value
         }
-      `,
-      variables: {
-        bezeichnung: value.bezeichnung,
-        authToken: auth.authToken,
-      },
-    }).then(val => val.data.addVerteiler).then((id) => {
+      })
+      .then(val => val.data.addVerteiler)
+      .then((id) => {
       this.$router.push(`/app/verteiler/${id}`);
     });
   }
   
+  suchstring: string = ''
+
+  suchStringUpdate(val: string) {
+    this.suchstring = val
+  }
+
   created() {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.query = gql`
-      query($authToken: String!){
-        verteilerList(authToken: $authToken) {
-          verteilerID
-          bezeichnung
-        }
-      }
-    `
+    this.query = query.verteiler.liste.load
+    this.suchstring = this.$route.query.suche || ''
     super.created()
   }
 }
