@@ -2,7 +2,7 @@ import apolloProvider from '@/plugins/apollo'
 import '@/plugins/auth'
 import '@/plugins/design/theme-directives'
 import '@/plugins/design/vuetify'
-import {
+import electron, {
   isElectron,
   isProduction
 } from '@/plugins/electron'
@@ -17,6 +17,7 @@ import lesezeichenToggele from '@/plugins/lesezeichen/addLesezeichen.vue'
 import lesezeichenShow from '@/plugins/lesezeichen/showLesezeichen.vue'
 import xButton from '@/plugins/xButton/btn.vue'
 import wrapper from '@/plugins/wrapper.vue'
+import auth from '@/plugins/auth'
 import Vue from 'vue'
 
 Vue.component('ec-lesezeichen-add', lesezeichenToggele)
@@ -27,6 +28,16 @@ Vue.component('ec-wrapper', wrapper)
 if (isElectron) {
   eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")
   eval("window.fetch = require('node-fetch')")
+  electron.ipcRenderer.on(
+    'proto-set-route',
+    (e: any, url: string) => {
+      if (auth.isLogedIn()) {
+        router.push(url)
+      } else {
+        auth.protoUrl(url)
+      }
+    }
+  )
 }
 
 // set Config

@@ -11,6 +11,11 @@
             </h1>
           </v-toolbar-title>
           <v-spacer/>
+          <v-btn icon @click="share" v-if="isElectron">
+            <v-icon>
+              share
+            </v-icon>
+          </v-btn>
           <ec-lesezeichen-add 
             v-if="!mini"
             :route="$route.path" 
@@ -18,6 +23,7 @@
             :type="type" 
             :elID="$route.params.id"
           />
+          <slot slot="extension" name="extension" v-if="mini"/>
         </v-toolbar>
         <v-card class="elevation-0" v-if="!mini">
           <v-toolbar tabs class="elevation-0">
@@ -28,9 +34,7 @@
           </v-toolbar>
           <slot/>
         </v-card>
-        <v-card-text v-if="mini">
-          <slot/>
-        </v-card-text>
+        <slot v-if="mini"/>
         <v-card-actions>
           <slot name="actions"/>
         </v-card-actions>
@@ -41,10 +45,13 @@
 </template>
 
 <script lang="ts">
+import electron, {isElectron} from '@/plugins/electron'
 import { Component, Vue, Prop } from 'vue-property-decorator'
 
 @Component({})
 export default class verteilerDetails extends Vue {
+  isElectron=isElectron
+
   @Prop({type: Boolean, default: false})
   mini!: boolean
 
@@ -56,5 +63,11 @@ export default class verteilerDetails extends Vue {
 
   @Prop({type: String, default: 'No-Type'})
   type!:string
+
+  share() {
+    this.$emit('share', (url:string)=>{
+      electron.clipboard.writeText(url)
+    })
+  }
 }
 </script>

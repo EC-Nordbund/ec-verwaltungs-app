@@ -48,6 +48,7 @@
               icon="location_on"
               :edit="auth.isMutationAllowed('editAdresse')"
               @edit="editAdresse_open"
+              @click="showMap"
             />
             <v-divider/>
             <!-- Email -->
@@ -164,7 +165,7 @@
                 <v-icon>add</v-icon>
                 Verteiler
               </v-btn>
-              <v-btn flat @click="addPersonFZ_show = true" v-if="true">
+              <v-btn flat @click="addPersonFZ_show = true" v-if="true" @click="alertCommingSoon">
                 <v-icon>add</v-icon>
                 Führungszeugnis
               </v-btn>
@@ -264,6 +265,10 @@
         @save="editPersonStamm_save"
         :fieldConfig="editPersonStamm_config"
       />
+      <v-dialog v-model="mapShow">
+        <h1>Hier könnte IHRE Karte stehen ;)</h1>
+        <p>{{mapData}}</p>
+      </v-dialog>
     </template>
 
   </ec-wrapper>
@@ -485,6 +490,12 @@ export default class PersonenDetails extends reloaderBase {
         })
       })
   }
+  mapData: any = {}
+  mapShow: boolean = false
+  showMap(item:any) {
+    this.mapData = item
+    this.mapShow = true
+  }
   editVerteiler_save(value: any) {
     this.$apollo
       .mutate({
@@ -671,6 +682,9 @@ export default class PersonenDetails extends reloaderBase {
     }
     this.query = query.personen.details.load
     super.created()
+  }
+  alertCommingSoon(){
+    alert('Comming Soon')
   }
 }
 </script>

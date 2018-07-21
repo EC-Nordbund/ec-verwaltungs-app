@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
 import { getClient } from '@/plugins/apollo'
-// import router from './router/router'
+import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
 /**
@@ -176,6 +176,12 @@ class auth {
         this.getRights()
       })
       .then(v => true)
+      .then(v => {
+        if (this.nextUrl !== null) {
+          router.push(this.nextUrl)
+        }
+        return v
+      })
       .catch(v => false)
   }
 
@@ -227,6 +233,12 @@ class auth {
           conf.ablaufDatum.german
         }`
       })
+  }
+
+  nextUrl: string | null = null
+
+  public protoUrl(url: string) {
+    this.nextUrl = url
   }
 
   /**
