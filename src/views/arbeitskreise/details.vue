@@ -2,7 +2,7 @@
   <ec-wrapper
     title="Arbeitskreis Details"
     :label="data.ak.bezeichnung || ''"
-    type="ak">
+    type="AK">
     
     <template slot="label">
       <ec-headline>
@@ -91,7 +91,7 @@ import event from '@/plugins/eventbus'
       (<any>this).data = v.data
       (<any>this).variabels = {
         authToken: auth.authToken,
-        personID: to.params.id
+        akID: to.params.id
       }
       next()
       setTimeout(()=>{
@@ -101,9 +101,7 @@ import event from '@/plugins/eventbus'
   }
 })
 export default class AKDetails extends reloaderBase {
-  data: { ak: any } = {
-    ak: {}
-  };
+  data: { ak: any } = { ak: {} }
   mapper = (item: any) => ({
     title: `${item.person.vorname} ${
       item.person.nachname

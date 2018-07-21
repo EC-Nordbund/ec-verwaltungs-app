@@ -19,6 +19,9 @@
       <v-btn icon v-black @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
+      <v-btn icon @click="logOut">
+        <v-icon>power_settings_new</v-icon>
+      </v-btn>
     </v-toolbar>
     <v-navigation-drawer clipped v-model="drawer" app>
       <v-list>
@@ -165,6 +168,11 @@ export default class App extends Vue {
     if (!val) {
       this.auth.extend()
     }
+  }
+
+  logOut() {
+    this.auth.logOut()
+    this.$router.push('/')
   }
 }
 </script>
