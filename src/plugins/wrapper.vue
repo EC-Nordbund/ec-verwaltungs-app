@@ -4,6 +4,7 @@
       <v-card class="elevation-10">
         <v-toolbar>
           <ec-x-btn v-if="!mini"/>
+          <v-btn icon v-show="false"/>
           <v-spacer/>
           <v-toolbar-title>
             <h1 v-font v-primary>

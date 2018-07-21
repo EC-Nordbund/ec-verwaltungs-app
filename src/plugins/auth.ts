@@ -177,9 +177,12 @@ class auth {
       })
       .then(v => true)
       .then(v => {
+        setTimeout(() => {
         if (this.nextUrl !== null) {
-          router.push(this.nextUrl)
+            this.router.push(this.nextUrl)
+            this.nextUrl = ''
         }
+        }, 10)
         return v
       })
       .catch(v => false)

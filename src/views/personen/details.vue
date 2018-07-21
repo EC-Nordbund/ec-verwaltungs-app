@@ -165,7 +165,7 @@
                 <v-icon>add</v-icon>
                 Verteiler
               </v-btn>
-              <v-btn flat @click="addPersonFZ_show = true" v-if="true" @click="alertCommingSoon">
+              <v-btn flat v-if="true" @click="alertCommingSoon">
                 <v-icon>add</v-icon>
                 Führungszeugnis
               </v-btn>
@@ -297,55 +297,54 @@ import {
 
 import { query } from '@/graphql/index'
 
-import {getClient} from '@/plugins/apollo'
+import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
 @Component({
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    getClient().query(
-      {
+    getClient()
+      .query({
         query: query.personen.details.load,
         variables: {
           authToken: auth.authToken,
           personID: to.params.id
         }
-      }
-    ).then((v:any)=>{
-      next(vm=>{
-        (<any>vm).data = v.data
-        setTimeout(()=>{
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<any>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  },
+  beforeRouteUpdate(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+      })
+      .then((v: any) => {
+        ;(<any>this).data = v.data(<any>this).variabels = {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+        next()
+        setTimeout(() => {
           event.emit('hideLoading')
         }, 500)
       })
-    })
-  },
-  beforeRouteUpdate (to, from, next) {
-    event.emit('showLoading')
-    getClient().query(
-      {
-        query: query.personen.details.load,
-        variables: {
-          authToken: auth.authToken,
-          personID: to.params.id
-        }
-      }
-    ).then((v:any)=>{
-      (<any>this).data = v.data
-      (<any>this).variabels = {
-        authToken: auth.authToken,
-        personID: to.params.id
-      }
-      next()
-      setTimeout(()=>{
-        event.emit('hideLoading')
-      }, 500)
-    })
   }
 })
 export default class PersonenDetails extends reloaderBase {
   isElectron: boolean = isElectron
-  data:any = {person: {}}
+  data: any = { person: {} }
   editPersonStamm_show = false
   editPersonStamm_open() {
     this.editPersonStamm_value = {}
@@ -482,7 +481,7 @@ export default class PersonenDetails extends reloaderBase {
         clipboard.writeText(
           JSON.stringify(typeName(v), null, 2)
         )
-        
+
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:
@@ -492,7 +491,7 @@ export default class PersonenDetails extends reloaderBase {
   }
   mapData: any = {}
   mapShow: boolean = false
-  showMap(item:any) {
+  showMap(item: any) {
     this.mapData = item
     this.mapShow = true
   }
@@ -683,7 +682,7 @@ export default class PersonenDetails extends reloaderBase {
     this.query = query.personen.details.load
     super.created()
   }
-  alertCommingSoon(){
+  alertCommingSoon() {
     alert('Comming Soon')
   }
 }
