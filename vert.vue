@@ -1,10 +1,9 @@
 <template>
-  <ec-wrapper title="Veranstaltungs Details" :label="`${data.veranstaltung.bezeichnung} (${data.veranstaltung.begin?data.veranstaltung.begin.german:''} - ${data.veranstaltung.ende?data.veranstaltung.ende.german:''})`" type="Veranstaltung" @share="share">
+  <ec-wrapper title="Veranstaltungs Details" :label="*" type="Veranstaltung" @share="share">
 
     <template slot="label">
       <ec-headline>
-        {{data.veranstaltung.bezeichnung}}
-        ({{data.veranstaltung.begin?data.veranstaltung.begin.german:''}} - {{data.veranstaltung.ende?data.veranstaltung.ende.german:''}})
+        *Titel (Label)*
         <ec-button-icon @click="editVeranstaltungsStamm_open"/>
       </ec-headline>
     </template>
@@ -38,42 +37,40 @@
         <v-tab-item id="tab-1">
           <ec-list
             edit 
-            icon="."
-            :items="[
-              {
-                title: `${(data.veranstaltung.unterkunft || {}).bezeichnung}`, 
-                subTitle: `${(data.veranstaltung.unterkunft || {}).plz} ${(data.veranstaltung.unterkunft || {}).ort} (${(data.veranstaltung.unterkunft || {}).land})`, 
-                icon: 'home'
-              },
-              {
-                title: `min: ${data.veranstaltung.minTNAlter} max: ${data.veranstaltung.maxTNAlter}`,
-                subTitle: 'Alter',
-                icon: 'group'
-              },
-              {
-                title: data.veranstaltung.maxTNAnzahl,
-                subTitle: 'Anzahl Plätze',
-                icon: 'group'
-              },
-              {
-                title: data.veranstaltung.maxMaennlichTNAnzahl,
-                subTitle: 'Anzahl Plätze männlich',
-                icon: 'group'
-              },
-              {
-                title: data.veranstaltung.maxWeiblichTNAnzahl,
-                subTitle: 'Anzahl Plätze weiblich',
-                icon: 'group'
-              }
-            ]"
-            :mapper="v=>v"
-            @edit="editAllgemeines"
+          icon="."
+          :items="[
+            {
+              title: `${(data.veranstaltung.unterkunft || {}).bezeichnung}`, 
+              subTitle: `${(data.veranstaltung.unterkunft || {}).plz} ${(data.veranstaltung.unterkunft || {}).ort} (${(data.veranstaltung.unterkunft || {}).land})`, 
+              icon: 'home'
+            },
+            {
+              title: `min: ${data.veranstaltung.minTNAlter} max: ${data.veranstaltung.maxTNAlter}`,
+              subTitle: 'Alter',
+              icon: 'group'
+            },
+            {
+              title: data.veranstaltung.maxTNAnzahl,
+              subTitle: 'Anzahl Plätze',
+              icon: 'group'
+            },
+            {
+              title: data.veranstaltung.maxMaennlichTNAnzahl,
+              subTitle: 'Anzahl Plätze männlich',
+              icon: 'group'
+            },
+            {
+              title: data.veranstaltung.maxWeiblichTNAnzahl,
+              subTitle: 'Anzahl Plätze weiblich',
+              icon: 'group'
+            }
+          ]"
+          :mapper="v=>v"
           />
         </v-tab-item>
         <v-tab-item id="tab-2">
            <ec-list
             edit 
-            @edit="editKosten"
             icon="."
             :items="[
               {
@@ -107,12 +104,12 @@
                 icon: 'attach_money'
               },
               {
-                title: data.veranstaltung.preisFruehbucherBis?data.veranstaltung.preisFruehbucherBis.german:'',
+                title: data.veranstaltung.preisFruehbucherBis.german,
                 subTitle: 'Frühbucher gilt bis',
                 icon: 'attach_money'
               },
               {
-                title: data.veranstaltung.preisLastMinuteAb?data.veranstaltung.preisLastMinuteAb.german:'',
+                title: data.veranstaltung.preisLastMinuteAb.german,
                 subTitle: 'Last Minute gilt ab',
                 icon: 'attach_money'
               },
@@ -215,15 +212,6 @@ export default class veranstaltungsDetails extends reloaderBase {
   }
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
-  }
-  editVeranstaltungsStamm_open(){
-    alert('Comming Soon...')
-  }
-  editAllgemeines(){
-    alert('Comming Soon...')
-  }
-  editKosten(){
-    alert('Comming Soon...')
   }
 }
 </script>

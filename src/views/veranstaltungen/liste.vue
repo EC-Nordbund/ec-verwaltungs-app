@@ -1,6 +1,12 @@
 <template>
-  <ec-table title="Veranstaltungen" itemName="Veranstaltungen" :items="data.veranstaltungen" :config="tableConfig" suche @open="open">
-    <ec-button-add/>
+  <ec-table title="Veranstaltungen" itemName="Veranstaltungen" :items="data.veranstaltungen" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" :sucheVal="suchstring">
+    <ec-button-add @click="addVeranstaltung_show = true" v-if="auth.isMutationAllowed('addVeranstaltung')"/>
+    <ec-form
+      title="Veranstatung hinzufügen"
+      v-model="addVeranstaltung_show"
+      :fieldConfig="addVeranstaltung_config"
+      @save="addVeranstaltung_save"
+    />
   </ec-table>
 </template>
 <script lang="ts">
@@ -9,8 +15,43 @@ import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
-@Component({})
+
+import xButtonLogik from '@/plugins/xButton/logic'
+import event from '@/plugins/eventbus'
+import { query } from '@/graphql/index'
+import { getClient } from '@/plugins/apollo'
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.veranstaltungen.liste.load,
+        variables: {
+          authToken: auth.authToken
+        }
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<VeranstaltungsListe>vm).data = v.data
+           setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  }
+})
 export default class VeranstaltungsListe extends reloaderBase {
+  xButtonLogik = xButtonLogik
+  suchstring: string = ''
+  addVeranstaltung_show: boolean = false
+  addVeranstaltung_config = []
+  addVeranstaltung_save(value:any) {alert('Comming Soon...')}
+
+  suchStringUpdate(val: string) {
+    this.suchstring = val
+  }
+
   data: { veranstaltungen: Array<any> } = {
     veranstaltungen: []
   }
@@ -25,26 +66,11 @@ export default class VeranstaltungsListe extends reloaderBase {
     { name: 'unterkunft.bezeichnung', label: 'Unterkunft' }
   ]
   created() {
-    this.query = gql`
-      query($authToken: String!) {
-        veranstaltungen(authToken: $authToken) {
-          veranstaltungsID
-          bezeichnung
-          begin {
-            german
-          }
-          ende {
-            german
-          }
-          unterkunft {
-            bezeichnung
-          }
-        }
-      }
-    `
+    this.query = query.veranstaltungen.liste.load
     this.variabels = {
       authToken: auth.authToken
     }
+    this.suchstring = this.$route.query.suche || ''
     super.created()
   }
 
@@ -52,6 +78,9 @@ export default class VeranstaltungsListe extends reloaderBase {
     this.$router.push(
       `/app/veranstaltungen/${item.veranstaltungsID}`
     )
+    this.xButtonLogik.addItem(this.$route.path, {
+      suche: this.suchstring
+    })
   }
 }
 </script>

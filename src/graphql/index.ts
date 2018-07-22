@@ -1,6 +1,93 @@
 import gql from 'graphql-tag'
 
 export const query = {
+  veranstaltungen: {
+    liste: {
+      load: gql`
+        query($authToken: String!) {
+          veranstaltungen(authToken: $authToken) {
+            veranstaltungsID
+            bezeichnung
+            begin {
+              german
+            }
+            ende {
+              german
+            }
+            unterkunft {
+              bezeichnung
+            }
+          }
+        }
+      `
+    },
+    details: {
+      load: gql`
+        query(
+          $authToken: String!
+          $veranstaltungsID: Int!
+        ) {
+          veranstaltung(
+            veranstaltungsID: $veranstaltungsID
+            authToken: $authToken
+          ) {
+            veranstaltungsID
+            bezeichnung
+            begin {
+              input
+              german
+            }
+            ende {
+              input
+              german
+            }
+            unterkunft {
+              unterkunftID
+              bezeichnung
+              strasse
+              plz
+              ort
+              land
+            }
+            anmeldungen {
+              anmeldeID
+              person {
+                personID
+                vorname
+                nachname
+                gebDat {
+                  german
+                }
+                geschlecht
+              }
+              position
+            }
+            minTNAlter
+            maxTNAlter
+            maxTNAnzahl
+            maxWeiblichTNAnzahl
+            maxMaennlichTNAnzahl
+            preisFruehbucher
+            preisNormal
+            preisLastMinute
+            anzahlungFruehbucher
+            anzahlungNormal
+            anzahlungLastMinute
+            preisFruehbucherBis {
+              german
+              input
+            }
+            preisLastMinuteAb {
+              german
+              input
+            }
+            kannVorortBezahltWerden
+            hatGWarteliste
+          }
+        }
+      `
+    }
+  },
   verteiler: {
     details: {
       load: gql`
