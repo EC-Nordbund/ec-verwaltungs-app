@@ -16,7 +16,7 @@
       <v-spacer/>
       <ec-lesezeichen-show/>
       <div style="padding-right: 20px"/>
-      <v-btn icon v-black @click="darkChange">
+      <v-btn icon @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
       <v-btn icon @click="logOut">

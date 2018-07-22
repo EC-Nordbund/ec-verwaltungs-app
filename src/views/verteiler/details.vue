@@ -1,5 +1,5 @@
 <template>
-  <ec-wrapper title="Verteiler Details" :label="data.verteiler.bezeichnung || ''" type="Verteiler">    
+  <ec-wrapper title="Verteiler Details" :label="data.verteiler.bezeichnung || ''" type="Verteiler" @share="share">    
     <template slot="label">
       <ec-headline>
         {{data.verteiler.bezeichnung}}
@@ -200,6 +200,9 @@ export default class verteilerDetails extends reloaderBase {
     }
     this.query = query.verteiler.details.load
     super.created()
+  }
+  share(share: (url:string)=>void) {
+    share(this.$route.fullPath)
   }
 }
 </script>

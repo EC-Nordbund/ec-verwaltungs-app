@@ -4,7 +4,7 @@
       <v-card class="elevation-10">
         <v-toolbar>
           <ec-x-btn v-if="!mini"/>
-          <v-btn icon v-show="false"/>
+          <v-btn icon style="visibility: hidden;"/>
           <v-spacer/>
           <v-toolbar-title>
             <h1 v-font v-primary>
@@ -46,28 +46,32 @@
 </template>
 
 <script lang="ts">
-import electron, {isElectron} from '@/plugins/electron'
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import electron, { isElectron } from '@/plugins/electron'
+import {
+  Component,
+  Vue,
+  Prop
+} from 'vue-property-decorator'
 
 @Component({})
 export default class verteilerDetails extends Vue {
-  isElectron=isElectron
+  isElectron = isElectron
 
-  @Prop({type: Boolean, default: false})
+  @Prop({ type: Boolean, default: false })
   mini!: boolean
 
-  @Prop({type: String, required: true})
-  title!:string
+  @Prop({ type: String, required: true })
+  title!: string
 
-  @Prop({type: String, default: 'No-Label'})
-  label!:string
+  @Prop({ type: String, default: 'No-Label' })
+  label!: string
 
-  @Prop({type: String, default: 'No-Type'})
-  type!:string
+  @Prop({ type: String, default: 'No-Type' })
+  type!: string
 
   share() {
-    this.$emit('share', (url:string)=>{
-      electron.clipboard.writeText(url)
+    this.$emit('share', (url: string) => {
+      electron.clipboard.writeText(`ec://${url}`)
     })
   }
 }

@@ -2,7 +2,8 @@
   <ec-wrapper
     title="Arbeitskreis Details"
     :label="data.ak.bezeichnung || ''"
-    type="AK">
+    type="AK"
+    @share="share">
     
     <template slot="label">
       <ec-headline>
@@ -225,6 +226,9 @@ export default class AKDetails extends reloaderBase {
     };
     this.query = query.ak.details.load;
     super.created();
+  }
+  share(share: (url:string)=>void) {
+    share(this.$route.fullPath)
   }
 }
 </script>

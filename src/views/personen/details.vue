@@ -1,5 +1,5 @@
 <template>
-  <ec-wrapper title="Personen Details" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person">
+  <ec-wrapper title="Personen Details" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person" @share="share">
 
     <template slot="label">
       <ec-headline>
@@ -684,6 +684,9 @@ export default class PersonenDetails extends reloaderBase {
   }
   alertCommingSoon() {
     alert('Comming Soon')
+  }
+  share(share: (url:string)=>void) {
+    share(this.$route.fullPath)
   }
 }
 </script>
