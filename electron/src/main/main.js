@@ -80,6 +80,7 @@ let mainWindow
 function createWindow() {
   mainWindow = new BrowserWindow(mainWindowOptions)
   mainWindow.loadURL(winURL)
+  mainWindow.webContents.openDevTools()
   mainWindow.on('ready-to-show', () => {
     loadingWindow.setClosable(true)
     loadingWindow.close()

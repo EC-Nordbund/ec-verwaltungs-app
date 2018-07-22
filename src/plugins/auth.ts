@@ -242,6 +242,7 @@ class auth {
 
   public protoUrl(url: string) {
     this.nextUrl = url
+    eventbus.emit('login_show_url_info')
   }
 
   /**
