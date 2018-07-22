@@ -10,10 +10,7 @@ require('electron').app.once('ready', () => {
     .default(installExtension.VUEJS_DEVTOOLS)
     .then(() => {})
     .catch(err => {
-      console.log(
-        'Unable to install `vue-devtools`: \n',
-        err
-      )
+      throw err
     })
 
   //Install ApolloDevtools
@@ -21,10 +18,7 @@ require('electron').app.once('ready', () => {
     .default(installExtension.APOLLO_DEVELOPER_TOOLS)
     .then(() => {})
     .catch(err => {
-      console.log(
-        'Unable to install `apollo-devtools`: \n',
-        err
-      )
+      throw err
     })
 })
 
