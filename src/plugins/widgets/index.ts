@@ -3,6 +3,7 @@ import widgetContainerSettings from '@/plugins/widgets/widgetContainerSettings.v
 import widgetElement from '@/plugins/widgets/widgetElement.vue'
 import '@/plugins/widgets/widgets/losungen.vue'
 import '@/plugins/widgets/widgets/message.vue'
+import '@/plugins/widgets/widgets/alert.vue'
 import widgetTab from '@/plugins/widgets/widgetTab.vue'
 import Vue from 'vue'
 

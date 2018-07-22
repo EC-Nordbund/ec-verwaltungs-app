@@ -6,7 +6,7 @@
         Startseite
       </ec-headline>
       <v-spacer/>
-      <ec-button-icon @click="edit = true"/>
+      <ec-button-icon @click="edit = true" v-if="false"/>
     </v-toolbar>
     <ec-widget-container :config="config" v-model="edit"/>
   </div>
@@ -25,11 +25,11 @@ export default class Home extends Vue {
   public config: Array<IConf> = [
     {
       id: 1,
-      label: 'test',
+      label: 'Allgemein',
       height: 5,
       width: 5,
       areas:
-        "'danke danke danke danke danke' 'losung losung . . .' 'losung losung . . .' 'losung losung . . .' 'losung losung . . .'",
+        "'danke danke danke danke danke' 'losung losung alert alert alert' 'losung losung alert alert alert' 'losung losung alert alert alert' 'losung losung alert alert alert'",
       elements: [
         {
           id: 1,
@@ -47,16 +47,15 @@ export default class Home extends Vue {
           area: 'losung',
           widgetName: 'losung',
           config: {}
+        },
+        {
+          id: 3,
+          label: 'alert',
+          area: 'alert',
+          widgetName: 'alert',
+          config: {}
         }
       ]
-    },
-    {
-      id: 2,
-      label: 'test2',
-      height: 5,
-      width: 3,
-      areas: '',
-      elements: []
     }
   ]
 }

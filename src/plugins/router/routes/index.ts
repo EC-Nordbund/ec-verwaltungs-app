@@ -1,51 +1,31 @@
 import { RouteConfig } from 'vue-router'
 
-const RouteComponent = () =>
-  import(/* webpackChunkName: "router-view-wrapper" */ '@/plugins/router/routes/router.vue')
+import RouteComponent from '@/plugins/router/routes/router.vue'
 
-const LoginComponent = () =>
-  import(/* webpackChunkName: "root-login" */ '@/Login.vue')
-const AppComponent = () =>
-  import(/* webpackChunkName: "root-app" */ '@/App.vue')
+import LoginComponent from '@/Login.vue'
+import AppComponent from '@/App.vue'
 
-const HomeComponent = () =>
-  import(/* webpackChunkName: "root-app-Home" */ '@/views/Home.vue')
-const DruckenComponent = () =>
-  import(/* webpackChunkName: "root-app-Drucken" */ '@/views/Drucken.vue')
-const AdminComponent = () =>
-  import(/* webpackChunkName: "root-app-admin" */ '@/views/Admin.vue')
-const ImpressumComponent = () =>
-  import(/* webpackChunkName: "root-app-impressum" */ '@/views/Impressum.vue')
+import HomeComponent from '@/views/Home.vue'
+import DruckenComponent from '@/views/Drucken.vue'
+import AdminComponent from '@/views/Admin.vue'
+import ImpressumComponent from '@/views/Impressum.vue'
 
-const PersonenListe = () =>
-  import(/* webpackChunkName: "root-app-personen-liste" */ '@/views/personen/liste.vue')
-const PersonenDetails = () =>
-  import(/* webpackChunkName: "root-app-personen-details" */ '@/views/personen/details.vue')
+import PersonenListe from '@/views/personen/liste.vue'
+import PersonenDetails from '@/views/personen/details.vue'
+import AKListe from '@/views/arbeitskreise/liste.vue'
+import AKDetails from '@/views/arbeitskreise/details.vue'
 
-const AKListe = () =>
-  import(/* webpackChunkName: "root-app-ak-liste" */ '@/views/arbeitskreise/liste.vue')
-const AKDetails = () =>
-  import(/* webpackChunkName: "root-app-ak-details" */ '@/views/arbeitskreise/details.vue')
+import VerteilerListe from '@/views/verteiler/liste.vue'
+import VerteilerDetails from '@/views/verteiler/details.vue'
 
-const VerteilerListe = () =>
-  import(/* webpackChunkName: "root-app-verteiler-liste" */ '@/views/verteiler/liste.vue')
-const VerteilerDetails = () =>
-  import(/* webpackChunkName: "root-app-verteiler-details" */ '@/views/verteiler/details.vue')
+import anmeldungListe from '@/views/anmeldungen/liste.vue'
+import anmeldungDetails from '@/views/anmeldungen/details.vue'
 
-const anmeldungListe = () =>
-  import(/* webpackChunkName: "root-app-anmeldung-liste" */ '@/views/anmeldungen/liste.vue')
-const anmeldungDetails = () =>
-  import(/* webpackChunkName: "root-app-anmeldung-details" */ '@/views/anmeldungen/details.vue')
+import unterkünfteListe from '@/views/unterkünfte/liste.vue'
+import unterkünfteDetails from '@/views/unterkünfte/details.vue'
 
-const unterkünfteListe = () =>
-  import(/* webpackChunkName: "root-app-unterkünfte-liste" */ '@/views/unterkünfte/liste.vue')
-const unterkünfteDetails = () =>
-  import(/* webpackChunkName: "root-app-unterkünfte-details" */ '@/views/unterkünfte/details.vue')
-
-const veranstaltungenListe = () =>
-  import(/* webpackChunkName: "root-app-veranstaltungen-liste" */ '@/views/veranstaltungen/liste.vue')
-const veranstaltungenDetails = () =>
-  import(/* webpackChunkName: "root-app-veranstaltungen-details" */ '@/views/veranstaltungen/details.vue')
+import veranstaltungenListe from '@/views/veranstaltungen/liste.vue'
+import veranstaltungenDetails from '@/views/veranstaltungen/details.vue'
 
 // Setup Routes
 const routes: RouteConfig[] = [
@@ -66,10 +46,16 @@ const routes: RouteConfig[] = [
     children: [
       {
         path: '',
-        component: HomeComponent,
-        meta: {
-          userGroups: '*'
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: HomeComponent,
+            meta: {
+              userGroups: '*'
+            }
+          }
+        ]
       },
       {
         path: 'personen',
@@ -193,24 +179,42 @@ const routes: RouteConfig[] = [
       },
       {
         path: 'admin',
-        component: AdminComponent,
-        meta: {
-          userGroups: ['admin']
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: AdminComponent,
+            meta: {
+              userGroups: ['admin']
+            }
+          }
+        ]
       },
       {
         path: 'print',
-        component: DruckenComponent,
-        meta: {
-          userGroups: ['admin']
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: DruckenComponent,
+            meta: {
+              userGroups: ['admin']
+            }
+          }
+        ]
       },
       {
         path: 'impressum',
-        component: ImpressumComponent,
-        meta: {
-          userGroups: '*'
-        }
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: ImpressumComponent,
+            meta: {
+              userGroups: '*'
+            }
+          }
+        ]
       }
     ]
   }

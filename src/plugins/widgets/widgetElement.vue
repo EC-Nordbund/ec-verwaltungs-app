@@ -17,7 +17,6 @@ export default class widgetContainer extends Vue {
   config!: any
 
   render(h: CreateElement) {
-    // console.log(getWidgets(), getWidgets()[this.config.widgetName], this.config.widgetName)
     return h(
       getWidgets()[this.config.widgetName].component,
       {

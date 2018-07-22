@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar ripple tabs>
-      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>
         {{data.veranstaltung.bezeichnung}}
@@ -25,7 +24,7 @@
         </v-tab>
       </v-tabs>
     </v-toolbar>
-    <v-tabs-items v-model="tabs" class="white elevation-1">
+    <!-- <v-tabs-items v-model="tabs" class="white elevation-1">
       <v-tab-item id="tab-2">
         <ec-list
           edit 
@@ -108,7 +107,7 @@
           <v-card-text>
             <v-btn>Edit Infobrief</v-btn>
             <v-btn>Edit Bestätigungsbrief</v-btn>
-          </v-card-text/>
+          </v-card-text>
         </v-card>
       </v-tab-item>
       <v-tab-item id="tab-3">
@@ -121,7 +120,8 @@
           icon="home"
         />
       </v-tab-item>
-    </v-tabs-items>
+    </v-tabs-items> -->
+    {{data.veranstaltung}}
   </div>
 </template>
 <script lang="ts">
@@ -144,12 +144,12 @@ export default class VeranstaltungDetails extends reloaderBase {
           veranstaltungsID
           bezeichnung
           begin {
-            german
             input
+            german
           }
           ende {
-            german
             input
+            german
           }
           unterkunft {
             unterkunftID
@@ -172,6 +172,27 @@ export default class VeranstaltungDetails extends reloaderBase {
             }
             position
           }
+          minTNAlter
+          minTNAlter
+          maxTNAnzahl
+          maxWeiblichTNAnzahl
+          maxMaennlichTNAnzahl
+          preisFruehbucher
+          preisNormal
+          preisLastMinute
+          anzahlungFruehbucher
+          anzahlungNormal
+          anzahlungLastMinute
+          preisFruehbucherBis {
+            german
+            input
+          }
+          preisLastMinuteAb {
+            german
+            input
+          }
+          kannVorortBezahltWerden
+          hatGWarteliste
         }
       }
     `

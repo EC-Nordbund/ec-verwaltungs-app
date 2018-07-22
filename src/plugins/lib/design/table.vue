@@ -1,67 +1,46 @@
 <template>
-  <v-card>
-    <v-card-title>
-      <ec-button-router-back/>
-      <v-spacer/>
-      <h1 v-font v-primary>
-        {{title}}
-      </h1>
-      <v-spacer/>
-      <ec-button-router-back class="hidden"/>
-    </v-card-title>
-    <v-card-text>
-      <v-text-field
-        v-if="suche"
-        label="Suchen"
-        prepend-icon="search"
-        :append-icon="suchString.length > 0 ? 'close' : undefined"
-        v-model="suchString"
-        @click:append="()=>{suchString = ''}"
-      />
-      <v-data-table
-        rows-per-page-text="Datensätze pro Seite:"
-        :customFilter="customFilter"
-        :items="items"
-        :headers="headers"
-        :search="suchString"
-        :rows-per-page-items="[count]">
+  <div>
+    <v-card style="margin: 15px">
+      <v-card-title>
+        <v-spacer/>
+        <h1 v-font v-primary>
+          {{title}}
+        </h1>
+        <v-spacer/>
+      </v-card-title>
+      <v-card-text>
+        <v-text-field
+          v-if="suche"
+          label="Suchen"
+          prepend-icon="search"
+          :append-icon="suchString.length > 0 ? 'close' : undefined"
+          v-model="suchString"
+          @click:append="()=>{suchString = ''}"
+        />
+        <v-data-table
+          :customFilter="customFilter"
+          :items="items"
+          :headers="headers"
+          :search="suchString"
+          :rows-per-page-items="[count]">
 
-        <template slot="items" slot-scope="props">
-          <tr @click="open(props.item)">
-            <td class="text-xs-center" v-for="con in config" :key="con.name">
-              <template v-if="!con.handleOutside">
-                {{get(props.item, con.name) }}
-              </template>
-              <template v-if="con.handleOutside">
-                <slot :item="props.item" :config="con" name="handleOutside"/>
-              </template>
-            </td>
-          </tr>
-        </template>
-
-        <template slot="no-data">
-          <v-progress-circular          
-            indeterminate 
-            :size="70" 
-            :width="3" 
-            color="primary" 
-            style="padding-left: 100%"
-          />
-        </template>
-
-        <template slot="pageText" slot-scope="props">
-          Datensätze {{ props.pageStart }} - {{ props.pageStop }} von {{ props.itemsLength }}
-        </template>
-
-        <template slot="no-results">
-          <v-alert :value="true" type="info">
-            Es wurden keine <i>{{itemName}}</i> mit deiner Suchanfrage "<strong>{{suchString}}</strong>" gefunden.
-          </v-alert>
-        </template>
-      </v-data-table>
-    </v-card-text>
-    <slot/>
-  </v-card>
+          <template slot="items" slot-scope="props">
+            <tr @click="open(props.item)">
+              <td class="text-xs-center" v-for="con in config" :key="con.name">
+                <template v-if="!con.handleOutside">
+                  {{get(props.item, con.name) }}
+                </template>
+                <template v-if="con.handleOutside">
+                  <slot :item="props.item" :config="con" name="handleOutside"/>
+                </template>
+              </td>
+            </tr>
+          </template>
+        </v-data-table>
+      </v-card-text>
+      <slot/>
+    </v-card>
+  </div>
 </template>
 
 <script lang="ts">
@@ -82,6 +61,18 @@ export default class Table extends Vue {
   headers: Array<any> = []
   count: number = -1
 
+  @Prop({ type: String, required: false, default: '' })
+  sucheVal!: string
+
+  @Watch('sucheVal', { immediate: true })
+  onSuchValChanged(val: string) {
+    this.suchString = val
+  }
+
+  @Watch('suchString')
+  @Emit('sucheChanged')
+  onSuchStringChanged(val: string) {}
+
   // Hier kann die Tolleranz der Suche geändert werden
   customFilter = (items: any, search: string) =>
     items.filter((item: any) => filter(item, search, 1 / 3))
@@ -101,6 +92,7 @@ export default class Table extends Vue {
       (document.body.offsetHeight -
         2 * (64 + 10) -
         80 -
+        30 -
         (this.suche ? 80 : 0) -
         100) /
         48

@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <v-card class="elevation-10">
-      <v-card-title>
-        <h1 v-font v-primary :style="{ textAlign: 'center' }">
-          Die Losungen
-        </h1>
-        <v-spacer/>
-        <img width="64px" src="../../../../public/losung.png"/>
-      </v-card-title>
+  <v-card class="elevation-10" style="margin: 5px">
+    <v-card-title>
+      <h1 v-font v-primary :style="{ textAlign: 'center' }">
+        Die Losungen
+      </h1>
+      <v-spacer/>
+      <img width="64px" src="../../../../public/losung.png"/>
+    </v-card-title>
+    <template v-if="isElectron">
       <v-card-text v-if="losung.length > 0" :style="{ display: 'grid', gridTemplateRows: 'auto auto auto', gridGap: '20px' }">
         <div>
           <span v-font v-primary v-html="losung[0]" :style="{ fontSize: '16px' }" />
@@ -29,8 +29,11 @@
           Loading...
         </div>
       </v-card-text>
-    </v-card>
-  </div>
+    </template>
+    <v-card-text v-if="!isElectron">
+      <span v-font v-primary :style="{ fontSize: '16px' }">Leider werden die Losungen im Browser nicht unterstützt... Nutze dafür bitte unsere App!</span>
+    </v-card-text>
+  </v-card>
 </template>
 <script lang="ts">
 import {
@@ -39,28 +42,34 @@ import {
 } from '@/plugins/widgets/widgets/index.ts'
 import { Component, Vue } from 'vue-property-decorator'
 
+import { isElectron } from '@/plugins/electron'
+
 @Component({})
 class losungen extends widgetComponent {
   losung: Array<string> = []
 
+  isElectron = isElectron
+
   async created() {
-    const res = await window.fetch(
-      'https://www.losungen.de/heute.php'
-    )
-    const html = await res.text()
-    const tableRows = html.split('<tr>')
-    this.losung = [
-      tableRows[5].split('<b>')[1].split('</b>')[0],
-      tableRows[5]
-        .split('<b>')[1]
-        .split('<br>')[1]
-        .split('</font>')[0],
-      tableRows[7].split('<b>')[1].split('</b>')[0],
-      tableRows[7]
-        .split('<b>')[1]
-        .split('<br>')[1]
-        .split('</font>')[0]
-    ]
+    if (isElectron) {
+      const res = await window.fetch(
+        'https://www.losungen.de/heute.php'
+      )
+      const html = await res.text()
+      const tableRows = html.split('<tr>')
+      this.losung = [
+        tableRows[5].split('<b>')[1].split('</b>')[0],
+        tableRows[5]
+          .split('<b>')[1]
+          .split('<br>')[1]
+          .split('</font>')[0],
+        tableRows[7].split('<b>')[1].split('</b>')[0],
+        tableRows[7]
+          .split('<b>')[1]
+          .split('<br>')[1]
+          .split('</font>')[0]
+      ]
+    }
   }
 }
 

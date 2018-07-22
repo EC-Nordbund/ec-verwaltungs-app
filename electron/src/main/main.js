@@ -1,5 +1,21 @@
+//@ts-check
+
 // Import Electron
 const { app, BrowserWindow, Tray } = require('electron')
+
+app.setAsDefaultProtocolClient('ec', process.execPath)
+
+function handleProto(args) {
+  if (args.length > 1) {
+    const splitted = args[1].split('ec://')
+    if (splitted.length > 1) {
+      mainWindow.webContents.send(
+        'proto-set-route',
+        splitted[1]
+      )
+    }
+  }
+}
 
 // On Install do Stuff
 if (require('electron-squirrel-startup')) {
@@ -7,9 +23,12 @@ if (require('electron-squirrel-startup')) {
 }
 
 //Single Instance
-const isSecondInstance = app.makeSingleInstance(() => {
-  BrowserWindow.getAllWindows()[0].show()
-})
+const isSecondInstance = app.makeSingleInstance(
+  (args, wd) => {
+    BrowserWindow.getAllWindows()[0].show()
+    handleProto(args)
+  }
+)
 
 if (isSecondInstance) {
   app.quit()
@@ -65,6 +84,7 @@ function createWindow() {
     loadingWindow.setClosable(true)
     loadingWindow.close()
     mainWindow.maximize()
+    handleProto(process.argv)
   })
   mainWindow.on('closed', () => {
     mainWindow = null

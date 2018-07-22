@@ -1,14 +1,7 @@
 <template>
-  <div>
-    <v-toolbar tabs>
-      <ec-button-router-back/>
-      <v-spacer/>
-      <ec-headline>
-        Administration
-      </ec-headline>
-      <v-spacer/>
-      <ec-button-router-back class="hidden"/>
-      <v-tabs v-model="tabs" fixed-tabs slot="extension">
+  <ec-wrapper title="Administration" mini>
+    <template slot="extension">
+      <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
           <v-icon v-accent>contacts</v-icon>
@@ -23,32 +16,37 @@
           <v-spacer/>
         </v-tab>
       </v-tabs>
-    </v-toolbar>
-    <v-tabs-items v-model="tabs" class="white elevation-1">
-      <v-tab-item id="tab-2">
-        <ec-list
-          :items="data.users"
-          :mapper="(item)=>({
-            title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
-            subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
-          })"
-          edit
-          icon="person"
-        />
-      </v-tab-item>
-      <v-tab-item id="tab-3">
-        <ec-list
-          :items="data.userGroups"
-          :mapper="(item)=>({
-            title: `${item.bezeichnung}`,
-            subTitle: `${item.mutationRechte.join(', ')}`
-          })"
-          edit
-          icon="group"
-        />
-      </v-tab-item>
-    </v-tabs-items>
-  </div>
+    </template>
+    <template>
+      <v-tabs-items v-model="tabs" class="white elevation-1">
+        <v-tab-item id="tab-2">
+          <ec-list
+            :items="data.users"
+            :mapper="(item)=>({
+              title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
+              subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
+            })"
+            edit
+            icon="person"
+          />
+        </v-tab-item>
+        <v-tab-item id="tab-3">
+          <ec-list
+            :items="data.userGroups"
+            :mapper="(item)=>({
+              title: `${item.bezeichnung}`,
+              subTitle: `${item.mutationRechte.join(', ')}`
+            })"
+            edit
+            icon="group"
+          />
+        </v-tab-item>
+      </v-tabs-items>
+    </template>
+    <template slot="actions">
+      <ec-button-add @click="addItem"/>
+    </template>
+  </ec-wrapper>
 </template>
 
 <script lang="ts">
@@ -99,6 +97,9 @@ export default class verteilerDetails extends reloaderBase {
       }
     `
     super.created()
+  }
+  addItem() {
+    console.log(this.tabs)
   }
 }
 </script>
