@@ -157,7 +157,7 @@ class auth {
   public logIn(
     username: string,
     password: string
-  ): Promise<boolean> {
+  ): Promise<{ status: boolean; nextURL: string }> {
     return getClient()
       .mutate({
         mutation: gql`
@@ -177,15 +177,17 @@ class auth {
       })
       .then(v => true)
       .then(v => {
-        setTimeout(() => {
-          if (this.nextUrl !== null) {
-            router.push(this.nextUrl)
-            this.nextUrl = ''
-          }
-        }, 10)
+        return {
+          status: v,
+          nextURL:
+            this.nextUrl === null ? '/app' : this.nextUrl
+        }
+      })
+      .then(v => {
+        this.nextUrl = null
         return v
       })
-      .catch(v => false)
+      .catch(v => ({ status: false, nextURL: '' }))
   }
 
   /**

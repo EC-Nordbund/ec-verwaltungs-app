@@ -115,9 +115,9 @@ export default class loginForm extends Vue {
     }
     auth
       .logIn(this.username, this.password)
-      .then((val: boolean) => {
-        if (val) {
-          this.$router.push('/app')
+      .then(({status, nextURL}) => {
+        if (status) {
+          this.$router.push(nextURL)
           this.checking = false
         } else {
           this.checking = false
