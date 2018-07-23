@@ -19,8 +19,6 @@ export default class Router extends Vue {
 
   @Watch('$route')
   onRouteChange(to: any, from: any) {
-    // console.log('from ' + from.path + ' to ' + to.path)
-
     const toA = to.path.split('/')
     const fromA = from.path.split('/')
 

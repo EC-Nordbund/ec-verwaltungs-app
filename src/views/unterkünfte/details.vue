@@ -1,7 +1,6 @@
 <template>
   <div>
     <v-toolbar ripple extension-height="72px">
-      <ec-button-router-back/>
       <v-spacer/>
       <ec-headline>{{data.unterkunft.bezeichnung}}{{data.unterkunft.land !== 'Deutschland' ? ` (${data.unterkunft.land})`:''}}</ec-headline>
       <v-spacer/>

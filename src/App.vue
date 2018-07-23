@@ -2,14 +2,30 @@
   <v-app app :dark="dark">
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
+      <v-btn v-white
+      icon
+      @click="xButtonLogic.back($router)">
+        <v-icon>navigate_before</v-icon>
+      </v-btn>
+      <v-btn
+        v-white
+        icon
+        @click="xButtonLogic.forward($router)">
+        <v-icon>navigate_next</v-icon>
+      </v-btn>
       <v-spacer/>
       <v-avatar size="60px" style="margin-right: 10px">
         <img src="../public/ec-logo-without-bg-64.png">
       </v-avatar>
       <span v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px">Nordbund – Verwaltung</span>
       <v-spacer/>
+      <ec-lesezeichen-show/>
+      <div style="padding-right: 20px"/>
       <v-btn icon v-white @click="darkChange">
         <v-icon>invert_colors</v-icon>
+      </v-btn>
+      <v-btn icon v-white @click="logOut">
+        <v-icon>exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
     <v-navigation-drawer clipped v-model="drawer" app>
@@ -57,7 +73,7 @@
           <v-icon>keyboard_arrow_right</v-icon>
           EC-Nordbund
           <v-icon>keyboard_arrow_right</v-icon>
-          T. Krause + S. Krüger{{$route.path}}
+          T. Krause + S. Krüger
         </span>
     </v-footer>
     <v-dialog v-model="soonLogOut" width="500px">
@@ -94,6 +110,8 @@ import {
 } from 'vue-property-decorator'
 import event from '@/plugins/eventbus'
 
+import xButtonLogic from '@/plugins/xButton/logic'
+
 @Component({})
 export default class App extends Vue {
   sec: number = 0
@@ -105,6 +123,7 @@ export default class App extends Vue {
   nav = nav
   auth = auth
   event = event
+  xButtonLogic = xButtonLogic
   click(route: string) {
     if (route === '_hilfe') {
       let win: BrowserWindow = new electron.remote.BrowserWindow(
@@ -123,6 +142,7 @@ export default class App extends Vue {
       return
     }
     this.$router.push(route)
+    this.xButtonLogic.reset()
   }
   created() {
     if (isElectron) {
@@ -153,6 +173,11 @@ export default class App extends Vue {
     if (!val) {
       this.auth.extend()
     }
+  }
+
+  logOut() {
+    this.auth.logOut()
+    this.$router.push('/')
   }
 }
 </script>

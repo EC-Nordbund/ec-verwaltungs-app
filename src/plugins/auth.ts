@@ -1,6 +1,6 @@
 import gql from 'graphql-tag'
-import { getClient } from './apollo'
-// import router from './router/router'
+import { getClient } from '@/plugins/apollo'
+import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
 /**
@@ -157,7 +157,7 @@ class auth {
   public logIn(
     username: string,
     password: string
-  ): Promise<boolean> {
+  ): Promise<{ status: boolean; nextURL: string }> {
     return getClient()
       .mutate({
         mutation: gql`
@@ -176,7 +176,18 @@ class auth {
         this.getRights()
       })
       .then(v => true)
-      .catch(v => false)
+      .then(v => {
+        return {
+          status: v,
+          nextURL:
+            this.nextUrl === null ? '/app' : this.nextUrl
+        }
+      })
+      .then(v => {
+        this.nextUrl = null
+        return v
+      })
+      .catch(v => ({ status: false, nextURL: '' }))
   }
 
   /**
@@ -227,6 +238,13 @@ class auth {
           conf.ablaufDatum.german
         }`
       })
+  }
+
+  nextUrl: string | null = null
+
+  public protoUrl(url: string) {
+    this.nextUrl = url
+    eventbus.emit('login_show_url_info')
   }
 
   /**

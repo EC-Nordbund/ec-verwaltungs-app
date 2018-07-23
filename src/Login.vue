@@ -15,6 +15,9 @@
           <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
           </v-alert>
+          <v-alert :value="showUrlInfo" type="info">
+            Die gewünschte Seite wird nach dem Login angezeigt...
+          </v-alert>
           <v-form v-model="valid">
             <v-text-field
               label="Username"
@@ -68,6 +71,8 @@ import {
   Emit
 } from 'vue-property-decorator'
 import auth from '@/plugins/auth'
+import eventBus from '@/plugins/eventbus'
+
 
 @Component({})
 export default class loginForm extends Vue {
@@ -110,9 +115,9 @@ export default class loginForm extends Vue {
     }
     auth
       .logIn(this.username, this.password)
-      .then((val: boolean) => {
-        if (val) {
-          this.$router.push('/app')
+      .then(({status, nextURL}) => {
+        if (status) {
+          this.$router.push(nextURL)
           this.checking = false
         } else {
           this.checking = false
@@ -120,12 +125,19 @@ export default class loginForm extends Vue {
         }
       })
   }
+
+  showUrlInfo:boolean = false
+
   created() {
     if (isElectron) {
       this.username = <any>settings.get('username', '')
       this.dark = <any>settings.get('dark', false)
     }
     window.addEventListener('keyup', this.checkCaps)
+
+    eventBus.on('login_show_url_info', ()=>{
+      this.showUrlInfo=true
+    })
   }
   destroyed() {
     window.removeEventListener('keyup', this.checkCaps)

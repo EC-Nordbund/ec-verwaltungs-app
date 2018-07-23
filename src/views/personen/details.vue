@@ -1,259 +1,272 @@
 <template>
-  <div>
-    <v-toolbar ripple extension-height="72px">
-      <ec-button-router-back/>
-      <v-spacer/>
+  <ec-wrapper title="Personen Details" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person" @share="share">
+
+    <template slot="label">
       <ec-headline>
         <v-avatar :style="{ background: (data.person.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }">
           <span class="headline" v-white>
-            {{(data.person.vorname || ' ')[0]}}{{(data.person.nachname || ' ')[0]}}
+            {{(data.person.vorname || ' ')[0].toUpperCase()}}{{(data.person.nachname || ' ')[0].toUpperCase()}}
           </span>
         </v-avatar>
         {{data.person.vorname || ''}} {{data.person.nachname || ''}} ({{data.person.gebDat ? data.person.gebDat.german : ''}})
+        <ec-button-icon @click="editPersonStamm_open"/>
       </ec-headline>
-      <v-spacer/>
-      <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
-      <ec-button-icon @click="editPersonStamm_open"/>
-      <v-tabs v-model="tabs" fixed-tabs slot="extension" color="transparent"  icons-and-text>
+    </template>
+
+    <template slot="extension">
+      <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
           Kontaktdaten
-          <v-icon v-accent>ballot</v-icon>
         </v-tab>
         <v-tab href="#tab-3" v-secondary>
           Veranstaltungen
-          <v-icon v-accent>assignment_ind</v-icon>
         </v-tab>
         <v-tab href="#tab-4" v-secondary>
           Sonstiges
-          <v-icon v-accent>settings</v-icon>
         </v-tab>
       </v-tabs>
-    </v-toolbar>
-    <v-tabs-items v-model="tabs" class="white elevation-1">
-      <v-tab-item id="tab-2">
-        <v-card>
-          <!-- Adressen -->
+    </template>
+
+    <template>
+      <v-tabs-items v-model="tabs" class="white">
+        <v-tab-item id="tab-2">
+          <v-card>
+            <!-- Adressen -->
+            <ec-list
+              :items="data.person.adressen || []"
+              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort})"
+              icon="location_on"
+              :edit="auth.isMutationAllowed('editAdresse')"
+              @edit="editAdresse_open"
+              @click="showMap"
+            />
+            <v-divider/>
+            <!-- Email -->
+            <ec-list
+              :items="data.person.emails || []"
+              :mapper="item=>({title: item.email})"
+              icon="mail"
+              :edit="auth.isMutationAllowed('editEmail')"
+              @edit="editEmail_open"
+            />
+            <v-divider/>
+            <!-- Telefone -->
+            <ec-list
+              :items="data.person.telefone || []"
+              :mapper="item=>({title: item.telefon})"
+              icon="local_phone"
+              :edit="auth.isMutationAllowed('editTelefon')"
+              @edit="editTelefon_open"
+            />
+            <!-- Add Adresse, Email, Telefon -->
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addAdresse')">
+                <v-icon>add</v-icon>
+                Adresse
+              </v-btn>
+              <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addEmail')">
+                <v-icon>add</v-icon>
+                Email
+              </v-btn>
+              <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addTelefon')">
+                <v-icon>add</v-icon>
+                Telefon
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item id="tab-3">
+          <!-- Anmeldungen -->
           <ec-list
-            :items="data.person.adressen || []"
-            :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort})"
-            icon="location_on"
-            :edit="auth.isMutationAllowed('editAdresse')"
-            @edit="editAdresse_open"
-          />
-          <v-divider/>
-          <!-- Email -->
-          <ec-list
-            :items="data.person.emails || []"
-            :mapper="item=>({title: item.email})"
-            icon="mail"
-            :edit="auth.isMutationAllowed('editEmail')"
-            @edit="editEmail_open"
-          />
-          <v-divider/>
-          <!-- Telefone -->
-          <ec-list
-            :items="data.person.telefone || []"
-            :mapper="item=>({title: item.telefon})"
+            :items="data.person.anmeldungen || []"
+            :mapper="item=>({
+              title: `${item.veranstaltung.bezeichnung} (${item.veranstaltung.begin.german} - ${item.veranstaltung.ende.german})`,
+              subTitle: `${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Küchenleiter' : ''}${item.position === 6 ? 'Leiter' : ''}`
+            })"
             icon="local_phone"
-            :edit="auth.isMutationAllowed('editTelefon')"
-            @edit="editTelefon_open"
           />
-          <!-- Add Adresse, Email, Telefon -->
-          <v-card-actions>
-            <v-spacer/>
-            <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addAdresse')">
-              <v-icon>add</v-icon>
-              Adresse
-            </v-btn>
-            <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addEmail')">
-              <v-icon>add</v-icon>
-              Email
-            </v-btn>
-            <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addTelefon')">
-              <v-icon>add</v-icon>
-              Telefon
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-tab-item>
-      <v-tab-item id="tab-3">
-        <!-- Anmeldungen -->
-        <ec-list
-          :items="data.person.anmeldungen || []"
-          :mapper="item=>({
-            title: `${item.veranstaltung.bezeichnung} (${item.veranstaltung.begin.german} - ${item.veranstaltung.ende.german})`,
-            subTitle: `${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Küchenleiter' : ''}${item.position === 6 ? 'Leiter' : ''}`
-          })"
-          icon="local_phone"
-        />
-      </v-tab-item>
-      <v-tab-item id="tab-4">
-        <v-card>
-          <v-expansion-panel> 
-            <v-expansion-panel-content ripple>
-              <div slot="header">Arbeitskreise</div>
-              <ec-list
-                :items="data.person.aks || []"
-                :mapper="item=>({
-                  title: `${item.ak.bezeichnung}`,
-                  subTitle: `${item.eintritt.german}${item.austritt === null?'':' - ' + item.austritt.german}${item.leiter?' (Leiter)':''}`
-                })"
-                icon="map"
-                @edit="editAK_open"
-                :edit="auth.isMutationAllowed('editAKPerson')"
-              />
-            </v-expansion-panel-content>
-            <v-expansion-panel-content ripple>
-              <div slot="header">Verteiler</div>
-              <ec-list
-                :items="data.person.verteiler || []"
-                :mapper="item=>({
-                  title: `${item.verteiler.bezeichnung}`,
-                  subTitle: `${item.type===1?'TO':''}${item.type===2?'CC':''}${item.type===3?'BCC':''}`,
-                  edit: item.verteiler.isAuto && auth.isMutationAllowed('editVerteilerPerson')
-                })"
-                icon="mail"
-                @edit="editVerteiler_open"
-              />
-            </v-expansion-panel-content>
-            <v-expansion-panel-content ripple>
-              <div slot="header">Führungszeungniss Anträge</div>
-              <v-card>
-                Comming soon...
-              </v-card>
-            </v-expansion-panel-content>
-            <v-expansion-panel-content ripple>
-              <div slot="header">Führungszeungnisse</div>
-              <ec-list
-                :items="data.person.fzs || []"
-                :mapper="(item)=>({
-                  title: item.kommentar,
-                  subTitle: `Gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
-                })"
-                :edit="true"
-                icon="extension"
-              />
-            </v-expansion-panel-content>
-            <v-expansion-panel-content ripple>
-              <div slot="header">Sonstiges</div>
-              <ec-list
-                :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa'}] : []"
-                :mapper="item=>item"
-                icon="extension"
-                :edit="true"
-              />
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-          <!-- Add AK, Verteiler, FZ, FZ-Antrag -->
-          <v-card-actions>
-            <v-spacer/>
-            <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('addAKPerson')">
-              <v-icon>add</v-icon>
-              Arbeitskreis
-            </v-btn>
-            <v-btn flat @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('addVerteilerPerson')">
-              <v-icon>add</v-icon>
-              Verteiler
-            </v-btn>
-            <v-btn flat @click="addPersonFZ_show = true" v-if="true">
-              <v-icon>add</v-icon>
-              Führungszeugnis
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-tab-item>
-    </v-tabs-items>
-    <!-- ADD Adresse -->
-    <ec-form
-      title="Adresse hinzufügen"
-      v-model="addAdresse_show"
-      @save="addAdresse_save"
-      :fieldConfig="addAdresse_config"
-    />
-    <!-- ADD Telefon -->
-    <ec-form
-      title="Telefon hinzufügen"
-      v-model="addTelefon_show"
-      @save="addTelefon_save"
-      :fieldConfig="addTelefon_config"
-    />
-    <!-- ADD Email -->
-    <ec-form
-      title="Email hinzufügen"
-      v-model="addEmail_show"
-      @save="addEmail_save"
-      :fieldConfig="addEmail_config"
-    />
-    <!-- EDIT Adresse -->
-    <ec-form
-      title="Adresse editieren"
-      v-model="editAdresse_show"
-      @save="editAdresse_save"
-      :value="editAdresse_value"
-      :fieldConfig="addAdresse_config"
-    />
-    <!-- EDIT Telefon -->
-    <ec-form
-      title="Telefon editieren"
-      v-model="editTelefon_show"
-      @save="editTelefon_save"
-      :value="editTelefon_value"
-      :fieldConfig="addTelefon_config"
-    />
-    <!-- EDIT Email -->
-    <ec-form
-      title="Email editieren"
-      v-model="editEmail_show"
-      @save="editEmail_save"
-      :value="editEmail_value"
-      :fieldConfig="addEmail_config"
-    />
-    <!-- ADD AK -->
-    <ec-form
-      title="Zu AK hinzufügen"
-      v-model="addAK_show"
-      @save="addAK_save"
-      :fieldConfig="addAK_config"
-    />
-    <!-- EDIT AK -->
-    <ec-form
-      title="AK-Zugehörigkeit editieren"
-      v-model="editAK_show"
-      @save="editAK_save"
-      :fieldConfig="editAK_config"
-      :value="editAK_value"
-    />
-    <!-- ADD Verteiler -->
-    <ec-form
-      title="ZuVerteiler hinzufügen"
-      v-model="addVerteiler_show"
-      @save="addVerteiler_save"
-      :fieldConfig="addVerteiler_config"
-    />
-    <!-- EDIT Verteiler -->
-    <ec-form
-      title="Verteiler-Zugehörigkeit editieren"
-      deleteBtn
-      @delete="editVerteiler_delete"
-      v-model="editVerteiler_show"
-      @save="editVerteiler_save"
-      :fieldConfig="addVerteiler_config"
-      :value="editVerteiler_value"
-    />
-    <!-- EDIT PersonStamm -->
-    <ec-form
-      title="Personenstamm editieren"
-      :value="editPersonStamm_value"
-      v-model="editPersonStamm_show"
-      @save="editPersonStamm_save"
-      :fieldConfig="editPersonStamm_config"
-    />
-  </div>
+        </v-tab-item>
+        <v-tab-item id="tab-4">
+          <v-card>
+            <v-expansion-panel> 
+              <v-expansion-panel-content ripple>
+                <div slot="header">Arbeitskreise</div>
+                <ec-list
+                  :items="data.person.aks || []"
+                  :mapper="item=>({
+                    title: `${item.ak.bezeichnung}`,
+                    subTitle: `${item.eintritt.german}${item.austritt === null?'':' - ' + item.austritt.german}${item.leiter?' (Leiter)':''}`
+                  })"
+                  icon="map"
+                  @edit="editAK_open"
+                  :edit="auth.isMutationAllowed('editAKPerson')"
+                />
+              </v-expansion-panel-content>
+              <v-expansion-panel-content ripple>
+                <div slot="header">Verteiler</div>
+                <ec-list
+                  :items="data.person.verteiler || []"
+                  :mapper="item=>({
+                    title: `${item.verteiler.bezeichnung}`,
+                    subTitle: `${item.type===1?'TO':''}${item.type===2?'CC':''}${item.type===3?'BCC':''}`,
+                    edit: item.verteiler.isAuto && auth.isMutationAllowed('editVerteilerPerson')
+                  })"
+                  icon="mail"
+                  @edit="editVerteiler_open"
+                />
+              </v-expansion-panel-content>
+              <v-expansion-panel-content ripple>
+                <div slot="header">Führungszeungniss Anträge</div>
+                <v-card>
+                  Comming soon...
+                </v-card>
+              </v-expansion-panel-content>
+              <v-expansion-panel-content ripple>
+                <div slot="header">Führungszeungnisse</div>
+                <ec-list
+                  :items="data.person.fzs || []"
+                  :mapper="(item)=>({
+                    title: item.kommentar,
+                    subTitle: `Gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
+                  })"
+                  :edit="true"
+                  icon="extension"
+                />
+              </v-expansion-panel-content>
+              <v-expansion-panel-content ripple>
+                <div slot="header">Sonstiges</div>
+                <ec-list
+                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa'}] : []"
+                  :mapper="item=>item"
+                  icon="extension"
+                  :edit="true"
+                />
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <!-- Add AK, Verteiler, FZ, FZ-Antrag -->
+            <v-card-actions>
+              <v-spacer/>
+              <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('addAKPerson')">
+                <v-icon>add</v-icon>
+                Arbeitskreis
+              </v-btn>
+              <v-btn flat @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('addVerteilerPerson')">
+                <v-icon>add</v-icon>
+                Verteiler
+              </v-btn>
+              <v-btn flat v-if="true" @click="alertCommingSoon">
+                <v-icon>add</v-icon>
+                Führungszeugnis
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </template>
+
+    <template slot="actions">
+      <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
+    </template>
+
+    <template slot="forms">
+      <!-- ADD Adresse -->
+      <ec-form
+        title="Adresse hinzufügen"
+        v-model="addAdresse_show"
+        @save="addAdresse_save"
+        :fieldConfig="addAdresse_config"
+      />
+      <!-- ADD Telefon -->
+      <ec-form
+        title="Telefon hinzufügen"
+        v-model="addTelefon_show"
+        @save="addTelefon_save"
+        :fieldConfig="addTelefon_config"
+      />
+      <!-- ADD Email -->
+      <ec-form
+        title="Email hinzufügen"
+        v-model="addEmail_show"
+        @save="addEmail_save"
+        :fieldConfig="addEmail_config"
+      />
+      <!-- EDIT Adresse -->
+      <ec-form
+        title="Adresse editieren"
+        v-model="editAdresse_show"
+        @save="editAdresse_save"
+        :value="editAdresse_value"
+        :fieldConfig="addAdresse_config"
+      />
+      <!-- EDIT Telefon -->
+      <ec-form
+        title="Telefon editieren"
+        v-model="editTelefon_show"
+        @save="editTelefon_save"
+        :value="editTelefon_value"
+        :fieldConfig="addTelefon_config"
+      />
+      <!-- EDIT Email -->
+      <ec-form
+        title="Email editieren"
+        v-model="editEmail_show"
+        @save="editEmail_save"
+        :value="editEmail_value"
+        :fieldConfig="addEmail_config"
+      />
+      <!-- ADD AK -->
+      <ec-form
+        title="Zu AK hinzufügen"
+        v-model="addAK_show"
+        @save="addAK_save"
+        :fieldConfig="addAK_config"
+      />
+      <!-- EDIT AK -->
+      <ec-form
+        title="AK-Zugehörigkeit editieren"
+        v-model="editAK_show"
+        @save="editAK_save"
+        :fieldConfig="editAK_config"
+        :value="editAK_value"
+      />
+      <!-- ADD Verteiler -->
+      <ec-form
+        title="ZuVerteiler hinzufügen"
+        v-model="addVerteiler_show"
+        @save="addVerteiler_save"
+        :fieldConfig="addVerteiler_config"
+      />
+      <!-- EDIT Verteiler -->
+      <ec-form
+        title="Verteiler-Zugehörigkeit editieren"
+        deleteBtn
+        @delete="editVerteiler_delete"
+        v-model="editVerteiler_show"
+        @save="editVerteiler_save"
+        :fieldConfig="addVerteiler_config"
+        :value="editVerteiler_value"
+      />
+      <!-- EDIT PersonStamm -->
+      <ec-form
+        title="Personenstamm editieren"
+        :value="editPersonStamm_value"
+        v-model="editPersonStamm_show"
+        @save="editPersonStamm_save"
+        :fieldConfig="editPersonStamm_config"
+      />
+      <v-dialog v-model="mapShow">
+        <h1>Hier könnte IHRE Karte stehen ;)</h1>
+        <p>{{mapData}}</p>
+      </v-dialog>
+    </template>
+
+  </ec-wrapper>
 </template>
 <script lang="ts">
 import electron, { isElectron } from '@/plugins/electron'
-import { Component, Vue } from 'vue-property-decorator'
+import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
@@ -275,12 +288,55 @@ import {
 
 import { query } from '@/graphql/index'
 
-@Component({})
+import { getClient } from '@/plugins/apollo'
+import event from '@/plugins/eventbus'
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<any>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  },
+  beforeRouteUpdate(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+      })
+      .then((v: any) => {
+        console.log(v)
+        ;(<any>this).data = v.data(<any>this).variabels = {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+        next()
+        setTimeout(() => {
+          event.emit('hideLoading')
+        }, 500)
+      })
+  }
+})
 export default class PersonenDetails extends reloaderBase {
   isElectron: boolean = isElectron
-  data: { person: any } = {
-    person: {}
-  }
+  data: any = { person: {} }
   editPersonStamm_show = false
   editPersonStamm_open() {
     this.editPersonStamm_value = {}
@@ -417,12 +473,19 @@ export default class PersonenDetails extends reloaderBase {
         clipboard.writeText(
           JSON.stringify(typeName(v), null, 2)
         )
+
         remote.dialog.showMessageBox({
           title: 'Zwischenspeicher',
           message:
             'Die Daten wurden in den Zwischenspeicher zwischengespeichert.'
         })
       })
+  }
+  mapData: any = {}
+  mapShow: boolean = false
+  showMap(item: any) {
+    this.mapData = item
+    this.mapShow = true
   }
   editVerteiler_save(value: any) {
     this.$apollo
@@ -579,18 +642,10 @@ export default class PersonenDetails extends reloaderBase {
       })
       .then(this.refetch)
   }
-  editAdresse_open(item: {
-    adressID: number
-    strasse: string
-    plz: string
-    ort: string
-  }) {
+  editAdresse_open(item: any) {
     this.editAdresse_value = {}
     this.editAdresse_value = {
-      adressID: item.adressID,
-      strasse: item.strasse,
-      plz: item.plz,
-      ort: item.ort
+      ...item
     }
     this.editAdresse_show = true
   }
@@ -600,16 +655,14 @@ export default class PersonenDetails extends reloaderBase {
   }) {
     this.editTelefon_value = {}
     this.editTelefon_value = {
-      telefonID: item.telefonID,
-      telefon: item.telefon
+      ...item
     }
     this.editTelefon_show = true
   }
   editEmail_open(item: { emailID: number; email: string }) {
     this.editEmail_value = {}
     this.editEmail_value = {
-      emailID: item.emailID,
-      email: item.email
+      ...item
     }
     this.editEmail_show = true
   }
@@ -620,6 +673,12 @@ export default class PersonenDetails extends reloaderBase {
     }
     this.query = query.personen.details.load
     super.created()
+  }
+  alertCommingSoon() {
+    alert('Comming Soon')
+  }
+  share(share: (url: string) => void) {
+    share(this.$route.fullPath)
   }
 }
 </script>

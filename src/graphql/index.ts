@@ -1,6 +1,113 @@
 import gql from 'graphql-tag'
 
 export const query = {
+  verteiler: {
+    details: {
+      load: gql`
+        query($authToken: String!, $verteilerID: Int!) {
+          verteiler(
+            verteilerID: $verteilerID
+            authToken: $authToken
+          ) {
+            verteilerID
+            bezeichnung
+            autoSQL
+            isAuto
+            personen {
+              verteilerPersonenID
+              type
+              person {
+                personID
+                vorname
+                nachname
+                gebDat {
+                  german
+                }
+              }
+            }
+          }
+        }
+      `,
+      deletePerson: gql`
+        mutation(
+          $authToken: String!
+          $verteilerPersonID: Int!
+        ) {
+          deleteVerteilerPerson(
+            authToken: $authToken
+            verteilerPersonID: $verteilerPersonID
+          )
+        }
+      `,
+      addPerson: gql`
+        mutation(
+          $verteilerID: Int!
+          $authToken: String!
+          $personID: Int!
+          $type: Int!
+        ) {
+          addVerteilerPerson(
+            verteilerID: $verteilerID
+            authToken: $authToken
+            personID: $personID
+            type: $type
+          )
+        }
+      `,
+      editStamm: gql`
+        mutation(
+          $verteilerID: Int!
+          $authToken: String!
+          $bezeichnung: String!
+        ) {
+          editVerteilerStamm(
+            verteilerID: $verteilerID
+            authToken: $authToken
+            bezeichnung: $bezeichnung
+          )
+        }
+      `,
+      editPerson: gql`
+        mutation(
+          $verteilerID: Int!
+          $authToken: String!
+          $personID: Int!
+          $type: Int!
+          $verteilerPersonID: Int!
+        ) {
+          editVerteilerPerson(
+            verteilerPersonID: $verteilerPersonID
+            personID: $personID
+            verteilerID: $verteilerID
+            type: $type
+            authToken: $authToken
+          )
+        }
+      `
+    },
+    liste: {
+      load: gql`
+        query($authToken: String!) {
+          verteilerList(authToken: $authToken) {
+            verteilerID
+            bezeichnung
+          }
+        }
+      `,
+      addVerteiler: gql`
+        mutation(
+          $authToken: String!
+          $bezeichnung: String!
+        ) {
+          addVerteiler(
+            authToken: $authToken
+            autoSql: ""
+            bezeichnung: $bezeichnung
+          )
+        }
+      `
+    }
+  },
   personen: {
     liste: {
       load: gql`
