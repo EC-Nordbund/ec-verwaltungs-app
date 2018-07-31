@@ -36,14 +36,7 @@ export default class App extends Vue {
     if (this.isInLesezeichen) {
       this.lesezeichen.delete(this.route)
     } else {
-      this.lesezeichen.addLesezeichen(
-        new Lesezeichen(
-          this.route,
-          this.label,
-          this.type,
-          this.elID
-        )
-      )
+      new Lesezeichen(this.route, this.label, this.type, this.elID)
     }
   }
 

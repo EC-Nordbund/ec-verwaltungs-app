@@ -1,5 +1,5 @@
 <template>
-  <v-menu offset-y width="512px">
+  <v-menu auto close-on-content-click="false" :nudge-width="256" offset-y width="512px">
     <template slot="activator">
       <v-badge color="red" v-if="lesezeichen.liste.length > 0 ">
         <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
@@ -12,51 +12,31 @@
       </v-icon>
     </template>
     <v-card>
-      <v-card-title>
+
+      <v-card-title c>
         <h1 v-font>Lesezeichen</h1>
       </v-card-title>
+      
+      <v-divider></v-divider>
+
       <v-card-text>
-        <v-data-table
-          :headers="[
-            {
-              text: 'Typ',
-              value: 'type',
-              width: '30px'
-            },
-            {
-              text: 'Beschreibung',
-              value: 'label'
-            },
-            {
-              text: 'ID',
-              width: '25px',
-              value: 'id'
-            },
-            {
-              text: '',
-              width: '25px',
-              value: 'id',
-              sortable: false
-            }
-          ]"
-          :items="lesezeichen.liste"
-          :rows-per-page-items="[10]"
-          class="elevation-1"
-          disable-initial-sort
-        >
-          <template slot="items" slot-scope="props">
-            <tr @click="xButtonLogic.reset(props.item.xButton);$router.push(props.item.route)">
-              <td>{{ props.item.type }}</td>
-              <td>{{ props.item.label }}</td>
-              <td>{{ props.item.id }}</td>
-              <td>
-                <v-btn icon @click="lesezeichen.delete(props.item.route)">
-                  <v-icon>delete</v-icon>
-                </v-btn>
-              </td>
-            </tr>
+        <v-list >
+          <template v-for="(item, index) in lesezeichen.liste">
+            <v-list-tile :key="item.id" @click="click(index)">
+
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.label }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ item.type }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action
+              @click="unbookmark(index)">
+                <v-icon>close</v-icon>
+              </v-list-tile-action>
+
+            </v-list-tile>
           </template>
-        </v-data-table>
+        </v-list>
       </v-card-text>
     </v-card>
   </v-menu>
@@ -79,5 +59,18 @@ import xButtonLogic from '@/plugins/xButton/logic'
 export default class App extends Vue {
   lesezeichen = lesezeichen
   xButtonLogic = xButtonLogic
+
+  click(index: number) {
+    let bookmark = lesezeichen.liste[index]
+
+    xButtonLogic.reset(bookmark.xButton)
+    this.$router.push(bookmark.route)
+  }
+
+  unbookmark(index: number) {
+    let bookmark = lesezeichen.liste[index]
+
+    lesezeichen.delete(bookmark)
+  }
 }
 </script>
