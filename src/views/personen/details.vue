@@ -322,8 +322,8 @@ import event from '@/plugins/eventbus'
         }
       })
       .then((v: any) => {
-        console.log(v)
-        ;(<any>this).data = v.data(<any>this).variabels = {
+        ;(<any>this).data = v.data;
+        (<any>this).variabels = {
           authToken: auth.authToken,
           personID: to.params.id
         }
