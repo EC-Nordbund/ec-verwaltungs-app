@@ -89,7 +89,7 @@ import event from '@/plugins/eventbus'
         }
       }
     ).then((v:any)=>{
-      (<any>this).data = v.data
+      (<any>this).data = v.data;
       (<any>this).variabels = {
         authToken: auth.authToken,
         akID: to.params.id
