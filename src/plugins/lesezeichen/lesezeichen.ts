@@ -39,7 +39,6 @@ class LesezeichenList {
     ;(<Array<any>>(
       JSON.parse(<string>settings.get('lesezeichen', '[]'))
     )).forEach((v: any) => {
-      console.log(v)
       this.addLesezeichen(
         new Lesezeichen(
           v.route,
