@@ -98,7 +98,7 @@ function createLoadingWindow() {
     loadingWindow.show()
     setTimeout(() => {
       createWindow()
-    }, 30000)
+    }, 2000)
   })
   setupTray()
 }
