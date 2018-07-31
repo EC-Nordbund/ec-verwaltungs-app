@@ -1,13 +1,13 @@
 <template>
   <v-menu offset-y width="512px">
     <template slot="activator">
-      <v-badge color="red" v-if="lesezeichen.liste.length > 0 ">
+      <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
         <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
-        <v-icon large>
+        <v-icon medium v-white>
           {{lesezeichen.liste.length === 0 ? 'star_border' : 'star'}}
         </v-icon>
       </v-badge>
-      <v-icon large v-else>
+      <v-icon medium v-white v-else>
         star_border
       </v-icon>
     </template>
