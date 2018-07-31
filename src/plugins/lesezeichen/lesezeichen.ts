@@ -9,14 +9,8 @@ export class Lesezeichen {
     public label: string,
     public type: string,
     public id: number | string,
-    public xButton: any = false
-  ) {
-    liste.delete(route)
-    if (!xButton) {
-      this.xButton = _xButton.liste
-    }
-    liste.addLesezeichen(this)
-  }
+    public xButton: any = _xButton.liste
+  ) {}
 
   delete() {
     liste.delete(this)
@@ -26,13 +20,36 @@ export class Lesezeichen {
 class LesezeichenList {
   public liste: Array<Lesezeichen> = []
 
+  public constructor() {
+    this.load()
+  }
+
   addLesezeichen(lesezeichen: Lesezeichen) {
-    this.liste.push(lesezeichen)
-    this.save()
+    if (!this.liste.includes(lesezeichen)) {
+      this.liste.push(lesezeichen)
+      this.save()
+    }
   }
 
   save() {
     settings.set('lesezeichen', JSON.stringify(this.liste))
+  }
+
+  load() {
+    ;(<Array<any>>(
+      JSON.parse(<string>settings.get('lesezeichen', '[]'))
+    )).forEach((v: any) => {
+      console.log(v)
+      this.addLesezeichen(
+        new Lesezeichen(
+          v.route,
+          v.label,
+          v.type,
+          v.id,
+          v.xButton
+        )
+      )
+    })
   }
 
   delete(lesezeichen: Lesezeichen | string) {
@@ -50,10 +67,5 @@ class LesezeichenList {
 }
 
 const liste = new LesezeichenList()
-;(<Array<any>>(
-  JSON.parse(<string>settings.get('lesezeichen', '[]'))
-)).forEach((v: any) => {
-  new Lesezeichen(v.route, v.label, v.type, v.id, v.xButton)
-})
 
 export default liste
