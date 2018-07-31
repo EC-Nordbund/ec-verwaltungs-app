@@ -62,10 +62,10 @@ const mainWindowOptions = {
 }
 
 const loadingWindowOptions = {
-  height: 250,
+  height: 280,
   frame: false,
   useContentSize: true,
-  width: 470,
+  width: 480,
   show: false,
   closable: false,
   resizable: false,
@@ -98,7 +98,7 @@ function createLoadingWindow() {
     loadingWindow.show()
     setTimeout(() => {
       createWindow()
-    }, 2000)
+    }, 30000)
   })
   setupTray()
 }
