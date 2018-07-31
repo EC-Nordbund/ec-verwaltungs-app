@@ -8,12 +8,13 @@ body {
 }
 
 #title {
+  display: block;
+  margin: 0 auto;
   padding: 12px;
   color: #8fb217;
 }
 
 #content {
-  position: relative;
   height: 248px;
   background-image: url('./ec-logo-without-bg-48.png');
   background-repeat: repeat;
