@@ -62,7 +62,7 @@ const mainWindowOptions = {
 }
 
 const loadingWindowOptions = {
-  height: 280,
+  height: 288,
   frame: false,
   useContentSize: true,
   width: 480,
