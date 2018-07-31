@@ -2,10 +2,15 @@
   <v-app app :dark="dark">
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
-      <v-btn icon @click="xButtonLogic.back($router)">
+      <v-btn v-white
+      icon
+      @click="xButtonLogic.back($router)">
         <v-icon>navigate_before</v-icon>
       </v-btn>
-      <v-btn icon @click="xButtonLogic.forward($router)">
+      <v-btn
+        v-white
+        icon
+        @click="xButtonLogic.forward($router)">
         <v-icon>navigate_next</v-icon>
       </v-btn>
       <v-spacer/>
@@ -16,17 +21,17 @@
       <v-spacer/>
       <ec-lesezeichen-show/>
       <div style="padding-right: 20px"/>
-      <v-btn icon @click="darkChange">
+      <v-btn icon v-white @click="darkChange">
         <v-icon>invert_colors</v-icon>
       </v-btn>
-      <v-btn icon @click="logOut">
-        <v-icon>power_settings_new</v-icon>
+      <v-btn icon v-white @click="logOut">
+        <v-icon>exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
     <v-navigation-drawer clipped v-model="drawer" app>
       <v-list>
         <template v-for="item in nav" v-if="item.userGroups === '*' || item.userGroups.indexOf(auth._userGroupBezeichnung) !== -1">
-          <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.action" no-action>
+          <v-list-group v-if="item.items" :key="item.title" :prepend-icon="item.icon" no-action>
             <v-list-tile slot="activator">
               <v-list-tile-content>
                 <v-list-tile-title v-font>{{ item.title }}</v-list-tile-title>
@@ -37,13 +42,13 @@
                 <v-list-tile-title v-font>{{ subItem.title }}</v-list-tile-title>
               </v-list-tile-content>
               <v-list-tile-action>
-                <v-icon>{{ subItem.action }}</v-icon>
+                <v-icon>{{ subItem.icon }}</v-icon>
               </v-list-tile-action>
             </v-list-tile>
           </v-list-group>
           <v-list-tile v-if="!item.items" @click="click(item.route)" :key="item.title">
             <v-list-tile-action>
-              <v-icon>{{ item.action }}</v-icon>
+              <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
               <v-list-tile-title v-font>{{ item.title }}</v-list-tile-title>
