@@ -1,62 +1,70 @@
 <template>
-  <v-menu offset-y width="512px">
+  <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="256" offset-y>
     <template slot="activator">
-      <v-badge color="red" v-if="lesezeichen.liste.length > 0 ">
+      <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
         <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
-        <v-icon large>
+        <v-icon medium v-white>
           {{lesezeichen.liste.length === 0 ? 'star_border' : 'star'}}
         </v-icon>
       </v-badge>
-      <v-icon large v-else>
+      <v-icon medium v-white v-else>
         star_border
       </v-icon>
     </template>
     <v-card>
-      <v-card-title>
+
+      <v-card-title c>
         <h1 v-font>Lesezeichen</h1>
       </v-card-title>
+
+      <v-divider/>
+    
       <v-card-text>
-        <v-data-table
-          :headers="[
-            {
-              text: 'Typ',
-              value: 'type',
-              width: '30px'
-            },
-            {
-              text: 'Beschreibung',
-              value: 'label'
-            },
-            {
-              text: 'ID',
-              width: '25px',
-              value: 'id'
-            },
-            {
-              text: '',
-              width: '25px',
-              value: 'id',
-              sortable: false
-            }
-          ]"
-          :items="lesezeichen.liste"
-          :rows-per-page-items="[10]"
-          class="elevation-1"
-          disable-initial-sort
-        >
-          <template slot="items" slot-scope="props">
-            <tr @click="xButtonLogic.reset(props.item.xButton);$router.push(props.item.route)">
-              <td>{{ props.item.type }}</td>
-              <td>{{ props.item.label }}</td>
-              <td>{{ props.item.id }}</td>
-              <td>
-                <v-btn icon @click="lesezeichen.delete(props.item.route)">
-                  <v-icon>delete</v-icon>
-                </v-btn>
-              </td>
-            </tr>
+        <v-list >
+          <v-list-tile v-if="selectedBookmarks.length > 0" inactive>
+            <v-list-tile-action @click="selectedBookmarks = []">
+              <v-icon>arrow_back</v-icon>
+            </v-list-tile-action>
+
+            <v-list-tile-content>
+              <v-list-tile-title>{{selectedBookmarks.length}}</v-list-tile-title>
+            </v-list-tile-content>
+
+            <v-list-tile-action @click="selectAll()">
+              <v-icon>select_all</v-icon>
+            </v-list-tile-action>
+
+            <v-list-tile-action @click="unbookmarkSelected()">
+              <v-icon>delete</v-icon>
+            </v-list-tile-action>
+
+          </v-list-tile>
+
+          <v-divider v-if="selectedBookmarks.length > 0"/>
+
+          <template v-for="(item, index) in lesezeichen.liste">
+            <v-list-tile :key="item.id" @click="click(index)">
+
+              <v-list-tile-action
+                v-if="lesezeichen.liste.length > 1"
+                @click.stop>
+                <v-checkbox v-model="selectedBookmarks" :value="index">
+                </v-checkbox>
+              </v-list-tile-action>
+
+              <v-list-tile-content>
+                <v-list-tile-title>{{ item.label }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ item.type }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+
+              <v-list-tile-action
+                @click.stop="unbookmark(index)">
+                <v-icon>close</v-icon>
+              </v-list-tile-action>
+
+            </v-list-tile>
           </template>
-        </v-data-table>
+        </v-list>
       </v-card-text>
     </v-card>
   </v-menu>
@@ -74,10 +82,68 @@ import lesezeichen, {
 } from '@/plugins/lesezeichen/lesezeichen.ts'
 
 import xButtonLogic from '@/plugins/xButton/logic'
+import { create } from 'domain'
 
 @Component({})
 export default class App extends Vue {
   lesezeichen = lesezeichen
   xButtonLogic = xButtonLogic
+
+  menu: boolean = false
+
+  selectedBookmarks: Array<number> = []
+
+  toggleSelection(index: number) {
+    if (this.selectedBookmarks.includes(index)) {
+      this.deselect(index)
+    } else {
+      this.selectedBookmarks.push(index) // Add to list
+    }
+  }
+
+  deselect(index: number) {
+    if (this.selectedBookmarks.includes(index)) {
+      const i = this.selectedBookmarks.indexOf(index)
+      this.selectedBookmarks.splice(i)
+    }
+  }
+
+  selectAll() {
+    const length = this.lesezeichen.liste.length
+
+    this.selectedBookmarks = Array.from(
+      Array(length).keys()
+    )
+  }
+
+  click(index: number) {
+    let bookmark = lesezeichen.liste[index]
+
+    xButtonLogic.reset(bookmark.xButton)
+    this.menu = false //close menu
+    this.$router.push(bookmark.route)
+  }
+
+  unbookmark(index: number) {
+    let bookmark = lesezeichen.liste[index]
+
+    lesezeichen.delete(bookmark)
+    this.deselect(index)
+  }
+
+  unbookmarkSelected() {
+    this.selectedBookmarks.forEach(index =>
+      this.unbookmark(index)
+    )
+
+    this.selectedBookmarks = []
+  }
+
+  @Watch('menu')
+  onMenuOpenClose(isOpen: boolean) {
+    if (!isOpen) {
+      this.selectedBookmarks = []
+    }
+  }
 }
 </script>

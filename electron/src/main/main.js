@@ -62,10 +62,10 @@ const mainWindowOptions = {
 }
 
 const loadingWindowOptions = {
-  height: 250,
+  height: 288,
   frame: false,
   useContentSize: true,
-  width: 470,
+  width: 480,
   show: false,
   closable: false,
   resizable: false,

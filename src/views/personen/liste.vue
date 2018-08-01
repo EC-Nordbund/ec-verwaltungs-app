@@ -13,7 +13,7 @@
       <!-- Handle Geschlecht Col -->
       <v-avatar :style="{ background: (slotProps.item.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }" :size="32">
         <span class="white--text headline" style="font-size: 12pt !important">
-          {{slotProps.item.vorname[0]}}{{slotProps.item.nachname[0]}}
+          {{slotProps.item.vorname[0].toUpperCase()}}{{slotProps.item.nachname[0].toUpperCase()}}
         </span>
       </v-avatar>
     </template>
@@ -125,4 +125,3 @@ export default class PersonenListe extends reloaderBase {
   }
 }
 </script>
- 

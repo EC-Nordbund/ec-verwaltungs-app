@@ -89,7 +89,7 @@ import event from '@/plugins/eventbus'
         }
       }
     ).then((v:any)=>{
-      (<any>this).data = v.data
+      (<any>this).data = v.data;
       (<any>this).variabels = {
         authToken: auth.authToken,
         akID: to.params.id
@@ -110,13 +110,11 @@ export default class AKDetails extends reloaderBase {
     subTitle: `${item.eintritt.german}${
       item.austritt ? ` ${item.austritt.german}` : ''
     }${item.leiter ? ' (Leiter)' : ''}`
-  });
-  editAKStamm_show = false;
-  editAKStamm_config = [
-    bezeichnungConfig
-  ];
-  editAKStamm_value = {};
-  editAKPerson_show = false;
+  })
+  editAKStamm_show = false
+  editAKStamm_config = [bezeichnungConfig]
+  editAKStamm_value = {}
+  editAKPerson_show = false
   editAKPerson_config = [
     {
       ...personConfig,
@@ -145,9 +143,9 @@ export default class AKDetails extends reloaderBase {
       type: 'checkbox',
       componentName: 'ec-form-checkbox'
     }
-  ];
-  editAKPerson_value = {};
-  addAKPerson_show = false;
+  ]
+  editAKPerson_value = {}
+  addAKPerson_show = false
   addAKPerson_config = [
     personConfig,
     {
@@ -166,7 +164,7 @@ export default class AKDetails extends reloaderBase {
       type: 'checkbox',
       componentName: 'ec-form-checkbox'
     }
-  ];
+  ]
   edit(item: any) {
     this.editAKPerson_value = {
       personAKID: item.personAKID,
@@ -174,15 +172,15 @@ export default class AKDetails extends reloaderBase {
       eintritt: item.eintritt.input,
       austritt: (item.austritt || {}).input,
       leiter: item.leiter
-    };
-    this.editAKPerson_show = true;
+    }
+    this.editAKPerson_show = true
   }
   editAKStamm_open() {
-    this.editAKStamm_value = {};
+    this.editAKStamm_value = {}
     this.editAKStamm_value = {
       bezeichnung: this.data.ak.bezeichnung
-    };
-    this.editAKStamm_show = true;
+    }
+    this.editAKStamm_show = true
   }
   editAKStamm_save(value: any) {
     this.$apollo.mutate({
@@ -192,7 +190,7 @@ export default class AKDetails extends reloaderBase {
         akID: this.$route.params.id,
         ...value
       }
-    });
+    })
   }
   editAKPerson_save(value: any) {
     this.$apollo
@@ -201,10 +199,10 @@ export default class AKDetails extends reloaderBase {
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-        ...value
+          ...value
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
   addPersonAK_save(value: any) {
     this.$apollo
@@ -216,16 +214,16 @@ export default class AKDetails extends reloaderBase {
           ...value
         }
       })
-      .then(this.refetch);
+      .then(this.refetch)
   }
 
   created() {
     this.variabels = {
       authToken: auth.authToken,
       akID: this.$route.params.id
-    };
-    this.query = query.ak.details.load;
-    super.created();
+    }
+    this.query = query.ak.details.load
+    super.created()
   }
   share(share: (url:string)=>void) {
     share(this.$route.fullPath)
