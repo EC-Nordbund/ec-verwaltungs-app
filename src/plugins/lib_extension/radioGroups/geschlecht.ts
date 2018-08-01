@@ -19,12 +19,12 @@ export default class geschlechtRadio extends Vue {
     {
       label: 'Männlich',
       value: 'm',
-      color: this.$vuetify.theme.male
+      color: 'male'
     },
     {
       label: 'Weiblich',
       value: 'w',
-      color: this.$vuetify.theme.female
+      color: 'female'
     }
   ]
 
