@@ -43,7 +43,7 @@
           <v-divider v-if="selectedBookmarks.length > 0"/>
 
           <template v-for="(item, index) in lesezeichen.liste">
-            <v-list-tile :key="item.id" @click="click(index)">
+            <v-list-tile :key="item.type + '-' + item.id" @click="click(index)">
 
               <v-list-tile-action
                 v-if="lesezeichen.liste.length > 1"
