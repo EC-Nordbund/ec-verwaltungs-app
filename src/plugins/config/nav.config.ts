@@ -53,7 +53,7 @@ export default [
       {
         title: 'Anmeldung',
         icon: 'assignment_ind',
-        route: '/app/anmeldung',
+        route: '/app/anmeldungen',
         userGroups: '*'
       }
     ]

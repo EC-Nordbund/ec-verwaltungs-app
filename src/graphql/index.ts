@@ -1,6 +1,37 @@
 import gql from 'graphql-tag'
 
 export const query = {
+  anmeldungen: {
+    liste: {
+      load: gql`
+        query($authToken: String!) {
+          anmeldungen(authToken: $authToken) {
+            anmeldeID
+            person {
+              vorname
+              nachname
+              gebDat {
+                german
+              }
+              geschlecht
+            }
+            veranstaltung {
+              bezeichnung
+              begin {
+                input
+                german
+              }
+              ende {
+                input
+                german
+              }
+            }
+            position
+          }
+        }
+      `
+    }
+  },
   veranstaltungen: {
     liste: {
       load: gql`
