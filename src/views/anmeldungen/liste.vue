@@ -48,7 +48,7 @@ import { getClient } from '@/plugins/apollo'
       })
       .then((v: any) => {
         next(vm => {
-          ;(<verteilerList>vm).data = v.data
+          ;(<anmeldungsListe>vm).data = v.data
           setTimeout(() => {
             event.emit('hideLoading')
           }, 500)
@@ -56,7 +56,7 @@ import { getClient } from '@/plugins/apollo'
       })
   }
 })
-export default class verteilerList extends reloaderBase {
+export default class anmeldungsListe extends reloaderBase {
   data: { anmeldungen: Array<any> } = {
     anmeldungen: []
   }
