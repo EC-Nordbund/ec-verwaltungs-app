@@ -30,6 +30,10 @@
               <v-list-tile-title>{{selectedBookmarks.length}}</v-list-tile-title>
             </v-list-tile-content>
 
+            <v-list-tile-action @click="selectAll()">
+              <v-icon>select_all</v-icon>
+            </v-list-tile-action>
+
             <v-list-tile-action @click="unbookmarkSelected()">
               <v-icon>delete</v-icon>
             </v-list-tile-action>
@@ -102,6 +106,14 @@ export default class App extends Vue {
       const i = this.selectedBookmarks.indexOf(index)
       this.selectedBookmarks.splice(i)
     }
+  }
+
+  selectAll() {
+    const length = this.lesezeichen.liste.length
+
+    this.selectedBookmarks = Array.from(
+      Array(length).keys()
+    )
   }
 
   click(index: number) {
