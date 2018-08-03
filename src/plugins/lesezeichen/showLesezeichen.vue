@@ -102,22 +102,21 @@ export default class App extends Vue {
   }
 
   deselect(index: number) {
-    if (this.selectedBookmarks.includes(index)) {
-      const i = this.selectedBookmarks.indexOf(index)
-      this.selectedBookmarks.splice(i)
+    const position = this.selectedBookmarks.indexOf(index)
+
+    if (position > -1) {
+      this.selectedBookmarks.splice(position, 1)
     }
   }
 
   selectAll() {
-    const length = this.lesezeichen.liste.length
-
     this.selectedBookmarks = Array.from(
-      Array(length).keys()
+      this.lesezeichen.liste.keys()
     )
   }
 
   click(index: number) {
-    let bookmark = lesezeichen.liste[index]
+    const bookmark = lesezeichen.liste[index]
 
     xButtonLogic.reset(bookmark.xButton)
     this.menu = false //close menu
@@ -132,11 +131,8 @@ export default class App extends Vue {
   }
 
   unbookmarkSelected() {
-    this.selectedBookmarks.forEach(index =>
-      this.unbookmark(index)
-    )
-
     this.selectedBookmarks = []
+    this.lesezeichen.liste = []
   }
 
   @Watch('menu')
