@@ -99,6 +99,9 @@ export const query = {
               }
             }
             position
+            anmeldeZeitpunkt {
+              german
+            }
           }
         }
       `

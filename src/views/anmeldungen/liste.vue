@@ -73,9 +73,13 @@ export default class anmeldungsListe extends reloaderBase {
     },
     {
       name: 'position',
-      label: 'Position',
+      label: 'Rolle',
       handleOutside: true,
       width: '220px'
+    },
+    {
+      name: 'anmeldeZeitpunkt.german',
+      label: 'Anmeldungszeitpunkt'
     }
   ]
 

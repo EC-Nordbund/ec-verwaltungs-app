@@ -3,7 +3,7 @@
 
     <template slot="label">
       <ec-headline>
-        {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{data.anmeldung.person.gebDat.german}}) - {{data.anmeldung.veranstaltung.bezeichnung}} ({{data.anmeldung.veranstaltung.begin.year}}) - {{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}}
+        {{data.anmeldung.veranstaltung.bezeichnung}} - {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} - {{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}}
         <ec-button-icon @click=""/>
       </ec-headline>
     </template>
