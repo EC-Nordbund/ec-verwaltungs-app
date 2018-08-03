@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="menu" :close-on-content-click="false" :nudge-width="256" offset-y>
+  <v-menu v-model="menu" :close-on-content-click="false" max-width="384" min-width="384" offset-y>
     <template slot="activator">
       <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
         <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
@@ -20,7 +20,7 @@
       <v-divider/>
     
       <v-card-text>
-        <v-list >
+        <v-list v-if="lesezeichen.liste.length > 0">
           <v-list-tile v-if="selectedBookmarks.length > 0" inactive>
             <v-list-tile-action @click="selectedBookmarks = []">
               <v-icon>arrow_back</v-icon>
@@ -64,6 +64,15 @@
 
             </v-list-tile>
           </template>
+        </v-list>
+        <v-list v-else three-line>
+          <v-list-tile inactive>
+            <v-list-tile-content>
+              <v-list-tile-title centered>Keine Lesezeichen</v-list-tile-title>
+              <v-list-tile-sub-title>Klicke auf das <v-icon small>star_border</v-icon>-Symbol auf den Details-Seiten um die jeweilige hinzuzufügen.</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+
         </v-list>
       </v-card-text>
     </v-card>
