@@ -133,6 +133,46 @@
     </template>
 
     <template slot="forms">
+      <ec-form
+        title="Stammdaten editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="Adresse editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="E-Mail editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="Telefon editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="Bezahlung editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="Bezahlung (Abmeldung) editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="Bemerkungen editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
+      <ec-form
+        title="Erlabnisse editieren"
+        :fieldConfig="[]"
+        :show="false"
+      />
     </template>
 
   </ec-wrapper>
