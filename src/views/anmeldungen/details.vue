@@ -42,23 +42,89 @@
       <v-tabs-items v-model="tabs" class="white">
         <v-tab-item id="tab-2">
           <v-card>
-            {{data}}
+             <ec-list
+              :items="[
+                {subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
+                {subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
+                {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}
+              ]"
+              :mapper="item=>item"
+              icon="location_on"
+            />
           </v-card>
         </v-tab-item>
         <v-tab-item id="tab-3">
           <v-card>
-            {{data}}
+            <ec-list
+              :items="[
+                {subTitle: `${(data.anmeldung.adresse||{}).plz} ${(data.anmeldung.adresse||{}).ort}`, title: (data.anmeldung.adresse||{}).strasse},
+                {subTitle: 'E-Mail', title: (data.anmeldung.email||{}).email},
+                {subTitle: 'Telefon', title: (data.anmeldung.telefon||{}).telefon}
+              ]"
+              :mapper="item=>item"
+              icon="location_on"
+              edit
+            />
           </v-card>
         </v-tab-item>
         <v-tab-item id="tab-4">
           <v-card>
-            {{data}}
+            <ec-list
+              :items="[
+                {subTitle: 'Kosten (nach Anmeldezeitpunkt)', title: 'N/A'},
+                {subTitle: 'Anzahlung (nach Anmeldezeitpunkt)', title: 'N/A'},
+                {subTitle: 'Bezahlt', title: data.anmeldung.bisherBezahlt},
+                ...(!data.anmeldung.abmeldeZeitpunkt?[{subTitle: 'Noch offen [insgesamt]', title: 'N/A'}]:[])
+              ]"
+              :mapper="item=>item"
+              icon="location_on"
+              edit
+            />
+            <template v-if="data.anmeldung.abmeldeZeitpunkt">
+              <v-divider/>
+              <ec-list
+                :items="[
+                  {subTitle: 'Abmeldegebuehr (nach Abmeldezeitpunkt)', title: 'N/A'},
+                  {subTitle: 'Zurückzuzahlen', title: 'N/A'},
+                  {subTitle: 'Zurückbezahlt', title: data.anmeldung.rueckbezahlt},
+                  {subTitle: 'Noch offen [Bilanz insgesamt]', title: 'N/A'}
+                ]"
+                :mapper="item=>item"
+                icon="location_on"
+                edit
+              />
+            </template>
+            Einige Felder müssen in der API noch hinzugefügt werden
           </v-card>
         </v-tab-item>
         <v-tab-item id="tab-5">
           <v-card>
-            {{data}}
-          </v-card>
+            <ec-list
+              :items="[
+                {subTitle: 'Vegetarisch', title: data.anmeldung.vegetarisch?'Ja':'Nein'},
+                {subTitle: 'Lebensmittel Allergien', title: data.anmeldung.lebensmittelAllergien||'N/A'},
+                {subTitle: 'Gesundheitsinformationen', title: data.anmeldung.gesundheitsinformationen||'N/A'},
+                {subTitle: 'Bemerkungen', title: data.anmeldung.bemerkungen||'N/A'}
+              ]"
+              :mapper="item=>item"
+              icon="location_on"
+              edit
+            />
+            <v-divider/>
+            <ec-list
+              :items="[
+                {subTitle: 'Radfahren', title: data.anmeldung.radfahren?'Ja':'Nein'},
+                {subTitle: 'Klettern', title: data.anmeldung.klettern?'Ja':'Nein'},
+                {subTitle: 'Sich Entfenen (in 3er Gruppen)', title: data.anmeldung.sichEntfernen?'Ja':'Nein'},
+                {subTitle: 'Boot-Fahren', title: data.anmeldung.bootFahren?'Ja':'Nein'},
+                {subTitle: 'Schwimmen', title: 'N/A'},
+                {subTitle: 'Adresse in TN-Liste', title: data.anmeldung.fahrgemeinschaften?'Ja':'Nein'}
+              ]"
+              :mapper="item=>item"
+              icon="location_on"
+              edit
+            />
+          </v-card> 
         </v-tab-item>
       </v-tabs-items>
     </template>
