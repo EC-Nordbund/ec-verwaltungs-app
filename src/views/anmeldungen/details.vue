@@ -4,7 +4,7 @@
     <template slot="label">
       <ec-headline>
         {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}})
-        <ec-button-icon @click=""/>
+        <ec-button-icon @click="soon"/>
       </ec-headline>
     </template>
 
@@ -64,6 +64,7 @@
               :mapper="item=>item"
               icon="location_on"
               edit
+              @edit="soon"
             />
           </v-card>
         </v-tab-item>
@@ -79,6 +80,7 @@
               :mapper="item=>item"
               icon="location_on"
               edit
+              @edit="soon"
             />
             <template v-if="data.anmeldung.abmeldeZeitpunkt">
               <v-divider/>
@@ -92,6 +94,7 @@
                 :mapper="item=>item"
                 icon="location_on"
                 edit
+                @edit="soon"
               />
             </template>
             Einige Felder müssen in der API noch hinzugefügt werden
@@ -109,6 +112,7 @@
               :mapper="item=>item"
               icon="location_on"
               edit
+              @edit="soon"
             />
             <v-divider/>
             <ec-list
@@ -123,6 +127,7 @@
               :mapper="item=>item"
               icon="location_on"
               edit
+              @edit="soon"
             />
           </v-card> 
         </v-tab-item>
@@ -252,6 +257,10 @@ export default class anmeldungsDetails extends reloaderBase {
   }
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
+  }
+
+  soon() {
+    alert('Comming Soon...')
   }
 }
 </script>
