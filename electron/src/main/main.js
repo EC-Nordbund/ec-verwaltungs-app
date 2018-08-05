@@ -1,7 +1,12 @@
 //@ts-check
 
 // Import Electron
-const { app, BrowserWindow, Tray } = require('electron')
+const {
+  app,
+  BrowserWindow,
+  Tray,
+  dialog
+} = require('electron')
 
 app.setAsDefaultProtocolClient('ec', process.execPath)
 
@@ -16,6 +21,16 @@ function handleProto(args) {
     }
   }
 }
+
+require('dns').resolve('www.google.com', err => {
+  if (err) {
+    dialog.showErrorBox(
+      'Keine Internet-Verbindung',
+      'Zur Nutzung unserer App benötigts du eine aktive Internetverbindung! - Bitte überprüfe diese!'
+    )
+    app.quit()
+  }
+})
 
 // On Install do Stuff
 if (require('electron-squirrel-startup')) {
