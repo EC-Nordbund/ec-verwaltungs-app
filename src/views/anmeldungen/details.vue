@@ -1,6 +1,5 @@
 <template>
   <ec-wrapper title="Anmeldung Details" :label="`${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} - ${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.year}) - ${['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}`" type="Anmeldung" @share="share">
-
     <template slot="label">
       <ec-headline>
         {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}})
@@ -46,7 +45,18 @@
               :items="[
                 {subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
                 {subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
-                {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}
+                {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]},
+                {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung oder Abgemeldet':Math.abs(data.anmeldung.wartelistenPlatz)}
+              ]"
+              :mapper="item=>item"
+              icon="location_on"
+            />
+            <v-divider/>
+            <ec-list
+              :items="[
+                {subTitle: 'Anmeldezeitpunkt', title: (data.anmeldung.anmeldeZeitpunkt || {}).german},
+                {subTitle: 'Datenschutz Zustimmung', title: (data.anmeldung.DSGVO_einverstaendnis||{}).german },
+                ...(data.anmeldung.abmeldeZeitpunkt?[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt}]:[])
               ]"
               :mapper="item=>item"
               icon="location_on"
