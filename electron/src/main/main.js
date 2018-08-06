@@ -123,7 +123,7 @@ function createLoadingWindow() {
           fetch(
             'https://h2778646.stratoserver.net:4000/check'
           )
-            .then(res => {
+            .then(() => {
               setTimeout(() => {
                 loadingWindow.webContents.send(
                   'msg',
