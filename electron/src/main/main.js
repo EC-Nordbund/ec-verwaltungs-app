@@ -115,31 +115,33 @@ function createLoadingWindow() {
           loadingWindow.destroy()
           app.quit()
         } else {
-          const fetch = require('node-fetch')
-          loadingWindow.webContents.send(
-            'msg',
-            'Teste API Verbindung'
-          )
-          fetch(
-            'https://h2778646.stratoserver.net:4000/check'
-          )
-            .then(() => {
-              setTimeout(() => {
-                loadingWindow.webContents.send(
-                  'msg',
-                  'Erzeuge Fenster'
+          setTimeout(() => {
+            const fetch = require('node-fetch')
+            loadingWindow.webContents.send(
+              'msg',
+              'Teste API Verbindung'
+            )
+            fetch(
+              'https://h2778646.stratoserver.net:4000/check'
+            )
+              .then(() => {
+                setTimeout(() => {
+                  loadingWindow.webContents.send(
+                    'msg',
+                    'Erzeuge Fenster'
+                  )
+                  createWindow()
+                }, 500)
+              })
+              .catch(() => {
+                dialog.showErrorBox(
+                  'Keine API-Verbindung',
+                  'Zur Nutzung unserer App ist eine Verbindung zu unserer API notwendig. Diese ist aktuell nicht gegeben.\nBitte Probiere es in 5-10 min nocheinmal. Sollte es dann immer noch Probleme geben schreibe bitte eine E-Mail an app@ec-nordbund.de!'
                 )
-                createWindow()
-              }, 500)
-            })
-            .catch(() => {
-              dialog.showErrorBox(
-                'Keine API-Verbindung',
-                'Zur Nutzung unserer App ist eine Verbindung zu unserer API notwendig. Diese ist aktuell nicht gegeben.\nBitte Probiere es in 5-10 min nocheinmal. Sollte es dann immer noch Probleme geben schreibe bitte eine E-Mail an app@ec-nordbund.de!'
-              )
-              loadingWindow.destroy()
-              app.quit()
-            })
+                loadingWindow.destroy()
+                app.quit()
+              })
+          }, 500)
         }
       })
     }, 2000)
