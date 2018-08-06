@@ -39,8 +39,14 @@
   </div>
 
   <div id="footer">
-    <h3 class="text dot-animation">Lade</h3>
+    <h3 class="text dot-animation" id="text">Lade</h3>
   </div>
+  <script>
+    let { ipcRenderer } = require('electron')
+    ipcRenderer.on('msg', ($event, msg) => {
+      document.getElementById('text').innerText = msg
+    })
+  </script>
 </body>
 
 </html>

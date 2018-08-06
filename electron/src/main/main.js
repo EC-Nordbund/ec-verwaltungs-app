@@ -1,5 +1,3 @@
-//@ts-check
-
 // Import Electron
 const {
   app,
@@ -21,16 +19,6 @@ function handleProto(args) {
     }
   }
 }
-
-require('dns').resolve('www.google.com', err => {
-  if (err) {
-    dialog.showErrorBox(
-      'Keine Internet-Verbindung',
-      'Zur Nutzung unserer App benötigts du eine aktive Internetverbindung! - Bitte überprüfe diese!'
-    )
-    app.quit()
-  }
-})
 
 // On Install do Stuff
 if (require('electron-squirrel-startup')) {
@@ -111,8 +99,45 @@ function createLoadingWindow() {
   loadingWindow.loadURL(loadingURL)
   loadingWindow.on('ready-to-show', () => {
     loadingWindow.show()
+    loadingWindow.webContents.send(
+      'msg',
+      'Teste Internet Verbindung'
+    )
     setTimeout(() => {
-      createWindow()
+      require('dns').resolve('www.google.com', err => {
+        if (err) {
+          dialog.showErrorBox(
+            'Keine Internet-Verbindung',
+            'Zur Nutzung unserer App benötigts du eine aktive Internetverbindung! - Bitte überprüfe diese!'
+          )
+          loadingWindow.destroy()
+          app.quit()
+        } else {
+          const fetch = require('node-fetch')
+          loadingWindow.webContents.send(
+            'msg',
+            'Teste API Verbindung'
+          )
+          fetch(
+            'https://h2778646.stratoserver.net:4000/check'
+          )
+            .then(res => {
+              loadingWindow.webContents.send(
+                'msg',
+                'Erzeuge Fenster'
+              )
+              createWindow()
+            })
+            .catch(() => {
+              dialog.showErrorBox(
+                'Keine API-Verbindung',
+                'Zur Nutzung unserer App ist eine Verbindung zu unserer API notwendig. Diese ist aktuell nicht gegeben.\nBitte Probiere es in 5-10 min nocheinmal. Sollte es dann immer noch Probleme geben schreibe bitte eine E-Mail an app@ec-nordbund.de!'
+              )
+              loadingWindow.destroy()
+              app.quit()
+            })
+        }
+      })
     }, 2000)
   })
   setupTray()
@@ -130,9 +155,6 @@ function setupTray() {
 
 //=================================================================================================================================================
 
-// Wenn Bereit dann erzeuge Window
-app.once('ready', createLoadingWindow)
-
 // Wenn alle Fenster zu dann quit (außer macOS)
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -147,3 +169,5 @@ app.on('activate', () => {
     createLoadingWindow()
   }
 })
+
+app.once('ready', createLoadingWindow)
