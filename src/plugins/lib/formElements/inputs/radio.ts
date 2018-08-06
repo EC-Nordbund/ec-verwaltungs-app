@@ -45,10 +45,11 @@ export default class radio extends Vue {
           key: index,
           props: {
             label: item.label,
-            value: item.value
-          },
-          style: {
-            color: item.color
+            value: item.value,
+            color:
+              item.color != undefined
+                ? item.color
+                : undefined
           }
         })
       })
