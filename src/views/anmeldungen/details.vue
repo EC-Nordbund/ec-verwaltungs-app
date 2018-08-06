@@ -56,7 +56,7 @@
               :items="[
                 {subTitle: 'Anmeldezeitpunkt', title: (data.anmeldung.anmeldeZeitpunkt || {}).german},
                 {subTitle: 'Datenschutz Zustimmung', title: (data.anmeldung.DSGVO_einverstaendnis||{}).german },
-                ...(data.anmeldung.abmeldeZeitpunkt?[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt}]:[])
+                 ...(!data.anmeldung.abmeldeZeitpunkt?[]:[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt.german}])
               ]"
               :mapper="item=>item"
               icon="location_on"
