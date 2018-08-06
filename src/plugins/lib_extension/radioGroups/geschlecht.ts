@@ -1,4 +1,8 @@
-import { Component, Vue } from 'vue-property-decorator'
+import {
+  Component,
+  Vue,
+  Prop
+} from 'vue-property-decorator'
 import { CreateElement } from 'vue'
 
 /**
@@ -19,12 +23,12 @@ export default class geschlechtRadio extends Vue {
     {
       label: 'Männlich',
       value: 'm',
-      color: this.$vuetify.theme.male
+      color: 'male'
     },
     {
       label: 'Weiblich',
       value: 'w',
-      color: this.$vuetify.theme.female
+      color: 'female'
     }
   ]
 
@@ -39,7 +43,8 @@ export default class geschlechtRadio extends Vue {
     return h('ec-form-radio', {
       props: {
         ...this.$attrs,
-        items: this.items
+        items: this.items,
+        value: this.value
       },
       attrs: {
         ...this.$attrs
@@ -49,4 +54,17 @@ export default class geschlechtRadio extends Vue {
       }
     })
   }
+
+  /**
+   * Value-Prop
+   *
+   * @type {(string | number)}
+   * @memberof radio
+   */
+  @Prop({
+    type: [String, Number],
+    required: false,
+    default: ''
+  })
+  value!: string | number
 }
