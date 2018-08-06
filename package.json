@@ -52,6 +52,7 @@
     "apollo-link-http": "^1.5.4",
     "apollo-utilities": "^1.0.15",
     "electron-settings": "^3.2.0",
+    "js-sha3": "^0.8.0",
     "lazyfilter": "https://github.com/ecnordbund/lazyFilter.git",
     "node-fetch": "^2.1.2",
     "vue": "^2.5.16",
