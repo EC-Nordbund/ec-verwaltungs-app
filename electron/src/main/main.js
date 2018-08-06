@@ -6,6 +6,8 @@ const {
   dialog
 } = require('electron')
 
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
 app.setAsDefaultProtocolClient('ec', process.execPath)
 
 function handleProto(args) {
@@ -99,11 +101,11 @@ function createLoadingWindow() {
   loadingWindow.loadURL(loadingURL)
   loadingWindow.on('ready-to-show', () => {
     loadingWindow.show()
-    loadingWindow.webContents.send(
-      'msg',
-      'Teste Internet Verbindung'
-    )
     setTimeout(() => {
+      loadingWindow.webContents.send(
+        'msg',
+        'Teste Internet Verbindung'
+      )
       require('dns').resolve('www.google.com', err => {
         if (err) {
           dialog.showErrorBox(
@@ -122,11 +124,13 @@ function createLoadingWindow() {
             'https://h2778646.stratoserver.net:4000/check'
           )
             .then(res => {
-              loadingWindow.webContents.send(
-                'msg',
-                'Erzeuge Fenster'
-              )
-              createWindow()
+              setTimeout(() => {
+                loadingWindow.webContents.send(
+                  'msg',
+                  'Erzeuge Fenster'
+                )
+                createWindow()
+              }, 500)
             })
             .catch(() => {
               dialog.showErrorBox(
