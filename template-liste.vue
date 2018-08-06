@@ -1,22 +1,19 @@
 <template>
-  <!-- Tabelle der Verteiler -->
   <ec-table
-    title="Verteiler"
-    itemName="Verteiler"
-    :items="data.verteilerList"
+    title="*"
+    itemName="*"
+    :items="data.*"
     :config="tableConfig"
     suche
     @open="open"
     @sucheChanged="suchStringUpdate" 
     :sucheVal="suchstring">
-    <!-- ADD-Button -->
-    <ec-button-add @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('addVerteiler')"/>
-    <!-- ADD-Verteiler-Form -->
+    <ec-button-add @click="add*_show = true" v-if="auth.isMutationAllowed('*')"/>
     <ec-form
-      title="Verteiler hinzufügen"
-      v-model="addVerteiler_show"
-      :fieldConfig="addVerteiler_config"
-      @save="addVerteiler_save"
+      title="* hinzufügen"
+      v-model="add*_show"
+      :fieldConfig="add*_config"
+      @save="add*_save"
     />
   </ec-table>
 </template>
@@ -24,12 +21,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
-import {
-  vornameConfig,
-  nachnameConfig,
-  gebDatConfig,
-  geschlechtConfig
-} from '@/plugins/formConfig/index'
+import { } from '@/plugins/formConfig/index'
 
 import auth from '@/plugins/auth'
 
@@ -43,7 +35,7 @@ import { getClient } from '@/plugins/apollo'
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.verteiler.liste.load,
+        query: query.*.liste.load,
         variables: {
           authToken: auth.authToken
         }
@@ -63,25 +55,10 @@ export default class verteilerList extends reloaderBase {
     verteilerList: []
   }
   tableConfig = [
-    { name: 'bezeichnung', label: 'Bezeichnung' }
+    { name: 'bezeichnung', label: 'Bezeichnung', width: '...', handleOutside: true }
   ]
-  addVerteiler_show = false
-  addVerteiler_config = [
-    {
-      label: 'Bezeichnung',
-      name: 'bezeichnung',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst eine Bezeichnung angeben!' : true,
-        (v: string) =>
-          v && v.length > 50
-            ? 'Die Bezeichnung darf nicht länger als 50 Zeichen sein!'
-            : true
-      ],
-      counter: 50
-    }
-  ]
+  add*_show = false
+  add*_config = []
 
   xButtonLogik = xButtonLogik
 
@@ -89,13 +66,13 @@ export default class verteilerList extends reloaderBase {
     this.xButtonLogik.addItem(this.$route.path, {
       suche: this.suchstring
     })
-    this.$router.push(`/app/verteiler/${item.verteilerID}`)
+    this.$router.push(`/app/*/${item.*}`)
   }
 
-  addVerteiler_save(value: any) {
+  add*_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.verteiler.liste.addVerteiler,
+        mutation: query.*.liste.*,
         variables: {
           authToken: auth.authToken,
           ...value
@@ -103,7 +80,7 @@ export default class verteilerList extends reloaderBase {
       })
       .then(val => val.data.addVerteiler)
       .then(id => {
-        this.$router.push(`/app/verteiler/${id}`)
+        this.$router.push(`/app/*/${id}`)
       })
   }
 
