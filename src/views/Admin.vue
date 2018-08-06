@@ -46,16 +46,15 @@ import auth from '@/plugins/auth'
 
 import {
   eMailConfig,
-  personConfig
+  personConfig,
+  usernameConfig,
+  usergroupConfig
 } from '@/plugins/formConfig/index'
 
 import {
-  rule,
-  required,
-  maxLength,
-  inArray,
-  exactLength
+  required
 } from '@/plugins/rules'
+
 import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
 
@@ -85,7 +84,21 @@ export default class admin extends reloaderBase {
   }
   addUser_show = false
   addUser_config = [
-    //UserName
+    personConfig,
+    usernameConfig,
+    eMailConfig,
+    {
+      label: 'Gültig bis',
+      name: 'ablaufDatum',
+      required: true,
+      rules: [required('ein Ablaufdatum')],
+      componentName: 'ec-form-datePicker'
+    },
+    usergroupConfig
+  ]
+  editUser_show = false
+  editUser_config = [
+    usernameConfig,
     personConfig,
     {
       label: 'Gültig bis',
@@ -94,23 +107,13 @@ export default class admin extends reloaderBase {
       rules: [required('ein Ablaufdatum')],
       componentName: 'ec-form-datePicker'
     },
-    eMailConfig
-    //User Group
+    usergroupConfig
   ]
-  editUser_show = false
-  editUser_config = [
-    personConfig,
-    {
-      label: 'Gültig bis',
-      name: 'ablaufDatum',
-      required: true,
-      rules: [required('ein Ablaufdatum')],
-      componentName: 'ec-form-datePicker'
-    }
-    //User Group
-    //UserName
-  ]
-  editUser_value = {}
+  editUser_value = {
+    username: '',
+    email: '',
+    usergroup: ''
+  }
 
   created() {
     this.variabels = {

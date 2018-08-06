@@ -30,6 +30,30 @@ export const vornameConfig: IConfig = {
   componentName: 'v-text-field'
 }
 
+export const usernameConfig: IConfig = {
+  name: 'username',
+  label: 'Username',
+  required: true,
+  rules: [
+    required('einen Usernamen'),
+    maxLength('einen Usernamen', 'der', 50)
+  ],
+  counter: 50,
+  componentName: 'v-text-field'
+}
+
+export const usergroupConfig: IConfig = {
+  name: 'usergroup',
+  label: 'User Group',
+  required: true,
+  rules: [
+    required('einen Usergroup'),
+    maxLength('einen Usergroup', 'der', 50)
+  ],
+  counter: 50,
+  componentName: 'v-text-field'
+}
+
 export const nachnameConfig: IConfig = {
   name: 'nachname',
   label: 'Nachname',
