@@ -128,7 +128,7 @@ function createLoadingWindow() {
                 setTimeout(() => {
                   loadingWindow.webContents.send(
                     'msg',
-                    'Erzeuge Fenster'
+                    'Öffne Anwedungsfenster'
                   )
                   createWindow()
                 }, 500)
