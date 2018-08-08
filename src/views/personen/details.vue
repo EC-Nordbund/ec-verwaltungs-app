@@ -322,8 +322,8 @@ import event from '@/plugins/eventbus'
         }
       })
       .then((v: any) => {
-        ;(<any>this).data = v.data;
-        (<any>this).variabels = {
+        ;(<any>this).data = v.data
+        ;(<any>this).variabels = {
           authToken: auth.authToken,
           personID: to.params.id
         }
@@ -549,7 +549,7 @@ export default class PersonenDetails extends reloaderBase {
     this.editAK_value = {}
     this.editAK_value = {
       personAKID: item.personAKID,
-      ak: item.ak.akID,
+      akID: item.ak.akID,
       eintritt: item.eintritt.input,
       austritt: (item.austritt || {}).input,
       leiter: item.leiter
