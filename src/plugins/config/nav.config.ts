@@ -3,31 +3,31 @@
  */
 export default [
   {
-    title: 'Statistik',
-    action: 'dashboard',
+    title: 'Dashboard',
+    icon: 'dashboard',
     route: '/app/',
     userGroups: '*'
   },
   {
     title: 'Personen',
-    action: 'person',
+    icon: 'person',
     userGroups: '*',
     items: [
       {
         title: 'Personen',
-        action: 'person',
+        icon: 'person',
         route: '/app/personen',
         userGroups: '*'
       },
       {
         title: 'Arbeitskreise',
-        action: 'group',
+        icon: 'group',
         route: '/app/arbeitskreise',
         userGroups: '*'
       },
       {
         title: 'Verteiler',
-        action: 'email',
+        icon: 'email',
         route: '/app/verteiler',
         userGroups: '*'
       }
@@ -35,50 +35,50 @@ export default [
   },
   {
     title: 'Veranstaltungen',
-    action: 'event',
+    icon: 'event',
     userGroups: '*',
     items: [
       {
         title: 'Veranstaltungen',
-        action: 'event',
+        icon: 'event',
         route: '/app/veranstaltungen',
         userGroups: '*'
       },
       {
         title: 'Unterkünfte',
-        action: 'home',
+        icon: 'place',
         route: '/app/unterkünfte',
         userGroups: '*'
       },
       {
         title: 'Anmeldung',
-        action: 'home',
-        route: '/app/anmeldung',
+        icon: 'assignment_ind',
+        route: '/app/anmeldungen',
         userGroups: '*'
       }
     ]
   },
   {
     title: 'Drucken',
-    action: 'print',
+    icon: 'print',
     route: '/app/print',
     userGroups: '*'
   },
   {
     title: 'Administration',
-    action: 'https',
+    icon: 'build',
     route: '/app/admin',
     userGroups: '*'
   },
   {
     title: 'Hilfe',
-    action: 'help',
+    icon: 'help',
     route: '_hilfe',
     userGroups: '*'
   },
   {
     title: 'Impressum',
-    action: 'https',
+    icon: 'info',
     route: '/app/impressum',
     userGroups: '*'
   }

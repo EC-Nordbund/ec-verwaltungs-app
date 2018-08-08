@@ -5,7 +5,7 @@
       <ec-headline>
         <v-avatar :style="{ background: (data.person.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }">
           <span class="headline" v-white>
-            {{(data.person.vorname || ' ')[0]}}{{(data.person.nachname || ' ')[0]}}
+            {{(data.person.vorname || ' ')[0].toUpperCase()}}{{(data.person.nachname || ' ')[0].toUpperCase()}}
           </span>
         </v-avatar>
         {{data.person.vorname || ''}} {{data.person.nachname || ''}} ({{data.person.gebDat ? data.person.gebDat.german : ''}})
@@ -17,22 +17,13 @@
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
-          <v-icon v-accent>contacts</v-icon>
-          <v-spacer/>
-          <span>Kontaktdaten</span>
-          <v-spacer/>
+          Kontaktdaten
         </v-tab>
         <v-tab href="#tab-3" v-secondary>
-          <v-icon v-accent>event</v-icon>
-          <v-spacer/>
-          <span>Anmeldungen</span>
-          <v-spacer/>
+          Veranstaltungen
         </v-tab>
         <v-tab href="#tab-4" v-secondary>
-          <v-icon v-accent>extension</v-icon>
-          <v-spacer/>
-          <span>Sonstiges</span>
-          <v-spacer/>
+          Sonstiges
         </v-tab>
       </v-tabs>
     </template>
@@ -331,7 +322,8 @@ import event from '@/plugins/eventbus'
         }
       })
       .then((v: any) => {
-        ;(<any>this).data = v.data(<any>this).variabels = {
+        ;(<any>this).data = v.data;
+        (<any>this).variabels = {
           authToken: auth.authToken,
           personID: to.params.id
         }
@@ -685,7 +677,7 @@ export default class PersonenDetails extends reloaderBase {
   alertCommingSoon() {
     alert('Comming Soon')
   }
-  share(share: (url:string)=>void) {
+  share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
 }

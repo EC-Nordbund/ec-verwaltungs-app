@@ -1,6 +1,199 @@
 import gql from 'graphql-tag'
 
 export const query = {
+  anmeldungen: {
+    details: {
+      load: gql`
+        query($authToken: String!, $anmeldeID: String!) {
+          anmeldung(
+            authToken: $authToken
+            anmeldeID: $anmeldeID
+          ) {
+            anmeldeID
+            person {
+              vorname
+              nachname
+              gebDat {
+                german
+              }
+              geschlecht
+            }
+            veranstaltung {
+              bezeichnung
+              begin {
+                input
+                german
+                year
+              }
+              ende {
+                input
+                german
+              }
+            }
+            position
+            adresse {
+              adressID
+              strasse
+              plz
+              ort
+            }
+            email {
+              emailID
+              email
+            }
+            telefon {
+              telefonID
+              telefon
+            }
+            wartelistenPlatz
+            bisherBezahlt
+            anmeldeZeitpunkt {
+              german
+            }
+            abmeldeZeitpunkt {
+              german
+            }
+            abmeldeGebuehr
+            wegDerAbmeldung
+            rueckbezahlt
+            kommentarAbmeldung
+            vegetarisch
+            lebensmittelAllergien
+            gesundheitsinformationen
+            bemerkungen
+            radfahren
+            fahrgemeinschaften
+            klettern
+            sichEntfernen
+            bootFahren
+            schwimmen
+            DSGVO_einverstaendnis {
+              german
+            }
+          }
+        }
+      `
+    },
+    liste: {
+      load: gql`
+        query($authToken: String!) {
+          anmeldungen(authToken: $authToken) {
+            anmeldeID
+            person {
+              vorname
+              nachname
+              gebDat {
+                german
+              }
+              geschlecht
+            }
+            veranstaltung {
+              bezeichnung
+              begin {
+                input
+                german
+              }
+              ende {
+                input
+                german
+              }
+            }
+            position
+            anmeldeZeitpunkt {
+              german
+            }
+          }
+        }
+      `
+    }
+  },
+  veranstaltungen: {
+    liste: {
+      load: gql`
+        query($authToken: String!) {
+          veranstaltungen(authToken: $authToken) {
+            veranstaltungsID
+            bezeichnung
+            begin {
+              german
+            }
+            ende {
+              german
+            }
+            unterkunft {
+              bezeichnung
+            }
+          }
+        }
+      `
+    },
+    details: {
+      load: gql`
+        query(
+          $authToken: String!
+          $veranstaltungsID: Int!
+        ) {
+          veranstaltung(
+            veranstaltungsID: $veranstaltungsID
+            authToken: $authToken
+          ) {
+            veranstaltungsID
+            bezeichnung
+            begin {
+              input
+              german
+            }
+            ende {
+              input
+              german
+            }
+            unterkunft {
+              unterkunftID
+              bezeichnung
+              strasse
+              plz
+              ort
+              land
+            }
+            anmeldungen {
+              anmeldeID
+              person {
+                personID
+                vorname
+                nachname
+                gebDat {
+                  german
+                }
+                geschlecht
+              }
+              position
+            }
+            minTNAlter
+            maxTNAlter
+            maxTNAnzahl
+            maxWeiblichTNAnzahl
+            maxMaennlichTNAnzahl
+            preisFruehbucher
+            preisNormal
+            preisLastMinute
+            anzahlungFruehbucher
+            anzahlungNormal
+            anzahlungLastMinute
+            preisFruehbucherBis {
+              german
+              input
+            }
+            preisLastMinuteAb {
+              german
+              input
+            }
+            kannVorortBezahltWerden
+            hatGWarteliste
+          }
+        }
+      `
+    }
+  },
   verteiler: {
     details: {
       load: gql`
