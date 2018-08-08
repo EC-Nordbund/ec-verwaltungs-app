@@ -11,25 +11,25 @@
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
         <v-tab href="#tab-2" v-secondary>
-          <v-icon v-accent>assignment_ind</v-icon>
+          <v-icon v-accent>info</v-icon>
           <v-spacer/>
           <span>Allgemein</span>
           <v-spacer/>
         </v-tab>
         <v-tab href="#tab-3" v-secondary>
-          <v-icon v-accent>contacts</v-icon>
+          <v-icon v-accent>account_circle</v-icon>
           <v-spacer/>
-          <span>Kontaktdaten</span>
+          <span>Person</span>
           <v-spacer/>
         </v-tab>
         <v-tab href="#tab-4" v-secondary>
-          <v-icon v-accent>attach_money</v-icon>
+          <v-icon v-accent>monetization_on</v-icon>
           <v-spacer/>
-          <span>Geld</span>
+          <span>Finanzen</span>
           <v-spacer/>
         </v-tab>
         <v-tab href="#tab-5" v-secondary>
-          <v-icon v-accent>extension</v-icon>
+          <v-icon v-accent>arrow_drop_down_circle</v-icon>
           <v-spacer/>
           <span>Sonstiges</span>
           <v-spacer/>
@@ -49,7 +49,7 @@
                 {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung oder Abgemeldet':Math.abs(data.anmeldung.wartelistenPlatz)}
               ]"
               :mapper="item=>item"
-              icon="location_on"
+              icon="info"
             />
             <v-divider/>
             <ec-list
@@ -59,7 +59,7 @@
                  ...(!data.anmeldung.abmeldeZeitpunkt?[]:[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt.german}])
               ]"
               :mapper="item=>item"
-              icon="location_on"
+              icon="alarm"
             />
           </v-card>
         </v-tab-item>
@@ -72,7 +72,7 @@
                 {subTitle: 'Telefon', title: (data.anmeldung.telefon||{}).telefon}
               ]"
               :mapper="item=>item"
-              icon="location_on"
+              icon="chat"
               edit
               @edit="soon"
             />
@@ -88,7 +88,7 @@
                 ...(!data.anmeldung.abmeldeZeitpunkt?[{subTitle: 'Noch offen [insgesamt]', title: 'N/A'}]:[])
               ]"
               :mapper="item=>item"
-              icon="location_on"
+              icon="attach_money"
               edit
               @edit="soon"
             />
@@ -102,7 +102,7 @@
                   {subTitle: 'Noch offen [Bilanz insgesamt]', title: 'N/A'}
                 ]"
                 :mapper="item=>item"
-                icon="location_on"
+                icon="attach_money"
                 edit
                 @edit="soon"
               />
@@ -120,7 +120,7 @@
                 {subTitle: 'Bemerkungen', title: data.anmeldung.bemerkungen||'N/A'}
               ]"
               :mapper="item=>item"
-              icon="location_on"
+              icon="notes"
               edit
               @edit="soon"
             />
@@ -135,7 +135,7 @@
                 {subTitle: 'Adresse in TN-Liste', title: data.anmeldung.fahrgemeinschaften?'Ja':'Nein'}
               ]"
               :mapper="item=>item"
-              icon="location_on"
+              icon="check_circle"
               edit
               @edit="soon"
             />
