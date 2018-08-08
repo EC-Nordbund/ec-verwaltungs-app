@@ -36,7 +36,7 @@
     "start": "electron .",
     "docs:dev": "yarn docs:api && vuepress dev docs",
     "docs:build": "yarn docs:api && vuepress build docs",
-    "docs:api": "graphql-markdown http://localhost:4000/graphql > ./docs/api/README.md",
+    "docs:api": "graphql-markdown http://h2778646.stratoserver.net:4001/graphql > ./docs/api/README.md",
     ":init": "yarn && cd electron && yarn && cd ..",
     "dev": "concurrently \"yarn serve\" \"yarn docs:dev\"",
     "publish": "yarn build && cd electron && yarn run publish",
@@ -60,7 +60,7 @@
     "vue-property-decorator": "^6.0.0",
     "vue-qriously": "^1.1.1",
     "vue-router": "^3.0.1",
-    "vuetify": "^1.1.1",
+    "vuetify": "^1.1.9",
     "xlsx-template": "^0.3.1"
   },
   "devDependencies": {

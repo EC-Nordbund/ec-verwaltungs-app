@@ -22,6 +22,7 @@
           :items="items"
           :headers="headers"
           :search="suchString"
+          :pagination.sync="pagination"
           :rows-per-page-items="[count]">
 
           <template slot="items" slot-scope="props">
@@ -68,6 +69,27 @@ export default class Table extends Vue {
   onSuchValChanged(val: string) {
     this.suchString = val
   }
+
+  pagination= {
+    sortBy: '',
+    decending: false
+  }
+
+  @Prop({type: String, required: false, default: ''})
+  sortSpalte!: string
+
+  @Watch('sortSpalte', {immediate: true})
+  onSortChange(val:string){
+    this.pagination = {sortBy: val, decending: this.absteigend}
+  }
+
+  @Watch('absteigend', {immediate: true})
+  onOrderChange(val:string){
+    this.pagination = {sortBy: val, decending: this.absteigend}
+  }
+
+  @Prop({type: Boolean, required: false, default: false})
+  absteigend!: boolean
 
   @Watch('suchString')
   @Emit('sucheChanged')

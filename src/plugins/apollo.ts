@@ -21,7 +21,7 @@ export function getClient() {
       cache: new InMemoryCache(),
       connectToDevTools: true
     })
-  }
+  }  
   return client
 }
 

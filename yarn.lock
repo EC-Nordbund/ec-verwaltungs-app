@@ -8664,7 +8664,7 @@ vuepress@^0.10.0:
     webpackbar "^2.6.1"
     workbox-build "^3.1.0"
 
-vuetify@^1.1.1:
+vuetify@^1.1.9:
   version "1.1.9"
   resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.1.9.tgz#3eb497cc89d318ee6865bbebd081f5830f83f8ba"
 
