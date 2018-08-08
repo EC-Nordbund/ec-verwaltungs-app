@@ -46,12 +46,8 @@ export const usergroupConfig: IConfig = {
   name: 'usergroup',
   label: 'User Group',
   required: true,
-  rules: [
-    required('einen Usergroup'),
-    maxLength('einen Usergroup', 'der', 50)
-  ],
-  counter: 50,
-  componentName: 'v-text-field'
+  rules: [required('eine Usergroup')],
+  componentName: 'ec-select-userGroup'
 }
 
 export const nachnameConfig: IConfig = {

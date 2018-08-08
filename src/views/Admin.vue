@@ -28,6 +28,7 @@
         v-model="addUser_show"
         @save="saveNewUser"
         :fieldConfig="addUser_config"
+        :value="addUser_value"
       />
     </template>
 
@@ -109,7 +110,7 @@ export default class admin extends reloaderBase {
     },
     usergroupConfig
   ]
-  editUser_value = {
+  editUser_value:any = {
     username: '',
     email: '',
     usergroup: ''
@@ -122,24 +123,39 @@ export default class admin extends reloaderBase {
     this.query = query.admin.load
     super.created()
   }
-
+  addUser_value={
+    personID: '',
+    username: '',
+    email: '',
+    ablaufDatum: '',
+    usergroup: ''
+  }
   addUser() {
     this.addUser_show = true
   }
-  saveNewUser(value: any) {}
+  saveNewUser(value: any) {
+    // TODO: Mutation
+    // TODO: Send Mail
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  updateUser(value: any) {
+    // TODO: Mutation
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  deleteUser(value: any) {
+    // TODO: Mutation
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
   editUser(user: any) {
     this.editUser_value = {
       userID: user.userID,
       ablaufDatum: user.ablaufDatum.input,
       personID: user.person.personID,
-      userGroup: user.userGroup.userGroupID,
-      userName: user.userName
+      usergroup: user.userGroup.userGroupID,
+      username: user.userName
     }
     this.editUser_show = true
-    console.log(user)
   }
-  updateUser() {}
-  deleteUser() {}
 
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
