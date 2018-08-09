@@ -4,6 +4,7 @@
       <v-card-text>
         <v-switch label="Dark-Theme"/>          
         <v-text-field label="E-Mail"/>
+        <v-text-field label="Benutzername"/>
         <v-text-field label="SMTP-Server"/>
         <v-text-field label="SMTP-Port"/>
         <v-text-field label="IMAP-Server"/>
