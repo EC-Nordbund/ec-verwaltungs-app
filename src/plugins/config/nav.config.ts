@@ -72,7 +72,7 @@ export default [
   },
   {
     title: 'Profil',
-    icon: 'build',
+    icon: 'account_box',
     route: '/app/profil',
     userGroups: '*'
   },
