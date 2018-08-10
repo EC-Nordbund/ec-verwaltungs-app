@@ -397,7 +397,7 @@ export default class PersonenDetails extends reloaderBase {
     {
       name: 'leiter',
       label: 'Leiter',
-      componentName: 'ec-form-checkbox'
+      componentName: 'v-checkbox'
     }
   ]
   editAK_config = [
@@ -425,7 +425,7 @@ export default class PersonenDetails extends reloaderBase {
     {
       name: 'leiter',
       label: 'Leiter',
-      componentName: 'ec-form-checkbox'
+      componentName: 'v-checkbox'
     }
   ]
   editAK_value = {}

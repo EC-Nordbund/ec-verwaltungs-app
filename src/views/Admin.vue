@@ -1,50 +1,39 @@
 <template>
-  <ec-wrapper title="Administration" mini>
-    <template slot="extension">
-      <v-tabs v-model="tabs" fixed-tabs color="transparent">
-        <v-tabs-slider/>
-        <v-tab href="#tab-2" v-secondary>
-          <v-icon v-accent>contacts</v-icon>
-          <v-spacer/>
-          <span>User</span>
-          <v-spacer/>
-        </v-tab>
-        <v-tab href="#tab-3" v-secondary>
-          <v-icon v-accent>event</v-icon>
-          <v-spacer/>
-          <span>User-Gruppen</span>
-          <v-spacer/>
-        </v-tab>
-      </v-tabs>
-    </template>
+  <ec-wrapper title="Administration" mini @share="share">
     <template>
-      <v-tabs-items v-model="tabs" class="white elevation-1">
-        <v-tab-item id="tab-2">
-          <ec-list
-            :items="data.users"
-            :mapper="(item)=>({
-              title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
-              subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
-            })"
-            edit
-            icon="person"
-          />
-        </v-tab-item>
-        <v-tab-item id="tab-3">
-          <ec-list
-            :items="data.userGroups"
-            :mapper="(item)=>({
-              title: `${item.bezeichnung}`,
-              subTitle: `${item.mutationRechte.join(', ')}`
-            })"
-            edit
-            icon="group"
-          />
-        </v-tab-item>
-      </v-tabs-items>
+      <ec-list
+        :items="data.users"
+        :mapper="(item)=>({
+          title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
+          subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
+        })"
+        edit
+        icon="person"
+        @edit="editUser"
+      />
     </template>
+
+    <template slot="forms">
+      <ec-form
+        title="User editieren"
+        deleteBtn
+        @delete="deleteUser"
+        v-model="editUser_show"
+        @save="updateUser"
+        :fieldConfig="editUser_config"
+        :value="editUser_value"
+      />
+      <ec-form
+        title="User hinzufügen"
+        v-model="addUser_show"
+        @save="saveNewUser"
+        :fieldConfig="addUser_config"
+        :value="addUser_value"
+      />
+    </template>
+
     <template slot="actions">
-      <ec-button-add @click="addItem"/>
+      <ec-button-add @click="addUser"/>
     </template>
   </ec-wrapper>
 </template>
@@ -52,59 +41,124 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
+import { query } from '@/graphql'
 
 import auth from '@/plugins/auth'
 
-@Component({})
-export default class verteilerDetails extends reloaderBase {
-  data = {
-    users: [],
-    userGroups: []
+import {
+  eMailConfig,
+  personConfig,
+  usernameConfig,
+  usergroupConfig
+} from '@/plugins/formConfig/index'
+
+import {
+  required
+} from '@/plugins/rules'
+
+import event from '@/plugins/eventbus'
+import { getClient } from '@/plugins/apollo'
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.admin.load,
+        variables: {
+          authToken: auth.authToken
+        }
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<admin>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
   }
-  tabs = null
+})
+export default class admin extends reloaderBase {
+  data = {
+    users: []
+  }
+  addUser_show = false
+  addUser_config = [
+    personConfig,
+    usernameConfig,
+    eMailConfig,
+    {
+      label: 'Gültig bis',
+      name: 'ablaufDatum',
+      required: true,
+      rules: [required('ein Ablaufdatum')],
+      componentName: 'ec-form-datePicker'
+    },
+    usergroupConfig
+  ]
+  editUser_show = false
+  editUser_config = [
+    usernameConfig,
+    personConfig,
+    {
+      label: 'Gültig bis',
+      name: 'ablaufDatum',
+      required: true,
+      rules: [required('ein Ablaufdatum')],
+      componentName: 'ec-form-datePicker'
+    },
+    usergroupConfig
+  ]
+  editUser_value:any = {
+    username: '',
+    email: '',
+    usergroup: ''
+  }
+
   created() {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.query = gql`
-      query($authToken: String!) {
-        users(authToken: $authToken) {
-          userID
-          userName
-          person {
-            personID
-            vorname
-            nachname
-          }
-          ablaufDatum {
-            german
-          }
-          userGroup {
-            userGroupID
-            bezeichnung
-          }
-        }
-        userGroups(authToken: $authToken) {
-          userGroupID
-          bezeichnung
-          mutationRechte
-          fieldAccess {
-            field
-            table
-          }
-        }
-      }
-    `
+    this.query = query.admin.load
     super.created()
   }
-  addItem() {
-    console.log(this.tabs)
+  addUser_value={
+    personID: '',
+    username: '',
+    email: '',
+    ablaufDatum: '',
+    usergroup: ''
+  }
+  addUser() {
+    this.addUser_show = true
+  }
+  saveNewUser(value: any) {
+    // TODO: Mutation
+    // TODO: Send Mail
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  updateUser(value: any) {
+    // TODO: Mutation
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  deleteUser(value: any) {
+    // TODO: Mutation
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  editUser(user: any) {
+    this.editUser_value = {
+      userID: user.userID,
+      ablaufDatum: user.ablaufDatum.input,
+      personID: user.person.personID,
+      usergroup: user.userGroup.userGroupID,
+      username: user.userName
+    }
+    this.editUser_show = true
+  }
+
+  share(share: (url: string) => void) {
+    share(this.$route.fullPath)
   }
 }
 </script>
-<style scoped>
-.hidden {
-  visibility: hidden;
-}
-</style>
