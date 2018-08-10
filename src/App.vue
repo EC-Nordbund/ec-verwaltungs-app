@@ -120,7 +120,7 @@ export default class App extends Vue {
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
-  countdown = null
+  countdown: null|number = null
   nav = nav
   auth = auth
   event = event
@@ -167,7 +167,9 @@ export default class App extends Vue {
   }
 
   destroyed() {
-    clearInterval(this.countdown)
+    if(this.countdown!==null){
+      clearInterval(this.countdown)
+    }
   }
 
   darkChange() {
