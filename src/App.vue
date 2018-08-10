@@ -120,7 +120,7 @@ export default class App extends Vue {
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
-  countdown: null|NodeJs.Timer = null
+  countdown: null|NodeJS.Timer = null
   nav = nav
   auth = auth
   event = event
