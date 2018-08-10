@@ -120,6 +120,7 @@ export default class App extends Vue {
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
+  countdown = null
   nav = nav
   auth = auth
   event = event
@@ -158,10 +159,17 @@ export default class App extends Vue {
       this.soonLogOut = true
       this.sec = 5 * 60
     })
-    setInterval(() => {
+    this.countdown = setInterval(() => {
+      if (this.sec > 0) {
       this.sec--
+      }
     }, 1000)
   }
+
+  destroyed() {
+    clearInterval(this.countdown)
+  }
+
   darkChange() {
     this.dark = !this.dark
     if (isElectron) {
