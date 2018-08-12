@@ -14,11 +14,22 @@
     </template>
 
     <template slot="forms">
-      
+      <v-dialog v-model="editPWD_show" width="500px">
+        <v-card>
+          <v-card-title>
+            <h1 v-font v-primary>Passwort ändern</h1>
+          </v-card-title>
+          <v-card-text>
+            <v-text-field label="Altes Passwort" type="password"/>
+            <v-text-field label="Neues Passwort" type="password"/>
+            <v-text-field label="Wiederholung Passwort" type="password"/>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </template>
 
     <template slot="actions">
-      <v-btn>Password ändern</v-btn>
+      <v-btn @click="editPWD_show=true">Password ändern</v-btn>
     </template>
   </ec-wrapper>
 </template>
@@ -28,6 +39,7 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
 export default class admin extends Vue {
+  editPWD_show = false
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
