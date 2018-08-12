@@ -30,9 +30,20 @@
         :fieldConfig="addUser_config"
         :value="addUser_value"
       />
+      <ec-form
+        title="Nachricht hinzufügen"
+        v-model="addNachricht_show"
+        @save="addNachricht_save"
+        :fieldConfig="addNachricht_config"
+        :value="addNachricht_value"
+      />
     </template>
 
     <template slot="actions">
+      <v-btn @click="addNachricht_show = true">
+        <v-icon>add</v-icon>
+        Nachricht
+      </v-btn>
       <ec-button-add @click="addUser"/>
     </template>
   </ec-wrapper>
@@ -80,6 +91,28 @@ import { getClient } from '@/plugins/apollo'
   }
 })
 export default class admin extends reloaderBase {
+  addNachricht_show = false
+  addNachricht_config = [
+    {
+      label: 'Nachricht',
+      name: 'content',
+      required: true,
+      rules: [required('eine Nachricht')],
+      componentName: 'v-text-field'
+    },
+    {
+      label: 'angezeigter Absender',
+      name: 'von',
+      required: true,
+      rules: [required('einen Absender')],
+      componentName: 'v-text-field'
+    },
+  ]
+  addNachricht_value = {
+    content: '',
+    von: ''
+  }
+  addNachricht_save(value:any) {}
   data = {
     users: []
   }
@@ -136,14 +169,17 @@ export default class admin extends reloaderBase {
   saveNewUser(value: any) {
     // TODO: Mutation
     // TODO: Send Mail
+    alert('comming soon')
     console.log(JSON.parse(JSON.stringify(value)))
   }
   updateUser(value: any) {
     // TODO: Mutation
+    alert('comming soon')
     console.log(JSON.parse(JSON.stringify(value)))
   }
   deleteUser(value: any) {
     // TODO: Mutation
+    alert('comming soon')
     console.log(JSON.parse(JSON.stringify(value)))
   }
   editUser(user: any) {
