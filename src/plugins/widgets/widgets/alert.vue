@@ -7,7 +7,7 @@
       <v-spacer/>
     </v-card-title>
     <v-card-text>
-      <ec-list :items="elements" :mapper="v=>v"/>
+      <ec-list :items="alerts" :mapper="v=>({title: v.content, subTitle: v.von})"/>
     </v-card-text>
   </v-card>
 </template>
@@ -18,24 +18,26 @@ import {
 } from '@/plugins/widgets/widgets/index.ts'
 import { Component, Vue } from 'vue-property-decorator'
 
-@Component({})
-class alert extends widgetComponent {
-  elements = [
-    {
-      title: 'Hier stehen verschiede Meldungen die Thomas + Admins erzeugen können (z.B. "Neue Version" etc.)',
-      subTitle: 'Sebastian Krüger'
-    },
-    {
-      title: 'Neue Version verfügbar (0.1.5)',
-      subTitle: 'EC-Norbund Entwickler-Team'
-    }
-  ]
-}
+import gql from 'graphql-tag'
 
+@Component({
+  apollo: {
+    alerts: gql`
+      {
+        alerts{
+          alertID
+          content
+          von
+        }
+      }
+    `
+  },
+  data: ()=>({
+    alerts: []
+  })
+})
+class alert extends widgetComponent {}
 export default alert
 
 new widget([], 'alert', alert)
 </script>
-<style scoped>
-
-</style>
