@@ -214,8 +214,8 @@ import event from '@/plugins/eventbus'
         }
       })
       .then((v: any) => {
-        ;(<any>this).data = v.data;
-        (<any>this).variabels = {
+        ;(<any>this).data = v.data
+        ;(<any>this).variabels = {
           authToken: auth.authToken,
           veranstaltungsID: to.params.id
         }
@@ -227,25 +227,29 @@ import event from '@/plugins/eventbus'
   }
 })
 export default class veranstaltungsDetails extends reloaderBase {
-  editKosten_show=false
-  editKosten_value={}
-  editKosten_save(value:any){
+  editKosten_show = false
+  editKosten_value:any = {
+    normal: [0,0],
+    lastMinute: [0,0],
+    fruehbucher: [0,0]
+  }
+  editKosten_save(value: any) {
     console.log(JSON.parse(JSON.stringify(value)))
     alert('comming Soon')
   }
-  editStamm_show=false
-  editStamm_value={}
-  editStamm_save(value:any){
+  editStamm_show = false
+  editStamm_value = {}
+  editStamm_save(value: any) {
     console.log(JSON.parse(JSON.stringify(value)))
     alert('comming Soon')
   }
-  editAlg_show=false
-  editAlg_save(value:any){
+  editAlg_show = false
+  editAlg_save(value: any) {
     console.log(JSON.parse(JSON.stringify(value)))
     alert('comming Soon')
   }
   // TODO: Rules
-  editStamm_config=[
+  editStamm_config = [
     {
       name: 'bezeichnung',
       label: 'Bezeichnung',
@@ -263,13 +267,13 @@ export default class veranstaltungsDetails extends reloaderBase {
     }
   ]
   // TODO: Rules
-  editKosten_config=[
+  editKosten_config = [
     {
       name: 'fruehbucher',
       label: 'Frühbucher',
       componentName: 'v-range-slider',
-      min:0,
-      max:700,
+      min: 0,
+      max: 700,
       step: 1,
       'thumb-label': true
     },
@@ -277,8 +281,8 @@ export default class veranstaltungsDetails extends reloaderBase {
       name: 'normal',
       label: 'Normal',
       componentName: 'v-range-slider',
-      min:0,
-      max:700,
+      min: 0,
+      max: 700,
       step: 1,
       'thumb-label': true
     },
@@ -286,8 +290,8 @@ export default class veranstaltungsDetails extends reloaderBase {
       name: 'lastMinute',
       label: 'Last Minute',
       componentName: 'v-range-slider',
-      min:0,
-      max:700,
+      min: 0,
+      max: 700,
       step: 1,
       'thumb-label': true
     },
@@ -307,7 +311,7 @@ export default class veranstaltungsDetails extends reloaderBase {
       componentName: 'v-switch'
     }
   ]
-  editAlg_config=[
+  editAlg_config = [
     //TODO: Veranstaltungsort, Rules
     {
       name: 'vOrt',
@@ -317,8 +321,8 @@ export default class veranstaltungsDetails extends reloaderBase {
       name: 'alter',
       label: 'Alter',
       componentName: 'v-range-slider',
-      min:0,
-      max:100,
+      min: 0,
+      max: 100,
       step: 1,
       'thumb-label': true
     },
@@ -350,7 +354,9 @@ export default class veranstaltungsDetails extends reloaderBase {
       'thumb-label': true
     }
   ]
-  editAlg_value={}
+  editAlg_value:any = {
+    alter: [0,0]
+  }
   data: any = { veranstaltung: {} }
   tabs = null
   created() {
@@ -364,33 +370,34 @@ export default class veranstaltungsDetails extends reloaderBase {
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
-  editVeranstaltungsStamm_open(){
-    this.editStamm_show=true
-    this.editStamm_value={}
-    this.editStamm_value={
+  editVeranstaltungsStamm_open() {
+    this.editStamm_show = true
+    this.editStamm_value = {}
+    this.editStamm_value = {
       bezeichnung: this.data.veranstaltung.bezeichnung,
       begin: this.data.veranstaltung.begin.input,
       ende: this.data.veranstaltung.ende.input
     }
   }
-  editAllgemeines(val:any){
-    this.editAlg_show=true
-    this.editAlg_value={}
-    this.editAlg_value={
+  editAllgemeines(val: any) {
+    this.editAlg_show = true
+    this.editAlg_value = {}
+    this.editAlg_value = {
       vOrt: this.data.veranstaltung.unterkunft.unterkunftID,
       alter: [
         this.data.veranstaltung.minTNAlter,
         this.data.veranstaltung.maxTNAlter
       ],
       tnAnzahl: this.data.veranstaltung.maxTNAnzahl,
-      tnAnzahlm: this.data.veranstaltung.maxMaennlichTNAnzahl,
-      tnAnzahlw: this.data.veranstaltung.maxWeiblichTNAnzahl,
+      tnAnzahlm: this.data.veranstaltung
+        .maxMaennlichTNAnzahl,
+      tnAnzahlw: this.data.veranstaltung.maxWeiblichTNAnzahl
     }
   }
-  editKosten(){
-    this.editKosten_show=true
-    this.editKosten_value={}
-    this.editKosten_value={
+  editKosten() {
+    this.editKosten_show = true
+    this.editKosten_value = {}
+    this.editKosten_value = {
       fruehbucher: [
         this.data.veranstaltung.anzahlungFruehbucher,
         this.data.veranstaltung.preisFruehbucher
@@ -403,9 +410,12 @@ export default class veranstaltungsDetails extends reloaderBase {
         this.data.veranstaltung.anzahlungNormal,
         this.data.veranstaltung.preisNormal
       ],
-      preisFruehbucherBis: this.data.veranstaltung.preisFruehbucherBis.input,
-      preisLastMinuteAb: this.data.veranstaltung.preisLastMinuteAb.input,
-      kannVorortBezahltWerden: this.data.veranstaltung.kannVorortBezahltWerden
+      preisFruehbucherBis: this.data.veranstaltung
+        .preisFruehbucherBis.input,
+      preisLastMinuteAb: this.data.veranstaltung
+        .preisLastMinuteAb.input,
+      kannVorortBezahltWerden: this.data.veranstaltung
+        .kannVorortBezahltWerden
     }
   }
 }
