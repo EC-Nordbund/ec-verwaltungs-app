@@ -62,14 +62,14 @@ export default class admin extends Vue {
     this.editPWD_show=false
     this.opwd = ''
     this.npwd = ''
-    this.rpwd = ''
+    this.rpwd = '';
     (<any>this.$refs).pwdForm.reset()
   }
   pwdChange_save() {
     this.editPWD_show=false
     this.opwd = ''
     this.npwd = ''
-    this.rpwd = ''
+    this.rpwd = '';
     (<any>this.$refs).pwdForm.reset()
     auth.logOut()
   }
