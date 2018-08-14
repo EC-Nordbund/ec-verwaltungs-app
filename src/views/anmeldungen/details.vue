@@ -166,22 +166,12 @@
         :show="false"
       />
       <ec-form
-        title="Bezahlung editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Bezahlung (Abmeldung) editieren"
+        title="Kontobewegung editieren"
         :fieldConfig="[]"
         :show="false"
       />
       <ec-form
         title="Bemerkungen editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Erlabnisse editieren"
         :fieldConfig="[]"
         :show="false"
       />
