@@ -142,6 +142,29 @@
     </template>
 
     <template slot="forms">
+      <ec-form
+        title="Stammdaten editieren"
+        v-model="editStamm_show"
+        @save="editStamm_save"
+        :fieldConfig="editStamm_config"
+        :value="editStamm_value"
+      />
+
+      <ec-form
+        title="Allgemeines editieren"
+        v-model="editAlg_show"
+        @save="editAlg_save"
+        :fieldConfig="editAlg_config"
+        :value="editAlg_value"
+      />
+
+      <ec-form
+        title="Preise editieren"
+        v-model="editKosten_show"
+        @save="editKosten_save"
+        :fieldConfig="editKosten_config"
+        :value="editKosten_value"
+      />
     </template>
 
   </ec-wrapper>
@@ -191,8 +214,8 @@ import event from '@/plugins/eventbus'
         }
       })
       .then((v: any) => {
-        ;(<any>this).data = v.data;
-        (<any>this).variabels = {
+        ;(<any>this).data = v.data
+        ;(<any>this).variabels = {
           authToken: auth.authToken,
           veranstaltungsID: to.params.id
         }
@@ -204,6 +227,136 @@ import event from '@/plugins/eventbus'
   }
 })
 export default class veranstaltungsDetails extends reloaderBase {
+  editKosten_show = false
+  editKosten_value:any = {
+    normal: [0,0],
+    lastMinute: [0,0],
+    fruehbucher: [0,0]
+  }
+  editKosten_save(value: any) {
+    console.log(JSON.parse(JSON.stringify(value)))
+    alert('comming Soon')
+  }
+  editStamm_show = false
+  editStamm_value = {}
+  editStamm_save(value: any) {
+    console.log(JSON.parse(JSON.stringify(value)))
+    alert('comming Soon')
+  }
+  editAlg_show = false
+  editAlg_save(value: any) {
+    console.log(JSON.parse(JSON.stringify(value)))
+    alert('comming Soon')
+  }
+  // TODO: Rules
+  editStamm_config = [
+    {
+      name: 'bezeichnung',
+      label: 'Bezeichnung',
+      counter: 50
+    },
+    {
+      name: 'begin',
+      label: 'Begin',
+      componentName: 'ec-form-datePicker'
+    },
+    {
+      name: 'ende',
+      label: 'Ende',
+      componentName: 'ec-form-datePicker'
+    }
+  ]
+  // TODO: Rules
+  editKosten_config = [
+    {
+      name: 'fruehbucher',
+      label: 'Frühbucher',
+      componentName: 'v-range-slider',
+      min: 0,
+      max: 700,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'normal',
+      label: 'Normal',
+      componentName: 'v-range-slider',
+      min: 0,
+      max: 700,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'lastMinute',
+      label: 'Last Minute',
+      componentName: 'v-range-slider',
+      min: 0,
+      max: 700,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'preisFruehbucherBis',
+      label: 'Frühbucher bis',
+      componentName: 'ec-form-datePicker'
+    },
+    {
+      name: 'preisLastMinuteAb',
+      label: 'Last Minute ab',
+      componentName: 'ec-form-datePicker'
+    },
+    {
+      name: 'kannVorortBezahltWerden',
+      label: 'Vorortzahlung möglich?',
+      componentName: 'v-switch'
+    }
+  ]
+  editAlg_config = [
+    //TODO: Veranstaltungsort, Rules
+    {
+      name: 'vOrt',
+      label: 'Veranstaltungsort (TODO)'
+    },
+    {
+      name: 'alter',
+      label: 'Alter',
+      componentName: 'v-range-slider',
+      min: 0,
+      max: 100,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'tnAnzahl',
+      label: 'Anzahl Teilnehmer',
+      componentName: 'v-slider',
+      min: 0,
+      max: 300,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'tnAnzahlM',
+      label: 'Max. Anzahl TN männlich',
+      componentName: 'v-slider',
+      min: 0,
+      max: 300,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'tnAnzahlW',
+      label: 'Max. Anzahl TN weiblich',
+      componentName: 'v-slider',
+      min: 0,
+      max: 300,
+      step: 1,
+      'thumb-label': true
+    }
+  ]
+  editAlg_value:any = {
+    alter: [0,0]
+  }
   data: any = { veranstaltung: {} }
   tabs = null
   created() {
@@ -217,14 +370,53 @@ export default class veranstaltungsDetails extends reloaderBase {
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
-  editVeranstaltungsStamm_open(){
-    alert('Comming Soon...')
+  editVeranstaltungsStamm_open() {
+    this.editStamm_show = true
+    this.editStamm_value = {}
+    this.editStamm_value = {
+      bezeichnung: this.data.veranstaltung.bezeichnung,
+      begin: this.data.veranstaltung.begin.input,
+      ende: this.data.veranstaltung.ende.input
+    }
   }
-  editAllgemeines(){
-    alert('Comming Soon...')
+  editAllgemeines(val: any) {
+    this.editAlg_show = true
+    this.editAlg_value = {}
+    this.editAlg_value = {
+      vOrt: this.data.veranstaltung.unterkunft.unterkunftID,
+      alter: [
+        this.data.veranstaltung.minTNAlter,
+        this.data.veranstaltung.maxTNAlter
+      ],
+      tnAnzahl: this.data.veranstaltung.maxTNAnzahl,
+      tnAnzahlm: this.data.veranstaltung
+        .maxMaennlichTNAnzahl,
+      tnAnzahlw: this.data.veranstaltung.maxWeiblichTNAnzahl
+    }
   }
-  editKosten(){
-    alert('Comming Soon...')
+  editKosten() {
+    this.editKosten_show = true
+    this.editKosten_value = {}
+    this.editKosten_value = {
+      fruehbucher: [
+        this.data.veranstaltung.anzahlungFruehbucher,
+        this.data.veranstaltung.preisFruehbucher
+      ],
+      lastMinute: [
+        this.data.veranstaltung.anzahlungLastMinute,
+        this.data.veranstaltung.preisLastMinute
+      ],
+      normal: [
+        this.data.veranstaltung.anzahlungNormal,
+        this.data.veranstaltung.preisNormal
+      ],
+      preisFruehbucherBis: this.data.veranstaltung
+        .preisFruehbucherBis.input,
+      preisLastMinuteAb: this.data.veranstaltung
+        .preisLastMinuteAb.input,
+      kannVorortBezahltWerden: this.data.veranstaltung
+        .kannVorortBezahltWerden
+    }
   }
 }
 </script>
