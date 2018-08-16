@@ -140,8 +140,6 @@ export default class admin extends reloaderBase {
   ]
   editUser_show = false
   editUser_config = [
-    usernameConfig,
-    personConfig,
     {
       label: 'Gültig bis',
       name: 'ablaufDatum',
@@ -194,9 +192,7 @@ export default class admin extends reloaderBase {
     this.editUser_value = {
       userID: user.userID,
       ablaufDatum: user.ablaufDatum.input,
-      personID: user.person.personID,
-      usergroup: user.userGroup.userGroupID,
-      username: user.userName
+      usergroup: user.userGroup.userGroupID
     }
     this.editUser_show = true
   }

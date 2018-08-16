@@ -1,7 +1,7 @@
 <template>
   <ec-wrapper title="Profil" mini @share="share">
     <template>
-      <v-card-text>
+      <v-card-text v-if="false">
         <v-switch label="Dark-Theme"/>          
         <v-text-field label="E-Mail"/>
         <v-text-field label="Benutzername"/>
@@ -20,10 +20,10 @@
             <h1 v-font v-primary>Passwort ändern</h1>
           </v-card-title>
           <v-card-text>
-            <v-form>
-              <v-text-field label="Altes Passwort" type="password" v-model="opwd"/>
-              <v-text-field label="Neues Passwort" type="password" v-model="npwd"/>
-              <v-text-field label="Wiederholung Passwort" type="password" v-model="rpwd"/>
+            <v-form ref="pwdForm" v-model="pwdValid">
+              <v-text-field label="Altes Passwort" type="password" v-model="opwd" :rules="[v=>v?true:'Du musst dein Passwort eingeben']"/>
+              <v-text-field label="Neues Passwort" type="password" v-model="npwd" :rules="[v=>v?true:'Du musst dein neues Passwort eingeben']"/>
+              <v-text-field label="Wiederholung neues Passwort" type="password" v-model="rpwd" :rules="[v=>v?true:'Du musst dein neues Passwort eingeben', v=>v===npwd?true:'Beide eingaben müssen überein Stimmen!']"/>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -31,7 +31,7 @@
             <v-btn flat @click="pwdChange_cancel">
               Abbrechen
             </v-btn>
-            <v-btn v-secondary-bg v-white @click="pwdChange_save">
+            <v-btn v-secondary-bg v-white @click="pwdChange_save" :disabled="!pwdValid">
               Speichern
             </v-btn>
           </v-card-actions>
@@ -48,30 +48,45 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import auth from '@/plugins/auth'
+import { query } from '@/graphql/index'
 @Component({})
 export default class admin extends Vue {
+  pwdValid=false
   editPWD_show = false
-  opwd=''
-  npwd=''
-  rpwd=''
+  opwd = ''
+  npwd = ''
+  rpwd = ''
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
 
   pwdChange_cancel() {
-    this.editPWD_show=false
+    this.editPWD_show = false
     this.opwd = ''
     this.npwd = ''
-    this.rpwd = '';
-    (<any>this.$refs).pwdForm.reset()
+    this.rpwd = ''
+    ;(<any>this.$refs).pwdForm.reset()
   }
   pwdChange_save() {
-    this.editPWD_show=false
+    this.$apollo.mutate({
+      mutation: query.profil.updatePWD,
+      variables: {
+        authToken: auth.authToken,
+        newPWD: this.npwd,
+        oldPWD: this.opwd
+      }
+    }).then(v=>{
+      if(v.data.passwordWechseln){
+        auth.logOut()
+      } else {
+        alert('Der Passwortwechsel war nicht möglich!')
+      }
+    })
+    this.editPWD_show = false
     this.opwd = ''
     this.npwd = ''
-    this.rpwd = '';
-    (<any>this.$refs).pwdForm.reset()
-    auth.logOut()
+    this.rpwd = ''
+    ;(<any>this.$refs).pwdForm.reset()
   }
 }
 </script>

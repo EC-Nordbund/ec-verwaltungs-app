@@ -1,6 +1,21 @@
 import gql from 'graphql-tag'
 
 export const query = {
+  profil: {
+    updatePWD: gql`
+      mutation(
+        $oldPWD: String!
+        $newPWD: String!
+        $authToken: String!
+      ) {
+        passwordWechseln(
+          oldPWD: $oldPWD
+          newPWD: $newPWD
+          authToken: $authToken
+        )
+      }
+    `
+  },
   admin: {
     load: gql`
       query($authToken: String!) {
