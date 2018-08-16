@@ -38,6 +38,11 @@ if (isElectron) {
       }
     }
   )
+
+  //Auto LogOut
+  electron.remote.powerMonitor.on('suspend', () => {
+    auth.logOut(true)
+  })
 }
 
 // set Config

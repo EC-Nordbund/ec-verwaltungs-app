@@ -1,6 +1,29 @@
 import gql from 'graphql-tag'
 
 export const query = {
+  admin: {
+    load: gql`
+      query($authToken: String!) {
+        users(authToken: $authToken) {
+          userID
+          userName
+          person {
+            personID
+            vorname
+            nachname
+          }
+          ablaufDatum {
+            german
+            input
+          }
+          userGroup {
+            userGroupID
+            bezeichnung
+          }
+        }
+      }
+    `
+  },
   anmeldungen: {
     details: {
       load: gql`
