@@ -49,6 +49,7 @@
     "apollo-engine": "^1.1.2",
     "apollo-link": "^1.2.2",
     "apollo-link-context": "^1.0.8",
+    "apollo-link-error": "^1.1.0",
     "apollo-link-http": "^1.5.4",
     "apollo-utilities": "^1.0.15",
     "electron-settings": "^3.2.0",
