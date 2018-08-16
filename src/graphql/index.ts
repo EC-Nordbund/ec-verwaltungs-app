@@ -22,6 +22,19 @@ export const query = {
           }
         }
       }
+    `,
+    addAlert: gql`
+      mutation(
+        $authToken: String!
+        $msg: String!
+        $von: String!
+      ) {
+        addAlert(
+          msg: $msg
+          von: $von
+          authToken: $authToken
+        )
+      }
     `
   },
   anmeldungen: {

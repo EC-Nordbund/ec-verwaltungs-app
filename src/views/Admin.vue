@@ -95,7 +95,7 @@ export default class admin extends reloaderBase {
   addNachricht_config = [
     {
       label: 'Nachricht',
-      name: 'content',
+      name: 'msg',
       required: true,
       rules: [required('eine Nachricht')],
       componentName: 'v-text-field'
@@ -109,10 +109,18 @@ export default class admin extends reloaderBase {
     },
   ]
   addNachricht_value = {
-    content: '',
+    msg: '',
     von: ''
   }
-  addNachricht_save(value:any) {}
+  addNachricht_save(value:any) {
+    this.$apollo.mutate({
+      mutation: query.admin.addAlert,
+      variables: {
+        authToken: this.auth.authToken,
+        ...value
+      }
+    })
+  }
   data = {
     users: []
   }
