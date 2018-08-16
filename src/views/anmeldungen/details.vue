@@ -84,12 +84,11 @@
               :items="[
                 {subTitle: 'Kosten (nach Anmeldezeitpunkt)', title: 'N/A'},
                 {subTitle: 'Anzahlung (nach Anmeldezeitpunkt)', title: 'N/A'},
-                {subTitle: 'Bezahlt', title: data.anmeldung.bisherBezahlt},
+                {subTitle: 'Bezahlt', title: data.anmeldung.bisherBezahlt, edit: true},
                 ...(!data.anmeldung.abmeldeZeitpunkt?[{subTitle: 'Noch offen [insgesamt]', title: 'N/A'}]:[])
               ]"
               :mapper="item=>item"
               icon="attach_money"
-              edit
               @edit="soon"
             />
             <template v-if="data.anmeldung.abmeldeZeitpunkt">
@@ -98,12 +97,11 @@
                 :items="[
                   {subTitle: 'Abmeldegebuehr (nach Abmeldezeitpunkt)', title: 'N/A'},
                   {subTitle: 'Zurückzuzahlen', title: 'N/A'},
-                  {subTitle: 'Zurückbezahlt', title: data.anmeldung.rueckbezahlt},
+                  {subTitle: 'Zurückbezahlt', title: data.anmeldung.rueckbezahlt, edit: true},
                   {subTitle: 'Noch offen [Bilanz insgesamt]', title: 'N/A'}
                 ]"
                 :mapper="item=>item"
                 icon="attach_money"
-                edit
                 @edit="soon"
               />
             </template>
@@ -136,7 +134,6 @@
               ]"
               :mapper="item=>item"
               icon="check_circle"
-              edit
               @edit="soon"
             />
           </v-card> 
@@ -169,22 +166,12 @@
         :show="false"
       />
       <ec-form
-        title="Bezahlung editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Bezahlung (Abmeldung) editieren"
+        title="Kontobewegung editieren"
         :fieldConfig="[]"
         :show="false"
       />
       <ec-form
         title="Bemerkungen editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Erlabnisse editieren"
         :fieldConfig="[]"
         :show="false"
       />
