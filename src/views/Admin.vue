@@ -140,6 +140,8 @@ export default class admin extends reloaderBase {
   ]
   editUser_show = false
   editUser_config = [
+    {...personConfig, disabled: true},
+    {...usernameConfig, disabled:true},
     {
       label: 'Gültig bis',
       name: 'ablaufDatum',
@@ -174,7 +176,6 @@ export default class admin extends reloaderBase {
   }
   saveNewUser(value: any) {
     // TODO: Mutation
-    // TODO: Send Mail
     alert('comming soon')
     console.log(JSON.parse(JSON.stringify(value)))
   }
@@ -191,6 +192,8 @@ export default class admin extends reloaderBase {
   editUser(user: any) {
     this.editUser_value = {
       userID: user.userID,
+      personID: user.person.personID,
+      username: user.userName,
       ablaufDatum: user.ablaufDatum.input,
       usergroup: user.userGroup.userGroupID
     }
