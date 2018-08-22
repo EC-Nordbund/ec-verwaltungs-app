@@ -40,6 +40,10 @@
     </template>
 
     <template slot="actions">
+      <v-btn>
+        <v-icon>edit</v-icon>
+        Datenschutz editieren
+      </v-btn>
       <v-btn @click="addNachricht_show = true">
         <v-icon>add</v-icon>
         Nachricht

@@ -18,6 +18,7 @@
 
     <template slot="actions">
       <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
+      <v-btn>Mitgliederliste</v-btn>
     </template>
 
     <template slot="forms">

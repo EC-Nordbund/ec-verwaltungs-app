@@ -41,6 +41,7 @@
 
     <template slot="actions">
       <v-btn @click="editPWD_show=true">Password ändern</v-btn>
+      <v-btn>Datenschutz</v-btn>
     </template>
   </ec-wrapper>
 </template>

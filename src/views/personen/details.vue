@@ -168,6 +168,7 @@
 
     <template slot="actions">
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
+      <v-btn>Serienbrief</v-btn>
     </template>
 
     <template slot="forms">

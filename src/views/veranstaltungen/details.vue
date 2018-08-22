@@ -139,6 +139,8 @@
     </template>
 
     <template slot="actions">
+      <v-btn>TN-Liste generieren</v-btn>
+      <v-btn>Briefe bearbeiten</v-btn>
     </template>
 
     <template slot="forms">
