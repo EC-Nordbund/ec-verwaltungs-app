@@ -160,10 +160,8 @@ export const verteilerConfig: IConfig = {
 export const verteilerTypeConfig: IConfig = {
   name: 'type',
   required: true,
-  rules: [
-    required('ein Verteilertyp'),
-    inArray('einen Verteilertyp', 'An', 'CC', 'BCC')
-  ]
+  rules: [required('ein Verteilertyp')],
+  componentName: 'ec-radio-type'
 }
 
 export const bezeichnungConfig: IConfig = {
