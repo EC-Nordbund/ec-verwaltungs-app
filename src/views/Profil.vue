@@ -40,6 +40,24 @@
     </template>
 
     <template slot="actions">
+      <v-dialog max-width="400px">
+        <v-btn slot="activator">Fehler Melden / Funktionswunsch</v-btn>
+        <v-card>
+          <v-card-title>
+            <h1>Feedback</h1>
+          </v-card-title>
+          <v-card-text>
+            <v-form>
+              <b>Gesamtbewertung</b>
+              <v-rating/>
+              <b>Handhabung</b>
+              <v-rating/>
+              <v-textarea label="Funktionswunsch"/>
+              <v-textarea label="Fehler melden"/>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
       <v-btn @click="editPWD_show=true">Password ändern</v-btn>
       <v-btn>Datenschutz</v-btn>
     </template>
