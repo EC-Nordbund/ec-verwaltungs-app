@@ -106,7 +106,6 @@ export default class App extends Vue {
   xButtonLogic = xButtonLogic
 
   menu: boolean = false
-
   selectedBookmarks: Array<number> = []
 
   toggleSelection(index: number) {
@@ -169,8 +168,8 @@ export default class App extends Vue {
   }
 
   @Watch('selectedBookmarks')
-  onSelectdedChange(){
-    if (this.selectedBookmarks.length > 1){
+  onSelectdedChange() {
+    if (this.selectedBookmarks.length > 1) {
       this.deselect(100)
     }
   }
