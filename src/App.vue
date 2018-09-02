@@ -89,6 +89,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <ec-dsgvo/>
   </v-app>
 </template>
 
@@ -188,6 +189,10 @@ export default class App extends Vue {
   logOut() {
     this.auth.logOut()
     this.$router.push('/')
+  }
+
+  dgvoID(id: number){
+    console.log(id)
   }
 }
 </script>
