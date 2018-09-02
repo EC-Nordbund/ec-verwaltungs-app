@@ -54,6 +54,7 @@
               <v-rating/>
               <v-textarea label="Funktionswunsch"/>
               <v-textarea label="Fehler melden"/>
+              <v-textarea label="Sonstige Notizen"/>
             </v-form>
           </v-card-text>
           <v-card-actions>

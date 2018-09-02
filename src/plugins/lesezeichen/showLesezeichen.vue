@@ -13,8 +13,8 @@
     </template>
     <v-card>
 
-      <v-card-title c>
-        <h1 v-font>Lesezeichen</h1>
+      <v-card-title>
+        <h1 v-font v-primary>Lesezeichen</h1>
       </v-card-title>
 
       <v-divider/>
@@ -22,20 +22,26 @@
       <v-card-text>
         <v-list v-if="lesezeichen.liste.length > 0">
           <v-list-tile v-if="selectedBookmarks.length > 0" inactive>
-            <v-list-tile-action @click="selectedBookmarks = []">
-              <v-icon>arrow_back</v-icon>
+            <v-list-tile-action>
+              <v-btn @click="selectedBookmarks = []" icon>
+                <v-icon>arrow_back</v-icon>
+              </v-btn>
             </v-list-tile-action>
 
             <v-list-tile-content>
               <v-list-tile-title>{{selectedBookmarks.length}}</v-list-tile-title>
             </v-list-tile-content>
 
-            <v-list-tile-action @click="selectAll()">
-              <v-icon>select_all</v-icon>
+            <v-list-tile-action>
+              <v-btn @click="selectAll" icon>
+                <v-icon>select_all</v-icon>
+              </v-btn>
             </v-list-tile-action>
 
-            <v-list-tile-action @click="unbookmarkSelected()">
-              <v-icon>delete</v-icon>
+            <v-list-tile-action>
+              <v-btn @click="unbookmarkSelected" icon>
+                <v-icon>delete</v-icon>
+              </v-btn>
             </v-list-tile-action>
 
           </v-list-tile>
@@ -57,9 +63,10 @@
                 <v-list-tile-sub-title>{{ item.type }}</v-list-tile-sub-title>
               </v-list-tile-content>
 
-              <v-list-tile-action
-                @click.stop="unbookmark(index)">
-                <v-icon>close</v-icon>
+              <v-list-tile-action>
+                <v-btn @click.stop="unbookmark(index)" icon>
+                  <v-icon>close</v-icon>
+                </v-btn>
               </v-list-tile-action>
 
             </v-list-tile>
