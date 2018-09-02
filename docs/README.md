@@ -1,6 +1,9 @@
-# EC-Verwaltungs-App
-
-> Vielen Dank, dass du im EC-Nordbund Mitarbeitest!
+---
+home: true
+actionText: Hilfe →
+actionLink: /hilfe/
+footer: GNU v3 Licensed | Copyright © 2017-2018 S. Krüger & T. Krause
+---
 
 ## Hilfe + Dokumentation
 
