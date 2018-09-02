@@ -44,7 +44,7 @@
         <v-btn slot="activator">Fehler Melden / Funktionswunsch</v-btn>
         <v-card>
           <v-card-title>
-            <h1>Feedback</h1>
+            <h1 v-font v-primary>Feedback</h1>
           </v-card-title>
           <v-card-text>
             <v-form>
@@ -56,6 +56,10 @@
               <v-textarea label="Fehler melden"/>
             </v-form>
           </v-card-text>
+          <v-card-actions>
+            <v-spacer/>
+            <v-btn @click="feedback">Absenden</v-btn>
+          </v-card-actions>
         </v-card>
       </v-dialog>
       <v-btn @click="editPWD_show=true">Password ändern</v-btn>
@@ -110,6 +114,10 @@ export default class admin extends Vue {
     this.npwd = ''
     this.rpwd = ''
     ;(<any>this.$refs).pwdForm.reset()
+  }
+  feedback(){
+    alert('Feedback abgesendet')
+    alert('Comming soon...')
   }
 }
 </script>

@@ -49,6 +49,7 @@
               icon="mail"
               :edit="auth.isMutationAllowed('editEmail')"
               @edit="editEmail_open"
+              @click="mailto"
             />
             <v-divider/>
             <!-- Telefone -->
@@ -655,6 +656,9 @@ export default class PersonenDetails extends reloaderBase {
   }
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
+  }
+  mailto(item:any){
+    location.href = `mailto:${item.email}`
   }
 }
 </script>

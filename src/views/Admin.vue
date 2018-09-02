@@ -40,10 +40,31 @@
     </template>
 
     <template slot="actions">
-      <v-btn>
-        <v-icon>edit</v-icon>
-        Datenschutz editieren
-      </v-btn>
+      <v-dialog persistent max-width="800px" v-model="dse_show">
+        <v-btn slot="activator">
+          <v-icon>edit</v-icon>
+          Datenschutz editieren
+        </v-btn>
+        <v-card>
+          <v-card-title>
+            <h1 v-font v-primary>
+              Datenschutzerklärung
+            </h1>
+          </v-card-title>
+          <v-card-text>
+            <v-textarea label="HTML-Code für Infotext" v-model="htmlCode"/>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer/>
+            <v-btn @click="dse_show = false">
+              Abbrechen
+            </v-btn>
+            <v-btn @click="dse_save">
+              Speichern
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
       <v-btn @click="addNachricht_show = true">
         <v-icon>add</v-icon>
         Nachricht
@@ -60,6 +81,8 @@ import { query } from '@/graphql'
 
 import auth from '@/plugins/auth'
 
+import gql from 'graphql-tag'
+
 import {
   eMailConfig,
   personConfig,
@@ -67,9 +90,7 @@ import {
   usergroupConfig
 } from '@/plugins/formConfig/index'
 
-import {
-  required
-} from '@/plugins/rules'
+import { required } from '@/plugins/rules'
 
 import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
@@ -95,6 +116,8 @@ import { getClient } from '@/plugins/apollo'
   }
 })
 export default class admin extends reloaderBase {
+  dse_show = false
+  htmlCode = ''
   addNachricht_show = false
   addNachricht_config = [
     {
@@ -110,13 +133,13 @@ export default class admin extends reloaderBase {
       required: true,
       rules: [required('einen Absender')],
       componentName: 'v-text-field'
-    },
+    }
   ]
   addNachricht_value = {
     msg: '',
     von: ''
   }
-  addNachricht_save(value:any) {
+  addNachricht_save(value: any) {
     this.$apollo.mutate({
       mutation: query.admin.addAlert,
       variables: {
@@ -144,8 +167,8 @@ export default class admin extends reloaderBase {
   ]
   editUser_show = false
   editUser_config = [
-    {...personConfig, disabled: true},
-    {...usernameConfig, disabled:true},
+    { ...personConfig, disabled: true },
+    { ...usernameConfig, disabled: true },
     {
       label: 'Gültig bis',
       name: 'ablaufDatum',
@@ -155,7 +178,7 @@ export default class admin extends reloaderBase {
     },
     usergroupConfig
   ]
-  editUser_value:any = {
+  editUser_value: any = {
     username: '',
     email: '',
     usergroup: ''
@@ -168,7 +191,7 @@ export default class admin extends reloaderBase {
     this.query = query.admin.load
     super.created()
   }
-  addUser_value={
+  addUser_value = {
     personID: '',
     username: '',
     email: '',
@@ -206,6 +229,24 @@ export default class admin extends reloaderBase {
 
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
+  }
+  dse_save() {
+    this.dse_show = false
+    getClient()
+      .mutate({
+        mutation: gql`
+          mutation($text: String!, $authToken: String!) {
+            addDSE(text: $text, authToken: $authToken)
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          text: this.htmlCode
+        }
+      })
+      .then(() => {
+        this.htmlCode = ''
+      })
   }
 }
 </script>
