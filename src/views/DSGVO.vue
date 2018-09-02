@@ -1,5 +1,5 @@
 <template>
-  <v-dialog :value="ishow" persistent max-width="600px" v-if="!loading">
+  <v-dialog :value="ishow" :persistent="!force" max-width="600px" v-if="!loading">
     <slot slot="activator"/>
     <v-card v-if="data!==null">
       <v-card-title>
@@ -12,7 +12,7 @@
         Es scheint Probleme mit unserem Server zu geben. 
         Bitte starte das Programm erneut.
       </v-card-text>
-      <v-card-actions v-if="data!==''">
+      <v-card-actions v-if="data!=='' && !force">
         <v-spacer/>
         <v-btn @click="accept" v-primary-bg>
           Ich stimme der Datenschutzerklärung zu.
@@ -61,10 +61,10 @@ export default class dsgvo extends Vue {
     this.getData()
   }
 
-  loading=true
+  loading = true
 
   getData() {
-    this.loading=true
+    this.loading = true
     ;(<any>getClient())
       .query({
         query: gql`
@@ -75,10 +75,10 @@ export default class dsgvo extends Vue {
         }
       `
       })
-      .then((v:{data: {getDSE: string}})=> v.data)
-      .then((v:{getDSE: string}) => {
+      .then((v: { data: { getDSE: string } }) => v.data)
+      .then((v: { getDSE: string }) => {
         this.data = v.getDSE
-        this.loading=false
+        this.loading = false
       })
   }
 

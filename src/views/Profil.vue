@@ -59,7 +59,9 @@
         </v-card>
       </v-dialog>
       <v-btn @click="editPWD_show=true">Password ändern</v-btn>
-      <v-btn>Datenschutz</v-btn>
+      <ec-dsgvo force>
+        <v-btn>Datenschutz</v-btn>
+      </ec-dsgvo>
     </template>
   </ec-wrapper>
 </template>
@@ -70,7 +72,7 @@ import auth from '@/plugins/auth'
 import { query } from '@/graphql/index'
 @Component({})
 export default class admin extends Vue {
-  pwdValid=false
+  pwdValid = false
   editPWD_show = false
   opwd = ''
   npwd = ''
@@ -87,20 +89,22 @@ export default class admin extends Vue {
     ;(<any>this.$refs).pwdForm.reset()
   }
   pwdChange_save() {
-    this.$apollo.mutate({
-      mutation: query.profil.updatePWD,
-      variables: {
-        authToken: auth.authToken,
-        newPWD: this.npwd,
-        oldPWD: this.opwd
-      }
-    }).then(v=>{
-      if(v.data.passwordWechseln){
-        auth.logOut()
-      } else {
-        alert('Der Passwortwechsel war nicht möglich!')
-      }
-    })
+    this.$apollo
+      .mutate({
+        mutation: query.profil.updatePWD,
+        variables: {
+          authToken: auth.authToken,
+          newPWD: this.npwd,
+          oldPWD: this.opwd
+        }
+      })
+      .then(v => {
+        if (v.data.passwordWechseln) {
+          auth.logOut()
+        } else {
+          alert('Der Passwortwechsel war nicht möglich!')
+        }
+      })
     this.editPWD_show = false
     this.opwd = ''
     this.npwd = ''
