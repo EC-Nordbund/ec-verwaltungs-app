@@ -2,7 +2,9 @@
   <v-menu v-model="menu" :close-on-content-click="false" max-width="384" min-width="384" offset-y>
     <template slot="activator">
       <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
-        <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
+        <span slot="badge">
+          {{lesezeichen.liste.length >= 16 ? ':)' : lesezeichen.liste.length}}
+        </span>
         <v-icon medium v-white>
           {{lesezeichen.liste.length === 0 ? 'star_border' : 'star'}}
         </v-icon>
@@ -54,8 +56,7 @@
               <v-list-tile-action
                 v-if="lesezeichen.liste.length > 1"
                 @click.stop>
-                <v-checkbox v-model="selectedBookmarks" :value="index">
-                </v-checkbox>
+                <v-checkbox v-model="selectedBookmarks" :value="index"/>
               </v-list-tile-action>
 
               <v-list-tile-content>
@@ -98,7 +99,6 @@ import lesezeichen, {
 } from '@/plugins/lesezeichen/lesezeichen.ts'
 
 import xButtonLogic from '@/plugins/xButton/logic'
-import { create } from 'domain'
 
 @Component({})
 export default class App extends Vue {
@@ -144,11 +144,13 @@ export default class App extends Vue {
 
     lesezeichen.delete(bookmark)
     this.deselect(index)
+
+    this.selectedBookmarks = []
   }
 
   unbookmarkSelected() {
+    this.selectedBookmarks.sort().reverse().forEach(this.unbookmark)
     this.selectedBookmarks = []
-    this.lesezeichen.liste = []
   }
 
   @Watch('menu')
