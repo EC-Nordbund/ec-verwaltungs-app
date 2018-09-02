@@ -31,7 +31,7 @@
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{selectedBookmarks.length}}</v-list-tile-title>
+              <v-list-tile-title>{{selectedBookmarks.length===1?(selectedBookmarks[0]===100?0:1):selectedBookmarks.length}}</v-list-tile-title>
             </v-list-tile-content>
 
             <v-list-tile-action>
@@ -126,9 +126,16 @@ export default class App extends Vue {
   }
 
   selectAll() {
-    this.selectedBookmarks = Array.from(
-      this.lesezeichen.liste.keys()
-    )
+    if (
+      this.selectedBookmarks.length ===
+      this.lesezeichen.liste.length
+    ) {
+      this.selectedBookmarks = [100]
+    } else {
+      this.selectedBookmarks = Array.from(
+        this.lesezeichen.liste.keys()
+      )
+    }
   }
 
   click(index: number) {
@@ -140,16 +147,17 @@ export default class App extends Vue {
   }
 
   unbookmark(index: number) {
-    let bookmark = lesezeichen.liste[index]
+    const bookmark = lesezeichen.liste[index]
 
     lesezeichen.delete(bookmark)
-    this.deselect(index)
-
     this.selectedBookmarks = []
   }
 
   unbookmarkSelected() {
-    this.selectedBookmarks.sort().reverse().forEach(this.unbookmark)
+    this.selectedBookmarks
+      .sort()
+      .reverse()
+      .forEach(this.unbookmark)
     this.selectedBookmarks = []
   }
 
@@ -157,6 +165,13 @@ export default class App extends Vue {
   onMenuOpenClose(isOpen: boolean) {
     if (!isOpen) {
       this.selectedBookmarks = []
+    }
+  }
+
+  @Watch('selectedBookmarks')
+  onSelectdedChange(){
+    if (this.selectedBookmarks.length > 1){
+      this.deselect(100)
     }
   }
 }
