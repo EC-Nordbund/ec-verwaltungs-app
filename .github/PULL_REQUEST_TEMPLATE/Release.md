@@ -1,4 +1,4 @@
-# Pull Request
+# Release v#.#.#
 
 ## Funktionen
 > Liste von Issues und Funktionen

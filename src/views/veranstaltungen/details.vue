@@ -139,6 +139,67 @@
     </template>
 
     <template slot="actions">
+      <v-dialog max-width="290px">
+        <v-btn slot="activator">TN-Liste generieren</v-btn>
+        <v-card>
+          <v-card-title>
+            <h1>TN-Liste generieren</h1>
+          </v-card-title>
+          <v-card-text>
+            <v-btn @click="soon">Leiter + Zuschüsse</v-btn>
+            <v-btn @click="soon">Küchenmitarbeiter</v-btn>
+            <v-btn @click="soon">Mitarbeiter</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog max-width="600px">
+        <v-btn slot="activator">Briefe bearbeiten</v-btn>
+        <v-card>
+          <v-card-title>
+            <h1>Briefe bearbeiten</h1>
+          </v-card-title>
+          <v-tabs centered icons-and-text>
+            <v-tabs-slider/>
+            <v-tab href="#tab-1">
+              Recents
+              <v-icon>phone</v-icon>
+            </v-tab>
+
+            <v-tab href="#tab-2">
+              Favorites
+              <v-icon>favorite</v-icon>
+            </v-tab>
+
+            <v-tab-item
+              v-for="i in 2"
+              :id="'tab-' + i"
+              :key="i"
+            >
+              <v-card flat>
+                <v-card-text>
+                  <v-form>
+                    <!-- Has no file -->
+                    <template v-if="true">
+                      <v-btn>
+                        Datei auswählen 
+                      </v-btn>
+                    </template>
+                    <template v-else>
+                      <v-btn>
+                        Neue Datei wählen
+                      </v-btn>
+                      <v-btn>
+                        Akltuelle Datei öffnen
+                      </v-btn>
+                    </template>
+                  </v-form>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
+          Hier kommen Tabs mit Content hin
+        </v-card>
+      </v-dialog>
     </template>
 
     <template slot="forms">
@@ -417,6 +478,9 @@ export default class veranstaltungsDetails extends reloaderBase {
       kannVorortBezahltWerden: this.data.veranstaltung
         .kannVorortBezahltWerden
     }
+  }
+  soon(){
+    alert('comming soon')
   }
 }
 </script>
