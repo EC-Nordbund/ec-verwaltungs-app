@@ -3,7 +3,8 @@ const {
   app,
   BrowserWindow,
   Tray,
-  dialog
+  dialog,
+  ipcMain
 } = require('electron')
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -177,3 +178,27 @@ app.on('activate', () => {
 })
 
 app.once('ready', createLoadingWindow)
+
+ipcMain.on('set-UG', ($event, args) => {
+  switch (args) {
+    case 'admin':
+      console.log('loadAdmin')
+      app.setUserTasks([
+        {
+          program: process.execPath,
+          arguments: 'ec:///app/personen',
+          title: 'Personen',
+          description: 'Liste der Personen',
+          iconPath: process.execPath,
+          iconIndex: 0
+        }
+      ])
+      console.log('finished')
+      break
+    default:
+      console.log('loadNone')
+      app.setUserTasks([])
+      break
+  }
+  console.log(args)
+})

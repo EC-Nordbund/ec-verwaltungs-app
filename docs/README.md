@@ -2,7 +2,7 @@
 home: true
 actionText: Hilfe →
 actionLink: /hilfe/
-footer: GNU v3 Licensed | Copyright © 2017-2018 S. Krüger & T. Krause
+footer: GNU Version 3 | Copyright © 2017-2018 S. Krüger & T. Krause für den EC-Nordbund
 ---
 
 ## Hilfe + Dokumentation
