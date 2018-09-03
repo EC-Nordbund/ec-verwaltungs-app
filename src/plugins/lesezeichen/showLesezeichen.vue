@@ -3,7 +3,7 @@
     <template slot="activator">
       <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
         <span slot="badge">
-          {{lesezeichen.liste.length >= 16 ? ':)' : lesezeichen.liste.length}}
+          {{lesezeichen.liste.length >= 16 ? ':-)' : lesezeichen.liste.length}}
         </span>
         <v-icon medium v-white>
           {{lesezeichen.liste.length === 0 ? 'star_border' : 'star'}}
@@ -146,9 +146,10 @@ export default class App extends Vue {
   }
 
   unbookmark(index: number) {
-    const bookmark = lesezeichen.liste[index]
-
-    lesezeichen.delete(bookmark)
+    if(index!==100){
+      const bookmark = lesezeichen.liste[index]
+      lesezeichen.delete(bookmark)
+    }
     this.selectedBookmarks = []
   }
 
