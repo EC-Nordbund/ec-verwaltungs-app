@@ -52,7 +52,7 @@
           "CompanyName": "EC-Nordbund",
           "FileDescription": "Applikation zur Verwaltung des EC-Nordbundes"
         },
-        "icon": "icon"
+        "icon": "icon.ico"
       },
       "makers": [
         {
