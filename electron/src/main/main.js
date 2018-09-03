@@ -182,7 +182,6 @@ app.once('ready', createLoadingWindow)
 ipcMain.on('set-UG', ($event, args) => {
   switch (args) {
     case 'admin':
-      console.log('loadAdmin')
       app.setUserTasks([
         {
           program: process.execPath,
@@ -191,12 +190,50 @@ ipcMain.on('set-UG', ($event, args) => {
           description: 'Liste der Personen',
           iconPath: process.execPath,
           iconIndex: 0
+        },
+        {
+          program: process.execPath,
+          arguments: 'ec:///app/arbeitskreise',
+          title: 'Arbeitskreise',
+          description: 'Liste der Arbeitskreise',
+          iconPath: process.execPath,
+          iconIndex: 0
+        },
+        {
+          program: process.execPath,
+          arguments: 'ec:///app/verteiler',
+          title: 'Verteiler',
+          description: 'Liste der Verteiler',
+          iconPath: process.execPath,
+          iconIndex: 0
+        },
+        {
+          program: process.execPath,
+          arguments: 'ec:///app/veranstaltungen',
+          title: 'Veranstaltungen',
+          description: 'Liste der Veranstaltungen',
+          iconPath: process.execPath,
+          iconIndex: 0
+        },
+        {
+          program: process.execPath,
+          arguments: 'ec:///app/veranstaltungsorte',
+          title: 'Veranstaltungsorte',
+          description: 'Liste der Veranstaltungsorte',
+          iconPath: process.execPath,
+          iconIndex: 0
+        },
+        {
+          program: process.execPath,
+          arguments: 'ec:///app/anmeldungen',
+          title: 'Anmeldungen',
+          description: 'Liste der Anmeldungen',
+          iconPath: process.execPath,
+          iconIndex: 0
         }
       ])
-      console.log('finished')
       break
     default:
-      console.log('loadNone')
       app.setUserTasks([])
       break
   }
