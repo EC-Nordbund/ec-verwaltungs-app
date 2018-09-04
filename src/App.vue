@@ -130,7 +130,7 @@ export default class App extends Vue {
     if (route === '_hilfe') {
       let win: BrowserWindow = new electron.remote.BrowserWindow(
         {
-          show: false
+          // show: false
         }
       )
       const onlinePath = 'http://localhost:8081'
@@ -138,9 +138,9 @@ export default class App extends Vue {
         ? isElectron ? '../docs/index.html' : onlinePath
         : 'http://localhost:8081'
       win.loadURL(url)
-      win.on('ready-to-show', () => {
-        win.show()
-      })
+      // win.on('ready-to-show', () => {
+      //   win.show()
+      // })
       return
     }
     this.$router.push(route)
