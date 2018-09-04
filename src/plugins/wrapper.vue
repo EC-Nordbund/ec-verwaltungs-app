@@ -54,7 +54,7 @@ import {
 } from 'vue-property-decorator'
 
 @Component({})
-export default class verteilerDetails extends Vue {
+export default class wrapper extends Vue {
   isElectron = isElectron
 
   @Prop({ type: Boolean, default: false })

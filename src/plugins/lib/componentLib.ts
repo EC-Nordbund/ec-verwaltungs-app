@@ -4,7 +4,6 @@ import Vue from 'vue'
 import addButton from '@/plugins/lib/buttons/add'
 import iconButton from '@/plugins/lib/buttons/icon-btn'
 import datePicker from '@/plugins/lib/formElements/inputs/datePicker.vue'
-import checkbox from '@/plugins/lib/formElements/inputs/checkbox.vue'
 import radio from '@/plugins/lib/formElements/inputs/radio'
 import switchElement from '@/plugins/lib/formElements/inputs/switch'
 import formDialog from '@/plugins/lib/formElements/formDialog/form'
@@ -16,7 +15,6 @@ import liste from '@/plugins/lib/design/list'
 Vue.component('ec-button-add', addButton)
 Vue.component('ec-button-icon', iconButton)
 Vue.component('ec-form-datePicker', datePicker)
-Vue.component('ec-form-checkbox', checkbox)
 Vue.component('ec-form-radio', radio)
 Vue.component('ec-form-switch', switchElement)
 Vue.component('ec-headline', headline)

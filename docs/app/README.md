@@ -1,3 +1,7 @@
+---
+sidebar: auto
+---
+
 # APP
 
 ## MainProzess
@@ -10,8 +14,11 @@ Der RenderProzess besteht aus Zwei Teilen
 
 ### Vue-App
 
-#### Aufbau
-
 ### Sonstiges
 
 In `/public` können für weitere Browser-Windows der `HTML`, `CSS` und `JS` Code angelegt werden. Hier ist z.B. auch das LadeFenster beheimatet.
+
+
+<p style="text-align: center;color: gray">
+  GNU Version 3 | Copyright © 2017-2018 S. Krüger & T. Krause für den EC-Nordbund
+</p>

@@ -45,8 +45,27 @@ export default class VeranstaltungsListe extends reloaderBase {
   xButtonLogik = xButtonLogik
   suchstring: string = ''
   addVeranstaltung_show: boolean = false
-  addVeranstaltung_config = []
-  addVeranstaltung_save(value:any) {alert('Comming Soon...')}
+  //TODO: Rules
+  addVeranstaltung_config = [
+    {
+      name: 'bezeichnung',
+      label: 'Bezeichnung',
+      counter: 50
+    },
+    {
+      name: 'begin',
+      label: 'Begin',
+      componentName: 'ec-form-datePicker'
+    },
+    {
+      name: 'ende',
+      label: 'Ende',
+      componentName: 'ec-form-datePicker'
+    }
+  ]
+  addVeranstaltung_save(value:any) {
+    alert('Comming Soon...')
+  }
 
   suchStringUpdate(val: string) {
     this.suchstring = val

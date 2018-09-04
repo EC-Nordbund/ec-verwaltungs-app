@@ -18,6 +18,21 @@
 
     <template slot="actions">
       <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
+      <v-dialog max-width="500px">
+        <v-btn slot="activator">Mitgliederliste</v-btn>
+        <v-card>
+          <v-card-title>
+            <h1>
+              Was für eine Liste wird benötigt?
+            </h1>
+          </v-card-title>
+          <v-card-actions>
+            <v-btn>Aktuelle Mitglieder</v-btn>
+            <v-spacer/>
+            <v-btn>Gesamte Liste (inkl. Ausgetretenen)</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </template>
 
     <template slot="forms">
@@ -141,7 +156,7 @@ export default class AKDetails extends reloaderBase {
       label: 'Leiter',
       name: 'leiter',
       type: 'checkbox',
-      componentName: 'ec-form-checkbox'
+      componentName: 'v-checkbox'
     }
   ]
   editAKPerson_value = {}
@@ -162,7 +177,7 @@ export default class AKDetails extends reloaderBase {
       label: 'Leiter',
       name: 'leiter',
       type: 'checkbox',
-      componentName: 'ec-form-checkbox'
+      componentName: 'v-checkbox'
     }
   ]
   edit(item: any) {
