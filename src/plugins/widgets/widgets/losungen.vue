@@ -1,6 +1,6 @@
 <template>
   <v-card class="elevation-10" style="margin: 5px">
-    <v-card-title @click="openL" style="cursor: pointer;">
+    <v-card-title>
       <h1 v-font v-primary :style="{ textAlign: 'center' }">
         Die Losungen
       </h1>
@@ -20,7 +20,7 @@
           <b v-font v-html="losung[3]" class="right"/>
         </div>
         <div v-font :style="{fontSize: '12px'}">
-          <a @click="openH">© Evangelische Brüder-Unität – Herrnhuter Brüdergemeine</a>
+          © Evangelische Brüder-Unität – Herrnhuter Brüdergemeine
         </div>
       </v-card-text>
       <v-card-text v-if="losung.length === 0" :style="{display: 'grid', gridTemplateColumns: 'auto 1fr', gridGap: '10px'}">
@@ -42,7 +42,7 @@ import {
 } from '@/plugins/widgets/widgets/index.ts'
 import { Component, Vue } from 'vue-property-decorator'
 
-import electron, { isElectron } from '@/plugins/electron'
+import { isElectron } from '@/plugins/electron'
 
 @Component({})
 class losungen extends widgetComponent {
@@ -69,17 +69,6 @@ class losungen extends widgetComponent {
           .split('<br>')[1]
           .split('</font>')[0]
       ]
-    }
-  }
-
-  openL(){
-    if (isElectron) {
-      electron.shell.openExternal('www.losungen.de')
-    }
-  }
-  openH(){
-    if (isElectron) {
-      electron.shell.openExternal('www.herrnhuter.de')
     }
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "ec-verwaltungs-app",
-  "version": "1.0.0-beta.0",
+  "version": "0.2.1",
   "description": "EC-Verwaltungs Application",
   "keywords": [],
   "homepage": "https://ec-nordbund.de",
@@ -51,8 +51,7 @@
         "win32metadata": {
           "CompanyName": "EC-Nordbund",
           "FileDescription": "Applikation zur Verwaltung des EC-Nordbundes"
-        },
-        "icon": "icon.ico"
+        }
       },
       "makers": [
         {

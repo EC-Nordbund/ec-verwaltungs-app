@@ -29,32 +29,55 @@ if (isElectron && isProduction) {
       }>
     }> = await res.json()
 
-    const latest = resultJSON.filter(
-      v => v.prerelease === isPrerelease
-    )[0]
+    // filter Result
+    const filterdResult = resultJSON
+      .filter(v => v.prerelease === isPrerelease)
+      .filter(v => v.tag_name !== 'v' + version)
 
-    if (latest.tag_name === `v${version}`) {
+    // Sort Result
+    const sortedFilterdResult = filterdResult.sort(
+      (a, b) => {
+        if (a.published_at > b.published_at) {
+          return -1
+        }
+        if (a.published_at < b.published_at) {
+          return 1
+        }
+        return 0
+      }
+    )
+
+    // Testen ob keine neue Version vorhanden
+    if (sortedFilterdResult.length === 0) {
       return
     }
 
-    const url = latest.assets
-      .map(v => {
-        const endungsArray = v.name.split('.')
-        const endung = endungsArray[endungsArray.length - 1]
-        return {
-          url: v.browser_download_url,
-          endung
-        }
-      })
-      .filter(
-        v =>
-          v.endung ===
-          (<any>{
-            win32: 'exe',
-            darwin: 'dmg',
-            linux: 'deb'
-          })[(<any>window).process.platform]
-      )[0].url
+    // get Version auf die geupdatet werden kann
+    const currentVersion = sortedFilterdResult[0]
+
+    // get asset
+    const assets = currentVersion.assets.filter(v => {
+      const endung = v.name.split('.')[
+        v.name.split('.').length - 1
+      ]
+
+      return (
+        endung ===
+        (<any>{
+          win32: 'exe',
+          darwin: 'dmg',
+          linux: 'deb'
+        })[(<any>window).process.platform]
+      )
+    })
+
+    //check ob asset vorhanden
+    if (assets.length !== 1) {
+      return
+    }
+
+    // get Download URL
+    const url = assets[0].browser_download_url
 
     // show msgBox
     electron.remote.dialog.showMessageBox(

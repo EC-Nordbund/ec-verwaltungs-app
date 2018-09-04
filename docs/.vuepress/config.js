@@ -2,6 +2,7 @@ module.exports = {
   title: 'EC-Nordbund',
   description: 'Hilfe und Dokumentation',
   themeConfig: {
+    repo: 'ecnordbund/ec-verwaltungs-app',
     docsDir: 'docs',
     locales: {
       '/': {

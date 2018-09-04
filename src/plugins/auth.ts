@@ -3,8 +3,6 @@ import { getClient } from '@/plugins/apollo'
 import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
-import electron from '@/plugins/electron'
-
 /**
  * Class with handels the authentication.
  *
@@ -239,10 +237,6 @@ class auth {
         } ${conf.person.nachname} bis ${
           conf.ablaufDatum.german
         }`
-        electron.ipcRenderer.send(
-          'set-UG',
-          conf.userGroup.bezeichnung
-        )
       })
   }
 

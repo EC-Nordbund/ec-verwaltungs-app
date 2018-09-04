@@ -9,7 +9,6 @@ import HomeComponent from '@/views/Home.vue'
 import DruckenComponent from '@/views/Drucken.vue'
 import AdminComponent from '@/views/Admin.vue'
 import ImpressumComponent from '@/views/Impressum.vue'
-import ProfilComponent from '@/views/Profil.vue'
 
 import PersonenListe from '@/views/personen/liste.vue'
 import PersonenDetails from '@/views/personen/details.vue'
@@ -187,19 +186,6 @@ const routes: RouteConfig[] = [
             component: AdminComponent,
             meta: {
               userGroups: ['admin']
-            }
-          }
-        ]
-      },
-      {
-        path: 'profil',
-        component: RouteComponent,
-        children: [
-          {
-            path: '',
-            component: ProfilComponent,
-            meta: {
-              userGroups: '*'
             }
           }
         ]
