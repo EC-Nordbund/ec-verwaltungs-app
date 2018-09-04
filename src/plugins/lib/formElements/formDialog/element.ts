@@ -23,7 +23,7 @@ export default class formElement extends Vue {
   @Prop({
     default: '',
     required: false,
-    type: [Object, String, Boolean, Number, Array]
+    type: [Object, String, Boolean, Number]
   })
   public value!: any
 

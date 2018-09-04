@@ -49,7 +49,6 @@
               icon="mail"
               :edit="auth.isMutationAllowed('editEmail')"
               @edit="editEmail_open"
-              @click="mailto"
             />
             <v-divider/>
             <!-- Telefone -->
@@ -161,10 +160,6 @@
                 <v-icon>add</v-icon>
                 Führungszeugnis
               </v-btn>
-              <v-btn flat v-if="true" @click="alertCommingSoon">
-                <v-icon>add</v-icon>
-                Führungszeugnis-Antrag
-              </v-btn>
             </v-card-actions>
           </v-card>
         </v-tab-item>
@@ -173,7 +168,6 @@
 
     <template slot="actions">
       <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
-      <v-btn @click="alertCommingSoon">Serienbrief</v-btn>
     </template>
 
     <template slot="forms">
@@ -231,7 +225,7 @@
       />
       <!-- EDIT AK -->
       <ec-form
-        title="AK Zustand hinzufügen"
+        title="AK-Zugehörigkeit editieren"
         v-model="editAK_show"
         @save="editAK_save"
         :fieldConfig="editAK_config"
@@ -328,8 +322,8 @@ import event from '@/plugins/eventbus'
         }
       })
       .then((v: any) => {
-        ;(<any>this).data = v.data
-        ;(<any>this).variabels = {
+        ;(<any>this).data = v.data;
+        (<any>this).variabels = {
           authToken: auth.authToken,
           personID: to.params.id
         }
@@ -389,20 +383,21 @@ export default class PersonenDetails extends reloaderBase {
   addAK_config = [
     akConfig,
     {
-      name: 'zeitpunkt',
-      label: 'Zeitpunkt',
+      name: 'eintritt',
+      label: 'Eintritt',
       componentName: 'ec-form-datePicker',
       rules: [
         (v: string) =>
           !v
-            ? 'Es muss ein Zeitpunkt angegeben werden!'
+            ? 'Es muss ein Eintrittsdatum angegeben werden!'
             : true
       ],
       required: true
     },
     {
-      name: 'status',
-      label: 'Status'
+      name: 'leiter',
+      label: 'Leiter',
+      componentName: 'ec-form-checkbox'
     }
   ]
   editAK_config = [
@@ -411,20 +406,26 @@ export default class PersonenDetails extends reloaderBase {
       disabled: true
     },
     {
-      name: 'zeitpunkt',
-      label: 'Zeitpunkt',
+      name: 'eintritt',
+      label: 'Eintritt',
       componentName: 'ec-form-datePicker',
       rules: [
         (v: string) =>
           !v
-            ? 'Es muss ein Zeitpunkt angegeben werden!'
+            ? 'Es muss ein Eintrittsdatum angegeben werden!'
             : true
       ],
       required: true
     },
     {
-      name: 'status',
-      label: 'Status'
+      name: 'austritt',
+      label: 'Austritt',
+      componentName: 'ec-form-datePicker'
+    },
+    {
+      name: 'leiter',
+      label: 'Leiter',
+      componentName: 'ec-form-checkbox'
     }
   ]
   editAK_value = {}
@@ -519,33 +520,55 @@ export default class PersonenDetails extends reloaderBase {
       .then(this.refetch)
   }
   addVerteiler_save(value: any) {
-    console.log(value)
-    alert('comming soon')
-    // this.$apollo
-    //   .mutate({
-    //     mutation: query.personen.details.addVerteiler,
-    //     variables: {
-    //       personID: this.data.person.personID,
-    //       authToken: auth.authToken,
-    //       ...value
-    //     }
-    //   })
-    //   .then(this.refetch)
+    this.$apollo
+      .mutate({
+        mutation: query.personen.details.addVerteiler,
+        variables: {
+          personID: this.data.person.personID,
+          authToken: auth.authToken,
+          ...value
+        }
+      })
+      .then(this.refetch)
   }
   editAK_save(value: any) {
-    alert('Comming Soon')
+    this.$apollo
+      .mutate({
+        mutation: query.personen.details.editAK,
+        variables: {
+          personID: this.data.person.personID,
+          authToken: auth.authToken,
+          ...value,
+          leiter:
+            value.leiter === null ? false : value.leiter
+        }
+      })
+      .then(this.refetch)
   }
   editAK_open(item: any) {
-    const d = new Date()
     this.editAK_value = {}
     this.editAK_value = {
-      akID: item.ak.akID,
-      // zeitpunkt: 
+      personAKID: item.personAKID,
+      ak: item.ak.akID,
+      eintritt: item.eintritt.input,
+      austritt: (item.austritt || {}).input,
+      leiter: item.leiter
     }
     this.editAK_show = true
   }
   addAK_save(value: any) {
-    alert('Comming Soon')
+    this.$apollo
+      .mutate({
+        mutation: query.personen.details.addAK,
+        variables: {
+          personID: this.data.person.personID,
+          authToken: auth.authToken,
+          ...value,
+          leiter:
+            value.leiter === null ? false : value.leiter
+        }
+      })
+      .then(this.refetch)
   }
   addAdresse_save(value: any) {
     this.$apollo
@@ -656,9 +679,6 @@ export default class PersonenDetails extends reloaderBase {
   }
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
-  }
-  mailto(item:any){
-    location.href = `mailto:${item.email}`
   }
 }
 </script>

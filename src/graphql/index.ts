@@ -1,57 +1,6 @@
 import gql from 'graphql-tag'
 
 export const query = {
-  profil: {
-    updatePWD: gql`
-      mutation(
-        $oldPWD: String!
-        $newPWD: String!
-        $authToken: String!
-      ) {
-        passwordWechseln(
-          oldPWD: $oldPWD
-          newPWD: $newPWD
-          authToken: $authToken
-        )
-      }
-    `
-  },
-  admin: {
-    load: gql`
-      query($authToken: String!) {
-        users(authToken: $authToken) {
-          userID
-          userName
-          person {
-            personID
-            vorname
-            nachname
-          }
-          ablaufDatum {
-            german
-            input
-          }
-          userGroup {
-            userGroupID
-            bezeichnung
-          }
-        }
-      }
-    `,
-    addAlert: gql`
-      mutation(
-        $authToken: String!
-        $msg: String!
-        $von: String!
-      ) {
-        addAlert(
-          msg: $msg
-          von: $von
-          authToken: $authToken
-        )
-      }
-    `
-  },
   anmeldungen: {
     details: {
       load: gql`

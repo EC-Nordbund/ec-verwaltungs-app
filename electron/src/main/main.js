@@ -3,8 +3,7 @@ const {
   app,
   BrowserWindow,
   Tray,
-  dialog,
-  ipcMain
+  dialog
 } = require('electron')
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
@@ -178,64 +177,3 @@ app.on('activate', () => {
 })
 
 app.once('ready', createLoadingWindow)
-
-ipcMain.on('set-UG', ($event, args) => {
-  switch (args) {
-    case 'admin':
-      app.setUserTasks([
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/personen',
-          title: 'Personen',
-          description: 'Liste der Personen',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/arbeitskreise',
-          title: 'Arbeitskreise',
-          description: 'Liste der Arbeitskreise',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/verteiler',
-          title: 'Verteiler',
-          description: 'Liste der Verteiler',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/veranstaltungen',
-          title: 'Veranstaltungen',
-          description: 'Liste der Veranstaltungen',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/veranstaltungsorte',
-          title: 'Veranstaltungsorte',
-          description: 'Liste der Veranstaltungsorte',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/anmeldungen',
-          title: 'Anmeldungen',
-          description: 'Liste der Anmeldungen',
-          iconPath: process.execPath,
-          iconIndex: 0
-        }
-      ])
-      break
-    default:
-      app.setUserTasks([])
-      break
-  }
-  console.log(args)
-})
