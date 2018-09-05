@@ -71,6 +71,12 @@ export default [
     userGroups: '*'
   },
   {
+    title: 'Profil',
+    icon: 'account_box',
+    route: '/app/profil',
+    userGroups: '*'
+  },
+  {
     title: 'Hilfe',
     icon: 'help',
     route: '_hilfe',

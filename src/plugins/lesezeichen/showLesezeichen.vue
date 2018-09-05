@@ -2,7 +2,9 @@
   <v-menu v-model="menu" :close-on-content-click="false" max-width="384" min-width="384" offset-y>
     <template slot="activator">
       <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
-        <span slot="badge">{{lesezeichen.liste.length >= 100 ? ':)' : lesezeichen.liste.length}}</span>
+        <span slot="badge">
+          {{lesezeichen.liste.length >= 16 ? ':-)' : lesezeichen.liste.length}}
+        </span>
         <v-icon medium v-white>
           {{lesezeichen.liste.length === 0 ? 'star_border' : 'star'}}
         </v-icon>
@@ -13,8 +15,8 @@
     </template>
     <v-card>
 
-      <v-card-title c>
-        <h1 v-font>Lesezeichen</h1>
+      <v-card-title>
+        <h1 v-font v-primary>Lesezeichen</h1>
       </v-card-title>
 
       <v-divider/>
@@ -22,20 +24,26 @@
       <v-card-text>
         <v-list v-if="lesezeichen.liste.length > 0">
           <v-list-tile v-if="selectedBookmarks.length > 0" inactive>
-            <v-list-tile-action @click="selectedBookmarks = []">
-              <v-icon>arrow_back</v-icon>
+            <v-list-tile-action>
+              <v-btn @click="selectedBookmarks = []" icon>
+                <v-icon>arrow_back</v-icon>
+              </v-btn>
             </v-list-tile-action>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{selectedBookmarks.length}}</v-list-tile-title>
+              <v-list-tile-title>{{selectedBookmarks.length===1?(selectedBookmarks[0]===100?0:1):selectedBookmarks.length}}</v-list-tile-title>
             </v-list-tile-content>
 
-            <v-list-tile-action @click="selectAll()">
-              <v-icon>select_all</v-icon>
+            <v-list-tile-action>
+              <v-btn @click="selectAll" icon>
+                <v-icon>select_all</v-icon>
+              </v-btn>
             </v-list-tile-action>
 
-            <v-list-tile-action @click="unbookmarkSelected()">
-              <v-icon>delete</v-icon>
+            <v-list-tile-action>
+              <v-btn @click="unbookmarkSelected" icon>
+                <v-icon>delete</v-icon>
+              </v-btn>
             </v-list-tile-action>
 
           </v-list-tile>
@@ -48,8 +56,7 @@
               <v-list-tile-action
                 v-if="lesezeichen.liste.length > 1"
                 @click.stop>
-                <v-checkbox v-model="selectedBookmarks" :value="index">
-                </v-checkbox>
+                <v-checkbox v-model="selectedBookmarks" :value="index"/>
               </v-list-tile-action>
 
               <v-list-tile-content>
@@ -57,9 +64,10 @@
                 <v-list-tile-sub-title>{{ item.type }}</v-list-tile-sub-title>
               </v-list-tile-content>
 
-              <v-list-tile-action
-                @click.stop="unbookmark(index)">
-                <v-icon>close</v-icon>
+              <v-list-tile-action>
+                <v-btn @click.stop="unbookmark(index)" icon>
+                  <v-icon>close</v-icon>
+                </v-btn>
               </v-list-tile-action>
 
             </v-list-tile>
@@ -91,7 +99,6 @@ import lesezeichen, {
 } from '@/plugins/lesezeichen/lesezeichen.ts'
 
 import xButtonLogic from '@/plugins/xButton/logic'
-import { create } from 'domain'
 
 @Component({})
 export default class App extends Vue {
@@ -99,7 +106,6 @@ export default class App extends Vue {
   xButtonLogic = xButtonLogic
 
   menu: boolean = false
-
   selectedBookmarks: Array<number> = []
 
   toggleSelection(index: number) {
@@ -119,9 +125,16 @@ export default class App extends Vue {
   }
 
   selectAll() {
-    this.selectedBookmarks = Array.from(
-      this.lesezeichen.liste.keys()
-    )
+    if (
+      this.selectedBookmarks.length ===
+      this.lesezeichen.liste.length
+    ) {
+      this.selectedBookmarks = [100]
+    } else {
+      this.selectedBookmarks = Array.from(
+        this.lesezeichen.liste.keys()
+      )
+    }
   }
 
   click(index: number) {
@@ -133,21 +146,32 @@ export default class App extends Vue {
   }
 
   unbookmark(index: number) {
-    let bookmark = lesezeichen.liste[index]
-
-    lesezeichen.delete(bookmark)
-    this.deselect(index)
+    if(index!==100){
+      const bookmark = lesezeichen.liste[index]
+      lesezeichen.delete(bookmark)
+    }
+    this.selectedBookmarks = []
   }
 
   unbookmarkSelected() {
+    this.selectedBookmarks
+      .sort()
+      .reverse()
+      .forEach(this.unbookmark)
     this.selectedBookmarks = []
-    this.lesezeichen.liste = []
   }
 
   @Watch('menu')
   onMenuOpenClose(isOpen: boolean) {
     if (!isOpen) {
       this.selectedBookmarks = []
+    }
+  }
+
+  @Watch('selectedBookmarks')
+  onSelectdedChange() {
+    if (this.selectedBookmarks.length > 1) {
+      this.deselect(100)
     }
   }
 }

@@ -1,6 +1,7 @@
 * {
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 body {
@@ -74,22 +75,12 @@ body {
   height: 60px;
 }
 
-@-webkit-keyframes spin {
-  50% {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes spin {
   50% {
     transform: rotate(360deg);
   }
 }
-@-webkit-keyframes spin-reverse {
-  50% {
-    transform: rotate(-360deg);
-  }
-}
+
 @keyframes spin-reverse {
   50% {
     transform: rotate(-360deg);
@@ -99,7 +90,6 @@ body {
 .text {
   font-family: 'ec-font';
   text-align: center;
-  user-select: none;
   padding: 4px;
 }
 
