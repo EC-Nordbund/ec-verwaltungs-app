@@ -36,11 +36,12 @@
     "start": "electron .",
     "docs:dev": "yarn docs:api && vuepress dev docs",
     "docs:build": "yarn docs:api && vuepress build docs",
-    "docs:api": "graphql-markdown http://h2778646.stratoserver.net:4001/graphql > ./docs/api/README.md",
+    "docs:api": "yarn docs:api:init && graphql-markdown http://h2778646.stratoserver.net:4001/graphql >> ./docs/api/README.md",
     ":init": "yarn && cd electron && yarn && cd ..",
     "dev": "concurrently \"yarn serve\" \"yarn docs:dev\"",
     "publish": "yarn build && cd electron && yarn run publish",
-    "update": "node ./updateVersion.js"
+    "update": "node ./updateVersion.js",
+    "docs:api:init": "echo ---  > ./docs/api/README.md && echo sidebar: auto  >> ./docs/api/README.md && echo ---  >> ./docs/api/README.md"
   },
   "main": "./electron/src/main/main.dev.js",
   "dependencies": {
@@ -49,6 +50,7 @@
     "apollo-engine": "^1.1.2",
     "apollo-link": "^1.2.2",
     "apollo-link-context": "^1.0.8",
+    "apollo-link-error": "^1.1.0",
     "apollo-link-http": "^1.5.4",
     "apollo-utilities": "^1.0.15",
     "electron-settings": "^3.2.0",
