@@ -89,6 +89,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+    <ec-dsgvo/>
   </v-app>
 </template>
 
@@ -120,6 +121,7 @@ export default class App extends Vue {
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
+  countdown: null|NodeJS.Timer = null
   nav = nav
   auth = auth
   event = event
@@ -128,7 +130,7 @@ export default class App extends Vue {
     if (route === '_hilfe') {
       let win: BrowserWindow = new electron.remote.BrowserWindow(
         {
-          show: false
+          // show: false
         }
       )
       const onlinePath = 'http://localhost:8081'
@@ -136,9 +138,9 @@ export default class App extends Vue {
         ? isElectron ? '../docs/index.html' : onlinePath
         : 'http://localhost:8081'
       win.loadURL(url)
-      win.on('ready-to-show', () => {
-        win.show()
-      })
+      // win.on('ready-to-show', () => {
+      //   win.show()
+      // })
       return
     }
     this.$router.push(route)
@@ -158,10 +160,19 @@ export default class App extends Vue {
       this.soonLogOut = true
       this.sec = 5 * 60
     })
-    setInterval(() => {
+    this.countdown = setInterval(() => {
+      if (this.sec > 0) {
       this.sec--
+      }
     }, 1000)
   }
+
+  destroyed() {
+    if(this.countdown!==null){
+      clearInterval(this.countdown)
+    }
+  }
+
   darkChange() {
     this.dark = !this.dark
     if (isElectron) {
@@ -178,6 +189,10 @@ export default class App extends Vue {
   logOut() {
     this.auth.logOut()
     this.$router.push('/')
+  }
+
+  dgvoID(id: number){
+    console.log(id)
   }
 }
 </script>

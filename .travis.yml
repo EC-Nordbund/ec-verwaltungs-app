@@ -12,10 +12,8 @@ matrix:
 
 cache:
   directories:
-  - node_modules
   - "$HOME/.electron"
   - "$HOME/.cache"
-  - electron/node_modules
 
 addons:
   apt:

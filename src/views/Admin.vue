@@ -1,50 +1,75 @@
 <template>
-  <ec-wrapper title="Administration" mini>
-    <template slot="extension">
-      <v-tabs v-model="tabs" fixed-tabs color="transparent">
-        <v-tabs-slider/>
-        <v-tab href="#tab-2" v-secondary>
-          <v-icon v-accent>contacts</v-icon>
-          <v-spacer/>
-          <span>User</span>
-          <v-spacer/>
-        </v-tab>
-        <v-tab href="#tab-3" v-secondary>
-          <v-icon v-accent>event</v-icon>
-          <v-spacer/>
-          <span>User-Gruppen</span>
-          <v-spacer/>
-        </v-tab>
-      </v-tabs>
-    </template>
+  <ec-wrapper title="Administration" mini @share="share">
     <template>
-      <v-tabs-items v-model="tabs" class="white elevation-1">
-        <v-tab-item id="tab-2">
-          <ec-list
-            :items="data.users"
-            :mapper="(item)=>({
-              title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
-              subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
-            })"
-            edit
-            icon="person"
-          />
-        </v-tab-item>
-        <v-tab-item id="tab-3">
-          <ec-list
-            :items="data.userGroups"
-            :mapper="(item)=>({
-              title: `${item.bezeichnung}`,
-              subTitle: `${item.mutationRechte.join(', ')}`
-            })"
-            edit
-            icon="group"
-          />
-        </v-tab-item>
-      </v-tabs-items>
+      <ec-list
+        :items="data.users"
+        :mapper="(item)=>({
+          title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
+          subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
+        })"
+        edit
+        icon="person"
+        @edit="editUser"
+      />
     </template>
+
+    <template slot="forms">
+      <ec-form
+        title="User editieren"
+        deleteBtn
+        @delete="deleteUser"
+        v-model="editUser_show"
+        @save="updateUser"
+        :fieldConfig="editUser_config"
+        :value="editUser_value"
+      />
+      <ec-form
+        title="User hinzufügen"
+        v-model="addUser_show"
+        @save="saveNewUser"
+        :fieldConfig="addUser_config"
+        :value="addUser_value"
+      />
+      <ec-form
+        title="Nachricht hinzufügen"
+        v-model="addNachricht_show"
+        @save="addNachricht_save"
+        :fieldConfig="addNachricht_config"
+        :value="addNachricht_value"
+      />
+    </template>
+
     <template slot="actions">
-      <ec-button-add @click="addItem"/>
+      <v-dialog persistent max-width="800px" v-model="dse_show">
+        <v-btn slot="activator">
+          <v-icon>edit</v-icon>
+          Datenschutz editieren
+        </v-btn>
+        <v-card>
+          <v-card-title>
+            <h1 v-font v-primary>
+              Datenschutzerklärung
+            </h1>
+          </v-card-title>
+          <v-card-text>
+            <v-textarea label="HTML-Code für Infotext" v-model="htmlCode"/>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer/>
+            <v-btn @click="dse_show = false">
+              Abbrechen
+            </v-btn>
+            <v-btn @click="dse_save">
+              Speichern
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-btn @click="addNachricht_show = true">
+        <v-icon>add</v-icon>
+        Nachricht
+      </v-btn>
+      <ec-button-add @click="addUser"/>
     </template>
   </ec-wrapper>
 </template>
@@ -52,59 +77,176 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
+import { query } from '@/graphql'
 
 import auth from '@/plugins/auth'
 
-@Component({})
-export default class verteilerDetails extends reloaderBase {
-  data = {
-    users: [],
-    userGroups: []
+import gql from 'graphql-tag'
+
+import {
+  eMailConfig,
+  personConfig,
+  usernameConfig,
+  usergroupConfig
+} from '@/plugins/formConfig/index'
+
+import { required } from '@/plugins/rules'
+
+import event from '@/plugins/eventbus'
+import { getClient } from '@/plugins/apollo'
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.admin.load,
+        variables: {
+          authToken: auth.authToken
+        }
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<admin>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
   }
-  tabs = null
+})
+export default class admin extends reloaderBase {
+  dse_show = false
+  htmlCode = ''
+  addNachricht_show = false
+  addNachricht_config = [
+    {
+      label: 'Nachricht',
+      name: 'msg',
+      required: true,
+      rules: [required('eine Nachricht')],
+      componentName: 'v-text-field'
+    },
+    {
+      label: 'angezeigter Absender',
+      name: 'von',
+      required: true,
+      rules: [required('einen Absender')],
+      componentName: 'v-text-field'
+    }
+  ]
+  addNachricht_value = {
+    msg: '',
+    von: ''
+  }
+  addNachricht_save(value: any) {
+    this.$apollo.mutate({
+      mutation: query.admin.addAlert,
+      variables: {
+        authToken: this.auth.authToken,
+        ...value
+      }
+    })
+  }
+  data = {
+    users: []
+  }
+  addUser_show = false
+  addUser_config = [
+    personConfig,
+    usernameConfig,
+    eMailConfig,
+    {
+      label: 'Gültig bis',
+      name: 'ablaufDatum',
+      required: true,
+      rules: [required('ein Ablaufdatum')],
+      componentName: 'ec-form-datePicker'
+    },
+    usergroupConfig
+  ]
+  editUser_show = false
+  editUser_config = [
+    { ...personConfig, disabled: true },
+    { ...usernameConfig, disabled: true },
+    {
+      label: 'Gültig bis',
+      name: 'ablaufDatum',
+      required: true,
+      rules: [required('ein Ablaufdatum')],
+      componentName: 'ec-form-datePicker'
+    },
+    usergroupConfig
+  ]
+  editUser_value: any = {
+    username: '',
+    email: '',
+    usergroup: ''
+  }
+
   created() {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.query = gql`
-      query($authToken: String!) {
-        users(authToken: $authToken) {
-          userID
-          userName
-          person {
-            personID
-            vorname
-            nachname
-          }
-          ablaufDatum {
-            german
-          }
-          userGroup {
-            userGroupID
-            bezeichnung
-          }
-        }
-        userGroups(authToken: $authToken) {
-          userGroupID
-          bezeichnung
-          mutationRechte
-          fieldAccess {
-            field
-            table
-          }
-        }
-      }
-    `
+    this.query = query.admin.load
     super.created()
   }
-  addItem() {
-    console.log(this.tabs)
+  addUser_value = {
+    personID: '',
+    username: '',
+    email: '',
+    ablaufDatum: '',
+    usergroup: ''
+  }
+  addUser() {
+    this.addUser_show = true
+  }
+  saveNewUser(value: any) {
+    // TODO: Mutation
+    alert('comming soon')
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  updateUser(value: any) {
+    // TODO: Mutation
+    alert('comming soon')
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  deleteUser(value: any) {
+    // TODO: Mutation
+    alert('comming soon')
+    console.log(JSON.parse(JSON.stringify(value)))
+  }
+  editUser(user: any) {
+    this.editUser_value = {
+      userID: user.userID,
+      personID: user.person.personID,
+      username: user.userName,
+      ablaufDatum: user.ablaufDatum.input,
+      usergroup: user.userGroup.userGroupID
+    }
+    this.editUser_show = true
+  }
+
+  share(share: (url: string) => void) {
+    share(this.$route.fullPath)
+  }
+  dse_save() {
+    this.dse_show = false
+    getClient()
+      .mutate({
+        mutation: gql`
+          mutation($text: String!, $authToken: String!) {
+            addDSE(text: $text, authToken: $authToken)
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          text: this.htmlCode
+        }
+      })
+      .then(() => {
+        this.htmlCode = ''
+      })
   }
 }
 </script>
-<style scoped>
-.hidden {
-  visibility: hidden;
-}
-</style>
