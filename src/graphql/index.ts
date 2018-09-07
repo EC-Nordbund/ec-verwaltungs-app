@@ -171,9 +171,6 @@ export const query = {
             ende {
               german
             }
-            unterkunft {
-              bezeichnung
-            }
           }
         }
       `
@@ -197,14 +194,6 @@ export const query = {
             ende {
               input
               german
-            }
-            unterkunft {
-              unterkunftID
-              bezeichnung
-              strasse
-              plz
-              ort
-              land
             }
             anmeldungen {
               anmeldeID
@@ -619,22 +608,6 @@ export const query = {
               }
               kommentar
             }
-            aks {
-              personAKID
-              eintritt {
-                german
-                input
-              }
-              austritt {
-                german
-                input
-              }
-              leiter
-              ak {
-                akID
-                bezeichnung
-              }
-            }
             verteiler {
               verteilerPersonenID
               type
@@ -803,26 +776,6 @@ export const query = {
           ak(akID: $akID, authToken: $authToken) {
             akID
             bezeichnung
-            personen {
-              personAKID
-              eintritt {
-                german
-                input
-              }
-              austritt {
-                german
-                input
-              }
-              leiter
-              person {
-                personID
-                vorname
-                nachname
-                gebDat {
-                  german
-                }
-              }
-            }
           }
         }
       `,
