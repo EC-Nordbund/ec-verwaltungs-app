@@ -131,7 +131,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           },
@@ -144,7 +144,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           }
@@ -163,7 +163,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           },
@@ -176,7 +176,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           }
@@ -195,7 +195,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           },
@@ -208,7 +208,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           }
@@ -227,7 +227,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           },
@@ -240,7 +240,7 @@ const routes: RouteConfig[] = [
                 'anmeldeverwaltung',
                 'kasse',
                 'veranstaltungsverwaltung',
-                'freizeitleiter'
+                'veranstaltungsleiter'
               ]
             }
           }
