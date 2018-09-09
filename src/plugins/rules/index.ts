@@ -19,7 +19,7 @@ export const minLength = (
   artikel: string,
   length: number
 ) => (value: string) =>
-  value.length < length
+  value && value.length < length
     ? `Du musst ${name} angeben, ${artikel} mindestens ${length} Zeichen lang ist!`
     : true
 
@@ -28,7 +28,7 @@ export const maxLength = (
   artikel: string,
   length: number
 ) => (value: string) =>
-  value.length > length
+  value && value.length > length
     ? `Du musst ${name} angeben, ${artikel} maximal ${length} Zeichen lang ist!`
     : true
 

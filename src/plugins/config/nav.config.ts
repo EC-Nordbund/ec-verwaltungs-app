@@ -11,50 +11,78 @@ export default [
   {
     title: 'Personen',
     icon: 'person',
-    userGroups: '*',
+    userGroups: ['admin', 'vorsitzender'],
     items: [
       {
         title: 'Personen',
         icon: 'person',
         route: '/app/personen',
-        userGroups: '*'
+        userGroups: ['admin', 'vorsitzender']
       },
       {
         title: 'Arbeitskreise',
         icon: 'group',
         route: '/app/arbeitskreise',
-        userGroups: '*'
-      },
-      {
-        title: 'Verteiler',
-        icon: 'email',
-        route: '/app/verteiler',
-        userGroups: '*'
+        userGroups: ['admin', 'vorsitzender']
       }
     ]
   },
   {
     title: 'Veranstaltungen',
     icon: 'event',
-    userGroups: '*',
+    userGroups: [
+      'admin',
+      'anmeldeverwaltung',
+      'kasse',
+      'veranstaltungsverwaltung',
+      'freizeitleiter'
+    ],
     items: [
       {
         title: 'Veranstaltungen',
         icon: 'event',
         route: '/app/veranstaltungen',
-        userGroups: '*'
+        userGroups: [
+          'admin',
+          'anmeldeverwaltung',
+          'kasse',
+          'veranstaltungsverwaltung',
+          'freizeitleiter'
+        ]
       },
       {
-        title: 'Unterkünfte',
+        title: 'Veranstaltungsorte',
         icon: 'place',
-        route: '/app/unterkünfte',
-        userGroups: '*'
+        route: '/app/vorte',
+        userGroups: [
+          'admin',
+          'anmeldeverwaltung',
+          'veranstaltungsverwaltung',
+          'freizeitleiter'
+        ]
+      },
+      {
+        title: 'Organisationen',
+        icon: 'place',
+        route: '/app/organisationen',
+        userGroups: [
+          'admin',
+          'anmeldeverwaltung',
+          'veranstaltungsverwaltung',
+          'freizeitleiter'
+        ]
       },
       {
         title: 'Anmeldung',
         icon: 'assignment_ind',
         route: '/app/anmeldungen',
-        userGroups: '*'
+        userGroups: [
+          'admin',
+          'anmeldeverwaltung',
+          'kasse',
+          'veranstaltungsverwaltung',
+          'freizeitleiter'
+        ]
       }
     ]
   },
@@ -62,13 +90,13 @@ export default [
     title: 'Drucken',
     icon: 'print',
     route: '/app/print',
-    userGroups: '*'
+    userGroups: ['admin', 'anmeldeverwaltung']
   },
   {
     title: 'Administration',
     icon: 'build',
     route: '/app/admin',
-    userGroups: '*'
+    userGroups: ['admin']
   },
   {
     title: 'Profil',

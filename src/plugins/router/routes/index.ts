@@ -66,14 +66,14 @@ const routes: RouteConfig[] = [
             path: '',
             component: PersonenListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           },
           {
             path: ':id',
             component: PersonenDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           }
         ]
@@ -119,21 +119,65 @@ const routes: RouteConfig[] = [
         ]
       },
       {
-        path: 'unterkünfte',
+        path: 'organisationen',
         component: RouteComponent,
         children: [
           {
             path: '',
             component: unterkünfteListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
             }
           },
           {
             path: ':id',
             component: unterkünfteDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
+            }
+          }
+        ]
+      },
+      {
+        path: 'vorte',
+        component: RouteComponent,
+        children: [
+          {
+            path: '',
+            component: unterkünfteListe,
+            meta: {
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
+            }
+          },
+          {
+            path: ':id',
+            component: unterkünfteDetails,
+            meta: {
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
             }
           }
         ]
@@ -146,14 +190,26 @@ const routes: RouteConfig[] = [
             path: '',
             component: veranstaltungenListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
             }
           },
           {
             path: ':id',
             component: veranstaltungenDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
             }
           }
         ]
@@ -166,14 +222,26 @@ const routes: RouteConfig[] = [
             path: '',
             component: anmeldungListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
             }
           },
           {
             path: ':id',
             component: anmeldungDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'freizeitleiter'
+              ]
             }
           }
         ]
@@ -212,7 +280,7 @@ const routes: RouteConfig[] = [
             path: '',
             component: DruckenComponent,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'anmeldeverwaltung']
             }
           }
         ]
