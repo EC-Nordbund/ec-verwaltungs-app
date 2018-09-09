@@ -95,10 +95,10 @@
               <v-expansion-panel-content ripple>
                 <div slot="header">Aktuelle Arbeitskreise</div>
                 <ec-list
-                  :items="data.person.ak || []"
+                  :items="(data.person.ak || []).filter(item=>(item.currentStatus > 0))"
                   :mapper="item=>({
                     title: `${item.ak.bezeichnung}`,
-                    subTitle: `${item.currentStatus}`
+                    subTitle: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.currentStatus]}`
                   })"
                   icon="map"
                   @edit="editAK_open"
@@ -113,7 +113,7 @@
                       {{ak.ak.bezeichnung}}
                     </div>
                     <ec-list :items="ak.allUpdates" :mapper="item=>({
-                      title: `${item.neuerStatus}`, 
+                      title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
                       subTitle: `${item.date.german}`
                       })" icon="map"
                     />

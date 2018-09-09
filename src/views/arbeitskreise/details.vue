@@ -17,10 +17,10 @@
         <v-expansion-panel-content>
           <div slot="header">Aktuelle Mitglieder</div>
           <ec-list
-            :items="data.ak.personen || []"
+            :items="(data.ak.personen || []).filter(item=>(item.currentStatus > 0))"
             :mapper="item=>({
               title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
-              subTitle: `${item.currentStatus}`
+              subTitle: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.currentStatus]}`
             })"
             icon="map"
             :edit="auth.isMutationAllowed('updateAKStatus')"
@@ -36,7 +36,7 @@
                 ({{person.person.gebDat.german}})
               </div>
               <ec-list :items="person.allUpdates" :mapper="item=>({
-                title: `${item.neuerStatus}`, 
+                title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
                 subTitle: `${item.date.german}`
                 })" icon="map"
               />
