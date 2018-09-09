@@ -35,7 +35,7 @@ export default [
       'anmeldeverwaltung',
       'kasse',
       'veranstaltungsverwaltung',
-      'freizeitleiter'
+      'veranstaltungsleiter'
     ],
     items: [
       {
@@ -47,7 +47,7 @@ export default [
           'anmeldeverwaltung',
           'kasse',
           'veranstaltungsverwaltung',
-          'freizeitleiter'
+          'veranstaltungsleiter'
         ]
       },
       {
@@ -58,7 +58,7 @@ export default [
           'admin',
           'anmeldeverwaltung',
           'veranstaltungsverwaltung',
-          'freizeitleiter'
+          'veranstaltungsleiter'
         ]
       },
       {
@@ -69,7 +69,7 @@ export default [
           'admin',
           'anmeldeverwaltung',
           'veranstaltungsverwaltung',
-          'freizeitleiter'
+          'veranstaltungsleiter'
         ]
       },
       {
@@ -81,7 +81,7 @@ export default [
           'anmeldeverwaltung',
           'kasse',
           'veranstaltungsverwaltung',
-          'freizeitleiter'
+          'veranstaltungsleiter'
         ]
       }
     ]
