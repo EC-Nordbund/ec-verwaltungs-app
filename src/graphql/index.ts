@@ -345,15 +345,15 @@ export const query = {
     liste: {
       load: gql`
         query($authToken: String!) {
-          personen(authToken: $authToken) {
-            personID
-            vorname
-            nachname
-            gebDat {
-              german
+            personen(authToken: $authToken) {
+              personID
+              vorname
+              nachname
+              gebDat {
+                german
+              }
+              geschlecht
             }
-            geschlecht
-          }
         }
       `,
       addPerson: gql`
