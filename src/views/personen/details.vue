@@ -108,7 +108,7 @@
               <v-expansion-panel-content ripple>
                 <div slot="header">Alle Arbeitskreise</div>
                 <v-expansion-panel> 
-                  <v-expansion-panel-content ripple v-for="ak in (data.person.ak||[])" :key="ak.ak.id">
+                  <v-expansion-panel-content ripple v-for="ak in (data.person.ak||[])" :key="ak.ak.akID">
                     <div slot="header">
                       {{ak.ak.bezeichnung}}
                     </div>

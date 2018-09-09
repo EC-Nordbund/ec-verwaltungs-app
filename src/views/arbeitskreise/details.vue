@@ -9,15 +9,45 @@
       <ec-headline>
         {{data.ak.bezeichnung}}
       </ec-headline>
-      <ec-button-icon @click="editAKStamm_open" v-if="auth.isMutationAllowed('editAKStamm')"/>
+      <ec-button-icon @click="editAKStamm_open" v-if="auth.isMutationAllowed('editAK')"/>
     </template>
 
     <template>
-      <ec-list v-if="data.ak.personen" :items="data.ak.personen" :mapper="mapper" :edit="auth.isMutationAllowed('editAKPerson')" @edit="edit" icon="person_pin_circle"/>
+      <v-expansion-panel>
+        <v-expansion-panel-content>
+          <div slot="header">Aktuelle Mitglieder</div>
+          <ec-list
+            :items="data.ak.personen || []"
+            :mapper="item=>({
+              title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
+              subTitle: `${item.currentStatus}`
+            })"
+            icon="map"
+            :edit="auth.isMutationAllowed('updateAKStatus')"
+          />
+        </v-expansion-panel-content>
+        <v-expansion-panel-content>
+          <div slot="header">Alle Mitglieder</div>
+          <v-expansion-panel> 
+            <v-expansion-panel-content ripple v-for="person in (data.ak.personen||[])" :key="person.person.personID">
+              <div slot="header">
+                {{person.person.vorname}}
+                {{person.person.nachname}}
+                ({{person.person.gebDat.german}})
+              </div>
+              <ec-list :items="person.allUpdates" :mapper="item=>({
+                title: `${item.neuerStatus}`, 
+                subTitle: `${item.date.german}`
+                })" icon="map"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel> 
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </template>
 
     <template slot="actions">
-      <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
+      <ec-button-add v-if="auth.isMutationAllowed('updateAKStatus')" @click="addAKPerson_show = true"/>
       <v-dialog max-width="500px">
         <v-btn slot="activator">Mitgliederliste</v-btn>
         <v-card>
@@ -65,58 +95,92 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import {personConfig,bezeichnungConfig} from '@/plugins/formConfig/index'
-import {query} from '@/graphql/index';
-import auth from '@/plugins/auth';
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import {
+  personConfig,
+  bezeichnungConfig
+} from '@/plugins/formConfig/index'
+import { query } from '@/graphql/index'
+import auth from '@/plugins/auth'
 
-import {getClient} from '@/plugins/apollo'
+import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
+
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  query($authToken: String!, $akID: Int!) {
+    ak(akID: $akID, authToken: $authToken) {
+      akID
+      bezeichnung
+      personen {
+        currentStatus
+        allUpdates {
+          akPersonID
+          neuerStatus
+          date {
+            german
+          }
+        }
+        person {
+          personID
+          vorname
+          nachname
+          gebDat {
+            german
+          }
+        }
+      }
+    }
+  }
+`
+
 @Component({
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    getClient().query(
-      {
-        query: query.ak.details.load,
+    getClient()
+      .query({
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           akID: to.params.id
         }
-      }
-    ).then((v:any)=>{
-      next(vm=>{
-        (<any>vm).data = v.data
-        setTimeout(()=>{
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<any>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  },
+  beforeRouteUpdate(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: loadGQL,
+        variables: {
+          authToken: auth.authToken,
+          akID: to.params.id
+        }
+      })
+      .then((v: any) => {
+        ;(<any>this).data = v.data
+        ;(<any>this).variabels = {
+          authToken: auth.authToken,
+          akID: to.params.id
+        }
+        next()
+        setTimeout(() => {
           event.emit('hideLoading')
         }, 500)
       })
-    })
-  },
-  beforeRouteUpdate (to, from, next) {
-    event.emit('showLoading')
-    getClient().query(
-      {
-        query: query.ak.details.load,
-        variables: {
-          authToken: auth.authToken,
-          akID: to.params.id
-        }
-      }
-    ).then((v:any)=>{
-      (<any>this).data = v.data;
-      (<any>this).variabels = {
-        authToken: auth.authToken,
-        akID: to.params.id
-      }
-      next()
-      setTimeout(()=>{
-        event.emit('hideLoading')
-      }, 500)
-    })
   }
 })
 export default class AKDetails extends reloaderBase {
+  auth = auth
   data: { ak: any } = { ak: {} }
   mapper = (item: any) => ({
     title: `${item.person.vorname} ${
@@ -237,10 +301,10 @@ export default class AKDetails extends reloaderBase {
       authToken: auth.authToken,
       akID: this.$route.params.id
     }
-    this.query = query.ak.details.load
+    this.query = loadGQL
     super.created()
   }
-  share(share: (url:string)=>void) {
+  share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
 }
