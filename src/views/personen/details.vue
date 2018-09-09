@@ -45,7 +45,7 @@
             <!-- Email -->
             <ec-list
               :items="data.person.emails || []"
-              :mapper="item=>({title: item.email})"
+              :mapper="item=>({title: item.eMail})"
               icon="mail"
               :edit="auth.isMutationAllowed('editEmail')"
               @edit="editEmail_open"
@@ -93,36 +93,42 @@
           <v-card>
             <v-expansion-panel> 
               <v-expansion-panel-content ripple>
-                <div slot="header">Arbeitskreise</div>
+                <div slot="header">Aktuelle Arbeitskreise</div>
                 <ec-list
-                  :items="data.person.aks || []"
+                  :items="data.person.ak || []"
                   :mapper="item=>({
                     title: `${item.ak.bezeichnung}`,
-                    subTitle: `${item.eintritt.german}${item.austritt === null?'':' - ' + item.austritt.german}${item.leiter?' (Leiter)':''}`
+                    subTitle: `${item.currentStatus}`
                   })"
                   icon="map"
                   @edit="editAK_open"
-                  :edit="auth.isMutationAllowed('editAKPerson')"
+                  :edit="auth.isMutationAllowed('updateAKStatus')"
                 />
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple>
-                <div slot="header">Verteiler</div>
-                <ec-list
-                  :items="data.person.verteiler || []"
-                  :mapper="item=>({
-                    title: `${item.verteiler.bezeichnung}`,
-                    subTitle: `${item.type===1?'TO':''}${item.type===2?'CC':''}${item.type===3?'BCC':''}`,
-                    edit: item.verteiler.isAuto && auth.isMutationAllowed('editVerteilerPerson')
-                  })"
-                  icon="mail"
-                  @edit="editVerteiler_open"
-                />
+                <div slot="header">Alle Arbeitskreise</div>
+                <v-expansion-panel> 
+                  <v-expansion-panel-content ripple v-for="ak in (data.person.ak||[])" :key="ak.ak.id">
+                    <div slot="header">
+                      {{ak.ak.bezeichnung}}
+                    </div>
+                    <ec-list :items="ak.allUpdates" :mapper="item=>({
+                      title: `${item.neuerStatus}`, 
+                      subTitle: `${item.date.german}`
+                      })" icon="map"
+                    />
+                  </v-expansion-panel-content>
+                </v-expansion-panel> 
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple>
                 <div slot="header">Führungszeungniss Anträge</div>
-                <v-card>
-                  Comming soon...
-                </v-card>
+                <ec-list
+                  :items="data.person.fzAntraege || []"
+                  :mapper="item=>({
+                    title: `Erstellt am ${item.erzeugt.german}`
+                  })"
+                  icon="map"
+                />
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple>
                 <div slot="header">Führungszeungnisse</div>
@@ -132,30 +138,39 @@
                     title: item.kommentar,
                     subTitle: `Gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
                   })"
-                  :edit="true"
                   icon="extension"
                 />
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple>
                 <div slot="header">Sonstiges</div>
                 <ec-list
-                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa'}] : []"
+                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
+                    ...(data.person.ecMitglied>=0?[{
+                      title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied],
+                      edit: auth.isMutationAllowed('editPersonSonstiges')
+                    }]:[]),
+                    ...(data.person.ecKreis?[{
+                      title: data.person.ecKreis.bezeichnung,
+                      subTitle: 'EC-Kreis',
+                      edit: auth.isMutationAllowed('editPersonSonstiges')
+                    }]:[]),
+                    ...(data.person.datumDesLetztenFZ?[{
+                      title: data.person.datumDesLetztenFZ.german,
+                      subTitle: 'Letztes FZ',
+                      edit: false
+                    }]:[])
+                  ] : []"
                   :mapper="item=>item"
                   icon="extension"
-                  :edit="true"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
             <!-- Add AK, Verteiler, FZ, FZ-Antrag -->
             <v-card-actions>
               <v-spacer/>
-              <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('addAKPerson')">
+              <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('updateAKStatus')">
                 <v-icon>add</v-icon>
                 Arbeitskreis
-              </v-btn>
-              <v-btn flat @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('addVerteilerPerson')">
-                <v-icon>add</v-icon>
-                Verteiler
               </v-btn>
               <v-btn flat v-if="true" @click="alertCommingSoon">
                 <v-icon>add</v-icon>
@@ -297,12 +312,121 @@ import { query } from '@/graphql/index'
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  query($authToken: String!, $personID: Int!) {
+    person(personID: $personID, authToken: $authToken) {
+      personID
+      vorname
+      nachname
+      gebDat {
+        german
+        input
+      }
+      geschlecht
+      alter(wann: null)
+      adressen {
+        adressID
+        strasse
+        plz
+        ort
+        isOld
+        lastUsed {
+          german
+        }
+      }
+      emails {
+        eMailID
+        eMail
+        isOld
+        lastUsed {
+          german
+        }
+      }
+      telefone {
+        telefonID
+        telefon
+        isOld
+        lastUsed {
+          german
+        }
+      }
+      anmeldungen {
+        anmeldeID
+        position
+        veranstaltung {
+          bezeichnung
+          begin {
+            german
+          }
+          ende {
+            german
+          }
+        }
+      }
+      fzs {
+        fzID
+        gesehenAm {
+          german
+        }
+        kommentar
+        gesehenVon {
+          personID
+          vorname
+          nachname
+          gebDat {
+            german
+          }
+        }
+      }
+      fzAntraege {
+        fzAntragID
+        erzeugt {
+          german
+        }
+      }
+      datumDesLetztenFZ {
+        german
+      }
+      hatFZ(wann: null)
+      juLeiCaNr
+      ecKreis {
+        ecKreisID
+        bezeichnung
+        website
+      }
+      ecMitglied
+      ak {
+        ak {
+          akID
+          bezeichnung
+        }
+        currentStatus
+        allUpdates {
+          akPersonID
+          date {
+            german
+          }
+          neuerStatus
+        }
+      }
+      erstellt {
+        german
+      }
+      letzteAenderung {
+        german
+      }
+    }
+  }
+`
+
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           personID: to.params.id
@@ -321,7 +445,7 @@ import event from '@/plugins/eventbus'
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           personID: to.params.id
@@ -539,8 +663,8 @@ export default class PersonenDetails extends reloaderBase {
     const d = new Date()
     this.editAK_value = {}
     this.editAK_value = {
-      akID: item.ak.akID,
-      // zeitpunkt: 
+      akID: item.ak.akID
+      // zeitpunkt:
     }
     this.editAK_show = true
   }
@@ -648,7 +772,7 @@ export default class PersonenDetails extends reloaderBase {
       authToken: auth.authToken,
       personID: this.$route.params.id
     }
-    this.query = query.personen.details.load
+    this.query = loadGQL
     super.created()
   }
   alertCommingSoon() {
@@ -657,7 +781,7 @@ export default class PersonenDetails extends reloaderBase {
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
-  mailto(item:any){
+  mailto(item: any) {
     location.href = `mailto:${item.email}`
   }
 }
