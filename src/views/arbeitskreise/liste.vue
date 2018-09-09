@@ -16,12 +16,27 @@ import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
 import auth from '@/plugins/auth'
 
+const loadGQL = gql`
+  query($authToken: String!) {
+    aks(authToken: $authToken) {
+      akID
+      bezeichnung
+    }
+  }
+`
+
+const addAKGQL = gql`
+  mutation($authToken: String!, $bezeichnung: String!) {
+    addAK(bezeichnung: $bezeichnung, authToken: $authToken)
+  }
+`
+
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.ak.liste.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken
         }
@@ -48,7 +63,7 @@ export default class AKListe extends reloaderBase {
   save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.ak.liste.addAK,
+        mutation: addAKGQL,
         variables: {
           authToken: auth.authToken,
           ...value
@@ -77,7 +92,7 @@ export default class AKListe extends reloaderBase {
       authToken: auth.authToken
     }
     this.suchstring = this.$route.query.suche || ''
-    this.query = query.ak.liste.load
+    this.query = loadGQL
     super.created()
   }
 }
