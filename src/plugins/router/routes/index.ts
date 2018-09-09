@@ -86,14 +86,14 @@ const routes: RouteConfig[] = [
             path: '',
             component: AKListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           },
           {
             path: ':id',
             component: AKDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           }
         ]
