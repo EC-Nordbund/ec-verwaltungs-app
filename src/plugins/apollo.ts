@@ -18,7 +18,7 @@ export function getClient() {
         new HttpLink({
           uri: 'https://h2778646.stratoserver.net/graphql'
           // 'https://ec-api.de/graphql'
-          // 'https://localhost:4000/graphql'
+          // 'https://localhost/graphql'
         })
       ]),
       cache: new InMemoryCache(),
