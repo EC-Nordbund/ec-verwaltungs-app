@@ -16,12 +16,9 @@ export function getClient() {
     client = new ApolloClient({
       link: ApolloLink.from([
         new HttpLink({
-          uri:
-            'https://h2778646.stratoserver.net/graphql'
-            // 'https://ec-api.de/graphql'
-            // 'https://api.ec-nordbund.de'
-            // 'https://h2778646.stratoserver.net:4000/graphql'
-          // uri: 'https://localhost:4000/graphql'
+          uri: 'https://h2778646.stratoserver.net/graphql'
+          // 'https://ec-api.de/graphql'
+          // 'https://localhost:4000/graphql'
         })
       ]),
       cache: new InMemoryCache(),
