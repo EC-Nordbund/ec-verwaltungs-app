@@ -122,9 +122,7 @@ function createLoadingWindow() {
               'msg',
               'Teste API Verbindung'
             )
-            fetch(
-              'https://h2778646.stratoserver.net:4000/check'
-            )
+            fetch('https://ec-api.de/check')
               .then(() => {
                 setTimeout(() => {
                   loadingWindow.webContents.send(
