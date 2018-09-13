@@ -22,7 +22,7 @@ class auth {
 
   /**
    * List of allowed mutations
-   *
+   *  
    * @private
    * @type {string[]}
    * @memberof auth
