@@ -1,44 +1,115 @@
 <template>
-  <div>
-    <v-toolbar ripple extension-height="72px">
-      <v-spacer/>
-      <ec-headline>{{data.unterkunft.bezeichnung}}{{data.unterkunft.land !== 'Deutschland' ? ` (${data.unterkunft.land})`:''}}</ec-headline>
-      <v-spacer/>
-      <ec-button-icon/>
-    </v-toolbar>
-    <ec-list :items="[{title: 'Es muss erst geklärt werden welche Daten gespeichert werden!'}]" :mapper="item=>item" icon="info"/>
-  </div>
+  <ec-wrapper title="Personen Details" :label="'test'" type="Veranstaltungsort">
+
+    <template slot="label">
+      <ec-headline>
+        Veranstaltungsort Details
+        <ec-button-icon @click=""/>
+      </ec-headline>
+    </template>
+
+    <template slot="extension">
+      <v-tabs v-model="tabs" fixed-tabs color="transparent">
+        <v-tabs-slider/>
+        <v-tab href="#tab-2" v-secondary>
+          Allgemeines
+        </v-tab>
+        <v-tab href="#tab-4" v-secondary>
+          Kontakt
+        </v-tab>
+        <v-tab href="#tab-3" v-secondary>
+          Veranstaltungen
+        </v-tab>
+      </v-tabs>
+    </template>
+
+    <template>
+      <v-tabs-items v-model="tabs" class="white">
+        <v-tab-item id="tab-2">
+          <ec-list :mapper="v=>v" icon="map" :items="[
+            {
+              title: "EC-Ferienlager Karlsminde",
+              subTitle: "Bezeichnung"
+            }  
+          ]"/>
+        </v-tab-item>
+        <v-tab-item id="tab-4">
+          <v-card>
+          </v-card>
+        </v-tab-item>
+        <v-tab-item id="tab-3">
+          <v-card>
+            Hier folgt eine Liste der Veranstaltungen die hier Stattfunden,.
+          </v-card>
+        </v-tab-item>
+      </v-tabs-items>
+    </template>
+
+    <template slot="actions">
+      
+    </template>
+
+    <template slot="forms">
+    </template>
+
+  </ec-wrapper>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import electron, { isElectron } from '@/plugins/electron'
+import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
-@Component({})
-export default class unterkunftDetails extends reloaderBase {
-  data: { unterkunft: any } = { unterkunft: {} }
-  created() {
-    this.query = gql`
-      query($authToken: String!, $unterkunftID: Int!) {
-        unterkunft(
-          unterkunftID: $unterkunftID
-          authToken: $authToken
-        ) {
-          unterkunftID
-          bezeichnung
-          strasse
-          plz
-          ort
-          land
+
+import { query } from '@/graphql/index'
+
+import { getClient } from '@/plugins/apollo'
+import event from '@/plugins/eventbus'
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
         }
-      }
-    `
-    this.variabels = {
-      authToken: auth.authToken,
-      unterkunftID: this.$route.params.id
-    }
-    super.created()
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<any>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  },
+  beforeRouteUpdate(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: query.personen.details.load,
+        variables: {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+      })
+      .then((v: any) => {
+        ;(<any>this).data = v.data
+        ;(<any>this).variabels = {
+          authToken: auth.authToken,
+          personID: to.params.id
+        }
+        next()
+        setTimeout(() => {
+          event.emit('hideLoading')
+        }, 500)
+      })
   }
+})
+export default class PersonenDetails extends reloaderBase {
+  tabs = null
 }
 </script>
