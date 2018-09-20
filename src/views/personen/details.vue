@@ -782,7 +782,7 @@ export default class PersonenDetails extends reloaderBase {
     share(this.$route.fullPath)
   }
   mailto(item: any) {
-    location.href = `mailto:${item.email}`
+    location.href = `mailto:${item.eMail}`
   }
 }
 </script>

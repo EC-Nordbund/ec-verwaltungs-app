@@ -1,18 +1,18 @@
 <template>
   <ec-wrapper title="Administration" mini @share="share">
-    <template>
-      <ec-list
-        :items="data.users"
-        :mapper="(item)=>({
-          title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
-          subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
-        })"
-        edit
-        icon="person"
-        @edit="editUser"
-      />
-    </template>
+    <!-- Main Content -->
+    <ec-list
+      :items="data.users"
+      :mapper="(item)=>({
+        title: `${item.userName} (${item.person.vorname} ${item.person.nachname})`,
+        subTitle: `${item.userGroup.bezeichnung} (bis ${item.ablaufDatum.german})`
+      })"
+      edit
+      icon="person"
+      @edit="editUser"
+    />
 
+    <!-- Froms -->
     <template slot="forms">
       <ec-form
         title="User editieren"
@@ -39,6 +39,7 @@
       />
     </template>
 
+    <!-- Actions in Bottom -->
     <template slot="actions">
       <v-dialog persistent max-width="800px" v-model="dse_show">
         <v-btn slot="activator">
@@ -77,7 +78,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-import { query } from '@/graphql'
 
 import auth from '@/plugins/auth'
 
@@ -95,12 +95,34 @@ import { required } from '@/plugins/rules'
 import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
 
+const loadGQL = gql`
+  query($authToken: String!) {
+    users(authToken: $authToken) {
+      userID
+      userName
+      person {
+        personID
+        vorname
+        nachname
+      }
+      ablaufDatum {
+        german
+        input
+      }
+      userGroup {
+        userGroupID
+        bezeichnung
+      }
+    }
+  }
+`
+
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.admin.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken
         }
@@ -141,7 +163,19 @@ export default class admin extends reloaderBase {
   }
   addNachricht_save(value: any) {
     this.$apollo.mutate({
-      mutation: query.admin.addAlert,
+      mutation: gql`
+        mutation(
+          $authToken: String!
+          $msg: String!
+          $von: String!
+        ) {
+          addAlert(
+            msg: $msg
+            von: $von
+            authToken: $authToken
+          )
+        }
+      `,
       variables: {
         authToken: this.auth.authToken,
         ...value
@@ -167,7 +201,7 @@ export default class admin extends reloaderBase {
   ]
   editUser_show = false
   editUser_config = [
-    { ...personConfig, disabled: true },
+    { ...personConfig, 'menu-props': 'disabled', disabled: true},
     { ...usernameConfig, disabled: true },
     {
       label: 'Gültig bis',
@@ -188,7 +222,7 @@ export default class admin extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.query = query.admin.load
+    this.query = loadGQL
     super.created()
   }
   addUser_value = {
@@ -202,19 +236,49 @@ export default class admin extends reloaderBase {
     this.addUser_show = true
   }
   saveNewUser(value: any) {
-    // TODO: Mutation
-    alert('comming soon')
-    console.log(JSON.parse(JSON.stringify(value)))
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($authToken: String!, $userGroupID: Int!, $ablaufDatum: String!, $personID: Int!, $username: String!, $email: String!){
+          addUser(authToken: $authToken, userGroupID: $userGroupID, ablaufDatum: $ablaufDatum, personID: $personID, username: $username, email: $email)
+        }
+      `,
+      variables: {
+        userGroupID: value.usergroup,
+        ablaufDatum: value.ablaufDatum,
+        authToken: auth.authToken,
+        personID: value.personID,
+        username: value.username,
+        email: value.email
+      }
+    }).then(this.refetch)
   }
   updateUser(value: any) {
-    // TODO: Mutation
-    alert('comming soon')
-    console.log(JSON.parse(JSON.stringify(value)))
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($userID: Int!, $authToken: String!, $userGroupID: Int!, $ablaufDatum: String!){
+          editUser(userID: $userID, authToken: $authToken, userGroupID: $userGroupID, ablaufDatum: $ablaufDatum)
+        }
+      `,
+      variables: {
+        userID: value.userID,
+        userGroupID: value.userGroup,
+        ablaufDatum: value.ablaufDatum,
+        authToken: auth.authToken
+      }
+    }).then(this.refetch)
   }
-  deleteUser(value: any) {
-    // TODO: Mutation
-    alert('comming soon')
-    console.log(JSON.parse(JSON.stringify(value)))
+  deleteUser(value: {userID: number}) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($userID: Int!, $authToken: String!){
+          deleteUser(userID: $userID, authToken: $authToken)
+        }
+      `,
+      variables: {
+        userID: value.userID,
+        authToken: auth.authToken
+      }
+    }).then(this.refetch)
   }
   editUser(user: any) {
     this.editUser_value = {
@@ -232,7 +296,7 @@ export default class admin extends reloaderBase {
   }
   dse_save() {
     this.dse_show = false
-    getClient()
+    this.$apollo
       .mutate({
         mutation: gql`
           mutation($text: String!, $authToken: String!) {
