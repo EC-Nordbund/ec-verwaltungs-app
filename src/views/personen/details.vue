@@ -92,7 +92,7 @@
         <v-tab-item id="tab-4">
           <v-card>
             <v-expansion-panel> 
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.ak || []).filter(item=>(item.currentStatus > 0)).length > 0">
                 <div slot="header">Aktuelle Arbeitskreise</div>
                 <ec-list
                   :items="(data.person.ak || []).filter(item=>(item.currentStatus > 0))"
@@ -105,10 +105,10 @@
                   :edit="auth.isMutationAllowed('updateAKStatus')"
                 />
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.ak||[]).length > 0">
                 <div slot="header">Alle Arbeitskreise</div>
                 <v-expansion-panel> 
-                  <v-expansion-panel-content ripple v-for="ak in (data.person.ak||[])" :key="ak.ak.akID">
+                  <v-expansion-panel-content ripple lazy v-for="ak in (data.person.ak||[])" :key="ak.ak.akID">
                     <div slot="header">
                       {{ak.ak.bezeichnung}}
                     </div>
@@ -120,7 +120,7 @@
                   </v-expansion-panel-content>
                 </v-expansion-panel> 
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.fzAntraege || []).length > 0">
                 <div slot="header">Führungszeungniss Anträge</div>
                 <ec-list
                   :items="data.person.fzAntraege || []"
@@ -130,7 +130,7 @@
                   icon="map"
                 />
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.fzs || []).length > 0">
                 <div slot="header">Führungszeungnisse</div>
                 <ec-list
                   :items="data.person.fzs || []"
@@ -141,10 +141,10 @@
                   icon="extension"
                 />
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy>
                 <div slot="header">Sonstiges</div>
                 <ec-list
-                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
+                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr || 'N/A', subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
                     ...(data.person.ecMitglied>=0?[{
                       title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied],
                       edit: auth.isMutationAllowed('editPersonSonstiges')

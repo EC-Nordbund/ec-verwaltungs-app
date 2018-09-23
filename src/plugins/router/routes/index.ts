@@ -265,7 +265,7 @@ const routes: RouteConfig[] = [
         children: [
           {
             path: '',
-            component: ProfilComponent,
+            // component: ProfilComponent,
             meta: {
               userGroups: '*'
             }

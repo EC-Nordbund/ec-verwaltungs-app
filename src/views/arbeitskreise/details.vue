@@ -14,7 +14,7 @@
 
     <template>
       <v-expansion-panel>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content ripple lazy>
           <div slot="header">Aktuelle Mitglieder</div>
           <ec-list
             :items="(data.ak.personen || []).filter(item=>(item.currentStatus > 0))"
@@ -24,12 +24,13 @@
             })"
             icon="map"
             :edit="auth.isMutationAllowed('updateAKStatus')"
+            @edit="editPersonStatus"
           />
         </v-expansion-panel-content>
-        <v-expansion-panel-content>
+        <v-expansion-panel-content ripple lazy>
           <div slot="header">Alle Mitglieder</div>
           <v-expansion-panel> 
-            <v-expansion-panel-content ripple v-for="person in (data.ak.personen||[])" :key="person.person.personID">
+            <v-expansion-panel-content ripple lazy v-for="person in (data.ak.personen||[])" :key="person.person.personID">
               <div slot="header">
                 {{person.person.vorname}}
                 {{person.person.nachname}}
@@ -103,7 +104,6 @@ import {
 } from '@/plugins/formConfig/index'
 import { query } from '@/graphql/index'
 import auth from '@/plugins/auth'
-
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
@@ -198,51 +198,12 @@ export default class AKDetails extends reloaderBase {
     {
       ...personConfig,
       disabled: true
-    },
-    {
-      label: 'Eintritt',
-      name: 'eintritt',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Eintrittsdatum angeben!' : true
-      ],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Austritt',
-      name: 'austritt',
-      required: false,
-      rules: [],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Leiter',
-      name: 'leiter',
-      type: 'checkbox',
-      componentName: 'v-checkbox'
     }
   ]
   editAKPerson_value = {}
   addAKPerson_show = false
   addAKPerson_config = [
-    personConfig,
-    {
-      label: 'Eintritt',
-      name: 'eintritt',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Eintrittsdatum angeben!' : true
-      ],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Leiter',
-      name: 'leiter',
-      type: 'checkbox',
-      componentName: 'v-checkbox'
-    }
+    personConfig
   ]
   edit(item: any) {
     this.editAKPerson_value = {
@@ -306,6 +267,10 @@ export default class AKDetails extends reloaderBase {
   }
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
+  }
+  editPersonStatus(item:any){
+    console.log(item)
+    this.editAKPerson_show=true
   }
 }
 </script>

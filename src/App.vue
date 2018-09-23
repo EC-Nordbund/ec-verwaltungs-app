@@ -121,7 +121,7 @@ export default class App extends Vue {
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
-  countdown: null|NodeJS.Timer = null
+  countdown: null | NodeJS.Timer = null
   nav = nav
   auth = auth
   event = event
@@ -162,13 +162,13 @@ export default class App extends Vue {
     })
     this.countdown = setInterval(() => {
       if (this.sec > 0) {
-      this.sec--
+        this.sec--
       }
     }, 1000)
   }
 
   destroyed() {
-    if(this.countdown!==null){
+    if (this.countdown !== null) {
       clearInterval(this.countdown)
     }
   }
@@ -191,7 +191,7 @@ export default class App extends Vue {
     this.$router.push('/')
   }
 
-  dgvoID(id: number){
+  dgvoID(id: number) {
     console.log(id)
   }
 }
