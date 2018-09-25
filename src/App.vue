@@ -57,7 +57,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content style="display: grid;">
+    <v-content>
       <router-view/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">

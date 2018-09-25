@@ -73,7 +73,6 @@ import {
 import auth from '@/plugins/auth'
 import eventBus from '@/plugins/eventbus'
 
-
 @Component({})
 export default class loginForm extends Vue {
   username: string = ''
@@ -115,7 +114,7 @@ export default class loginForm extends Vue {
     }
     auth
       .logIn(this.username, this.password)
-      .then(({status, nextURL}) => {
+      .then(({ status, nextURL }) => {
         if (status) {
           this.$router.push(nextURL)
           this.checking = false
@@ -126,7 +125,7 @@ export default class loginForm extends Vue {
       })
   }
 
-  showUrlInfo:boolean = false
+  showUrlInfo: boolean = false
 
   created() {
     if (isElectron) {
@@ -135,8 +134,8 @@ export default class loginForm extends Vue {
     }
     window.addEventListener('keyup', this.checkCaps)
 
-    eventBus.on('login_show_url_info', ()=>{
-      this.showUrlInfo=true
+    eventBus.on('login_show_url_info', () => {
+      this.showUrlInfo = true
     })
   }
   destroyed() {

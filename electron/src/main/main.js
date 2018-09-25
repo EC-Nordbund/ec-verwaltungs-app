@@ -29,15 +29,18 @@ if (require('electron-squirrel-startup')) {
 }
 
 //Single Instance
-const isSecondInstance = app.makeSingleInstance(
-  (args, wd) => {
-    BrowserWindow.getAllWindows()[0].show()
-    handleProto(args)
-  }
-)
+const gotTheLock = app.requestSingleInstanceLock()
 
-if (isSecondInstance) {
+if (!gotTheLock) {
   app.quit()
+} else {
+  app.on(
+    'second-instance',
+    (commandLine, workingDirectory) => {
+      BrowserWindow.getAllWindows()[0].show()
+      handleProto(commandLine)
+    }
+  )
 }
 
 //=================================================================================================================================================
