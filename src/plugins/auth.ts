@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import { getClient } from '@/plugins/apollo'
+import { version } from "../../package.json";
 import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
@@ -161,17 +162,11 @@ class auth {
     password: string
   ): Promise<{ status: boolean; nextURL: string }> {
     return getClient()
-      .mutate({
-        mutation: gql`
-          mutation($username: String!, $password: String!) {
-            logIn(username: $username, password: $password)
+      .mutate({ mutation: gql`
+          mutation($username: String!, $password: String!, $version: String!) {
+            logIn(username: $username, password: $password, version: $version)
           }
-        `,
-        variables: {
-          username,
-          password
-        }
-      })
+        `, variables: { username, password, version } })
       .then(v => (v.data as any).logIn)
       .then(authToken => {
         this._authToken = authToken
@@ -179,11 +174,7 @@ class auth {
       })
       .then(v => true)
       .then(v => {
-        return {
-          status: v,
-          nextURL:
-            this.nextUrl === null ? '/app' : this.nextUrl
-        }
+        return { status: v, nextURL: this.nextUrl === null ? '/app' : this.nextUrl }
       })
       .then(v => {
         this.nextUrl = null

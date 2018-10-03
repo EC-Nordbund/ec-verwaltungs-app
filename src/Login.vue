@@ -10,7 +10,8 @@
         </v-card-title>
         <v-card-text>
           <v-alert :value="wrong" type="error">
-            Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.
+            Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.<br>
+            Solltes du dein Passwort vergessen haben melde dich bitte bei Thomas Seeger. Bitte überprüfe in diesem Fall außerdem, dass du die neuste Version benutzt.
           </v-alert>
           <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
