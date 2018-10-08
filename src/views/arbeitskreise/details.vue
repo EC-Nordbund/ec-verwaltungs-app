@@ -58,9 +58,9 @@
             </h1>
           </v-card-title>
           <v-card-actions>
-            <v-btn>Aktuelle Mitglieder</v-btn>
+            <v-btn @click="soon">Aktuelle Mitglieder</v-btn>
             <v-spacer/>
-            <v-btn>Gesamte Liste (inkl. Ausgetretenen)</v-btn>
+            <v-btn @click="soon">Gesamte Liste (inkl. Ausgetretenen)</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -100,7 +100,9 @@ import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import {
   personConfig,
-  bezeichnungConfig
+  bezeichnungConfig,
+  statusUpdateDate,
+  akStatusConfig
 } from '@/plugins/formConfig/index'
 import { query } from '@/graphql/index'
 import auth from '@/plugins/auth'
@@ -198,12 +200,16 @@ export default class AKDetails extends reloaderBase {
     {
       ...personConfig,
       disabled: true
-    }
+    },
+    statusUpdateDate,
+    akStatusConfig
   ]
   editAKPerson_value = {}
   addAKPerson_show = false
   addAKPerson_config = [
-    personConfig
+    personConfig,
+    statusUpdateDate,
+    akStatusConfig
   ]
   edit(item: any) {
     this.editAKPerson_value = {
@@ -223,35 +229,63 @@ export default class AKDetails extends reloaderBase {
     this.editAKStamm_show = true
   }
   editAKStamm_save(value: any) {
-    this.$apollo.mutate({
-      mutation: query.ak.details.editStamm,
-      variables: {
-        authToken: auth.authToken,
-        akID: this.$route.params.id,
-        ...value
-      }
-    })
-  }
-  editAKPerson_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.ak.details.editPerson,
+        mutation: gql`
+          mutation(
+            $akID: Int!
+            $bezeichnung: String!
+            $authToken: String!
+          ) {
+            editAK(
+              authToken: $authToken
+              akID: $akID
+              bezeichnung: $bezeichnung
+            )
+          }
+        `,
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-          ...value
+          bezeichnung: value.bezeichnung
+        }
+      })
+      .then(this.refetch)
+  }
+  editAKPerson_save(value: any) {
+    console.log(value)
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation ($personID: Int!, $akID: Int!, $date: String!, $authToken: String!, $status: Int!) {
+            updateAKStatus(personID: $personID, akID: $akID, date: $date, authToken: $authToken, status: $status)
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          akID: this.$route.params.id,
+          personID: value.personID,
+          date: value.date,
+          status: value.status
         }
       })
       .then(this.refetch)
   }
   addPersonAK_save(value: any) {
+    console.log(value)
     this.$apollo
       .mutate({
-        mutation: query.ak.details.addPerson,
+        mutation: gql`
+          mutation ($personID: Int!, $akID: Int!, $date: String!, $authToken: String!, $status: Int!) {
+            updateAKStatus(personID: $personID, akID: $akID, date: $date, authToken: $authToken, status: $status)
+          }
+        `,
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-          ...value
+          personID: value.personID,
+          date: value.date,
+          status: value.status
         }
       })
       .then(this.refetch)
@@ -268,9 +302,13 @@ export default class AKDetails extends reloaderBase {
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
-  editPersonStatus(item:any){
+  editPersonStatus(item: any) {
     console.log(item)
-    this.editAKPerson_show=true
+    this.editAKPerson_show = true
+  }
+
+  soon(){
+    alert('Comming Soon...')
   }
 }
 </script>

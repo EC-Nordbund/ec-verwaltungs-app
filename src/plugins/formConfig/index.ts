@@ -14,6 +14,7 @@ interface IConfig {
   componentName?: string
   counter?: number
   disabeled?: boolean
+  [name: string]: any
 }
 
 // const required = true
@@ -155,6 +156,33 @@ export const verteilerConfig: IConfig = {
   required: true,
   rules: [required('einen Verteiler')],
   componentName: 'ec-select-verteiler'
+}
+
+export const akStatusConfig: IConfig = {
+  name: 'status',
+  label: 'Bitte Wähle einen Status',
+  required: true,
+  rules: [required('einen Status')],
+  componentName: 'v-autocomplete',
+  items: [
+    'Ausgetreten',
+    'Mitglied',
+    'GV-Vertreter',
+    'Leiter'
+  ].map((item, index) => ({
+    id: index + 1,
+    beschreibung: item
+  })),
+  'item-text': 'beschreibung',
+  'item-value': 'id'
+}
+
+export const statusUpdateDate: IConfig = {
+  name: 'date',
+  label: 'Update-Datum',
+  required: true,
+  rules: [required('ein Datum')],
+  componentName: 'ec-form-datePicker'
 }
 
 export const verteilerTypeConfig: IConfig = {
