@@ -25,6 +25,9 @@ import anmeldungDetails from '@/views/anmeldungen/details.vue'
 import unterkünfteListe from '@/views/unterkünfte/liste.vue'
 import unterkünfteDetails from '@/views/unterkünfte/details.vue'
 
+import orgaListe from '@/views/organisationen/liste.vue'
+import orgaDetails from '@/views/organisationen/details.vue'
+
 import veranstaltungenListe from '@/views/veranstaltungen/liste.vue'
 import veranstaltungenDetails from '@/views/veranstaltungen/details.vue'
 
@@ -124,7 +127,7 @@ const routes: RouteConfig[] = [
         children: [
           {
             path: '',
-            component: unterkünfteListe,
+            component: orgaListe,
             meta: {
               userGroups: [
                 'admin',
@@ -137,7 +140,7 @@ const routes: RouteConfig[] = [
           },
           {
             path: ':id',
-            component: unterkünfteDetails,
+            component: orgaDetails,
             meta: {
               userGroups: [
                 'admin',

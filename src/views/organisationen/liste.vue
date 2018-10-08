@@ -1,0 +1,75 @@
+<template>
+  <ec-table title="Organisationen" itemName="Organisation" :items="data.orgas" :config="tableConfig" suche @open="open">
+    <ec-button-add @click="addOrga_show = true"/>
+    <ec-form
+      title="Organisation hinzufügen"
+      v-model="addOrga_show"
+      @save="addOrga_save"
+      :fieldConfig="addOrga_config"
+    />
+  </ec-table>
+</template>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import gql from 'graphql-tag'
+import auth from '@/plugins/auth'
+
+import { bezeichnungConfig } from '@/plugins/formConfig/index'
+
+@Component({})
+export default class UnterkunftListe extends reloaderBase {
+  data: { orgas: Array<any> } = {
+    orgas: []
+  }
+
+  addOrga_show = false
+  addOrga_config = [
+    bezeichnungConfig
+  ]
+
+  tableConfig = [
+    { name: 'bezeichnung', label: 'Bezeichnung' },
+    { name: 'plz', label: 'PLZ' },
+    { name: 'ort', label: 'Ort' },
+    { name: 'land', label: 'Land' }
+  ]
+  open(item: any) {
+    this.$router.push(
+      `/app/organisationen/${item.organisationsID}`
+    )
+  }
+
+  addOrga_save(value:any) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($authToken: String!, $bezeichnung: String!){
+          addOrganisation(bezeichnung: $bezeichnung, authToken: $authToken)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        bezeichnung: value.bezeichnung
+      }
+    }).then(this.refetch)
+  }
+
+  created() {
+    this.query = gql`
+      query($authToken: String!) {
+        orgas(authToken: $authToken) {
+          organisationsID
+          bezeichnung
+          plz
+          ort
+          land
+        }
+      }
+    `
+    this.variabels = {
+      authToken: auth.authToken
+    }
+    super.created()
+  }
+}
+</script>

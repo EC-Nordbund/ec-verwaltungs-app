@@ -257,8 +257,20 @@ export default class AKDetails extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation ($personID: Int!, $akID: Int!, $date: String!, $authToken: String!, $status: Int!) {
-            updateAKStatus(personID: $personID, akID: $akID, date: $date, authToken: $authToken, status: $status)
+          mutation(
+            $personID: Int!
+            $akID: Int!
+            $date: String!
+            $authToken: String!
+            $status: Int!
+          ) {
+            updateAKStatus(
+              personID: $personID
+              akID: $akID
+              date: $date
+              authToken: $authToken
+              status: $status
+            )
           }
         `,
         variables: {
@@ -266,7 +278,7 @@ export default class AKDetails extends reloaderBase {
           akID: this.$route.params.id,
           personID: value.personID,
           date: value.date,
-          status: value.status
+          status: value.status - 1
         }
       })
       .then(this.refetch)
@@ -276,8 +288,20 @@ export default class AKDetails extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation ($personID: Int!, $akID: Int!, $date: String!, $authToken: String!, $status: Int!) {
-            updateAKStatus(personID: $personID, akID: $akID, date: $date, authToken: $authToken, status: $status)
+          mutation(
+            $personID: Int!
+            $akID: Int!
+            $date: String!
+            $authToken: String!
+            $status: Int!
+          ) {
+            updateAKStatus(
+              personID: $personID
+              akID: $akID
+              date: $date
+              authToken: $authToken
+              status: $status
+            )
           }
         `,
         variables: {
@@ -285,7 +309,7 @@ export default class AKDetails extends reloaderBase {
           akID: this.$route.params.id,
           personID: value.personID,
           date: value.date,
-          status: value.status
+          status: value.status - 1
         }
       })
       .then(this.refetch)
@@ -307,7 +331,7 @@ export default class AKDetails extends reloaderBase {
     this.editAKPerson_show = true
   }
 
-  soon(){
+  soon() {
     alert('Comming Soon...')
   }
 }

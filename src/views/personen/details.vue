@@ -41,7 +41,7 @@
               @edit="editAdresse_open"
               @click="showMap"
             />
-            <v-divider/>
+            <v-divider v-if="(data.person.adressen || []).length > 0"/>
             <!-- Email -->
             <ec-list
               :items="data.person.emails || []"
@@ -51,7 +51,7 @@
               @edit="editEmail_open"
               @click="mailto"
             />
-            <v-divider/>
+            <v-divider v-if="(data.person.emails || []).length > 0"/>
             <!-- Telefone -->
             <ec-list
               :items="data.person.telefone || []"
@@ -304,7 +304,9 @@ import {
   ortConfig,
   geschlechtConfig,
   verteilerConfig,
-  verteilerTypeConfig
+  verteilerTypeConfig,
+  statusUpdateDate,
+    akStatusConfig
 } from '@/plugins/formConfig/index'
 
 import { query } from '@/graphql/index'
@@ -512,44 +514,16 @@ export default class PersonenDetails extends reloaderBase {
   editAK_show = false
   addAK_config = [
     akConfig,
-    {
-      name: 'zeitpunkt',
-      label: 'Zeitpunkt',
-      componentName: 'ec-form-datePicker',
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss ein Zeitpunkt angegeben werden!'
-            : true
-      ],
-      required: true
-    },
-    {
-      name: 'status',
-      label: 'Status'
-    }
+    statusUpdateDate,
+    akStatusConfig
   ]
   editAK_config = [
     {
       ...akConfig,
       disabled: true
     },
-    {
-      name: 'zeitpunkt',
-      label: 'Zeitpunkt',
-      componentName: 'ec-form-datePicker',
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss ein Zeitpunkt angegeben werden!'
-            : true
-      ],
-      required: true
-    },
-    {
-      name: 'status',
-      label: 'Status'
-    }
+    statusUpdateDate,
+    akStatusConfig
   ]
   editAK_value = {}
   editTelefon_show = false
