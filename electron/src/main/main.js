@@ -96,6 +96,9 @@ function createWindow() {
     handleProto(process.argv)
   })
   mainWindow.on('closed', () => {
+    if (helpWindow) {
+      helpWindow.close()
+    }
     mainWindow = null
   })
 }
@@ -157,7 +160,7 @@ function setupTray() {
   tray = new Tray(logoURL)
   tray.setToolTip('EC-Verwaltungs-Application')
   tray.on('click', () => {
-    BrowserWindow.getAllWindows()[0].show()
+    BrowserWindow.getAllWindows()[0]
   })
 }
 
@@ -444,5 +447,31 @@ ipcMain.on('set-UG', ($event, args) => {
         break
     }
     console.log(args)
+  }
+})
+
+const helpURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8081'
+    : `file://${__dirname}/../docs/index.html`
+
+const helpConfig = {
+  useContentSize: true,
+  show: false,
+  icon: logoURL
+}
+
+let helpWindow
+
+ipcMain.on('openHelp', () => {
+  if (!helpWindow) {
+    helpWindow = new BrowserWindow(helpConfig)
+    helpWindow.loadURL(helpURL)
+    helpWindow.once('ready-to-show', helpWindow.show)
+    helpWindow.once('closed', () => {
+      helpWindow = undefined
+    })
+  } else {
+    helpWindow.show()
   }
 })

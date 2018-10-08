@@ -118,6 +118,24 @@ export const ortConfig: IConfig = {
   componentName: 'v-text-field'
 }
 
+export const landConfig: IConfig = {
+  name: 'land',
+  label: 'Land',
+  required: true,
+  rules: [
+    required('ein Land'),
+    maxLength('ein Land', 'das', 50)
+  ],
+  counter: 50,
+  componentName: 'v-text-field'
+}
+
+export const notizConfig: IConfig = {
+  name: 'notizen',
+  label: 'Notizen',
+  componentName: 'v-textarea'
+}
+
 export const eMailConfig: IConfig = {
   name: 'email',
   label: 'E-Mail',

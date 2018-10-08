@@ -18,7 +18,7 @@ import auth from '@/plugins/auth'
 import { bezeichnungConfig } from '@/plugins/formConfig/index'
 
 @Component({})
-export default class UnterkunftListe extends reloaderBase {
+export default class orgaListe extends reloaderBase {
   data: { orgas: Array<any> } = {
     orgas: []
   }

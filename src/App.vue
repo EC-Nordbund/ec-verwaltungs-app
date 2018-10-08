@@ -128,19 +128,7 @@ export default class App extends Vue {
   xButtonLogic = xButtonLogic
   click(route: string) {
     if (route === '_hilfe') {
-      let win: BrowserWindow = new electron.remote.BrowserWindow(
-        {
-          // show: false
-        }
-      )
-      const onlinePath = 'http://localhost:8081'
-      const url = isProduction
-        ? isElectron ? '../docs/index.html' : onlinePath
-        : 'http://localhost:8081'
-      win.loadURL(url)
-      // win.on('ready-to-show', () => {
-      //   win.show()
-      // })
+      electron.ipcRenderer.send('openHelp')
       return
     }
     this.$router.push(route)
