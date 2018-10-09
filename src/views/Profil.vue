@@ -75,6 +75,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
+@Component({})
 export default class profil extends Vue {
   gesamtbewertung = 0
   handhabung = 0
