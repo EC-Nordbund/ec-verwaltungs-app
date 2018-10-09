@@ -168,6 +168,14 @@ export const akConfig: IConfig = {
   componentName: 'ec-select-ak'
 }
 
+export const orgaConfig: IConfig = {
+  name: 'organisationsID',
+  label: 'Wähle eine Organisation',
+  required: true,
+  rules: [required('eine Organisation')],
+  componentName: 'ec-select-orga'
+}
+
 export const verteilerConfig: IConfig = {
   name: 'verteilerID',
   label: 'Wähle einen Verteiler',

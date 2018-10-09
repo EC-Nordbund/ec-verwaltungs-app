@@ -17,6 +17,7 @@ import auth from '@/plugins/auth'
 
 import {
   bezeichnungConfig,
+  orgaConfig,
   strasseConfig,
   plzConfig,
   ortConfig,
@@ -71,6 +72,7 @@ export default class vOrtListe extends reloaderBase {
   addVort_show = false
   addVort_config = [
     bezeichnungConfig,
+    orgaConfig,
     strasseConfig,
     {
       ...plzConfig,
@@ -102,19 +104,13 @@ export default class vOrtListe extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation(
-            $authToken: String!
-            $bezeichnung: String!
-          ) {
-            addOrganisation(
-              bezeichnung: $bezeichnung
-              authToken: $authToken
-            )
+          mutation ($authToken: String!, $bezeichnung: String!, $strasse: String!, $plz: String!, $ort: String!, $land: String!, $organisationsID: Int!) {
+            addVeranstaltungsort(authToken: $authToken, bezeichnung: $bezeichnung, strasse: $strasse, plz: $plz, ort: $ort, land: $land, organisationsID: $organisationsID)
           }
         `,
         variables: {
           authToken: auth.authToken,
-          bezeichnung: value.bezeichnung
+          ...value
         }
       })
       .then(this.refetch)
