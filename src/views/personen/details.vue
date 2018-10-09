@@ -35,30 +35,33 @@
             <!-- Adressen -->
             <ec-list
               :items="data.person.adressen || []"
-              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort})"
+              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort, marked:item.isOld})"
               icon="location_on"
               :edit="auth.isMutationAllowed('editAdresse')"
               @edit="editAdresse_open"
               @click="showMap"
+              markedClass="isOld"
             />
             <v-divider v-if="(data.person.adressen || []).length > 0"/>
             <!-- Email -->
             <ec-list
               :items="data.person.emails || []"
-              :mapper="item=>({title: item.eMail})"
+              :mapper="item=>({title: item.eMail, marked:item.isOld})"
               icon="mail"
               :edit="auth.isMutationAllowed('editEmail')"
               @edit="editEmail_open"
               @click="mailto"
+              markedClass="isOld"
             />
             <v-divider v-if="(data.person.emails || []).length > 0"/>
             <!-- Telefone -->
             <ec-list
               :items="data.person.telefone || []"
-              :mapper="item=>({title: item.telefon})"
+              :mapper="item=>({title: item.telefon, marked:item.isOld})"
               icon="local_phone"
               :edit="auth.isMutationAllowed('editTelefon')"
               @edit="editTelefon_open"
+              markedClass="isOld"
             />
             <!-- Add Adresse, Email, Telefon -->
             <v-card-actions>
@@ -306,7 +309,7 @@ import {
   verteilerConfig,
   verteilerTypeConfig,
   statusUpdateDate,
-    akStatusConfig
+  akStatusConfig
 } from '@/plugins/formConfig/index'
 
 import { query } from '@/graphql/index'
@@ -760,3 +763,8 @@ export default class PersonenDetails extends reloaderBase {
   }
 }
 </script>
+<style>
+.isOld {
+  background-color: red;
+}
+</style>

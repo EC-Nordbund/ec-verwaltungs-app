@@ -35,6 +35,9 @@ export default class Liste extends Vue {
               click: () => {
                 this.$emit('click', mapItem.item)
               }
+            },
+            class: {
+              [this.markedClass]: mapItem.map.marked
             }
           },
           [
@@ -103,6 +106,13 @@ export default class Liste extends Vue {
   })
   items!: Array<any>
 
+  @Prop({
+    type: String,
+    required: false,
+    default: 'marked'
+  })
+  markedClass!: string
+
   /**
    * mapper der aus items mapItems macht
    *
@@ -119,6 +129,7 @@ export default class Liste extends Vue {
     title: string
     subTitle?: string
     edit?: boolean
+    marked?: boolean
   }
 
   /**
