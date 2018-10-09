@@ -17,7 +17,42 @@ import auth from '@/plugins/auth'
 
 import { bezeichnungConfig } from '@/plugins/formConfig/index'
 
-@Component({})
+
+import event from '@/plugins/eventbus'
+import { getClient } from '@/plugins/apollo'
+
+const loadGQL = gql`
+      query($authToken: String!) {
+        orgas(authToken: $authToken) {
+          organisationsID
+          bezeichnung
+          plz
+          ort
+          land
+        }
+      }
+    `
+
+@Component({
+  beforeRouteEnter(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: loadGQL,
+        variables: {
+          authToken: auth.authToken
+        }
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<orgaListe>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  }
+})
 export default class orgaListe extends reloaderBase {
   data: { orgas: Array<any> } = {
     orgas: []
@@ -55,17 +90,7 @@ export default class orgaListe extends reloaderBase {
   }
 
   created() {
-    this.query = gql`
-      query($authToken: String!) {
-        orgas(authToken: $authToken) {
-          organisationsID
-          bezeichnung
-          plz
-          ort
-          land
-        }
-      }
-    `
+    this.query = loadGQL
     this.variabels = {
       authToken: auth.authToken
     }
