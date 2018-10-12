@@ -1,5 +1,5 @@
 <template>
-  <ec-table title="Veranstaltungsorte" itemName="Veranstaltungsort" :items="data.vorte" :config="tableConfig" suche @open="open">
+  <ec-table title="Veranstaltungsorte" itemName="Veranstaltungsort" :items="data.vorte" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" >
     <ec-button-add @click="addVort_show = true"/>
     <ec-form
       title="Veranstaltungsort hinzufügen"
@@ -28,6 +28,7 @@ import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
 
 import { required, maxLength } from '@/plugins/rules'
+import xButtonLogik from '@/plugins/xButton/logic'
 
 const loadGQL = gql`
   query($authToken: String!) {
@@ -96,8 +97,19 @@ export default class vOrtListe extends reloaderBase {
     { name: 'ort', label: 'Ort' },
     { name: 'land', label: 'Land' }
   ]
+  xButtonLogik = xButtonLogik
   open(item: any) {
+    this.xButtonLogik.addItem(this.$route.path, {
+      suche: this.suchstring
+    })
     this.$router.push(`/app/vOrte/${item.vOrtID}`)
+  }
+
+  
+  suchstring: string = ''
+
+  suchStringUpdate(val: string) {
+    this.suchstring = val
   }
 
   addVort_save(value: any) {

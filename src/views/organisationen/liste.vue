@@ -1,5 +1,5 @@
 <template>
-  <ec-table title="Organisationen" itemName="Organisation" :items="data.orgas" :config="tableConfig" suche @open="open">
+  <ec-table title="Organisationen" itemName="Organisation" :items="data.orgas" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" >
     <ec-button-add @click="addOrga_show = true"/>
     <ec-form
       title="Organisation hinzufügen"
@@ -16,22 +16,22 @@ import gql from 'graphql-tag'
 import auth from '@/plugins/auth'
 
 import { bezeichnungConfig } from '@/plugins/formConfig/index'
-
+import xButtonLogik from '@/plugins/xButton/logic'
 
 import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
 
 const loadGQL = gql`
-      query($authToken: String!) {
-        orgas(authToken: $authToken) {
-          organisationsID
-          bezeichnung
-          plz
-          ort
-          land
-        }
-      }
-    `
+  query($authToken: String!) {
+    orgas(authToken: $authToken) {
+      organisationsID
+      bezeichnung
+      plz
+      ort
+      land
+    }
+  }
+`
 
 @Component({
   beforeRouteEnter(to, from, next) {
@@ -57,11 +57,10 @@ export default class orgaListe extends reloaderBase {
   data: { orgas: Array<any> } = {
     orgas: []
   }
+  xButtonLogik = xButtonLogik
 
   addOrga_show = false
-  addOrga_config = [
-    bezeichnungConfig
-  ]
+  addOrga_config = [bezeichnungConfig]
 
   tableConfig = [
     { name: 'bezeichnung', label: 'Bezeichnung' },
@@ -70,23 +69,41 @@ export default class orgaListe extends reloaderBase {
     { name: 'land', label: 'Land' }
   ]
   open(item: any) {
+    this.xButtonLogik.addItem(this.$route.path, {
+      suche: this.suchstring
+    })
     this.$router.push(
       `/app/organisationen/${item.organisationsID}`
     )
   }
 
-  addOrga_save(value:any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation($authToken: String!, $bezeichnung: String!){
-          addOrganisation(bezeichnung: $bezeichnung, authToken: $authToken)
+  
+  suchstring: string = ''
+
+  suchStringUpdate(val: string) {
+    this.suchstring = val
+  }
+
+  addOrga_save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $bezeichnung: String!
+          ) {
+            addOrganisation(
+              bezeichnung: $bezeichnung
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          bezeichnung: value.bezeichnung
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        bezeichnung: value.bezeichnung
-      }
-    }).then(this.refetch)
+      })
+      .then(this.refetch)
   }
 
   created() {

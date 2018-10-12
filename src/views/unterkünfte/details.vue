@@ -66,6 +66,12 @@ import { query } from '@/graphql/index'
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  
+`
+
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
