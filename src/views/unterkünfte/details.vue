@@ -1,10 +1,10 @@
 <template>
-  <ec-wrapper title="Personen Details" :label="'test'" type="Veranstaltungsort">
+  <ec-wrapper title="Veranstaltungsort Details" :label="data.vort.bezeichnung" type="Veranstaltungsort">
 
     <template slot="label">
       <ec-headline>
-        Veranstaltungsort Details
-        <ec-button-icon @click=""/>
+        {{data.vort.bezeichnung}} ({{(data.vort.organisation || {}).bezeichnung}})
+        <ec-button-icon @click="soon"/>
       </ec-headline>
     </template>
 
@@ -24,23 +24,81 @@
     </template>
 
     <template>
-      <v-tabs-items v-model="tabs" class="white">
+      <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
           <ec-list :mapper="v=>v" icon="map" :items="[
             {
-              title: "EC-Ferienlager Karlsminde",
-              subTitle: "Bezeichnung"
-            }  
+              title: data.vort.strasse,
+              subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
+              icon:'home'
+            },
+            {
+              title: `${data.vort.bezeichnung} (${data.vort.ort} ${data.vort.land})`,
+              subTitle: 'Organisation bei der gebucht'
+            },
+            {
+              title: data.vort.anzahl_min?data.vort.anzahl_min:'N/A',
+              subTitle: 'Mindestzahl an TN'
+            },
+            {
+              title: data.vort.anzahl_max?data.vort.anzahl_max:'N/A',
+              subTitle: 'Maximalzahl an TN'
+            },
+            ...(data.vort.vollverpflegung?[
+              {
+                title: 'Vollverpflegung möglich'
+              }
+            ]:[]),
+            ...(data.vort.sebstversorger?[
+              {
+                title: 'Sebstversorger möglich'
+              }
+            ]:[]),
+            {
+              title: data.vort.notizen?data.vort.notizen:'N/A',
+              subTitle: 'Notizen'
+            }
           ]"/>
         </v-tab-item>
         <v-tab-item id="tab-4">
-          <v-card>
-          </v-card>
+          <div v-for="(kontakt, index) in data.vort.kontakte || []" :key="index">
+            <v-divider v-if="index !== 0"/>
+            <ec-list
+              @edit="editKontakt(kontakt)"
+              :mapper="v=>v"
+              :items="[
+                {
+                  title: kontakt.ansprechpartner,
+                  subTitle: 'Ansprechpartner',
+                  edit: true
+                },
+                {
+                  title: kontakt.typ,
+                  subTitle: 'Typ'
+                },
+                {
+                  title: kontakt.telefon,
+                  subTitle: 'Telefon'
+                },
+                {
+                  title: kontakt.email,
+                  subTitle: 'E-Mail'
+                },
+                {
+                  title: kontakt.notizen,
+                  subTitle: 'Notizen'
+                }
+              ]"
+            />
+          </div>
         </v-tab-item>
         <v-tab-item id="tab-3">
-          <v-card>
-            Hier folgt eine Liste der Veranstaltungen die hier Stattfunden,.
-          </v-card>
+          <ec-list
+            :items="data.vort.veranstaltungen || []"
+            :mapper="v=>({
+              title: `${v.bezeichnung} (${v.begin.german} - ${v.ende.german})`
+            })"
+          />
         </v-tab-item>
       </v-tabs-items>
     </template>
@@ -69,7 +127,44 @@ import event from '@/plugins/eventbus'
 import gql from 'graphql-tag'
 
 const loadGQL = gql`
-  
+  query($authToken: String!, $vOrtID: Int!) {
+    vort(authToken: $authToken, vOrtID: $vOrtID) {
+      vOrtID
+      bezeichnung
+      strasse
+      plz
+      ort
+      land
+      anzahl_min
+      anzahl_max
+      vollverpflegung
+      sebstversorger
+      kontakte {
+        vOrtKontaktID
+        ansprechpartner
+        typ
+        email
+        telefon
+        notizen
+      }
+      organisation {
+        organisationsID
+        bezeichnung
+        ort
+        land
+      }
+      veranstaltungen {
+        veranstaltungsID
+        bezeichnung
+        begin {
+          german
+        }
+        ende {
+          german
+        }
+      }
+    }
+  }
 `
 
 @Component({
@@ -77,10 +172,10 @@ const loadGQL = gql`
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
-          personID: to.params.id
+          vOrtID: to.params.id
         }
       })
       .then((v: any) => {
@@ -96,17 +191,17 @@ const loadGQL = gql`
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
-          personID: to.params.id
+          vOrtID: to.params.id
         }
       })
       .then((v: any) => {
         ;(<any>this).data = v.data
         ;(<any>this).variabels = {
           authToken: auth.authToken,
-          personID: to.params.id
+          vOrtID: to.params.id
         }
         next()
         setTimeout(() => {
@@ -115,7 +210,19 @@ const loadGQL = gql`
       })
   }
 })
-export default class PersonenDetails extends reloaderBase {
+export default class vOrtDetails extends reloaderBase {
   tabs = null
+  data: any = {
+    vort: {}
+  }
+
+  editKontakt(konatkt: any) {
+    console.log(konatkt)
+    this.soon()
+  }
+
+  soon() {
+    alert('Cooming Soon...')
+  }
 }
 </script>
