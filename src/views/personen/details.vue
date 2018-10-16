@@ -35,20 +35,20 @@
             <!-- Adressen -->
             <ec-list
               :items="data.person.adressen || []"
-              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort, marked:item.isOld})"
+              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="location_on"
-              :edit="auth.isMutationAllowed('editAdresse')"
               @edit="editAdresse_open"
               @click="showMap"
+              :edit="auth.isMutationAllowed('editKontakt')"
               markedClass="isOld"
             />
             <v-divider v-if="(data.person.adressen || []).length > 0"/>
             <!-- Email -->
             <ec-list
               :items="data.person.emails || []"
-              :mapper="item=>({title: item.eMail, marked:item.isOld})"
+              :mapper="item=>({title: item.eMail, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="mail"
-              :edit="auth.isMutationAllowed('editEmail')"
+              :edit="auth.isMutationAllowed('editKontakt')"
               @edit="editEmail_open"
               @click="mailto"
               markedClass="isOld"
@@ -57,24 +57,24 @@
             <!-- Telefone -->
             <ec-list
               :items="data.person.telefone || []"
-              :mapper="item=>({title: item.telefon, marked:item.isOld})"
+              :mapper="item=>({title: item.telefon, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="local_phone"
-              :edit="auth.isMutationAllowed('editTelefon')"
+              :edit="auth.isMutationAllowed('editKontakt')"
               @edit="editTelefon_open"
               markedClass="isOld"
             />
             <!-- Add Adresse, Email, Telefon -->
             <v-card-actions>
               <v-spacer/>
-              <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addAdresse')">
+              <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addKontakt')">
                 <v-icon>add</v-icon>
                 Adresse
               </v-btn>
-              <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addEmail')">
+              <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addKontakt')">
                 <v-icon>add</v-icon>
                 Email
               </v-btn>
-              <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addTelefon')">
+              <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addKontakt')">
                 <v-icon>add</v-icon>
                 Telefon
               </v-btn>
@@ -190,7 +190,7 @@
     </template>
 
     <template slot="actions">
-      <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
+      <v-btn v-if="isElectron" color="primary" @click="alertCommingSoon">Auskunftsrecht</v-btn>
       <v-btn @click="alertCommingSoon">Serienbrief</v-btn>
     </template>
 
@@ -222,7 +222,10 @@
         v-model="editAdresse_show"
         @save="editAdresse_save"
         :value="editAdresse_value"
+        @delete="editAdresse_delete"
         :fieldConfig="addAdresse_config"
+        :deleteBtn="auth.isMutationAllowed('oldStatusKontakt')"
+        deleteLabel="Als alt Makieren"
       />
       <!-- EDIT Telefon -->
       <ec-form
@@ -230,15 +233,21 @@
         v-model="editTelefon_show"
         @save="editTelefon_save"
         :value="editTelefon_value"
+        @delete="editTelefon_delete"
         :fieldConfig="addTelefon_config"
+        :deleteBtn="auth.isMutationAllowed('oldStatusKontakt')"
+        deleteLabel="Als alt Makieren"
       />
       <!-- EDIT Email -->
       <ec-form
         title="Email editieren"
         v-model="editEmail_show"
         @save="editEmail_save"
+        @delete="editEmail_delete"
         :value="editEmail_value"
         :fieldConfig="addEmail_config"
+        :deleteBtn="auth.isMutationAllowed('oldStatusKontakt')"
+        deleteLabel="Als alt Makieren"
       />
       <!-- ADD AK -->
       <ec-form
@@ -542,45 +551,7 @@ export default class PersonenDetails extends reloaderBase {
   addAdresse_show = false
   addAdresse_config = [strasseConfig, plzConfig, ortConfig]
   tabs = null
-  auskunftsRecht() {
-    ;(<any>this.$apollo)
-      .getClient()
-      .query({
-        query: query.personen.details.auskunft,
-        variables: {
-          authToken: auth.authToken,
-          personID: this.$route.params.id
-        }
-      })
-      .then((v: any) => v.data.person)
-      .then((v: any) => {
-        const { clipboard, remote } = electron
-
-        const typeName = (obj: any) => {
-          let newObj: any = {}
-          for (const key in obj) {
-            if (key !== '__typename') {
-              if (typeof obj[key] === 'object') {
-                newObj[key] = typeName(obj[key])
-              } else {
-                newObj[key] = obj[key]
-              }
-            }
-          }
-          return newObj
-        }
-
-        clipboard.writeText(
-          JSON.stringify(typeName(v), null, 2)
-        )
-
-        remote.dialog.showMessageBox({
-          title: 'Zwischenspeicher',
-          message:
-            'Die Daten wurden in den Zwischenspeicher zwischengespeichert.'
-        })
-      })
-  }
+  
   mapData: any = {}
   mapShow: boolean = false
   showMap(item: any) {
@@ -651,7 +622,11 @@ export default class PersonenDetails extends reloaderBase {
   addAdresse_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.addAdresse,
+        mutation: gql`
+          mutation($personID: Int!, $authToken: String!, $strasse: String!, $plz: String!, $ort: String!){
+            addAdresse(personID: $personID, authToken: $authToken, strasse: $strasse, plz: $plz, ort: $ort)
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -663,7 +638,11 @@ export default class PersonenDetails extends reloaderBase {
   addTelefon_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.addTelefon,
+        mutation: gql`
+          mutation($personID: Int!, $authToken: String!, $telefon: String!){
+            addTelefon(personID: $personID, authToken: $authToken, telefon: $telefon)
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -675,7 +654,11 @@ export default class PersonenDetails extends reloaderBase {
   addEmail_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.addEmail,
+        mutation: gql`
+          mutation($personID: Int!, $authToken: String!, $email: String!){
+            addEmail(personID: $personID, authToken: $authToken, email: $email)
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -687,19 +670,39 @@ export default class PersonenDetails extends reloaderBase {
   editAdresse_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editAdresse,
+        mutation: gql`
+          mutation($adressID: Int!, $authToken: String!, $strasse: String!, $plz: String!, $ort: String!){
+            editAdresse(adressID: $adressID, authToken: $authToken, strasse: $strasse, plz: $plz, ort: $ort)
+          }
+        `,
         variables: {
-          personID: this.data.person.personID,
           authToken: auth.authToken,
           ...value
         }
       })
       .then(this.refetch)
+  }
+  editAdresse_delete(value:any){
+    this.$apollo.mutate({
+      mutation: gql`
+      mutation($adressID: Int!, $authToken: String!){
+  markAdressAsOld(adressID: $adressID, authToken: $authToken)
+}
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(this.refetch)
   }
   editTelefon_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editTelefon,
+        mutation: gql`
+          mutation($telefonID: Int!, $authToken: String!, $telefon: String!){
+            editTelefon(telefonID: $telefonID, authToken: $authToken, telefon: $telefon)
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -708,10 +711,40 @@ export default class PersonenDetails extends reloaderBase {
       })
       .then(this.refetch)
   }
+  editTelefon_delete(value:any){
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($telefonID: Int!, $authToken: String!){
+          markTelefonAsOld(telefonID: $telefonID, authToken: $authToken)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(this.refetch)
+  }
+  editEmail_delete(value: any){
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($emailID: Int!, $authToken: String!){
+          markEmailAsOld(emailID: $emailID, authToken: $authToken)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(this.refetch)
+  }
   editEmail_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editEmail,
+        mutation: gql`
+          mutation($emailID: Int!, $authToken: String!, $email: String!){
+            editEmail(emailID: $emailID, authToken: $authToken, email: $email)
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -737,10 +770,11 @@ export default class PersonenDetails extends reloaderBase {
     }
     this.editTelefon_show = true
   }
-  editEmail_open(item: { emailID: number; email: string }) {
+  editEmail_open(item: { eMailID: number; eMail: string }) {
     this.editEmail_value = {}
     this.editEmail_value = {
-      ...item
+      emailID: item.eMailID,
+      email: item.eMail
     }
     this.editEmail_show = true
   }

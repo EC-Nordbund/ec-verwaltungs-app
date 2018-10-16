@@ -23,65 +23,93 @@ export default class Liste extends Vue {
    * @memberof Liste
    */
   render(h: CreateElement) {
+    let innerElement = (
+      mapItem: { map: any; item: any },
+      index: number
+    ) => {
+      return h(
+        'v-list-tile',
+        {
+          key: index,
+          on: {
+            click: () => {
+              this.$emit('click', mapItem.item)
+            }
+          },
+          class: {
+            [this.markedClass]: mapItem.map.marked
+          }
+        },
+        [
+          ...(this.icon
+            ? [
+                h('v-list-tile-action', [
+                  h(
+                    'v-icon',
+                    {
+                      props: {
+                        color: 'indigo'
+                      }
+                    },
+                    [mapItem.map.icon || this.icon]
+                  )
+                ])
+              ]
+            : []),
+          h('v-list-tile-content', [
+            h('v-list-tile-title', [mapItem.map.title]),
+            ...(mapItem.map.subTitle
+              ? [
+                  h('v-list-tile-sub-title', [
+                    mapItem.map.subTitle
+                  ])
+                ]
+              : [])
+          ]),
+          ...(mapItem.map.edit || this.edit
+            ? [
+                h('v-list-tile-action', {}, [
+                  h('ec-button-icon', {
+                    on: {
+                      click: ($event: any) => {
+                        $event.stopPropagation()
+                        this.$emit('edit', mapItem.item)
+                      }
+                    }
+                  })
+                ])
+              ]
+            : [])
+        ]
+      )
+    }
+
     return h(
       'v-list',
       {},
       this.itemMap.map((mapItem, index) => {
-        return h(
-          'v-list-tile',
-          {
-            key: index,
-            on: {
-              click: () => {
-                this.$emit('click', mapItem.item)
+        if (mapItem.map.toolTip) {
+          return h(
+            'v-tooltip',
+            {
+              props: {
+                bottom: true
               }
             },
-            class: {
-              [this.markedClass]: mapItem.map.marked
-            }
-          },
-          [
-            ...(this.icon
-              ? [
-                  h('v-list-tile-action', [
-                    h(
-                      'v-icon',
-                      {
-                        props: {
-                          color: 'indigo'
-                        }
-                      },
-                      [mapItem.map.icon || this.icon]
-                    )
-                  ])
-                ]
-              : []),
-            h('v-list-tile-content', [
-              h('v-list-tile-title', [mapItem.map.title]),
-              ...(mapItem.map.subTitle
-                ? [
-                    h('v-list-tile-sub-title', [
-                      mapItem.map.subTitle
-                    ])
-                  ]
-                : [])
-            ]),
-            ...(mapItem.map.edit || this.edit
-              ? [
-                  h('v-list-tile-action', [
-                    h('ec-button-icon', {
-                      on: {
-                        click: ($event: any) => {
-                          $event.stopPropagation()
-                          this.$emit('edit', mapItem.item)
-                        }
-                      }
-                    })
-                  ])
-                ]
-              : [])
-          ]
-        )
+            [
+              h(
+                'template',
+                {
+                  slot: 'activator'
+                },
+                [innerElement(mapItem, index)]
+              ),
+              h('span', {}, mapItem.map.toolTip)
+            ]
+          )
+        } else {
+          return innerElement(mapItem, index)
+        }
       })
     )
   }
@@ -130,6 +158,7 @@ export default class Liste extends Vue {
     subTitle?: string
     edit?: boolean
     marked?: boolean
+    toolTip?: string
   }
 
   /**

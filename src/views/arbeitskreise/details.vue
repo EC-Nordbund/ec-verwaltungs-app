@@ -30,6 +30,7 @@
         <v-expansion-panel-content ripple lazy>
           <div slot="header">Alle Mitglieder</div>
           <v-expansion-panel> 
+            <v-divider/>
             <v-expansion-panel-content ripple lazy v-for="person in (data.ak.personen||[])" :key="person.person.personID">
               <div slot="header">
                 {{person.person.vorname}}
