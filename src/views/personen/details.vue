@@ -168,7 +168,7 @@
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
-            <!-- Add AK, Verteiler, FZ, FZ-Antrag -->
+            <!-- Add AK, FZ, FZ-Antrag -->
             <v-card-actions>
               <v-spacer/>
               <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('updateAKStatus')">
@@ -264,23 +264,6 @@
         :fieldConfig="editAK_config"
         :value="editAK_value"
       />
-      <!-- ADD Verteiler -->
-      <ec-form
-        title="ZuVerteiler hinzufügen"
-        v-model="addVerteiler_show"
-        @save="addVerteiler_save"
-        :fieldConfig="addVerteiler_config"
-      />
-      <!-- EDIT Verteiler -->
-      <ec-form
-        title="Verteiler-Zugehörigkeit editieren"
-        deleteBtn
-        @delete="editVerteiler_delete"
-        v-model="editVerteiler_show"
-        @save="editVerteiler_save"
-        :fieldConfig="addVerteiler_config"
-        :value="editVerteiler_value"
-      />
       <!-- EDIT PersonStamm -->
       <ec-form
         title="Personenstamm editieren"
@@ -315,8 +298,6 @@ import {
   plzConfig,
   ortConfig,
   geschlechtConfig,
-  verteilerConfig,
-  verteilerTypeConfig,
   statusUpdateDate,
   akStatusConfig
 } from '@/plugins/formConfig/index'
@@ -531,13 +512,6 @@ export default class PersonenDetails extends reloaderBase {
   ]
   auskunftsRechtContent = {}
   auskunftsRecht_show = false
-  addVerteiler_show = false
-  addVerteiler_config = [
-    verteilerConfig,
-    verteilerTypeConfig
-  ]
-  editVerteiler_show = false
-  editVerteiler_value = {}
   addAK_show = false
   editAK_show = false
   addAK_config = [
@@ -573,52 +547,6 @@ export default class PersonenDetails extends reloaderBase {
   showMap(item: any) {
     this.mapData = item
     this.mapShow = true
-  }
-  editVerteiler_save(value: any) {
-    this.$apollo
-      .mutate({
-        mutation: query.personen.details.editVerteiler,
-        variables: {
-          ...value,
-          personID: this.data.person.personID,
-          authToken: auth.authToken
-        }
-      })
-      .then(this.refetch)
-  }
-  editVerteiler_open(item: any) {
-    this.editVerteiler_value = {}
-    this.editVerteiler_value = {
-      verteilerPersonenID: item.verteilerPersonenID,
-      verteiler: item.verteiler.verteilerID,
-      type: item.type
-    }
-    this.editVerteiler_show = true
-  }
-  editVerteiler_delete(value: any) {
-    this.$apollo
-      .mutate({
-        mutation: query.personen.details.deleteVerteiler,
-        variables: {
-          authToken: auth.authToken,
-          ...value
-        }
-      })
-      .then(this.refetch)
-  }
-  addVerteiler_save(value: any) {
-    console.log(value)
-    alert('comming soon')
-    // this.$apollo
-    //   .mutate({
-    //     mutation: query.personen.details.addVerteiler,
-    //     variables: {
-    //       personID: this.data.person.personID,
-    //       authToken: auth.authToken,
-    //       ...value
-    //     }
-    //   })
-    //   .then(this.refetch)
   }
   editAK_save(value: any) {
     alert('Comming Soon')

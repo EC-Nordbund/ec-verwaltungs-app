@@ -29,11 +29,37 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import {} from '@/plugins/formConfig/index'
 
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  query($authToken: String!) {
+    anmeldungen(authToken: $authToken) {
+      anmeldeID
+      person {
+        vorname
+        nachname
+        gebDat {
+          german
+        }
+      }
+      veranstaltung {
+        bezeichnung
+        begin {
+          german
+        }
+        ende {
+          german
+        }
+      }
+      position
+    }
+  }
+`
+
 import auth from '@/plugins/auth'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { query } from '@/graphql/index'
 import { getClient } from '@/plugins/apollo'
 
 @Component({
@@ -41,7 +67,7 @@ import { getClient } from '@/plugins/apollo'
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.anmeldungen.liste.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken
         }
@@ -102,7 +128,7 @@ export default class anmeldungsListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.query = query.anmeldungen.liste.load
+    this.query = loadGQL
     this.suchstring = this.$route.query.suche || ''
     super.created()
   }

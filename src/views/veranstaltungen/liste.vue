@@ -18,7 +18,6 @@ import auth from '@/plugins/auth'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { query } from '@/graphql/index'
 import { getClient } from '@/plugins/apollo'
 
 const loadGQL = gql`

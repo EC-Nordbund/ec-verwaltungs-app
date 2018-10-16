@@ -11,7 +11,6 @@ import gql from 'graphql-tag'
 
 import { bezeichnungConfig } from '@/plugins/formConfig/index'
 import xButtonLogik from '@/plugins/xButton/logic'
-import { query } from '@/graphql/index'
 import event from '@/plugins/eventbus'
 import { getClient } from '@/plugins/apollo'
 import auth from '@/plugins/auth'
