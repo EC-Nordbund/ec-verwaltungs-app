@@ -479,30 +479,32 @@ export default class PersonenDetails extends reloaderBase {
   editSonstiges_value: any = {}
   editSonstiges_show: boolean = false
   editSonstiges_save(value: any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation(
-          $authToken: String!
-          $personID: Int!
-          $juLeiCaNr: String!
-          $ecMitglied: Int!
-          $ecKreis: Int!
-        ) {
-          editSonstiges(
-            personID: $personID
-            authToken: $authToken
-            juLeiCaNr: $juLeiCaNr
-            ecMitglied: $ecMitglied
-            ecKreis: $ecKreis
-          )
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $personID: Int!
+            $juLeiCaNr: String!
+            $ecMitglied: Int!
+            $ecKreis: Int
+          ) {
+            editSonstiges(
+              personID: $personID
+              authToken: $authToken
+              juLeiCaNr: $juLeiCaNr
+              ecMitglied: $ecMitglied
+              ecKreis: $ecKreis
+            )
+          }
+        `,
+        variables: {
+          authToken: this.auth.authToken,
+          personID: this.$route.params.id,
+          ...value
         }
-      `,
-      variables: {
-        authToken: this.auth.authToken,
-        personID: this.$route.params.id,
-        ...value
-      }
-    })
+      })
+      .then(this.refetch)
   }
   editSonstiges_open() {
     this.editSonstiges_value = {}
@@ -516,7 +518,6 @@ export default class PersonenDetails extends reloaderBase {
   editSonstiges_config = [juLeiCaConfig, ecMitgliedConfig]
   addFZ_show = false
   addFZ_save(value: any) {
-    console.log(value)
     this.$apollo.mutate({
       mutation: gql`
         mutation(
@@ -542,7 +543,7 @@ export default class PersonenDetails extends reloaderBase {
         gesehenAm: value.date,
         gesehenVon: value.personID
       }
-    })
+    }).then(this.refetch)
   }
   addFZ_config = [
     {
