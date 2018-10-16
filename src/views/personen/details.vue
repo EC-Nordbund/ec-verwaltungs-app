@@ -179,7 +179,7 @@
                 <v-icon>add</v-icon>
                 Führungszeugnis
               </v-btn>
-              <v-btn flat v-if="true" @click="alertCommingSoon">
+              <v-btn flat v-if="true" @click="fzAntrag">
                 <v-icon>add</v-icon>
                 Führungszeugnis-Antrag
               </v-btn>
@@ -860,6 +860,29 @@ export default class PersonenDetails extends reloaderBase {
   }
   mailto(item: any) {
     location.href = `mailto:${item.eMail}`
+  }
+  fzAntrag() {
+    // Confirm.
+    electron.remote.dialog.showMessageBox({
+      type: 'question',
+      buttons : ['Yes', 'No'],
+      title: 'FZ-Antrag generieren?',
+      message: 'Soll wirklich ein FZ-Antrag generiert werden?'
+    }, (response)=>{
+      if(response===0) {
+        this.$apollo.mutate({
+          mutation: gql`
+            mutation($personID: Int!, $authToken: String!) {
+              addFZAntrag(personID: $personID, authToken: $authToken)
+            }
+          `,
+          variables: {
+            authToken: auth.authToken,
+            personID: this.$route.params.id
+          }
+        }).then(this.refetch)
+      }
+    })
   }
 }
 </script>
