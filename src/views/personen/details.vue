@@ -561,7 +561,19 @@ export default class PersonenDetails extends reloaderBase {
     this.editAK_show = true
   }
   addAK_save(value: any) {
-    alert('Comming Soon')
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation ($authToken: String!, $personID: Int!, $status: Int!, $akID: Int!, $date: String!) {
+        updateAKStatus(personID: $personID, authToken: $authToken, akID: $akID, status: $status, date: $date)
+      }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        personID: this.data.person.personID,
+        ...value,
+        status: value.status - 1
+      }
+    }).then(this.refetch)
   }
   addAdresse_save(value: any) {
     this.$apollo
