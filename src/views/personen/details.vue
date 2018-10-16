@@ -321,8 +321,6 @@ import {
   akStatusConfig
 } from '@/plugins/formConfig/index'
 
-import { query } from '@/graphql/index'
-
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
@@ -569,7 +567,7 @@ export default class PersonenDetails extends reloaderBase {
   addAdresse_show = false
   addAdresse_config = [strasseConfig, plzConfig, ortConfig]
   tabs = null
-  
+
   mapData: any = {}
   mapShow: boolean = false
   showMap(item: any) {
@@ -641,8 +639,20 @@ export default class PersonenDetails extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation($personID: Int!, $authToken: String!, $strasse: String!, $plz: String!, $ort: String!){
-            addAdresse(personID: $personID, authToken: $authToken, strasse: $strasse, plz: $plz, ort: $ort)
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $strasse: String!
+            $plz: String!
+            $ort: String!
+          ) {
+            addAdresse(
+              personID: $personID
+              authToken: $authToken
+              strasse: $strasse
+              plz: $plz
+              ort: $ort
+            )
           }
         `,
         variables: {
@@ -657,8 +667,16 @@ export default class PersonenDetails extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation($personID: Int!, $authToken: String!, $telefon: String!){
-            addTelefon(personID: $personID, authToken: $authToken, telefon: $telefon)
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $telefon: String!
+          ) {
+            addTelefon(
+              personID: $personID
+              authToken: $authToken
+              telefon: $telefon
+            )
           }
         `,
         variables: {
@@ -673,8 +691,16 @@ export default class PersonenDetails extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation($personID: Int!, $authToken: String!, $email: String!){
-            addEmail(personID: $personID, authToken: $authToken, email: $email)
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $email: String!
+          ) {
+            addEmail(
+              personID: $personID
+              authToken: $authToken
+              email: $email
+            )
           }
         `,
         variables: {
@@ -689,8 +715,20 @@ export default class PersonenDetails extends reloaderBase {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation($adressID: Int!, $authToken: String!, $strasse: String!, $plz: String!, $ort: String!){
-            editAdresse(adressID: $adressID, authToken: $authToken, strasse: $strasse, plz: $plz, ort: $ort)
+          mutation(
+            $adressID: Int!
+            $authToken: String!
+            $strasse: String!
+            $plz: String!
+            $ort: String!
+          ) {
+            editAdresse(
+              adressID: $adressID
+              authToken: $authToken
+              strasse: $strasse
+              plz: $plz
+              ort: $ort
+            )
           }
         `,
         variables: {
@@ -700,25 +738,38 @@ export default class PersonenDetails extends reloaderBase {
       })
       .then(this.refetch)
   }
-  editAdresse_delete(value:any){
-    this.$apollo.mutate({
-      mutation: gql`
-      mutation($adressID: Int!, $authToken: String!){
-  markAdressAsOld(adressID: $adressID, authToken: $authToken)
-}
-      `,
-      variables: {
-        authToken: auth.authToken,
-        ...value
-      }
-    }).then(this.refetch)
+  editAdresse_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation($adressID: Int!, $authToken: String!) {
+            markAdressAsOld(
+              adressID: $adressID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          ...value
+        }
+      })
+      .then(this.refetch)
   }
   editTelefon_save(value: any) {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation($telefonID: Int!, $authToken: String!, $telefon: String!){
-            editTelefon(telefonID: $telefonID, authToken: $authToken, telefon: $telefon)
+          mutation(
+            $telefonID: Int!
+            $authToken: String!
+            $telefon: String!
+          ) {
+            editTelefon(
+              telefonID: $telefonID
+              authToken: $authToken
+              telefon: $telefon
+            )
           }
         `,
         variables: {
@@ -729,38 +780,56 @@ export default class PersonenDetails extends reloaderBase {
       })
       .then(this.refetch)
   }
-  editTelefon_delete(value:any){
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation($telefonID: Int!, $authToken: String!){
-          markTelefonAsOld(telefonID: $telefonID, authToken: $authToken)
+  editTelefon_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation($telefonID: Int!, $authToken: String!) {
+            markTelefonAsOld(
+              telefonID: $telefonID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          ...value
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        ...value
-      }
-    }).then(this.refetch)
+      })
+      .then(this.refetch)
   }
-  editEmail_delete(value: any){
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation($emailID: Int!, $authToken: String!){
-          markEmailAsOld(emailID: $emailID, authToken: $authToken)
+  editEmail_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation($emailID: Int!, $authToken: String!) {
+            markEmailAsOld(
+              emailID: $emailID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          ...value
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        ...value
-      }
-    }).then(this.refetch)
+      })
+      .then(this.refetch)
   }
   editEmail_save(value: any) {
     this.$apollo
       .mutate({
         mutation: gql`
-          mutation($emailID: Int!, $authToken: String!, $email: String!){
-            editEmail(emailID: $emailID, authToken: $authToken, email: $email)
+          mutation(
+            $emailID: Int!
+            $authToken: String!
+            $email: String!
+          ) {
+            editEmail(
+              emailID: $emailID
+              authToken: $authToken
+              email: $email
+            )
           }
         `,
         variables: {

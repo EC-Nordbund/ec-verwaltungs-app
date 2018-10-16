@@ -16,9 +16,6 @@ import PersonenDetails from '@/views/personen/details.vue'
 import AKListe from '@/views/arbeitskreise/liste.vue'
 import AKDetails from '@/views/arbeitskreise/details.vue'
 
-import VerteilerListe from '@/views/verteiler/liste.vue'
-import VerteilerDetails from '@/views/verteiler/details.vue'
-
 import anmeldungListe from '@/views/anmeldungen/liste.vue'
 import anmeldungDetails from '@/views/anmeldungen/details.vue'
 
@@ -97,26 +94,6 @@ const routes: RouteConfig[] = [
             component: AKDetails,
             meta: {
               userGroups: ['admin', 'vorsitzender']
-            }
-          }
-        ]
-      },
-      {
-        path: 'verteiler',
-        component: RouteComponent,
-        children: [
-          {
-            path: '',
-            component: VerteilerListe,
-            meta: {
-              userGroups: ['admin']
-            }
-          },
-          {
-            path: ':id',
-            component: VerteilerDetails,
-            meta: {
-              userGroups: ['admin']
             }
           }
         ]
