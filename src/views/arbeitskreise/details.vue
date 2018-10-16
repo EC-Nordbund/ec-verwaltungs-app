@@ -105,7 +105,6 @@ import {
   statusUpdateDate,
   akStatusConfig
 } from '@/plugins/formConfig/index'
-import { query } from '@/graphql/index'
 import auth from '@/plugins/auth'
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'

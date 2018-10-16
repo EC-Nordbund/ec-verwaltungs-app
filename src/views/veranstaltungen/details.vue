@@ -239,8 +239,6 @@ import auth from '@/plugins/auth'
 
 import {} from '@/plugins/formConfig/index'
 
-import { query } from '@/graphql/index'
-
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
