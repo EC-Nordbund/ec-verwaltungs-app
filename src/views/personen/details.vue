@@ -147,9 +147,10 @@
               <v-expansion-panel-content ripple lazy>
                 <div slot="header">Sonstiges</div>
                 <ec-list
+                  @edit="editSonstiges_open"
                   :items="data.person !== {} ? [{title: data.person.juLeiCaNr || 'N/A', subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
                     ...(data.person.ecMitglied>=0?[{
-                      title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied],
+                      title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied-1],
                       edit: auth.isMutationAllowed('editPersonSonstiges')
                     }]:[]),
                     ...(data.person.ecKreis?[{
@@ -175,7 +176,7 @@
                 <v-icon>add</v-icon>
                 Arbeitskreis
               </v-btn>
-              <v-btn flat v-if="true" @click="alertCommingSoon">
+              <v-btn flat v-if="true" @click="addFZ_show = true">
                 <v-icon>add</v-icon>
                 Führungszeugnis
               </v-btn>
@@ -272,6 +273,19 @@
         @save="editPersonStamm_save"
         :fieldConfig="editPersonStamm_config"
       />
+      <ec-form
+        title="Sonstiges editieren"
+        :value="editSonstiges_value"
+        v-model="editSonstiges_show"
+        @save="editSonstiges_save"
+        :fieldConfig="editSonstiges_config"
+      />
+      <ec-form
+        title="Führungszeugnis hinzufügen"
+        v-model="addFZ_show"
+        @save="addFZ_save"
+        :fieldConfig="addFZ_config"
+      />
       <v-dialog v-model="mapShow">
         <h1>Hier könnte IHRE Karte stehen ;)</h1>
         <p>{{mapData}}</p>
@@ -288,6 +302,8 @@ import reloaderBase from '@/baseComponents/reloader'
 import auth from '@/plugins/auth'
 
 import {
+  juLeiCaConfig,
+  ecMitgliedConfig,
   vornameConfig,
   nachnameConfig,
   telefonConfig,
@@ -299,7 +315,9 @@ import {
   ortConfig,
   geschlechtConfig,
   statusUpdateDate,
-  akStatusConfig
+  akStatusConfig,
+  personConfig,
+  notizConfig
 } from '@/plugins/formConfig/index'
 
 import { getClient } from '@/plugins/apollo'
@@ -458,6 +476,86 @@ const loadGQL = gql`
   }
 })
 export default class PersonenDetails extends reloaderBase {
+  editSonstiges_value: any = {}
+  editSonstiges_show: boolean = false
+  editSonstiges_save(value: any) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $authToken: String!
+          $personID: Int!
+          $juLeiCaNr: String!
+          $ecMitglied: Int!
+          $ecKreis: Int!
+        ) {
+          editSonstiges(
+            personID: $personID
+            authToken: $authToken
+            juLeiCaNr: $juLeiCaNr
+            ecMitglied: $ecMitglied
+            ecKreis: $ecKreis
+          )
+        }
+      `,
+      variables: {
+        authToken: this.auth.authToken,
+        personID: this.$route.params.id,
+        ...value
+      }
+    })
+  }
+  editSonstiges_open() {
+    this.editSonstiges_value = {}
+    this.editSonstiges_value = {
+      juLeiCaNr: this.data.person.juLeiCaNr,
+      ecMitglied: this.data.person.ecMitglied,
+      ecKreis: this.data.person.ecKreis.ecKreisID
+    }
+    this.editSonstiges_show = true
+  }
+  editSonstiges_config = [juLeiCaConfig, ecMitgliedConfig]
+  addFZ_show = false
+  addFZ_save(value: any) {
+    console.log(value)
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $personID: Int!
+          $authToken: String!
+          $gesehenAm: String!
+          $gesehenVon: Int!
+          $kommentar: String!
+        ) {
+          addFZ(
+            personID: $personID
+            authToken: $authToken
+            gesehenAm: $gesehenAm
+            gesehenVon: $gesehenVon
+            kommentar: $kommentar
+          )
+        }
+      `,
+      variables: {
+        authToken: this.auth.authToken,
+        personID: this.$route.params.id,
+        kommentar: value.notizen,
+        gesehenAm: value.date,
+        gesehenVon: value.personID
+      }
+    })
+  }
+  addFZ_config = [
+    {
+      ...personConfig,
+      label: 'Gesehen von'
+    },
+    {
+      ...statusUpdateDate,
+      label: 'Gesehen am'
+    },
+    notizConfig
+  ]
+
   isElectron: boolean = isElectron
   data: any = { person: {} }
   editPersonStamm_show = false
@@ -863,26 +961,38 @@ export default class PersonenDetails extends reloaderBase {
   }
   fzAntrag() {
     // Confirm.
-    electron.remote.dialog.showMessageBox({
-      type: 'question',
-      buttons : ['Yes', 'No'],
-      title: 'FZ-Antrag generieren?',
-      message: 'Soll wirklich ein FZ-Antrag generiert werden?'
-    }, (response)=>{
-      if(response===0) {
-        this.$apollo.mutate({
-          mutation: gql`
-            mutation($personID: Int!, $authToken: String!) {
-              addFZAntrag(personID: $personID, authToken: $authToken)
-            }
-          `,
-          variables: {
-            authToken: auth.authToken,
-            personID: this.$route.params.id
-          }
-        }).then(this.refetch)
+    electron.remote.dialog.showMessageBox(
+      {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        title: 'FZ-Antrag generieren?',
+        message:
+          'Soll wirklich ein FZ-Antrag generiert werden?'
+      },
+      response => {
+        if (response === 0) {
+          this.$apollo
+            .mutate({
+              mutation: gql`
+                mutation(
+                  $personID: Int!
+                  $authToken: String!
+                ) {
+                  addFZAntrag(
+                    personID: $personID
+                    authToken: $authToken
+                  )
+                }
+              `,
+              variables: {
+                authToken: auth.authToken,
+                personID: this.$route.params.id
+              }
+            })
+            .then(this.refetch)
+        }
       }
-    })
+    )
   }
 }
 </script>

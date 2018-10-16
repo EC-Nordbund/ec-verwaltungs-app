@@ -106,6 +106,15 @@ export const plzConfig: IConfig = {
   componentName: 'v-text-field'
 }
 
+export const juLeiCaConfig: IConfig = {
+  name: 'juLeiCaNr',
+  label: 'JuLeiCaNr',
+  required: false,
+  rules: [exactLength('JuLeiCaNr', 'die', 11)],
+  counter: 11,
+  componentName: 'v-text-field'
+}
+
 export const ortConfig: IConfig = {
   name: 'ort',
   label: 'Ort',
@@ -199,6 +208,22 @@ export const akStatusConfig: IConfig = {
     id: index + 1,
     beschreibung: item
   })),
+  'item-text': 'beschreibung',
+  'item-value': 'id'
+}
+
+export const ecMitgliedConfig: IConfig = {
+  name: 'ecMitglied',
+  label: 'Bitte Wähle einen Status',
+  required: true,
+  rules: [required('einen Mitgliedsstatus')],
+  componentName: 'v-autocomplete',
+  items: ['Kein Mitglied', 'Mitglied', 'Förderer'].map(
+    (item, index) => ({
+      id: index + 1,
+      beschreibung: item
+    })
+  ),
   'item-text': 'beschreibung',
   'item-value': 'id'
 }
