@@ -496,7 +496,25 @@ export default class PersonenDetails extends reloaderBase {
   editPersonStamm_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editStamm,
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $vorname: String!
+            $nachname: String!
+            $gebDat: String!
+            $geschlecht: String!
+            $authToken: String!
+          ) {
+            editPersonStamm(
+              authToken: $authToken
+              personID: $personID
+              vorname: $vorname
+              nachname: $nachname
+              gebDat: $gebDat
+              geschlecht: $geschlecht
+            )
+          }
+        `,
         variables: {
           authToken: this.auth.authToken,
           personID: this.$route.params.id,
