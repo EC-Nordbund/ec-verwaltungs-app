@@ -41,8 +41,8 @@
             icon="."
             :items="[
               {
-                title: `${(data.veranstaltung.unterkunft || {}).bezeichnung}`, 
-                subTitle: `${(data.veranstaltung.unterkunft || {}).plz} ${(data.veranstaltung.unterkunft || {}).ort} (${(data.veranstaltung.unterkunft || {}).land})`, 
+                title: `${(data.veranstaltung.veranstaltungsort || {}).bezeichnung}`, 
+                subTitle: `${(data.veranstaltung.veranstaltungsort || {}).plz} ${(data.veranstaltung.veranstaltungsort || {}).ort} (${(data.veranstaltung.veranstaltungsort || {}).land})`, 
                 icon: 'home'
               },
               {
@@ -51,17 +51,17 @@
                 icon: 'group'
               },
               {
-                title: data.veranstaltung.maxTNAnzahl,
+                title: data.veranstaltung.anzahlPlaetze ? data.veranstaltung.anzahlPlaetze : 'N/A',
                 subTitle: 'Anzahl Plätze',
                 icon: 'group'
               },
               {
-                title: data.veranstaltung.maxMaennlichTNAnzahl,
+                title: data.veranstaltung.anzahlPlaetzeM ? data.veranstaltung.anzahlPlaetzeM : 'N/A',
                 subTitle: 'Anzahl Plätze männlich',
                 icon: 'group'
               },
               {
-                title: data.veranstaltung.maxWeiblichTNAnzahl,
+                title: data.veranstaltung.anzahlPlaetzeW ? data.veranstaltung.anzahlPlaetzeW : 'N/A',
                 subTitle: 'Anzahl Plätze weiblich',
                 icon: 'group'
               }
@@ -92,27 +92,27 @@
                 icon: 'attach_money'
               },
               {
-                title: `${data.veranstaltung.anzahlungFruehbucher}€`,
+                title: `${data.veranstaltung.preisAnzahlungFruehbucher}€`,
                 subTitle: 'Anzahlung Frühbucher',
                 icon: 'attach_money'
               },
               {
-                title: `${data.veranstaltung.anzahlungNormal}€`,
+                title: `${data.veranstaltung.preisAnzahlungNormal}€`,
                 subTitle: 'Anzahlung Normal',
                 icon: 'attach_money'
               },
               {
-                title: `${data.veranstaltung.anzahlungLastMinute}€`,
+                title: `${data.veranstaltung.preisAnzahlungLastMinute}€`,
                 subTitle: 'Anzahlung Last Minute',
                 icon: 'attach_money'
               },
               {
-                title: data.veranstaltung.preisFruehbucherBis?data.veranstaltung.preisFruehbucherBis.german:'',
+                title: data.veranstaltung.fruehbucherBis?data.veranstaltung.fruehbucherBis.german:'N/A',
                 subTitle: 'Frühbucher gilt bis',
                 icon: 'attach_money'
               },
               {
-                title: data.veranstaltung.preisLastMinuteAb?data.veranstaltung.preisLastMinuteAb.german:'',
+                title: data.veranstaltung.lastMinuteAb?data.veranstaltung.lastMinuteAb.german:'N/A',
                 subTitle: 'Last Minute gilt ab',
                 icon: 'attach_money'
               },
@@ -227,7 +227,6 @@
         :value="editKosten_value"
       />
     </template>
-
   </ec-wrapper>
 </template>
 <script lang="ts">
@@ -268,11 +267,11 @@ const loadGQL = gql`
       preisNormal
       preisLastMinute
       preisFruehbucher
-      preisLastMinuteAb {
+      fruehbucherBis {
         german
         input
       }
-      preisFruehbucherBis {
+      lastMinuteAb {
         german
         input
       }
@@ -284,6 +283,7 @@ const loadGQL = gql`
       veranstaltungsort {
         vOrtID
         bezeichnung
+        plz
         ort
         land
       }
