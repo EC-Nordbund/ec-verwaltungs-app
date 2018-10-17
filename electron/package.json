@@ -103,7 +103,7 @@
     "@electron-forge/maker-dmg": "^6.0.0-beta.17",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.17",
     "@electron-forge/publisher-github": "^6.0.0-beta.17",
-    "electron": "3.0.0",
+    "electron": "3.0.4",
     "electron-debug": "^2.0.0",
     "electron-devtools-installer": "^2.2.4"
   }
