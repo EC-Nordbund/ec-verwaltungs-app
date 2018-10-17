@@ -239,17 +239,75 @@ import auth from '@/plugins/auth'
 
 import {} from '@/plugins/formConfig/index'
 
-import { query } from '@/graphql/index'
-
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
+
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  query($authToken: String!, $veranstaltungsID: Int!) {
+    veranstaltung(
+      authToken: $authToken
+      veranstaltungsID: $veranstaltungsID
+    ) {
+      veranstaltungsID
+      bezeichnung
+      begin {
+        german
+        input
+      }
+      ende {
+        german
+        input
+      }
+      minTNAlter
+      maxTNAlter
+      anzahlPlaetze
+      anzahlPlaetzeW
+      anzahlPlaetzeM
+      preisNormal
+      preisLastMinute
+      preisFruehbucher
+      preisLastMinuteAb {
+        german
+        input
+      }
+      preisFruehbucherBis {
+        german
+        input
+      }
+      preisAnzahlungNormal
+      preisAnzahlungLastMinute
+      preisAnzahlungFruehbucher
+      kannVorortBezahltWerden
+      hatGWarteliste
+      veranstaltungsort {
+        vOrtID
+        bezeichnung
+        ort
+        land
+      }
+      anmeldungen {
+        anmeldeID
+        position
+        person {
+          vorname
+          nachname
+          gebDat {
+            german
+          }
+        }
+      }
+    }
+  }
+`
 
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.veranstaltungen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           veranstaltungsID: to.params.id
@@ -268,7 +326,7 @@ import event from '@/plugins/eventbus'
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           veranstaltungsID: to.params.id
@@ -289,10 +347,10 @@ import event from '@/plugins/eventbus'
 })
 export default class veranstaltungsDetails extends reloaderBase {
   editKosten_show = false
-  editKosten_value:any = {
-    normal: [0,0],
-    lastMinute: [0,0],
-    fruehbucher: [0,0]
+  editKosten_value: any = {
+    normal: [0, 0],
+    lastMinute: [0, 0],
+    fruehbucher: [0, 0]
   }
   editKosten_save(value: any) {
     console.log(JSON.parse(JSON.stringify(value)))
@@ -415,8 +473,8 @@ export default class veranstaltungsDetails extends reloaderBase {
       'thumb-label': true
     }
   ]
-  editAlg_value:any = {
-    alter: [0,0]
+  editAlg_value: any = {
+    alter: [0, 0]
   }
   data: any = { veranstaltung: {} }
   tabs = null
@@ -425,7 +483,7 @@ export default class veranstaltungsDetails extends reloaderBase {
       authToken: auth.authToken,
       veranstaltungsID: this.$route.params.id
     }
-    this.query = query.veranstaltungen.details.load
+    this.query = loadGQL
     super.created()
   }
   share(share: (url: string) => void) {
@@ -479,7 +537,7 @@ export default class veranstaltungsDetails extends reloaderBase {
         .kannVorortBezahltWerden
     }
   }
-  soon(){
+  soon() {
     alert('comming soon')
   }
 }

@@ -52,7 +52,7 @@ Vue.config.productionTip = isProduction
 
 // create Vue Instance
 new Vue({
-  provide: apolloProvider().provide(),
+  apolloProvider: apolloProvider(),
   render: h => h('router-view'),
   router
 }).$mount('#app')

@@ -180,6 +180,8 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
+import gql from 'graphql-tag'
+
 import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
@@ -188,17 +190,86 @@ import auth from '@/plugins/auth'
 
 import {} from '@/plugins/formConfig/index'
 
-import { query } from '@/graphql/index'
-
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
+
+const loadGQL = gql`
+  query($authToken: String!, $anmeldeID: String!) {
+          anmeldung(
+            authToken: $authToken
+            anmeldeID: $anmeldeID
+          ) {
+            anmeldeID
+            person {
+              vorname
+              nachname
+              gebDat {
+                german
+              }
+              geschlecht
+            }
+            veranstaltung {
+              bezeichnung
+              begin {
+                input
+                german
+                year
+              }
+              ende {
+                input
+                german
+              }
+            }
+            position
+            adresse {
+              adressID
+              strasse
+              plz
+              ort
+            }
+            email {
+              eMailID
+              eMail
+            }
+            telefon {
+              telefonID
+              telefon
+            }
+            wartelistenPlatz
+            bisherBezahlt
+            anmeldeZeitpunkt {
+              german
+            }
+            abmeldeZeitpunkt {
+              german
+            }
+            abmeldeGebuehr
+            wegDerAbmeldung
+            rueckbezahlt
+            kommentarAbmeldung
+            vegetarisch
+            lebensmittelAllergien
+            gesundheitsinformationen
+            bemerkungen
+            radfahren
+            fahrgemeinschaften
+            klettern
+            sichEntfernen
+            bootFahren
+            schwimmen
+            DSGVO_einverstaendnis {
+              german
+            }
+          }
+        }
+`
 
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.anmeldungen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           anmeldeID: to.params.id
@@ -217,7 +288,7 @@ import event from '@/plugins/eventbus'
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.anmeldungen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           anmeldeID: to.params.id
@@ -249,7 +320,7 @@ export default class anmeldungsDetails extends reloaderBase {
       authToken: auth.authToken,
       anmeldeID: this.$route.params.id
     }
-    this.query = query.anmeldungen.details.load
+    this.query = loadGQL
     super.created()
   }
   share(share: (url: string) => void) {

@@ -9,15 +9,47 @@
       <ec-headline>
         {{data.ak.bezeichnung}}
       </ec-headline>
-      <ec-button-icon @click="editAKStamm_open" v-if="auth.isMutationAllowed('editAKStamm')"/>
+      <ec-button-icon @click="editAKStamm_open" v-if="auth.isMutationAllowed('editAK')"/>
     </template>
 
     <template>
-      <ec-list v-if="data.ak.personen" :items="data.ak.personen" :mapper="mapper" :edit="auth.isMutationAllowed('editAKPerson')" @edit="edit" icon="person_pin_circle"/>
+      <v-expansion-panel>
+        <v-expansion-panel-content ripple lazy>
+          <div slot="header">Aktuelle Mitglieder</div>
+          <ec-list
+            :items="(data.ak.personen || []).filter(item=>(item.currentStatus > 0))"
+            :mapper="item=>({
+              title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
+              subTitle: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.currentStatus]}`
+            })"
+            icon="map"
+            :edit="auth.isMutationAllowed('updateAKStatus')"
+            @edit="editPersonStatus"
+          />
+        </v-expansion-panel-content>
+        <v-expansion-panel-content ripple lazy>
+          <div slot="header">Alle Mitglieder</div>
+          <v-expansion-panel> 
+            <v-divider/>
+            <v-expansion-panel-content ripple lazy v-for="person in (data.ak.personen||[])" :key="person.person.personID">
+              <div slot="header">
+                {{person.person.vorname}}
+                {{person.person.nachname}}
+                ({{person.person.gebDat.german}})
+              </div>
+              <ec-list :items="person.allUpdates" :mapper="item=>({
+                title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
+                subTitle: `${item.date.german}`
+                })" icon="map"
+              />
+            </v-expansion-panel-content>
+          </v-expansion-panel> 
+        </v-expansion-panel-content>
+      </v-expansion-panel>
     </template>
 
     <template slot="actions">
-      <ec-button-add v-if="auth.isMutationAllowed('addAKPerson')" @click="addAKPerson_show = true"/>
+      <ec-button-add v-if="auth.isMutationAllowed('updateAKStatus')" @click="addAKPerson_show = true"/>
       <v-dialog max-width="500px">
         <v-btn slot="activator">Mitgliederliste</v-btn>
         <v-card>
@@ -27,9 +59,9 @@
             </h1>
           </v-card-title>
           <v-card-actions>
-            <v-btn>Aktuelle Mitglieder</v-btn>
+            <v-btn @click="soon">Aktuelle Mitglieder</v-btn>
             <v-spacer/>
-            <v-btn>Gesamte Liste (inkl. Ausgetretenen)</v-btn>
+            <v-btn @click="soon">Gesamte Liste (inkl. Ausgetretenen)</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -65,58 +97,92 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import reloaderBase from '@/baseComponents/reloader';
-import {personConfig,bezeichnungConfig} from '@/plugins/formConfig/index'
-import {query} from '@/graphql/index';
-import auth from '@/plugins/auth';
-
-import {getClient} from '@/plugins/apollo'
+import { Component, Vue } from 'vue-property-decorator'
+import reloaderBase from '@/baseComponents/reloader'
+import {
+  personConfig,
+  bezeichnungConfig,
+  statusUpdateDate,
+  akStatusConfig
+} from '@/plugins/formConfig/index'
+import auth from '@/plugins/auth'
+import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
+
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  query($authToken: String!, $akID: Int!) {
+    ak(akID: $akID, authToken: $authToken) {
+      akID
+      bezeichnung
+      personen {
+        currentStatus
+        allUpdates {
+          akPersonID
+          neuerStatus
+          date {
+            german
+          }
+        }
+        person {
+          personID
+          vorname
+          nachname
+          gebDat {
+            german
+          }
+        }
+      }
+    }
+  }
+`
+
 @Component({
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    getClient().query(
-      {
-        query: query.ak.details.load,
+    getClient()
+      .query({
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           akID: to.params.id
         }
-      }
-    ).then((v:any)=>{
-      next(vm=>{
-        (<any>vm).data = v.data
-        setTimeout(()=>{
+      })
+      .then((v: any) => {
+        next(vm => {
+          ;(<any>vm).data = v.data
+          setTimeout(() => {
+            event.emit('hideLoading')
+          }, 500)
+        })
+      })
+  },
+  beforeRouteUpdate(to, from, next) {
+    event.emit('showLoading')
+    getClient()
+      .query({
+        query: loadGQL,
+        variables: {
+          authToken: auth.authToken,
+          akID: to.params.id
+        }
+      })
+      .then((v: any) => {
+        ;(<any>this).data = v.data
+        ;(<any>this).variabels = {
+          authToken: auth.authToken,
+          akID: to.params.id
+        }
+        next()
+        setTimeout(() => {
           event.emit('hideLoading')
         }, 500)
       })
-    })
-  },
-  beforeRouteUpdate (to, from, next) {
-    event.emit('showLoading')
-    getClient().query(
-      {
-        query: query.ak.details.load,
-        variables: {
-          authToken: auth.authToken,
-          akID: to.params.id
-        }
-      }
-    ).then((v:any)=>{
-      (<any>this).data = v.data;
-      (<any>this).variabels = {
-        authToken: auth.authToken,
-        akID: to.params.id
-      }
-      next()
-      setTimeout(()=>{
-        event.emit('hideLoading')
-      }, 500)
-    })
   }
 })
 export default class AKDetails extends reloaderBase {
+  auth = auth
   data: { ak: any } = { ak: {} }
   mapper = (item: any) => ({
     title: `${item.person.vorname} ${
@@ -135,50 +201,15 @@ export default class AKDetails extends reloaderBase {
       ...personConfig,
       disabled: true
     },
-    {
-      label: 'Eintritt',
-      name: 'eintritt',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Eintrittsdatum angeben!' : true
-      ],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Austritt',
-      name: 'austritt',
-      required: false,
-      rules: [],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Leiter',
-      name: 'leiter',
-      type: 'checkbox',
-      componentName: 'v-checkbox'
-    }
+    statusUpdateDate,
+    akStatusConfig
   ]
   editAKPerson_value = {}
   addAKPerson_show = false
   addAKPerson_config = [
     personConfig,
-    {
-      label: 'Eintritt',
-      name: 'eintritt',
-      required: true,
-      rules: [
-        (v: string) =>
-          !v ? 'Du musst ein Eintrittsdatum angeben!' : true
-      ],
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      label: 'Leiter',
-      name: 'leiter',
-      type: 'checkbox',
-      componentName: 'v-checkbox'
-    }
+    statusUpdateDate,
+    akStatusConfig
   ]
   edit(item: any) {
     this.editAKPerson_value = {
@@ -198,35 +229,87 @@ export default class AKDetails extends reloaderBase {
     this.editAKStamm_show = true
   }
   editAKStamm_save(value: any) {
-    this.$apollo.mutate({
-      mutation: query.ak.details.editStamm,
-      variables: {
-        authToken: auth.authToken,
-        akID: this.$route.params.id,
-        ...value
-      }
-    })
-  }
-  editAKPerson_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.ak.details.editPerson,
+        mutation: gql`
+          mutation(
+            $akID: Int!
+            $bezeichnung: String!
+            $authToken: String!
+          ) {
+            editAK(
+              authToken: $authToken
+              akID: $akID
+              bezeichnung: $bezeichnung
+            )
+          }
+        `,
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-          ...value
+          bezeichnung: value.bezeichnung
+        }
+      })
+      .then(this.refetch)
+  }
+  editAKPerson_save(value: any) {
+    console.log(value)
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $akID: Int!
+            $date: String!
+            $authToken: String!
+            $status: Int!
+          ) {
+            updateAKStatus(
+              personID: $personID
+              akID: $akID
+              date: $date
+              authToken: $authToken
+              status: $status
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          akID: this.$route.params.id,
+          personID: value.personID,
+          date: value.date,
+          status: value.status - 1
         }
       })
       .then(this.refetch)
   }
   addPersonAK_save(value: any) {
+    console.log(value)
     this.$apollo
       .mutate({
-        mutation: query.ak.details.addPerson,
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $akID: Int!
+            $date: String!
+            $authToken: String!
+            $status: Int!
+          ) {
+            updateAKStatus(
+              personID: $personID
+              akID: $akID
+              date: $date
+              authToken: $authToken
+              status: $status
+            )
+          }
+        `,
         variables: {
           authToken: auth.authToken,
           akID: this.$route.params.id,
-          ...value
+          personID: value.personID,
+          date: value.date,
+          status: value.status - 1
         }
       })
       .then(this.refetch)
@@ -237,11 +320,19 @@ export default class AKDetails extends reloaderBase {
       authToken: auth.authToken,
       akID: this.$route.params.id
     }
-    this.query = query.ak.details.load
+    this.query = loadGQL
     super.created()
   }
-  share(share: (url:string)=>void) {
+  share(share: (url: string) => void) {
     share(this.$route.fullPath)
+  }
+  editPersonStatus(item: any) {
+    console.log(item)
+    this.editAKPerson_show = true
+  }
+
+  soon() {
+    alert('Comming Soon...')
   }
 }
 </script>

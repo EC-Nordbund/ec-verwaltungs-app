@@ -9,6 +9,8 @@ const {
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
+require('electron-unhandled')()
+
 app.setAsDefaultProtocolClient('ec', process.execPath)
 
 function handleProto(args) {
@@ -29,15 +31,18 @@ if (require('electron-squirrel-startup')) {
 }
 
 //Single Instance
-const isSecondInstance = app.makeSingleInstance(
-  (args, wd) => {
-    BrowserWindow.getAllWindows()[0].show()
-    handleProto(args)
-  }
-)
+const gotTheLock = app.requestSingleInstanceLock()
 
-if (isSecondInstance) {
+if (!gotTheLock) {
   app.quit()
+} else {
+  app.on(
+    'second-instance',
+    (commandLine, workingDirectory) => {
+      BrowserWindow.getAllWindows()[0].show()
+      handleProto(commandLine)
+    }
+  )
 }
 
 //=================================================================================================================================================
@@ -93,6 +98,9 @@ function createWindow() {
     handleProto(process.argv)
   })
   mainWindow.on('closed', () => {
+    if (helpWindow) {
+      helpWindow.close()
+    }
     mainWindow = null
   })
 }
@@ -122,9 +130,7 @@ function createLoadingWindow() {
               'msg',
               'Teste API Verbindung'
             )
-            fetch(
-              'https://h2778646.stratoserver.net:4000/check'
-            )
+            fetch('https://ec-api.de/check')
               .then(() => {
                 setTimeout(() => {
                   loadingWindow.webContents.send(
@@ -156,7 +162,7 @@ function setupTray() {
   tray = new Tray(logoURL)
   tray.setToolTip('EC-Verwaltungs-Application')
   tray.on('click', () => {
-    BrowserWindow.getAllWindows()[0].show()
+    BrowserWindow.getAllWindows()[0]
   })
 }
 
@@ -180,62 +186,294 @@ app.on('activate', () => {
 app.once('ready', createLoadingWindow)
 
 ipcMain.on('set-UG', ($event, args) => {
-  switch (args) {
-    case 'admin':
-      app.setUserTasks([
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/personen',
-          title: 'Personen',
-          description: 'Liste der Personen',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/arbeitskreise',
-          title: 'Arbeitskreise',
-          description: 'Liste der Arbeitskreise',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/verteiler',
-          title: 'Verteiler',
-          description: 'Liste der Verteiler',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/veranstaltungen',
-          title: 'Veranstaltungen',
-          description: 'Liste der Veranstaltungen',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/veranstaltungsorte',
-          title: 'Veranstaltungsorte',
-          description: 'Liste der Veranstaltungsorte',
-          iconPath: process.execPath,
-          iconIndex: 0
-        },
-        {
-          program: process.execPath,
-          arguments: 'ec:///app/anmeldungen',
-          title: 'Anmeldungen',
-          description: 'Liste der Anmeldungen',
-          iconPath: process.execPath,
-          iconIndex: 0
-        }
-      ])
-      break
-    default:
-      app.setUserTasks([])
-      break
+  if (process.platform === 'win32') {
+    switch (args) {
+      case 'admin':
+        app.setUserTasks([
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/personen',
+            title: 'Personen',
+            description: 'Liste der Personen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/arbeitskreise',
+            title: 'Arbeitskreise',
+            description: 'Liste der Arbeitskreise',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/verteiler',
+            title: 'Verteiler',
+            description: 'Liste der Verteiler',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungen',
+            title: 'Veranstaltungen',
+            description: 'Liste der Veranstaltungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungsorte',
+            title: 'Veranstaltungsorte',
+            description: 'Liste der Veranstaltungsorte',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/anmeldungen',
+            title: 'Anmeldungen',
+            description: 'Liste der Anmeldungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/profil',
+            title: 'Profil',
+            description: 'Editieren des eigenen Profils',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/admin',
+            title: 'Admin',
+            description: 'Administrative Aufgaben',
+            iconPath: process.execPath,
+            iconIndex: 0
+          }
+        ])
+        break
+      case 'vorsitzender':
+        app.setUserTasks([
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/personen',
+            title: 'Personen',
+            description: 'Liste der Personen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/arbeitskreise',
+            title: 'Arbeitskreise',
+            description: 'Liste der Arbeitskreise',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/verteiler',
+            title: 'Verteiler',
+            description: 'Liste der Verteiler',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungen',
+            title: 'Veranstaltungen',
+            description: 'Liste der Veranstaltungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungsorte',
+            title: 'Veranstaltungsorte',
+            description: 'Liste der Veranstaltungsorte',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/anmeldungen',
+            title: 'Anmeldungen',
+            description: 'Liste der Anmeldungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/profil',
+            title: 'Profil',
+            description: 'Editieren des eigenen Profils',
+            iconPath: process.execPath,
+            iconIndex: 0
+          }
+        ])
+        break
+      case 'anmeldeverwaltung':
+        app.setUserTasks([
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/personen',
+            title: 'Personen',
+            description: 'Liste der Personen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungen',
+            title: 'Veranstaltungen',
+            description: 'Liste der Veranstaltungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/anmeldungen',
+            title: 'Anmeldungen',
+            description: 'Liste der Anmeldungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/profil',
+            title: 'Profil',
+            description: 'Editieren des eigenen Profils',
+            iconPath: process.execPath,
+            iconIndex: 0
+          }
+        ])
+        break
+      case 'kasse':
+        app.setUserTasks([
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/personen',
+            title: 'Personen',
+            description: 'Liste der Personen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungen',
+            title: 'Veranstaltungen',
+            description: 'Liste der Veranstaltungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/anmeldungen',
+            title: 'Anmeldungen',
+            description: 'Liste der Anmeldungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/profil',
+            title: 'Profil',
+            description: 'Editieren des eigenen Profils',
+            iconPath: process.execPath,
+            iconIndex: 0
+          }
+        ])
+        break
+      case 'veranstaltungsverwaltung':
+        app.setUserTasks([
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/personen',
+            title: 'Personen',
+            description: 'Liste der Personen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungen',
+            title: 'Veranstaltungen',
+            description: 'Liste der Veranstaltungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/anmeldungen',
+            title: 'Anmeldungen',
+            description: 'Liste der Anmeldungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/profil',
+            title: 'Profil',
+            description: 'Editieren des eigenen Profils',
+            iconPath: process.execPath,
+            iconIndex: 0
+          }
+        ])
+        break
+      case 'veranstaltungsleiter':
+        app.setUserTasks([
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/veranstaltungen',
+            title: 'Veranstaltungen',
+            description: 'Liste der Veranstaltungen',
+            iconPath: process.execPath,
+            iconIndex: 0
+          },
+          {
+            program: process.execPath,
+            arguments: 'ec:///app/profil',
+            title: 'Profil',
+            description: 'Editieren des eigenen Profils',
+            iconPath: process.execPath,
+            iconIndex: 0
+          }
+        ])
+        break
+      default:
+        app.setUserTasks([])
+        break
+    }
+    console.log(args)
   }
-  console.log(args)
+})
+
+const helpURL =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8081'
+    : `file://${__dirname}/../docs/index.html`
+
+const helpConfig = {
+  useContentSize: true,
+  show: false,
+  icon: logoURL
+}
+
+let helpWindow
+
+ipcMain.on('openHelp', () => {
+  if (!helpWindow) {
+    helpWindow = new BrowserWindow(helpConfig)
+    helpWindow.loadURL(helpURL)
+    helpWindow.once('ready-to-show', helpWindow.show)
+    helpWindow.once('closed', () => {
+      helpWindow = undefined
+    })
+  } else {
+    helpWindow.show()
+  }
 })

@@ -35,43 +35,46 @@
             <!-- Adressen -->
             <ec-list
               :items="data.person.adressen || []"
-              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort})"
+              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="location_on"
-              :edit="auth.isMutationAllowed('editAdresse')"
               @edit="editAdresse_open"
               @click="showMap"
+              :edit="auth.isMutationAllowed('editKontakt')"
+              markedClass="isOld"
             />
-            <v-divider/>
+            <v-divider v-if="(data.person.adressen || []).length > 0"/>
             <!-- Email -->
             <ec-list
               :items="data.person.emails || []"
-              :mapper="item=>({title: item.email})"
+              :mapper="item=>({title: item.eMail, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="mail"
-              :edit="auth.isMutationAllowed('editEmail')"
+              :edit="auth.isMutationAllowed('editKontakt')"
               @edit="editEmail_open"
               @click="mailto"
+              markedClass="isOld"
             />
-            <v-divider/>
+            <v-divider v-if="(data.person.emails || []).length > 0"/>
             <!-- Telefone -->
             <ec-list
               :items="data.person.telefone || []"
-              :mapper="item=>({title: item.telefon})"
+              :mapper="item=>({title: item.telefon, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="local_phone"
-              :edit="auth.isMutationAllowed('editTelefon')"
+              :edit="auth.isMutationAllowed('editKontakt')"
               @edit="editTelefon_open"
+              markedClass="isOld"
             />
             <!-- Add Adresse, Email, Telefon -->
             <v-card-actions>
               <v-spacer/>
-              <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addAdresse')">
+              <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addKontakt')">
                 <v-icon>add</v-icon>
                 Adresse
               </v-btn>
-              <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addEmail')">
+              <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addKontakt')">
                 <v-icon>add</v-icon>
                 Email
               </v-btn>
-              <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addTelefon')">
+              <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addKontakt')">
                 <v-icon>add</v-icon>
                 Telefon
               </v-btn>
@@ -92,39 +95,45 @@
         <v-tab-item id="tab-4">
           <v-card>
             <v-expansion-panel> 
-              <v-expansion-panel-content ripple>
-                <div slot="header">Arbeitskreise</div>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.ak || []).filter(item=>(item.currentStatus > 0)).length > 0">
+                <div slot="header">Aktuelle Arbeitskreise</div>
                 <ec-list
-                  :items="data.person.aks || []"
+                  :items="(data.person.ak || []).filter(item=>(item.currentStatus > 0))"
                   :mapper="item=>({
                     title: `${item.ak.bezeichnung}`,
-                    subTitle: `${item.eintritt.german}${item.austritt === null?'':' - ' + item.austritt.german}${item.leiter?' (Leiter)':''}`
+                    subTitle: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.currentStatus]}`
                   })"
                   icon="map"
                   @edit="editAK_open"
-                  :edit="auth.isMutationAllowed('editAKPerson')"
+                  :edit="auth.isMutationAllowed('updateAKStatus')"
                 />
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
-                <div slot="header">Verteiler</div>
-                <ec-list
-                  :items="data.person.verteiler || []"
-                  :mapper="item=>({
-                    title: `${item.verteiler.bezeichnung}`,
-                    subTitle: `${item.type===1?'TO':''}${item.type===2?'CC':''}${item.type===3?'BCC':''}`,
-                    edit: item.verteiler.isAuto && auth.isMutationAllowed('editVerteilerPerson')
-                  })"
-                  icon="mail"
-                  @edit="editVerteiler_open"
-                />
+              <v-expansion-panel-content ripple lazy v-if="(data.person.ak||[]).length > 0">
+                <div slot="header">Alle Arbeitskreise</div>
+                <v-expansion-panel> 
+                  <v-expansion-panel-content ripple lazy v-for="ak in (data.person.ak||[])" :key="ak.ak.akID">
+                    <div slot="header">
+                      {{ak.ak.bezeichnung}}
+                    </div>
+                    <ec-list :items="ak.allUpdates" :mapper="item=>({
+                      title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
+                      subTitle: `${item.date.german}`
+                      })" icon="map"
+                    />
+                  </v-expansion-panel-content>
+                </v-expansion-panel> 
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.fzAntraege || []).length > 0">
                 <div slot="header">Führungszeungniss Anträge</div>
-                <v-card>
-                  Comming soon...
-                </v-card>
+                <ec-list
+                  :items="data.person.fzAntraege || []"
+                  :mapper="item=>({
+                    title: `Erstellt am ${item.erzeugt.german}`
+                  })"
+                  icon="map"
+                />
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy v-if="(data.person.fzs || []).length > 0">
                 <div slot="header">Führungszeungnisse</div>
                 <ec-list
                   :items="data.person.fzs || []"
@@ -132,36 +141,46 @@
                     title: item.kommentar,
                     subTitle: `Gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
                   })"
-                  :edit="true"
                   icon="extension"
                 />
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple>
+              <v-expansion-panel-content ripple lazy>
                 <div slot="header">Sonstiges</div>
                 <ec-list
-                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr, subTitle: 'JuLeiCa'}] : []"
+                  @edit="editSonstiges_open"
+                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr || 'N/A', subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
+                    ...(data.person.ecMitglied>=0?[{
+                      title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied-1],
+                      edit: auth.isMutationAllowed('editPersonSonstiges')
+                    }]:[]),
+                    ...(data.person.ecKreis?[{
+                      title: data.person.ecKreis.bezeichnung,
+                      subTitle: 'EC-Kreis',
+                      edit: auth.isMutationAllowed('editPersonSonstiges')
+                    }]:[]),
+                    ...(data.person.datumDesLetztenFZ?[{
+                      title: data.person.datumDesLetztenFZ.german,
+                      subTitle: 'Letztes FZ',
+                      edit: false
+                    }]:[])
+                  ] : []"
                   :mapper="item=>item"
                   icon="extension"
-                  :edit="true"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
-            <!-- Add AK, Verteiler, FZ, FZ-Antrag -->
+            <!-- Add AK, FZ, FZ-Antrag -->
             <v-card-actions>
               <v-spacer/>
-              <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('addAKPerson')">
+              <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('updateAKStatus')">
                 <v-icon>add</v-icon>
                 Arbeitskreis
               </v-btn>
-              <v-btn flat @click="addVerteiler_show = true" v-if="auth.isMutationAllowed('addVerteilerPerson')">
-                <v-icon>add</v-icon>
-                Verteiler
-              </v-btn>
-              <v-btn flat v-if="true" @click="alertCommingSoon">
+              <v-btn flat v-if="true" @click="addFZ_show = true">
                 <v-icon>add</v-icon>
                 Führungszeugnis
               </v-btn>
-              <v-btn flat v-if="true" @click="alertCommingSoon">
+              <v-btn flat v-if="true" @click="fzAntrag">
                 <v-icon>add</v-icon>
                 Führungszeugnis-Antrag
               </v-btn>
@@ -172,7 +191,7 @@
     </template>
 
     <template slot="actions">
-      <v-btn v-if="isElectron" color="primary" @click="auskunftsRecht">Auskunftsrecht</v-btn>
+      <v-btn v-if="isElectron" color="primary" @click="alertCommingSoon">Auskunftsrecht</v-btn>
       <v-btn @click="alertCommingSoon">Serienbrief</v-btn>
     </template>
 
@@ -204,7 +223,10 @@
         v-model="editAdresse_show"
         @save="editAdresse_save"
         :value="editAdresse_value"
+        @delete="editAdresse_delete"
         :fieldConfig="addAdresse_config"
+        :deleteBtn="auth.isMutationAllowed('oldStatusKontakt')"
+        deleteLabel="Als alt Makieren"
       />
       <!-- EDIT Telefon -->
       <ec-form
@@ -212,15 +234,21 @@
         v-model="editTelefon_show"
         @save="editTelefon_save"
         :value="editTelefon_value"
+        @delete="editTelefon_delete"
         :fieldConfig="addTelefon_config"
+        :deleteBtn="auth.isMutationAllowed('oldStatusKontakt')"
+        deleteLabel="Als alt Makieren"
       />
       <!-- EDIT Email -->
       <ec-form
         title="Email editieren"
         v-model="editEmail_show"
         @save="editEmail_save"
+        @delete="editEmail_delete"
         :value="editEmail_value"
         :fieldConfig="addEmail_config"
+        :deleteBtn="auth.isMutationAllowed('oldStatusKontakt')"
+        deleteLabel="Als alt Makieren"
       />
       <!-- ADD AK -->
       <ec-form
@@ -237,23 +265,6 @@
         :fieldConfig="editAK_config"
         :value="editAK_value"
       />
-      <!-- ADD Verteiler -->
-      <ec-form
-        title="ZuVerteiler hinzufügen"
-        v-model="addVerteiler_show"
-        @save="addVerteiler_save"
-        :fieldConfig="addVerteiler_config"
-      />
-      <!-- EDIT Verteiler -->
-      <ec-form
-        title="Verteiler-Zugehörigkeit editieren"
-        deleteBtn
-        @delete="editVerteiler_delete"
-        v-model="editVerteiler_show"
-        @save="editVerteiler_save"
-        :fieldConfig="addVerteiler_config"
-        :value="editVerteiler_value"
-      />
       <!-- EDIT PersonStamm -->
       <ec-form
         title="Personenstamm editieren"
@@ -261,6 +272,19 @@
         v-model="editPersonStamm_show"
         @save="editPersonStamm_save"
         :fieldConfig="editPersonStamm_config"
+      />
+      <ec-form
+        title="Sonstiges editieren"
+        :value="editSonstiges_value"
+        v-model="editSonstiges_show"
+        @save="editSonstiges_save"
+        :fieldConfig="editSonstiges_config"
+      />
+      <ec-form
+        title="Führungszeugnis hinzufügen"
+        v-model="addFZ_show"
+        @save="addFZ_save"
+        :fieldConfig="addFZ_config"
       />
       <v-dialog v-model="mapShow">
         <h1>Hier könnte IHRE Karte stehen ;)</h1>
@@ -278,6 +302,8 @@ import reloaderBase from '@/baseComponents/reloader'
 import auth from '@/plugins/auth'
 
 import {
+  juLeiCaConfig,
+  ecMitgliedConfig,
   vornameConfig,
   nachnameConfig,
   telefonConfig,
@@ -288,21 +314,130 @@ import {
   plzConfig,
   ortConfig,
   geschlechtConfig,
-  verteilerConfig,
-  verteilerTypeConfig
+  statusUpdateDate,
+  akStatusConfig,
+  personConfig,
+  notizConfig
 } from '@/plugins/formConfig/index'
-
-import { query } from '@/graphql/index'
 
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
+
+import gql from 'graphql-tag'
+
+const loadGQL = gql`
+  query($authToken: String!, $personID: Int!) {
+    person(personID: $personID, authToken: $authToken) {
+      personID
+      vorname
+      nachname
+      gebDat {
+        german
+        input
+      }
+      geschlecht
+      alter(wann: null)
+      adressen {
+        adressID
+        strasse
+        plz
+        ort
+        isOld
+        lastUsed {
+          german
+        }
+      }
+      emails {
+        eMailID
+        eMail
+        isOld
+        lastUsed {
+          german
+        }
+      }
+      telefone {
+        telefonID
+        telefon
+        isOld
+        lastUsed {
+          german
+        }
+      }
+      anmeldungen {
+        anmeldeID
+        position
+        veranstaltung {
+          bezeichnung
+          begin {
+            german
+          }
+          ende {
+            german
+          }
+        }
+      }
+      fzs {
+        fzID
+        gesehenAm {
+          german
+        }
+        kommentar
+        gesehenVon {
+          personID
+          vorname
+          nachname
+          gebDat {
+            german
+          }
+        }
+      }
+      fzAntraege {
+        fzAntragID
+        erzeugt {
+          german
+        }
+      }
+      datumDesLetztenFZ {
+        german
+      }
+      hatFZ(wann: null)
+      juLeiCaNr
+      ecKreis {
+        ecKreisID
+        bezeichnung
+        website
+      }
+      ecMitglied
+      ak {
+        ak {
+          akID
+          bezeichnung
+        }
+        currentStatus
+        allUpdates {
+          akPersonID
+          date {
+            german
+          }
+          neuerStatus
+        }
+      }
+      erstellt {
+        german
+      }
+      letzteAenderung {
+        german
+      }
+    }
+  }
+`
 
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           personID: to.params.id
@@ -321,7 +456,7 @@ import event from '@/plugins/eventbus'
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.details.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken,
           personID: to.params.id
@@ -341,6 +476,87 @@ import event from '@/plugins/eventbus'
   }
 })
 export default class PersonenDetails extends reloaderBase {
+  editSonstiges_value: any = {}
+  editSonstiges_show: boolean = false
+  editSonstiges_save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $personID: Int!
+            $juLeiCaNr: String!
+            $ecMitglied: Int!
+            $ecKreis: Int
+          ) {
+            editSonstiges(
+              personID: $personID
+              authToken: $authToken
+              juLeiCaNr: $juLeiCaNr
+              ecMitglied: $ecMitglied
+              ecKreis: $ecKreis
+            )
+          }
+        `,
+        variables: {
+          authToken: this.auth.authToken,
+          personID: this.$route.params.id,
+          ...value
+        }
+      })
+      .then(this.refetch)
+  }
+  editSonstiges_open() {
+    this.editSonstiges_value = {}
+    this.editSonstiges_value = {
+      juLeiCaNr: this.data.person.juLeiCaNr,
+      ecMitglied: this.data.person.ecMitglied,
+      ecKreis: this.data.person.ecKreis.ecKreisID
+    }
+    this.editSonstiges_show = true
+  }
+  editSonstiges_config = [juLeiCaConfig, ecMitgliedConfig]
+  addFZ_show = false
+  addFZ_save(value: any) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $personID: Int!
+          $authToken: String!
+          $gesehenAm: String!
+          $gesehenVon: Int!
+          $kommentar: String!
+        ) {
+          addFZ(
+            personID: $personID
+            authToken: $authToken
+            gesehenAm: $gesehenAm
+            gesehenVon: $gesehenVon
+            kommentar: $kommentar
+          )
+        }
+      `,
+      variables: {
+        authToken: this.auth.authToken,
+        personID: this.$route.params.id,
+        kommentar: value.notizen,
+        gesehenAm: value.date,
+        gesehenVon: value.personID
+      }
+    }).then(this.refetch)
+  }
+  addFZ_config = [
+    {
+      ...personConfig,
+      label: 'Gesehen von'
+    },
+    {
+      ...statusUpdateDate,
+      label: 'Gesehen am'
+    },
+    notizConfig
+  ]
+
   isElectron: boolean = isElectron
   data: any = { person: {} }
   editPersonStamm_show = false
@@ -358,7 +574,25 @@ export default class PersonenDetails extends reloaderBase {
   editPersonStamm_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editStamm,
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $vorname: String!
+            $nachname: String!
+            $gebDat: String!
+            $geschlecht: String!
+            $authToken: String!
+          ) {
+            editPersonStamm(
+              authToken: $authToken
+              personID: $personID
+              vorname: $vorname
+              nachname: $nachname
+              gebDat: $gebDat
+              geschlecht: $geschlecht
+            )
+          }
+        `,
         variables: {
           authToken: this.auth.authToken,
           personID: this.$route.params.id,
@@ -377,55 +611,20 @@ export default class PersonenDetails extends reloaderBase {
   ]
   auskunftsRechtContent = {}
   auskunftsRecht_show = false
-  addVerteiler_show = false
-  addVerteiler_config = [
-    verteilerConfig,
-    verteilerTypeConfig
-  ]
-  editVerteiler_show = false
-  editVerteiler_value = {}
   addAK_show = false
   editAK_show = false
   addAK_config = [
     akConfig,
-    {
-      name: 'zeitpunkt',
-      label: 'Zeitpunkt',
-      componentName: 'ec-form-datePicker',
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss ein Zeitpunkt angegeben werden!'
-            : true
-      ],
-      required: true
-    },
-    {
-      name: 'status',
-      label: 'Status'
-    }
+    statusUpdateDate,
+    akStatusConfig
   ]
   editAK_config = [
     {
       ...akConfig,
       disabled: true
     },
-    {
-      name: 'zeitpunkt',
-      label: 'Zeitpunkt',
-      componentName: 'ec-form-datePicker',
-      rules: [
-        (v: string) =>
-          !v
-            ? 'Es muss ein Zeitpunkt angegeben werden!'
-            : true
-      ],
-      required: true
-    },
-    {
-      name: 'status',
-      label: 'Status'
-    }
+    statusUpdateDate,
+    akStatusConfig
   ]
   editAK_value = {}
   editTelefon_show = false
@@ -441,116 +640,99 @@ export default class PersonenDetails extends reloaderBase {
   addAdresse_show = false
   addAdresse_config = [strasseConfig, plzConfig, ortConfig]
   tabs = null
-  auskunftsRecht() {
-    ;(<any>this.$apollo)
-      .getClient()
-      .query({
-        query: query.personen.details.auskunft,
-        variables: {
-          authToken: auth.authToken,
-          personID: this.$route.params.id
-        }
-      })
-      .then((v: any) => v.data.person)
-      .then((v: any) => {
-        const { clipboard, remote } = electron
 
-        const typeName = (obj: any) => {
-          let newObj: any = {}
-          for (const key in obj) {
-            if (key !== '__typename') {
-              if (typeof obj[key] === 'object') {
-                newObj[key] = typeName(obj[key])
-              } else {
-                newObj[key] = obj[key]
-              }
-            }
-          }
-          return newObj
-        }
-
-        clipboard.writeText(
-          JSON.stringify(typeName(v), null, 2)
-        )
-
-        remote.dialog.showMessageBox({
-          title: 'Zwischenspeicher',
-          message:
-            'Die Daten wurden in den Zwischenspeicher zwischengespeichert.'
-        })
-      })
-  }
   mapData: any = {}
   mapShow: boolean = false
   showMap(item: any) {
     this.mapData = item
     this.mapShow = true
   }
-  editVerteiler_save(value: any) {
+  editAK_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editVerteiler,
-        variables: {
-          ...value,
-          personID: this.data.person.personID,
-          authToken: auth.authToken
-        }
-      })
-      .then(this.refetch)
-  }
-  editVerteiler_open(item: any) {
-    this.editVerteiler_value = {}
-    this.editVerteiler_value = {
-      verteilerPersonenID: item.verteilerPersonenID,
-      verteiler: item.verteiler.verteilerID,
-      type: item.type
-    }
-    this.editVerteiler_show = true
-  }
-  editVerteiler_delete(value: any) {
-    this.$apollo
-      .mutate({
-        mutation: query.personen.details.deleteVerteiler,
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $personID: Int!
+            $status: Int!
+            $akID: Int!
+            $date: String!
+          ) {
+            updateAKStatus(
+              personID: $personID
+              authToken: $authToken
+              akID: $akID
+              status: $status
+              date: $date
+            )
+          }
+        `,
         variables: {
           authToken: auth.authToken,
-          ...value
+          personID: this.data.person.personID,
+          ...value,
+          status: value.status - 1
         }
       })
       .then(this.refetch)
-  }
-  addVerteiler_save(value: any) {
-    console.log(value)
-    alert('comming soon')
-    // this.$apollo
-    //   .mutate({
-    //     mutation: query.personen.details.addVerteiler,
-    //     variables: {
-    //       personID: this.data.person.personID,
-    //       authToken: auth.authToken,
-    //       ...value
-    //     }
-    //   })
-    //   .then(this.refetch)
-  }
-  editAK_save(value: any) {
-    alert('Comming Soon')
   }
   editAK_open(item: any) {
     const d = new Date()
     this.editAK_value = {}
     this.editAK_value = {
-      akID: item.ak.akID,
-      // zeitpunkt: 
+      akID: item.ak.akID
     }
     this.editAK_show = true
   }
   addAK_save(value: any) {
-    alert('Comming Soon')
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $personID: Int!
+            $status: Int!
+            $akID: Int!
+            $date: String!
+          ) {
+            updateAKStatus(
+              personID: $personID
+              authToken: $authToken
+              akID: $akID
+              status: $status
+              date: $date
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          personID: this.data.person.personID,
+          ...value,
+          status: value.status - 1
+        }
+      })
+      .then(this.refetch)
   }
   addAdresse_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.addAdresse,
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $strasse: String!
+            $plz: String!
+            $ort: String!
+          ) {
+            addAdresse(
+              personID: $personID
+              authToken: $authToken
+              strasse: $strasse
+              plz: $plz
+              ort: $ort
+            )
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -562,7 +744,19 @@ export default class PersonenDetails extends reloaderBase {
   addTelefon_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.addTelefon,
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $telefon: String!
+          ) {
+            addTelefon(
+              personID: $personID
+              authToken: $authToken
+              telefon: $telefon
+            )
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -574,7 +768,19 @@ export default class PersonenDetails extends reloaderBase {
   addEmail_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.addEmail,
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $email: String!
+          ) {
+            addEmail(
+              personID: $personID
+              authToken: $authToken
+              email: $email
+            )
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -586,9 +792,42 @@ export default class PersonenDetails extends reloaderBase {
   editAdresse_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editAdresse,
+        mutation: gql`
+          mutation(
+            $adressID: Int!
+            $authToken: String!
+            $strasse: String!
+            $plz: String!
+            $ort: String!
+          ) {
+            editAdresse(
+              adressID: $adressID
+              authToken: $authToken
+              strasse: $strasse
+              plz: $plz
+              ort: $ort
+            )
+          }
+        `,
         variables: {
-          personID: this.data.person.personID,
+          authToken: auth.authToken,
+          ...value
+        }
+      })
+      .then(this.refetch)
+  }
+  editAdresse_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation($adressID: Int!, $authToken: String!) {
+            markAdressAsOld(
+              adressID: $adressID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
           authToken: auth.authToken,
           ...value
         }
@@ -598,9 +837,57 @@ export default class PersonenDetails extends reloaderBase {
   editTelefon_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editTelefon,
+        mutation: gql`
+          mutation(
+            $telefonID: Int!
+            $authToken: String!
+            $telefon: String!
+          ) {
+            editTelefon(
+              telefonID: $telefonID
+              authToken: $authToken
+              telefon: $telefon
+            )
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
+          authToken: auth.authToken,
+          ...value
+        }
+      })
+      .then(this.refetch)
+  }
+  editTelefon_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation($telefonID: Int!, $authToken: String!) {
+            markTelefonAsOld(
+              telefonID: $telefonID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          ...value
+        }
+      })
+      .then(this.refetch)
+  }
+  editEmail_delete(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation($emailID: Int!, $authToken: String!) {
+            markEmailAsOld(
+              emailID: $emailID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
           authToken: auth.authToken,
           ...value
         }
@@ -610,7 +897,19 @@ export default class PersonenDetails extends reloaderBase {
   editEmail_save(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.details.editEmail,
+        mutation: gql`
+          mutation(
+            $emailID: Int!
+            $authToken: String!
+            $email: String!
+          ) {
+            editEmail(
+              emailID: $emailID
+              authToken: $authToken
+              email: $email
+            )
+          }
+        `,
         variables: {
           personID: this.data.person.personID,
           authToken: auth.authToken,
@@ -636,10 +935,11 @@ export default class PersonenDetails extends reloaderBase {
     }
     this.editTelefon_show = true
   }
-  editEmail_open(item: { emailID: number; email: string }) {
+  editEmail_open(item: { eMailID: number; eMail: string }) {
     this.editEmail_value = {}
     this.editEmail_value = {
-      ...item
+      emailID: item.eMailID,
+      email: item.eMail
     }
     this.editEmail_show = true
   }
@@ -648,7 +948,7 @@ export default class PersonenDetails extends reloaderBase {
       authToken: auth.authToken,
       personID: this.$route.params.id
     }
-    this.query = query.personen.details.load
+    this.query = loadGQL
     super.created()
   }
   alertCommingSoon() {
@@ -657,8 +957,48 @@ export default class PersonenDetails extends reloaderBase {
   share(share: (url: string) => void) {
     share(this.$route.fullPath)
   }
-  mailto(item:any){
-    location.href = `mailto:${item.email}`
+  mailto(item: any) {
+    location.href = `mailto:${item.eMail}`
+  }
+  fzAntrag() {
+    // Confirm.
+    electron.remote.dialog.showMessageBox(
+      {
+        type: 'question',
+        buttons: ['Yes', 'No'],
+        title: 'FZ-Antrag generieren?',
+        message:
+          'Soll wirklich ein FZ-Antrag generiert werden?'
+      },
+      response => {
+        if (response === 0) {
+          this.$apollo
+            .mutate({
+              mutation: gql`
+                mutation(
+                  $personID: Int!
+                  $authToken: String!
+                ) {
+                  addFZAntrag(
+                    personID: $personID
+                    authToken: $authToken
+                  )
+                }
+              `,
+              variables: {
+                authToken: auth.authToken,
+                personID: this.$route.params.id
+              }
+            })
+            .then(this.refetch)
+        }
+      }
+    )
   }
 }
 </script>
+<style>
+.isOld {
+  background-color: red;
+}
+</style>

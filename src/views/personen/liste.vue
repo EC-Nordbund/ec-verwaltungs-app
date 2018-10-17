@@ -11,22 +11,42 @@
 
     <template slot="handleOutside" slot-scope="slotProps">
       <!-- Handle Geschlecht Col -->
-      <v-avatar :style="{ background: (slotProps.item.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }" :size="32">
+      <v-avatar 
+        :style="{ background: (slotProps.item.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }" 
+        :size="32">
+
         <span class="white--text headline" style="font-size: 12pt !important">
-          {{slotProps.item.vorname[0].toUpperCase()}}{{slotProps.item.nachname[0].toUpperCase()}}
+          {{
+            slotProps.item.vorname[0].toUpperCase()
+            +
+            slotProps.item.nachname[0].toUpperCase()
+          }}
         </span>
+
       </v-avatar>
     </template>
 
-    <ec-button-add @click="addPerson_show = true"/>
-    <ec-form v-model="addPerson_show" title="Person hinzufügen" :fieldConfig="addPerson_config" @save="saveNewPerson" v-if="auth.isMutationAllowed('addPerson')"/>
-    
+    <!-- floating Button -->
+    <ec-button-add 
+      @click="addPerson_show = true"
+    />
+
+    <!-- Add Person Form -->
+    <ec-form 
+      title="Person hinzufügen"
+      v-model="addPerson_show"  
+      :fieldConfig="addPerson_config" 
+      @save="saveNewPerson" 
+      v-if="auth.isMutationAllowed('addPerson')"
+    />
   </ec-table>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
+
+import gql from 'graphql-tag'
 
 import {
   vornameConfig,
@@ -39,15 +59,47 @@ import auth from '@/plugins/auth'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { query } from '@/graphql/index'
 import { getClient } from '@/plugins/apollo'
+
+const loadGQL = gql`
+  query($authToken: String!) {
+    personen(authToken: $authToken) {
+      personID
+      vorname
+      nachname
+      gebDat {
+        input
+        german
+      }
+      geschlecht
+    }
+  }
+`
+
+const addPersonGQL = gql`
+  mutation(
+    $authToken: String!
+    $vorname: String!
+    $nachname: String!
+    $gebDat: String!
+    $geschlecht: String!
+  ) {
+    addPerson(
+      authToken: $authToken
+      vorname: $vorname
+      nachname: $nachname
+      gebDat: $gebDat
+      geschlecht: $geschlecht
+    )
+  }
+`
 
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.personen.liste.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken
         }
@@ -91,7 +143,7 @@ export default class PersonenListe extends reloaderBase {
   saveNewPerson(value: any) {
     this.$apollo
       .mutate({
-        mutation: query.personen.liste.addPerson,
+        mutation: addPersonGQL,
         variables: {
           authToken: auth.authToken,
           ...value
@@ -119,7 +171,7 @@ export default class PersonenListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.query = query.personen.liste.load
+    this.query = loadGQL
     this.suchstring = this.$route.query.suche || ''
     super.created()
   }

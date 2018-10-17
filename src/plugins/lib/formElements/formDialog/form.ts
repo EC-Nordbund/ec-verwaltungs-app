@@ -128,7 +128,7 @@ export default class formDialog extends Vue {
                         click: this.delete
                       }
                     },
-                    ['Löschen']
+                    [this.deleteLabel]
                   )
                 ]
               : []),
@@ -192,6 +192,8 @@ export default class formDialog extends Vue {
   @Prop({ type: Boolean, required: true })
   show!: boolean
 
+  @Prop({ type: String, default: 'Löschen' })
+  deleteLabel!: string
   /**
    * Felder-Configuration
    *

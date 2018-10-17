@@ -49,12 +49,12 @@
           <v-card-text>
             <v-form>
               <b>Gesamtbewertung</b>
-              <v-rating/>
+              <v-rating v-model="gesamtbewertung"/>
               <b>Handhabung</b>
-              <v-rating/>
-              <v-textarea label="Funktionswunsch"/>
-              <v-textarea label="Fehler melden"/>
-              <v-textarea label="Sonstige Notizen"/>
+              <v-rating v-model="handhabung"/>
+              <v-textarea v-model="funktionswunsch" label="Funktionswunsch"/>
+              <v-textarea v-model="bugs" label="Fehler melden"/>
+              <v-textarea v-model="notizen" label="Sonstige Notizen"/>
             </v-form>
           </v-card-text>
           <v-card-actions>
@@ -74,9 +74,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import auth from '@/plugins/auth'
-import { query } from '@/graphql/index'
+import gql from 'graphql-tag'
 @Component({})
-export default class admin extends Vue {
+export default class profil extends Vue {
+  gesamtbewertung = 0
+  handhabung = 0
+  funktionswunsch = ''
+  bugs = ''
+  notizen = ''
   pwdValid = false
   editPWD_show = false
   opwd = ''
@@ -96,7 +101,19 @@ export default class admin extends Vue {
   pwdChange_save() {
     this.$apollo
       .mutate({
-        mutation: query.profil.updatePWD,
+        mutation: gql`
+          mutation(
+            $oldPWD: String!
+            $newPWD: String!
+            $authToken: String!
+          ) {
+            passwordWechseln(
+              oldPWD: $oldPWD
+              newPWD: $newPWD
+              authToken: $authToken
+            )
+          }
+        `,
         variables: {
           authToken: auth.authToken,
           newPWD: this.npwd,
@@ -116,9 +133,34 @@ export default class admin extends Vue {
     this.rpwd = ''
     ;(<any>this.$refs).pwdForm.reset()
   }
-  feedback(){
+  feedback() {
     alert('Feedback abgesendet')
-    alert('Comming soon...')
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $gesamt: Int!
+          $handhabung: Int!
+          $funktionswunsch: String!
+          $bug: String!
+          $sonstiges: String!
+        ) {
+          feedback(
+            gesamt: $gesamt
+            handhabung: $handhabung
+            funktionswunsch: $funktionswunsch
+            bug: $bug
+            sonstiges: $sonstiges
+          )
+        }
+      `,
+      variables: {
+        gesamt: this.gesamtbewertung,
+        handhabung: this.handhabung,
+        funktionswunsch: this.funktionswunsch,
+        bug: this.bugs,
+        sonstiges: this.notizen
+      }
+    })
   }
 }
 </script>

@@ -1,5 +1,6 @@
 import gql from 'graphql-tag'
 import { getClient } from '@/plugins/apollo'
+import version from './version/version'
 import router from './router/router'
 import eventbus from '@/plugins/eventbus'
 
@@ -163,14 +164,19 @@ class auth {
     return getClient()
       .mutate({
         mutation: gql`
-          mutation($username: String!, $password: String!) {
-            logIn(username: $username, password: $password)
+          mutation(
+            $username: String!
+            $password: String!
+            $version: String!
+          ) {
+            logIn(
+              username: $username
+              password: $password
+              version: $version
+            )
           }
         `,
-        variables: {
-          username,
-          password
-        }
+        variables: { username, password, version }
       })
       .then(v => (v.data as any).logIn)
       .then(authToken => {

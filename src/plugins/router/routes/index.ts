@@ -16,14 +16,14 @@ import PersonenDetails from '@/views/personen/details.vue'
 import AKListe from '@/views/arbeitskreise/liste.vue'
 import AKDetails from '@/views/arbeitskreise/details.vue'
 
-import VerteilerListe from '@/views/verteiler/liste.vue'
-import VerteilerDetails from '@/views/verteiler/details.vue'
-
 import anmeldungListe from '@/views/anmeldungen/liste.vue'
 import anmeldungDetails from '@/views/anmeldungen/details.vue'
 
 import unterkünfteListe from '@/views/unterkünfte/liste.vue'
 import unterkünfteDetails from '@/views/unterkünfte/details.vue'
+
+import orgaListe from '@/views/organisationen/liste.vue'
+import orgaDetails from '@/views/organisationen/details.vue'
 
 import veranstaltungenListe from '@/views/veranstaltungen/liste.vue'
 import veranstaltungenDetails from '@/views/veranstaltungen/details.vue'
@@ -66,14 +66,14 @@ const routes: RouteConfig[] = [
             path: '',
             component: PersonenListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           },
           {
             path: ':id',
             component: PersonenDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           }
         ]
@@ -86,54 +86,78 @@ const routes: RouteConfig[] = [
             path: '',
             component: AKListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           },
           {
             path: ':id',
             component: AKDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'vorsitzender']
             }
           }
         ]
       },
       {
-        path: 'verteiler',
+        path: 'organisationen',
         component: RouteComponent,
         children: [
           {
             path: '',
-            component: VerteilerListe,
+            component: orgaListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           },
           {
             path: ':id',
-            component: VerteilerDetails,
+            component: orgaDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           }
         ]
       },
       {
-        path: 'unterkünfte',
+        path: 'vorte',
         component: RouteComponent,
         children: [
           {
             path: '',
             component: unterkünfteListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           },
           {
             path: ':id',
             component: unterkünfteDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           }
         ]
@@ -146,14 +170,26 @@ const routes: RouteConfig[] = [
             path: '',
             component: veranstaltungenListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           },
           {
             path: ':id',
             component: veranstaltungenDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           }
         ]
@@ -166,14 +202,26 @@ const routes: RouteConfig[] = [
             path: '',
             component: anmeldungListe,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           },
           {
             path: ':id',
             component: anmeldungDetails,
             meta: {
-              userGroups: ['admin']
+              userGroups: [
+                'admin',
+                'anmeldeverwaltung',
+                'kasse',
+                'veranstaltungsverwaltung',
+                'veranstaltungsleiter'
+              ]
             }
           }
         ]
@@ -212,7 +260,7 @@ const routes: RouteConfig[] = [
             path: '',
             component: DruckenComponent,
             meta: {
-              userGroups: ['admin']
+              userGroups: ['admin', 'anmeldeverwaltung']
             }
           }
         ]
