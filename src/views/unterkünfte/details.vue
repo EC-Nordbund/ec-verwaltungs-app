@@ -4,7 +4,7 @@
     <template slot="label">
       <ec-headline>
         {{data.vort.bezeichnung}} ({{(data.vort.organisation || {}).bezeichnung}})
-        <ec-button-icon @click="soon"/>
+        <ec-button-icon @click="stamm_open"/>
       </ec-headline>
     </template>
 
@@ -26,7 +26,7 @@
     <template>
       <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
-          <ec-list :mapper="v=>v" icon="map" :items="[
+          <ec-list @edit="sonstiges_open" :mapper="v=>v" icon="map" :items="[
             {
               title: data.vort.strasse,
               subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
@@ -38,25 +38,30 @@
             },
             {
               title: data.vort.anzahl_min?data.vort.anzahl_min:'N/A',
-              subTitle: 'Mindestzahl an TN'
+              subTitle: 'Mindestzahl an TN',
+              edit: true
             },
             {
               title: data.vort.anzahl_max?data.vort.anzahl_max:'N/A',
-              subTitle: 'Maximalzahl an TN'
+              subTitle: 'Maximalzahl an TN',
+              edit: true
             },
             ...(data.vort.vollverpflegung?[
               {
-                title: 'Vollverpflegung möglich'
+                title: 'Vollverpflegung möglich',
+                edit: true
               }
             ]:[]),
             ...(data.vort.sebstversorger?[
               {
-                title: 'Sebstversorger möglich'
+                title: 'Sebstversorger möglich',
+                edit: true
               }
             ]:[]),
             {
               title: data.vort.notizen?data.vort.notizen:'N/A',
-              subTitle: 'Notizen'
+              subTitle: 'Notizen',
+              edit: true
             }
           ]"/>
         </v-tab-item>
@@ -66,6 +71,7 @@
             <ec-list
               @edit="editKontakt(kontakt)"
               :mapper="v=>v"
+              icon="map"
               :items="[
                 {
                   title: kontakt.ansprechpartner,
@@ -91,6 +97,7 @@
               ]"
             />
           </div>
+          <ec-button-add/>
         </v-tab-item>
         <v-tab-item id="tab-3">
           <ec-list
@@ -103,11 +110,22 @@
       </v-tabs-items>
     </template>
 
-    <template slot="actions">
-      
-    </template>
-
     <template slot="forms">
+      <ec-form
+        title="Veranstaltungsort editieren"
+        v-model="stamm_show"
+        :fieldConfig="stamm_config"
+        :value="stamm_value"
+        @save="stamm_save"
+      />
+
+      <ec-form
+        title="Veranstaltungsort editieren"
+        v-model="sonstiges_show"
+        :fieldConfig="sonstiges_config"
+        :value="sonstiges_value"
+        @save="sonstiges_save"
+      />
     </template>
 
   </ec-wrapper>
@@ -165,6 +183,16 @@ const loadGQL = gql`
   }
 `
 
+import {
+  bezeichnungConfig,
+  strasseConfig,
+  plzConfig,
+  ortConfig,
+  landConfig,
+  orgaConfig,
+  notizConfig
+} from '@/plugins/formConfig'
+
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
@@ -209,6 +237,82 @@ const loadGQL = gql`
   }
 })
 export default class vOrtDetails extends reloaderBase {
+  sonstiges_show=false
+  sonstiges_config=[
+    {
+      name: "sebstversorger",
+      label: "Selbsversorger möglich",
+      componentName: 'v-switch'
+    },
+    {
+      name: "vollverpflegung",
+      label: "Vollverpflegung möglich",
+      componentName: 'v-switch'
+    },
+    {
+      name: 'anzahl_min',
+      label: 'Mindestzahl Personen',
+      type: 'number'
+    },
+    {
+      name: 'anzahl_max',
+      label: 'Maximalzahl Personen',
+      type: 'number'
+    },
+    notizConfig
+  ]
+  sonstiges_value:any={}
+  sonstiges_save(value:any){
+    console.log(value)
+  }
+  sonstiges_open(){
+    this.sonstiges_value={}
+    this.sonstiges_value={
+      selbstversorger: this.data.vort.selbstversorger,
+      vollverpflegung: this.data.vort.vollverpflegung,
+      anzahl_min: this.data.vort.anzahl_min,
+      anzahl_max: this.data.vort.anzahl_max,
+      notizen: this.data.vort.notizen
+    }
+    this.sonstiges_show=true
+  }
+  stamm_show = false
+  stamm_config = [
+    bezeichnungConfig,
+    orgaConfig,
+    strasseConfig,
+    plzConfig,
+    ortConfig,
+    landConfig
+  ]
+  stamm_value: any = {}
+  stamm_open() {
+    this.stamm_value = {}
+    this.stamm_value = {
+      bezeichnung: this.data.vort.bezeichnung,
+      organisationsID:this.data.vort.organisation.organisationsID,
+      strasse: this.data.vort.strasse,
+      plz:this.data.vort.plz,
+      ort: this.data.vort.ort,
+      land: this.data.vort.land
+    }
+    this.stamm_show = true
+  }
+  stamm_save(value:any) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation ($vOrtID: Int!, $bezeichnung: String!, $strasse: String!, $plz: String!, $ort: String!, $land: String!, $organisationsID: Int!, $authToken: String!) {
+          veranstaltungsortEditStamm(vOrtID: $vOrtID, bezeichnung: $bezeichnung, strasse: $strasse, plz: $plz, ort: $ort, land: $land, organisationsID: $organisationsID, authToken: $authToken)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        vOrtID: this.data.vort.vOrtID,
+        ...value
+      }
+    }).then(this.refetch)
+  }
+
   tabs = null
   data: any = {
     vort: {}

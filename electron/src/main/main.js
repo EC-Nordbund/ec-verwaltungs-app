@@ -9,6 +9,8 @@ const {
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
 
+require('electron-unhandled')()
+
 app.setAsDefaultProtocolClient('ec', process.execPath)
 
 function handleProto(args) {

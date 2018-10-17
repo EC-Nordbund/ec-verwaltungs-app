@@ -54,6 +54,7 @@
     "apollo-link-http": "^1.5.4",
     "apollo-utilities": "^1.0.15",
     "electron-settings": "^3.2.0",
+    "electron-unhandled": "^1.1.0",
     "js-sha3": "^0.8.0",
     "lazyfilter": "https://github.com/ecnordbund/lazyFilter.git",
     "node-fetch": "^2.1.2",
@@ -67,6 +68,7 @@
   },
   "devDependencies": {
     "@types/electron-settings": "^3.1.1",
+    "@types/electron-unhandled": "^1.1.0",
     "@types/graphql": "^14.0.0",
     "@types/node": "10.1.2",
     "@types/node-fetch": "^2.1.0",
