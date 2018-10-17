@@ -18,15 +18,34 @@ import auth from '@/plugins/auth'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { query } from '@/graphql/index'
 import { getClient } from '@/plugins/apollo'
+
+const loadGQL = gql`
+  query($authToken: String!) {
+    veranstaltungen(authToken: $authToken) {
+      veranstaltungsID
+      bezeichnung
+      begin {
+        german
+        input
+      }
+      ende {
+        german
+        input
+      }
+      veranstaltungsort {
+        bezeichnung
+      }
+    }
+  }
+`
 
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
     getClient()
       .query({
-        query: query.veranstaltungen.liste.load,
+        query: loadGQL,
         variables: {
           authToken: auth.authToken
         }
@@ -34,7 +53,7 @@ import { getClient } from '@/plugins/apollo'
       .then((v: any) => {
         next(vm => {
           ;(<VeranstaltungsListe>vm).data = v.data
-           setTimeout(() => {
+          setTimeout(() => {
             event.emit('hideLoading')
           }, 500)
         })
@@ -63,7 +82,7 @@ export default class VeranstaltungsListe extends reloaderBase {
       componentName: 'ec-form-datePicker'
     }
   ]
-  addVeranstaltung_save(value:any) {
+  addVeranstaltung_save(value: any) {
     alert('Comming Soon...')
   }
 
@@ -82,10 +101,13 @@ export default class VeranstaltungsListe extends reloaderBase {
       width: '175px'
     },
     { name: 'ende.german', label: 'Ende', width: '175px' },
-    { name: 'unterkunft.bezeichnung', label: 'Unterkunft' }
+    {
+      name: 'veranstaltungsort.bezeichnung',
+      label: 'Unterkunft'
+    }
   ]
   created() {
-    this.query = query.veranstaltungen.liste.load
+    this.query = loadGQL
     this.variabels = {
       authToken: auth.authToken
     }

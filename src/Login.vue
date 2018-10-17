@@ -10,7 +10,8 @@
         </v-card-title>
         <v-card-text>
           <v-alert :value="wrong" type="error">
-            Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.
+            Das Password und der Benutzername passen nicht zusammen! Bitte probiere es erneut.<br>
+            Solltes du dein Passwort vergessen haben melde dich bitte bei Thomas Seeger. Bitte überprüfe in diesem Fall außerdem, dass du die neuste Version benutzt.
           </v-alert>
           <v-alert :value="auth.autoLogOut" type="info">
             Du wurdest, da du 30min nicht aktiv warst, automatisch abgemeldet. Bitte melde dich neu an!
@@ -73,7 +74,6 @@ import {
 import auth from '@/plugins/auth'
 import eventBus from '@/plugins/eventbus'
 
-
 @Component({})
 export default class loginForm extends Vue {
   username: string = ''
@@ -115,7 +115,7 @@ export default class loginForm extends Vue {
     }
     auth
       .logIn(this.username, this.password)
-      .then(({status, nextURL}) => {
+      .then(({ status, nextURL }) => {
         if (status) {
           this.$router.push(nextURL)
           this.checking = false
@@ -126,7 +126,7 @@ export default class loginForm extends Vue {
       })
   }
 
-  showUrlInfo:boolean = false
+  showUrlInfo: boolean = false
 
   created() {
     if (isElectron) {
@@ -135,8 +135,8 @@ export default class loginForm extends Vue {
     }
     window.addEventListener('keyup', this.checkCaps)
 
-    eventBus.on('login_show_url_info', ()=>{
-      this.showUrlInfo=true
+    eventBus.on('login_show_url_info', () => {
+      this.showUrlInfo = true
     })
   }
   destroyed() {

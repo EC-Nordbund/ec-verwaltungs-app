@@ -14,6 +14,7 @@ interface IConfig {
   componentName?: string
   counter?: number
   disabeled?: boolean
+  [name: string]: any
 }
 
 // const required = true
@@ -105,6 +106,15 @@ export const plzConfig: IConfig = {
   componentName: 'v-text-field'
 }
 
+export const juLeiCaConfig: IConfig = {
+  name: 'juLeiCaNr',
+  label: 'JuLeiCaNr',
+  required: false,
+  rules: [exactLength('JuLeiCaNr', 'die', 11)],
+  counter: 11,
+  componentName: 'v-text-field'
+}
+
 export const ortConfig: IConfig = {
   name: 'ort',
   label: 'Ort',
@@ -115,6 +125,24 @@ export const ortConfig: IConfig = {
   ],
   counter: 50,
   componentName: 'v-text-field'
+}
+
+export const landConfig: IConfig = {
+  name: 'land',
+  label: 'Land',
+  required: true,
+  rules: [
+    required('ein Land'),
+    maxLength('ein Land', 'das', 50)
+  ],
+  counter: 50,
+  componentName: 'v-text-field'
+}
+
+export const notizConfig: IConfig = {
+  name: 'notizen',
+  label: 'Notizen',
+  componentName: 'v-textarea'
 }
 
 export const eMailConfig: IConfig = {
@@ -149,12 +177,63 @@ export const akConfig: IConfig = {
   componentName: 'ec-select-ak'
 }
 
+export const orgaConfig: IConfig = {
+  name: 'organisationsID',
+  label: 'Wähle eine Organisation',
+  required: true,
+  rules: [required('eine Organisation')],
+  componentName: 'ec-select-orga'
+}
+
 export const verteilerConfig: IConfig = {
   name: 'verteilerID',
   label: 'Wähle einen Verteiler',
   required: true,
   rules: [required('einen Verteiler')],
   componentName: 'ec-select-verteiler'
+}
+
+export const akStatusConfig: IConfig = {
+  name: 'status',
+  label: 'Bitte Wähle einen Status',
+  required: true,
+  rules: [required('einen Status')],
+  componentName: 'v-autocomplete',
+  items: [
+    'Ausgetreten',
+    'Mitglied',
+    'GV-Vertreter',
+    'Leiter'
+  ].map((item, index) => ({
+    id: index + 1,
+    beschreibung: item
+  })),
+  'item-text': 'beschreibung',
+  'item-value': 'id'
+}
+
+export const ecMitgliedConfig: IConfig = {
+  name: 'ecMitglied',
+  label: 'Bitte Wähle einen Status',
+  required: true,
+  rules: [required('einen Mitgliedsstatus')],
+  componentName: 'v-autocomplete',
+  items: ['Kein Mitglied', 'Mitglied', 'Förderer'].map(
+    (item, index) => ({
+      id: index + 1,
+      beschreibung: item
+    })
+  ),
+  'item-text': 'beschreibung',
+  'item-value': 'id'
+}
+
+export const statusUpdateDate: IConfig = {
+  name: 'date',
+  label: 'Update-Datum',
+  required: true,
+  rules: [required('ein Datum')],
+  componentName: 'ec-form-datePicker'
 }
 
 export const verteilerTypeConfig: IConfig = {

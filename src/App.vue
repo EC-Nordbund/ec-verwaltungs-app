@@ -57,7 +57,7 @@
         </template>
       </v-list>
     </v-navigation-drawer>
-    <v-content style="display: grid;">
+    <v-content>
       <router-view/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
@@ -121,26 +121,14 @@ export default class App extends Vue {
   version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
-  countdown: null|NodeJS.Timer = null
+  countdown: null | NodeJS.Timer = null
   nav = nav
   auth = auth
   event = event
   xButtonLogic = xButtonLogic
   click(route: string) {
     if (route === '_hilfe') {
-      let win: BrowserWindow = new electron.remote.BrowserWindow(
-        {
-          // show: false
-        }
-      )
-      const onlinePath = 'http://localhost:8081'
-      const url = isProduction
-        ? isElectron ? '../docs/index.html' : onlinePath
-        : 'http://localhost:8081'
-      win.loadURL(url)
-      // win.on('ready-to-show', () => {
-      //   win.show()
-      // })
+      electron.ipcRenderer.send('openHelp')
       return
     }
     this.$router.push(route)
@@ -162,13 +150,13 @@ export default class App extends Vue {
     })
     this.countdown = setInterval(() => {
       if (this.sec > 0) {
-      this.sec--
+        this.sec--
       }
     }, 1000)
   }
 
   destroyed() {
-    if(this.countdown!==null){
+    if (this.countdown !== null) {
       clearInterval(this.countdown)
     }
   }
@@ -191,7 +179,7 @@ export default class App extends Vue {
     this.$router.push('/')
   }
 
-  dgvoID(id: number){
+  dgvoID(id: number) {
     console.log(id)
   }
 }
