@@ -1,6 +1,6 @@
 {
   "name": "ec-verwaltungs-app",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.3",
   "description": "EC-Verwaltungs Application",
   "keywords": [],
   "homepage": "https://ec-nordbund.de",
@@ -95,7 +95,8 @@
   "dependencies": {
     "electron-settings": "^3.2.0",
     "electron-squirrel-startup": "^1.0.0",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.1.2",
+    "electron-unhandled": "^1.1.0"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.17",

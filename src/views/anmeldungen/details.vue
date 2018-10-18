@@ -34,6 +34,12 @@
           <span>Sonstiges</span>
           <v-spacer/>
         </v-tab>
+        <v-tab href="#tab-6" v-secondary>
+          <v-icon v-accent>arrow_drop_down_circle</v-icon>
+          <v-spacer/>
+          <span>Zusatz</span>
+          <v-spacer/>
+        </v-tab>
       </v-tabs>
     </template>
 
@@ -138,6 +144,17 @@
             />
           </v-card> 
         </v-tab-item>
+        <v-tab-item id="tab-6">
+          <v-card>
+            <v-treeview item-key="name" :open="[]"  open-on-click v-model="tree" activatable :items="test_2(data.anmeldung.extra_json)">
+              <template slot="prepend" slot-scope="props">
+                <v-icon v-if="props.item.children">
+                  {{ props.open ? 'folder_open' : 'folder' }}
+                </v-icon>
+              </template>
+            </v-treeview>
+          </v-card>
+        </v-tab-item>
       </v-tabs-items>
     </template>
 
@@ -195,73 +212,74 @@ import event from '@/plugins/eventbus'
 
 const loadGQL = gql`
   query($authToken: String!, $anmeldeID: String!) {
-          anmeldung(
-            authToken: $authToken
-            anmeldeID: $anmeldeID
-          ) {
-            anmeldeID
-            person {
-              vorname
-              nachname
-              gebDat {
-                german
-              }
-              geschlecht
-            }
-            veranstaltung {
-              bezeichnung
-              begin {
-                input
-                german
-                year
-              }
-              ende {
-                input
-                german
-              }
-            }
-            position
-            adresse {
-              adressID
-              strasse
-              plz
-              ort
-            }
-            email {
-              eMailID
-              eMail
-            }
-            telefon {
-              telefonID
-              telefon
-            }
-            wartelistenPlatz
-            bisherBezahlt
-            anmeldeZeitpunkt {
-              german
-            }
-            abmeldeZeitpunkt {
-              german
-            }
-            abmeldeGebuehr
-            wegDerAbmeldung
-            rueckbezahlt
-            kommentarAbmeldung
-            vegetarisch
-            lebensmittelAllergien
-            gesundheitsinformationen
-            bemerkungen
-            radfahren
-            fahrgemeinschaften
-            klettern
-            sichEntfernen
-            bootFahren
-            schwimmen
-            DSGVO_einverstaendnis {
-              german
-            }
-          }
+    anmeldung(
+      authToken: $authToken
+      anmeldeID: $anmeldeID
+    ) {
+      anmeldeID
+      person {
+        vorname
+        nachname
+        gebDat {
+          german
         }
+        geschlecht
+      }
+      veranstaltung {
+        bezeichnung
+        begin {
+          input
+          german
+          year
+        }
+        ende {
+          input
+          german
+        }
+      }
+      position
+      adresse {
+        adressID
+        strasse
+        plz
+        ort
+      }
+      email {
+        eMailID
+        eMail
+      }
+      telefon {
+        telefonID
+        telefon
+      }
+      wartelistenPlatz
+      bisherBezahlt
+      anmeldeZeitpunkt {
+        german
+      }
+      abmeldeZeitpunkt {
+        german
+      }
+      abmeldeGebuehr
+      wegDerAbmeldung
+      rueckbezahlt
+      kommentarAbmeldung
+      vegetarisch
+      lebensmittelAllergien
+      gesundheitsinformationen
+      bemerkungen
+      radfahren
+      fahrgemeinschaften
+      klettern
+      sichEntfernen
+      bootFahren
+      schwimmen
+      DSGVO_einverstaendnis {
+        german
+      }
+      extra_json
+    }
+  }
 `
 
 @Component({
@@ -308,6 +326,7 @@ const loadGQL = gql`
   }
 })
 export default class anmeldungsDetails extends reloaderBase {
+  tree = []
   data: any = {
     anmeldung: {
       person: { gebDat: {} },
@@ -329,6 +348,19 @@ export default class anmeldungsDetails extends reloaderBase {
 
   soon() {
     alert('Comming Soon...')
+  }
+
+  test(json: any): Array<any> {
+    return Object.keys(json).map(key => {
+      if (typeof json[key] === 'object') {
+        return { name: key, children: this.test(json[key]) }
+      } else {
+        return { name: `${key}: ${json[key]}` }
+      }
+    })
+  }
+  test_2(json: string = '{}') {
+    return this.test(JSON.parse(json))
   }
 }
 </script>

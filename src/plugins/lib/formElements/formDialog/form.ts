@@ -146,7 +146,7 @@ export default class formDialog extends Vue {
                 },
                 directives: [
                   {
-                    name: 'secondary-bg',
+                    name: 'primary-bg',
                     ...directiveArgs
                   },
                   {

@@ -317,7 +317,8 @@ import {
   statusUpdateDate,
   akStatusConfig,
   personConfig,
-  notizConfig
+  notizConfig,
+  ecKreisConfig
 } from '@/plugins/formConfig/index'
 
 import { getClient } from '@/plugins/apollo'
@@ -511,11 +512,11 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
       ecMitglied: this.data.person.ecMitglied,
-      ecKreis: this.data.person.ecKreis.ecKreisID
+      ecKreisID: this.data.person.ecKreis.ecKreisID
     }
     this.editSonstiges_show = true
   }
-  editSonstiges_config = [juLeiCaConfig, ecMitgliedConfig]
+  editSonstiges_config = [juLeiCaConfig, ecMitgliedConfig, ecKreisConfig]
   addFZ_show = false
   addFZ_save(value: any) {
     this.$apollo.mutate({
