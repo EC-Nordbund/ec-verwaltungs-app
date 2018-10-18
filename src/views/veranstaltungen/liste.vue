@@ -1,12 +1,6 @@
 <template>
   <ec-table title="Veranstaltungen" itemName="Veranstaltungen" :items="data.veranstaltungen" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" :sucheVal="suchstring">
-    <ec-button-add @click="addVeranstaltung_show = true" v-if="auth.isMutationAllowed('addVeranstaltung')"/>
-    <ec-form
-      title="Veranstatung hinzufügen"
-      v-model="addVeranstaltung_show"
-      :fieldConfig="addVeranstaltung_config"
-      @save="addVeranstaltung_save"
-    />
+    <ec-button-add @click="soon"/>
   </ec-table>
 </template>
 <script lang="ts">
@@ -63,26 +57,8 @@ const loadGQL = gql`
 export default class VeranstaltungsListe extends reloaderBase {
   xButtonLogik = xButtonLogik
   suchstring: string = ''
-  addVeranstaltung_show: boolean = false
-  //TODO: Rules
-  addVeranstaltung_config = [
-    {
-      name: 'bezeichnung',
-      label: 'Bezeichnung',
-      counter: 50
-    },
-    {
-      name: 'begin',
-      label: 'Begin',
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      name: 'ende',
-      label: 'Ende',
-      componentName: 'ec-form-datePicker'
-    }
-  ]
-  addVeranstaltung_save(value: any) {
+
+  soon(value: any) {
     alert('Comming Soon...')
   }
 

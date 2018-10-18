@@ -37,12 +37,11 @@
       <v-tabs-items v-model="tabs" class="white">
         <v-tab-item id="tab-1">
           <ec-list
-            edit 
             icon="."
             :items="[
               {
-                title: `${(data.veranstaltung.unterkunft || {}).bezeichnung}`, 
-                subTitle: `${(data.veranstaltung.unterkunft || {}).plz} ${(data.veranstaltung.unterkunft || {}).ort} (${(data.veranstaltung.unterkunft || {}).land})`, 
+                title: `${(data.veranstaltung.veranstaltungsort || {}).bezeichnung}`, 
+                subTitle: `${(data.veranstaltung.veranstaltungsort || {}).plz} ${(data.veranstaltung.veranstaltungsort || {}).ort} (${(data.veranstaltung.veranstaltungsort || {}).land})`, 
                 icon: 'home'
               },
               {
@@ -51,19 +50,22 @@
                 icon: 'group'
               },
               {
-                title: data.veranstaltung.maxTNAnzahl,
+                title: data.veranstaltung.anzahlPlaetze ? data.veranstaltung.anzahlPlaetze : 'N/A',
                 subTitle: 'Anzahl Plätze',
-                icon: 'group'
+                icon: 'group',
+                edit: true
               },
               {
-                title: data.veranstaltung.maxMaennlichTNAnzahl,
+                title: data.veranstaltung.anzahlPlaetzeM ? data.veranstaltung.anzahlPlaetzeM : 'N/A',
                 subTitle: 'Anzahl Plätze männlich',
-                icon: 'group'
+                icon: 'group',
+                edit: true
               },
               {
-                title: data.veranstaltung.maxWeiblichTNAnzahl,
+                title: data.veranstaltung.anzahlPlaetzeW ? data.veranstaltung.anzahlPlaetzeW : 'N/A',
                 subTitle: 'Anzahl Plätze weiblich',
-                icon: 'group'
+                icon: 'group',
+                edit: true
               }
             ]"
             :mapper="v=>v"
@@ -71,7 +73,7 @@
           />
         </v-tab-item>
         <v-tab-item id="tab-2">
-           <ec-list
+          <ec-list
             edit 
             @edit="editKosten"
             icon="."
@@ -92,27 +94,27 @@
                 icon: 'attach_money'
               },
               {
-                title: `${data.veranstaltung.anzahlungFruehbucher}€`,
+                title: `${data.veranstaltung.preisAnzahlungFruehbucher}€`,
                 subTitle: 'Anzahlung Frühbucher',
                 icon: 'attach_money'
               },
               {
-                title: `${data.veranstaltung.anzahlungNormal}€`,
+                title: `${data.veranstaltung.preisAnzahlungNormal}€`,
                 subTitle: 'Anzahlung Normal',
                 icon: 'attach_money'
               },
               {
-                title: `${data.veranstaltung.anzahlungLastMinute}€`,
+                title: `${data.veranstaltung.preisAnzahlungLastMinute}€`,
                 subTitle: 'Anzahlung Last Minute',
                 icon: 'attach_money'
               },
               {
-                title: data.veranstaltung.preisFruehbucherBis?data.veranstaltung.preisFruehbucherBis.german:'',
+                title: data.veranstaltung.fruehbucherBis?data.veranstaltung.fruehbucherBis.german:'N/A',
                 subTitle: 'Frühbucher gilt bis',
                 icon: 'attach_money'
               },
               {
-                title: data.veranstaltung.preisLastMinuteAb?data.veranstaltung.preisLastMinuteAb.german:'',
+                title: data.veranstaltung.lastMinuteAb?data.veranstaltung.lastMinuteAb.german:'N/A',
                 subTitle: 'Last Minute gilt ab',
                 icon: 'attach_money'
               },
@@ -152,7 +154,20 @@
           </v-card-text>
         </v-card>
       </v-dialog>
-      <v-dialog max-width="600px">
+      <v-dialog max-width="290px">
+        <v-btn slot="activator">TN-Listen-Template Hochladen</v-btn>
+        <v-card>
+          <v-card-title>
+            <h1>TN-Listen-Template Hochladen</h1>
+          </v-card-title>
+          <v-card-text>
+            <v-btn @click="soon">Leiter + Zuschüsse</v-btn>
+            <v-btn @click="soon">Küchenmitarbeiter</v-btn>
+            <v-btn @click="soon">Mitarbeiter</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog max-width="440px">
         <v-btn slot="activator">Briefe bearbeiten</v-btn>
         <v-card>
           <v-card-title>
@@ -161,12 +176,12 @@
           <v-tabs centered icons-and-text>
             <v-tabs-slider/>
             <v-tab href="#tab-1">
-              Recents
+              Bestätigungsbrief
               <v-icon>phone</v-icon>
             </v-tab>
 
             <v-tab href="#tab-2">
-              Favorites
+              Infobrief
               <v-icon>favorite</v-icon>
             </v-tab>
 
@@ -179,16 +194,16 @@
                 <v-card-text>
                   <v-form>
                     <!-- Has no file -->
-                    <template v-if="true">
-                      <v-btn>
+                    <template v-if="Math.random()>0.5">
+                      <v-btn @click="soon">
                         Datei auswählen 
                       </v-btn>
                     </template>
                     <template v-else>
-                      <v-btn>
+                      <v-btn @click="soon">
                         Neue Datei wählen
                       </v-btn>
-                      <v-btn>
+                      <v-btn @click="soon">
                         Akltuelle Datei öffnen
                       </v-btn>
                     </template>
@@ -197,7 +212,6 @@
               </v-card>
             </v-tab-item>
           </v-tabs>
-          Hier kommen Tabs mit Content hin
         </v-card>
       </v-dialog>
     </template>
@@ -227,7 +241,6 @@
         :value="editKosten_value"
       />
     </template>
-
   </ec-wrapper>
 </template>
 <script lang="ts">
@@ -268,11 +281,11 @@ const loadGQL = gql`
       preisNormal
       preisLastMinute
       preisFruehbucher
-      preisLastMinuteAb {
+      fruehbucherBis {
         german
         input
       }
-      preisFruehbucherBis {
+      lastMinuteAb {
         german
         input
       }
@@ -284,6 +297,7 @@ const loadGQL = gql`
       veranstaltungsort {
         vOrtID
         bezeichnung
+        plz
         ort
         land
       }
@@ -347,11 +361,7 @@ const loadGQL = gql`
 })
 export default class veranstaltungsDetails extends reloaderBase {
   editKosten_show = false
-  editKosten_value: any = {
-    normal: [0, 0],
-    lastMinute: [0, 0],
-    fruehbucher: [0, 0]
-  }
+  editKosten_value: any = {}
   editKosten_save(value: any) {
     console.log(JSON.parse(JSON.stringify(value)))
     alert('comming Soon')
@@ -383,32 +393,82 @@ export default class veranstaltungsDetails extends reloaderBase {
       name: 'ende',
       label: 'Ende',
       componentName: 'ec-form-datePicker'
+    },
+    {
+      name: 'vOrtID',
+      label: 'Veranstaltungsort',
+      componentName: 'ec-select-vort'
+    },
+    {
+      name: 'minTNAlter',
+      label: 'Minimales TN Alter',
+      componentName: 'v-slider',
+      min: 0,
+      max: 300,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'maxTNAlter',
+      label: 'Maximale TN Alter',
+      componentName: 'v-slider',
+      min: 0,
+      max: 300,
+      step: 1,
+      'thumb-label': true
     }
   ]
   // TODO: Rules
   editKosten_config = [
     {
-      name: 'fruehbucher',
+      name: 'preisFruehbucher',
       label: 'Frühbucher',
-      componentName: 'v-range-slider',
+      componentName: 'v-slider',
       min: 0,
       max: 700,
       step: 1,
       'thumb-label': true
     },
     {
-      name: 'normal',
+      name: 'preisNormal',
       label: 'Normal',
-      componentName: 'v-range-slider',
+      componentName: 'v-slider',
       min: 0,
       max: 700,
       step: 1,
       'thumb-label': true
     },
     {
-      name: 'lastMinute',
+      name: 'preisLastMinute',
       label: 'Last Minute',
-      componentName: 'v-range-slider',
+      componentName: 'v-slider',
+      min: 0,
+      max: 700,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'preisAnzahlungFruehbucher',
+      label: 'Anzahlung Frühbucher',
+      componentName: 'v-slider',
+      min: 0,
+      max: 700,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'preisAnzahlungNormal',
+      label: 'Anzahlung Normal',
+      componentName: 'v-slider',
+      min: 0,
+      max: 700,
+      step: 1,
+      'thumb-label': true
+    },
+    {
+      name: 'preisAnzahlungLastMinute',
+      label: 'Anzahlung Last Minute',
+      componentName: 'v-slider',
       min: 0,
       max: 700,
       step: 1,
@@ -431,20 +491,6 @@ export default class veranstaltungsDetails extends reloaderBase {
     }
   ]
   editAlg_config = [
-    //TODO: Veranstaltungsort, Rules
-    {
-      name: 'vOrt',
-      label: 'Veranstaltungsort (TODO)'
-    },
-    {
-      name: 'alter',
-      label: 'Alter',
-      componentName: 'v-range-slider',
-      min: 0,
-      max: 100,
-      step: 1,
-      'thumb-label': true
-    },
     {
       name: 'tnAnzahl',
       label: 'Anzahl Teilnehmer',
@@ -493,46 +539,29 @@ export default class veranstaltungsDetails extends reloaderBase {
     this.editStamm_show = true
     this.editStamm_value = {}
     this.editStamm_value = {
-      bezeichnung: this.data.veranstaltung.bezeichnung,
+      ...this.data.veranstaltung,
       begin: this.data.veranstaltung.begin.input,
-      ende: this.data.veranstaltung.ende.input
+      ende: this.data.veranstaltung.ende.input,
+      vOrtID: this.data.veranstaltung.veranstaltungsort
+        .vOrtID
     }
   }
   editAllgemeines(val: any) {
     this.editAlg_show = true
     this.editAlg_value = {}
     this.editAlg_value = {
-      vOrt: this.data.veranstaltung.unterkunft.unterkunftID,
-      alter: [
-        this.data.veranstaltung.minTNAlter,
-        this.data.veranstaltung.maxTNAlter
-      ],
-      tnAnzahl: this.data.veranstaltung.maxTNAnzahl,
-      tnAnzahlm: this.data.veranstaltung
-        .maxMaennlichTNAnzahl,
-      tnAnzahlw: this.data.veranstaltung.maxWeiblichTNAnzahl
+      ...this.data.veranstaltung
     }
   }
   editKosten() {
     this.editKosten_show = true
     this.editKosten_value = {}
     this.editKosten_value = {
-      fruehbucher: [
-        this.data.veranstaltung.anzahlungFruehbucher,
-        this.data.veranstaltung.preisFruehbucher
-      ],
-      lastMinute: [
-        this.data.veranstaltung.anzahlungLastMinute,
-        this.data.veranstaltung.preisLastMinute
-      ],
-      normal: [
-        this.data.veranstaltung.anzahlungNormal,
-        this.data.veranstaltung.preisNormal
-      ],
+      ...this.data.veranstaltung,
       preisFruehbucherBis: this.data.veranstaltung
-        .preisFruehbucherBis.input,
+        .fruehbucherBis.input,
       preisLastMinuteAb: this.data.veranstaltung
-        .preisLastMinuteAb.input,
+        .lastMinuteAb.input,
       kannVorortBezahltWerden: this.data.veranstaltung
         .kannVorortBezahltWerden
     }

@@ -8,6 +8,8 @@ import selectVerteiler from '@/plugins/lib_extension/selects/verteilerSelect'
 import typeRadio from '@/plugins/lib_extension/radioGroups/type'
 import userGroupSelect from '@/plugins/lib_extension/selects/userGroupSelect'
 import orgaSelect from '@/plugins/lib_extension/selects/orgaSelect'
+import vOrtSelect from '@/plugins/lib_extension/selects/vOrtSelect'
+import ecKreisSelect from '@/plugins/lib_extension/selects/ecKreisSelect'
 
 // Install Components
 Vue.component('ec-radio-geschlecht', geschlechtRadio)
@@ -18,3 +20,5 @@ Vue.component('ec-select-ak', selectAK)
 Vue.component('ec-select-verteiler', selectVerteiler)
 Vue.component('ec-select-userGroup', userGroupSelect)
 Vue.component('ec-select-orga', orgaSelect)
+Vue.component('ec-select-vort', vOrtSelect)
+Vue.component('ec-select-ecKreis', ecKreisSelect)

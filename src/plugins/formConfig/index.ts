@@ -177,6 +177,13 @@ export const akConfig: IConfig = {
   componentName: 'ec-select-ak'
 }
 
+export const ecKreisConfig: IConfig = {
+  name: 'ecKreisID',
+  label: 'Wähle einen EC-Kreis',
+  componentName: 'ec-select-ecKreis',
+  clearable: true
+}
+
 export const orgaConfig: IConfig = {
   name: 'organisationsID',
   label: 'Wähle eine Organisation',
