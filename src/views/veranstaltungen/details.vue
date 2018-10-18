@@ -396,7 +396,8 @@ export default class veranstaltungsDetails extends reloaderBase {
     },
     {
       name: 'vOrtID',
-      label: 'Veranstaltungsort (TODO)'
+      label: 'Veranstaltungsort',
+      componentName: 'ec-select-vort'
     },
     {
       name: 'minTNAlter',
