@@ -1,13 +1,5 @@
 <template>
   <div class="ec-containerHeight">
-    <v-toolbar>
-      <v-spacer/>
-      <ec-headline>
-        Startseite
-      </ec-headline>
-      <v-spacer/>
-      <ec-button-icon @click="edit = true" v-if="false"/>
-    </v-toolbar>
     <ec-widget-container :config="config" v-model="edit"/>
   </div>
 </template>
@@ -63,7 +55,6 @@ export default class Home extends Vue {
 <style scoped>
 .ec-containerHeight {
   display: grid;
-  grid-template-rows: auto 1fr;
   height: 100%;
 }
 </style>

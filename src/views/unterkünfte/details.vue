@@ -29,7 +29,7 @@
           <ec-list @edit="sonstiges_open" :mapper="v=>v" icon="map" :items="[
             {
               title: data.vort.strasse,
-              subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
+              subTitle:`${data.vort.organisation.plz} ${data.vort.organisation.ort} (${data.vort.organisation.land})`,
               icon:'home'
             },
             {

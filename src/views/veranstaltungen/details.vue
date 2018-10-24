@@ -250,7 +250,14 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import {} from '@/plugins/formConfig/index'
+import {
+  bezeichnungConfig, 
+  beginConfig,
+  endeConfig,
+  vOrtConfig,
+  minTNConfig,
+  maxTNConfig
+} from '@/plugins/formConfig/index'
 
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
@@ -377,48 +384,14 @@ export default class veranstaltungsDetails extends reloaderBase {
     console.log(JSON.parse(JSON.stringify(value)))
     alert('comming Soon')
   }
-  // TODO: Rules
   editStamm_config = [
-    {
-      name: 'bezeichnung',
-      label: 'Bezeichnung',
-      counter: 50
-    },
-    {
-      name: 'begin',
-      label: 'Begin',
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      name: 'ende',
-      label: 'Ende',
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      name: 'vOrtID',
-      label: 'Veranstaltungsort',
-      componentName: 'ec-select-vort'
-    },
-    {
-      name: 'minTNAlter',
-      label: 'Minimales TN Alter',
-      componentName: 'v-slider',
-      min: 0,
-      max: 300,
-      step: 1,
-      'thumb-label': true
-    },
-    {
-      name: 'maxTNAlter',
-      label: 'Maximale TN Alter',
-      componentName: 'v-slider',
-      min: 0,
-      max: 300,
-      step: 1,
-      'thumb-label': true
-    }
+    bezeichnungConfig,
+    beginConfig,
+    endeConfig,
+    vOrtConfig,
+    minTNConfig,
+    maxTNConfig
   ]
-  // TODO: Rules
   editKosten_config = [
     {
       name: 'preisFruehbucher',

@@ -1,6 +1,12 @@
 <template>
   <ec-table title="Veranstaltungen" itemName="Veranstaltungen" :items="data.veranstaltungen" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" :sucheVal="suchstring">
-    <ec-button-add @click="soon"/>
+    <ec-button-add @click="vAdd_show = true"/>
+    <ec-form
+      title="Veranstaltung hinzufügen"
+      v-model="vAdd_show"
+      :fieldConfig="vAdd_config"
+      @save="vAdd_save"
+    />
   </ec-table>
 </template>
 <script lang="ts">
@@ -9,6 +15,15 @@ import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
+
+import {
+  bezeichnungConfig,
+  beginConfig,
+  endeConfig,
+  vOrtConfig,
+  minTNConfig,
+  maxTNConfig
+} from '@/plugins/formConfig/index'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
@@ -58,8 +73,44 @@ export default class VeranstaltungsListe extends reloaderBase {
   xButtonLogik = xButtonLogik
   suchstring: string = ''
 
-  soon(value: any) {
-    alert('Comming Soon...')
+  vAdd_show = false
+  vAdd_config = [
+    bezeichnungConfig,
+    beginConfig,
+    endeConfig,
+    vOrtConfig,
+    minTNConfig,
+    maxTNConfig
+  ]
+
+  vAdd_save(value: any) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $bezeichnung: String!
+          $authToken: String!
+          $minTNAlter: Int!
+          $maxTNAlter: Int!
+          $vOrtID: Int!
+          $begin: String!
+          $ende: String!
+        ) {
+          veranstaltungAdd(
+            bezeichnung: $bezeichnung
+            authToken: $authToken
+            minTNAlter: $minTNAlter
+            maxTNAlter: $maxTNAlter
+            veranstaltungsortID: $vOrtID
+            begin: $begin
+            ende: $ende
+          )
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(this.refetch)
   }
 
   suchStringUpdate(val: string) {
