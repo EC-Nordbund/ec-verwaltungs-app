@@ -89,6 +89,7 @@
               title: `${item.veranstaltung.bezeichnung} (${item.veranstaltung.begin.german} - ${item.veranstaltung.ende.german})`,
               subTitle: `${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Küchenleiter' : ''}${item.position === 6 ? 'Leiter' : ''}`
             })"
+            @click="item=>$router.push('/app/anmeldungen/'+item.anmeldeID)"
             icon="local_phone"
           />
         </v-tab-item>

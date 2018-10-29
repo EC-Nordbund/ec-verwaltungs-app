@@ -128,14 +128,23 @@
           />
         </v-tab-item>
         <v-tab-item id="tab-3">
-          <ec-list
+          <ec-table
             :items="data.veranstaltung.anmeldungen || []"
-            :mapper="item=>({
-              title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
-              subTitle: `${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Küchenleiter' : ''}${item.position === 6 ? 'Leiter' : ''}`
-            })"
-            icon="home"
-          />
+            noTitle
+            itemName="Anmeldung"
+            :config="[
+              {name: 'person.vorname', label: 'Vorname'},
+              {name: 'person.nachname', label: 'Nachname'},
+              {name: 'person.gebDat.german', label: 'GebDat'},
+              {name: 'role', label: 'Role', handleOutside: true} 
+            ]"
+            :countAnpassung="-3"
+            title="..."
+          >
+            <template slot="handleOutside" slot-scope="{item}">
+              {{`${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Leiter' : ''}${item.position === 6 ? 'Hauptleiter' : ''}`}}
+            </template>
+          </ec-table>
         </v-tab-item>
       </v-tabs-items>
     </template>

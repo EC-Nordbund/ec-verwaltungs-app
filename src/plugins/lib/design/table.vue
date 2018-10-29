@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card style="margin: 15px">
-      <v-card-title>
+      <v-card-title v-if="!noTitle">
         <v-spacer/>
         <h1 v-font v-primary>
           {{title}}
@@ -23,7 +23,7 @@
           :headers="headers"
           :search="suchString"
           :pagination.sync="pagination"
-          :rows-per-page-items="[count]">
+          :rows-per-page-items="[count+countAnpassung]">
 
           <template slot="items" slot-scope="props">
             <tr @click="open(props.item)">
@@ -74,6 +74,12 @@ export default class Table extends Vue {
     sortBy: '',
     decending: false
   }
+
+  @Prop({type: Number, default:0})
+  countAnpassung!: number
+
+  @Prop({type: Boolean, required: false, default: false})
+  noTitle!: boolean
 
   @Prop({type: String, required: false, default: ''})
   sortSpalte!: string
