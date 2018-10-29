@@ -513,7 +513,7 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
       ecMitglied: this.data.person.ecMitglied,
-      ecKreisID: this.data.person.ecKreis.ecKreisID
+      ecKreisID: (this.data.person.ecKreis || {ecKreisID: null}).ecKreisID
     }
     this.editSonstiges_show = true
   }
