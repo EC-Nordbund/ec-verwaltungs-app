@@ -1,13 +1,11 @@
 <template>
   <ec-wrapper title="Anmeldung Details" :label="`${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} - ${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.year}) - ${['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}`" type="Anmeldung" @share="share">
-    {{data}}
-    <template slot="label">
+     <template slot="label">
       <ec-headline>
         {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}})
         <ec-button-icon @click="soon"/>
       </ec-headline>
     </template>
-
     <template slot="extension">
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
@@ -43,7 +41,6 @@
         </v-tab>
       </v-tabs>
     </template>
-
     <template>
       <v-tabs-items v-model="tabs" class="white">
         <v-tab-item id="tab-2">
@@ -110,39 +107,12 @@
                 :mapper="item=>item"
                 icon="attach_money"
                 @edit="soon"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                
               />
             </template>
             Einige Felder müssen in der API noch hinzugefügt werden
           </v-card>
         </v-tab-item>
+        
         <v-tab-item id="tab-5">
           <v-card>
             <ec-list
@@ -175,19 +145,33 @@
         </v-tab-item>
         <v-tab-item id="tab-6">
           <v-card>
-            <v-treeview item-key="name" :open="[]"  open-on-click v-model="tree" activatable :items="test_2(data.anmeldung.extra_json)">
+            Comming Soon
+            <!-- <v-treeview item-key="name" :open="[]"  open-on-click v-model="tree" activatable :items="test_2(data.anmeldung.extra_json)">
               <template slot="prepend" slot-scope="props">
                 <v-icon v-if="props.item.children">
                   {{ props.open ? 'folder_open' : 'folder' }}
                 </v-icon>
               </template>
-            </v-treeview>
+            </v-treeview> -->
           </v-card>
         </v-tab-item>
       </v-tabs-items>
     </template>
 
     <template slot="actions">
+      <v-dialog>
+        <v-btn slot="activator">Abmelden</v-btn>
+        <v-card>
+          <p>Bitte beachte das das Abmelden NICHT rückgängig zu machen ist. Versichere dich, dass du dir sicher bist, dass auch die Person die sich angemeldet hat sich auch abmeldet. Dies sollte über einen der Kanäle der bei der Anmeldung angegeben wurde passieren.</p>
+          <v-btn @click="soon">
+            Habe ich Verstanden! Abmelden!
+          </v-btn>
+        </v-card>
+      </v-dialog>
+      
+      <v-btn @click="soon">Verschieben</v-btn>
+      <v-btn @click="soon">Aus Warteliste entfernen</v-btn>
+      <v-btn @click="soon">Nachrücken</v-btn>
     </template>
 
     <template slot="forms">
@@ -221,7 +205,7 @@
         :fieldConfig="[]"
         :show="false"
       />
-    </template>
+    </template> 
 
   </ec-wrapper>
 </template>

@@ -34,7 +34,7 @@
     </template>
 
     <template>
-      <v-tabs-items v-model="tabs" class="white">
+      <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-1">
           <ec-list
             icon="."
@@ -223,6 +223,9 @@
           </v-tabs>
         </v-card>
       </v-dialog>
+      <v-btn @click="soon">
+        Nachrücken
+      </v-btn>
     </template>
 
     <template slot="forms">

@@ -200,8 +200,3 @@ export default class Table extends Vue {
   }
 }
 </script>
-<style scoped>
-.hidden {
-  visibility: hidden;
-}
-</style>
