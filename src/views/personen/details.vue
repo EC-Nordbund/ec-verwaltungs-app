@@ -107,6 +107,7 @@
                   icon="map"
                   @edit="editAK_open"
                   :edit="auth.isMutationAllowed('updateAKStatus')"
+                  @click="item=>$router.push('/app/arbeitskreise/' + item.ak.akID)"
                 />
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple lazy v-if="(data.person.ak||[]).length > 0">
@@ -120,6 +121,7 @@
                       title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
                       subTitle: `${item.date.german}`
                       })" icon="map"
+                      @click="$router.push('/app/arbeitskreise/' + ak.ak.akID)"
                     />
                   </v-expansion-panel-content>
                 </v-expansion-panel> 

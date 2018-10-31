@@ -17,6 +17,7 @@
         <v-expansion-panel-content ripple lazy>
           <div slot="header">Aktuelle Mitglieder</div>
           <ec-list
+            @click="item => $router.push('/app/personen/' + item.person.personID)"
             :items="(data.ak.personen || []).filter(item=>(item.currentStatus > 0))"
             :mapper="item=>({
               title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
@@ -41,6 +42,7 @@
                 title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
                 subTitle: `${item.date.german}`
                 })" icon="map"
+                @click="$router.push('/app/personen/' + person.person.personID)"
               />
             </v-expansion-panel-content>
           </v-expansion-panel> 

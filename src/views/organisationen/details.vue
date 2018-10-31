@@ -42,6 +42,7 @@
               title: v.bezeichnung,
               subTitle: `${v.plz} ${v.ort} (${v.land})`
             })"
+            @click="item => $router.push('/app/vOrte/' + item.vOrtID)"
           />
         </v-tab-item>
         <v-tab-item id="tab-4">

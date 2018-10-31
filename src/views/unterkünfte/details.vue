@@ -29,11 +29,11 @@
           <ec-list @edit="sonstiges_open" :mapper="v=>v" icon="map" :items="[
             {
               title: data.vort.strasse,
-              subTitle:`${data.vort.organisation.plz} ${data.vort.organisation.ort} (${data.vort.organisation.land})`,
+              subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
               icon:'home'
             },
             {
-              title: `${data.vort.bezeichnung} (${data.vort.ort} ${data.vort.land})`,
+              title: `${(data.vort.organisation||{}).bezeichnung} (${(data.vort.organisation||{}).ort} ${(data.vort.organisation||{}).land})`,
               subTitle: 'Organisation bei der gebucht'
             },
             {
@@ -103,8 +103,9 @@
           <ec-list
             :items="data.vort.veranstaltungen || []"
             :mapper="v=>({
-              title: `${v.bezeichnung} (${v.begin.german} - ${v.ende.german})`
+              title: `${v.bezeichnung} (${v.begin.german} - ${(v.ende||{}).german})`
             })"
+            @click="item=>$router.push('/app/veranstaltungen/' + item.veranstaltungsID)"
           />
         </v-tab-item>
       </v-tabs-items>
@@ -486,7 +487,9 @@ export default class vOrtDetails extends reloaderBase {
 
   tabs = null
   data: any = {
-    vort: {}
+    vort: {
+      organisation: {}
+    }
   }
 
   editKontakt(konatkt: any) {

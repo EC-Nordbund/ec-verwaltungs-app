@@ -38,11 +38,13 @@
         <v-tab-item id="tab-1">
           <ec-list
             icon="."
+            @click="o"
             :items="[
               {
                 title: `${(data.veranstaltung.veranstaltungsort || {}).bezeichnung}`, 
                 subTitle: `${(data.veranstaltung.veranstaltungsort || {}).plz} ${(data.veranstaltung.veranstaltungsort || {}).ort} (${(data.veranstaltung.veranstaltungsort || {}).land})`, 
-                icon: 'home'
+                icon: 'home',
+                click: true
               },
               {
                 title: `min: ${data.veranstaltung.minTNAlter} max: ${data.veranstaltung.maxTNAlter}`,
@@ -140,6 +142,7 @@
             ]"
             :countAnpassung="-3"
             title="..."
+            @open="item => $router.push('/app/anmeldungen/' + item.anmeldeID)"
           >
             <template slot="handleOutside" slot-scope="{item}">
               {{`${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Leiter' : ''}${item.position === 6 ? 'Hauptleiter' : ''}`}}
@@ -263,7 +266,7 @@ import reloaderBase from '@/baseComponents/reloader'
 import auth from '@/plugins/auth'
 
 import {
-  bezeichnungConfig, 
+  bezeichnungConfig,
   beginConfig,
   endeConfig,
   vOrtConfig,
@@ -553,6 +556,14 @@ export default class veranstaltungsDetails extends reloaderBase {
   }
   soon() {
     alert('comming soon')
+  }
+  o(item: any) {
+    if (item.click) {
+      this.$router.push(
+        '/app/vOrte/' +
+          this.data.veranstaltung.veranstaltungsort.vOrtID
+      )
+    }
   }
 }
 </script>
