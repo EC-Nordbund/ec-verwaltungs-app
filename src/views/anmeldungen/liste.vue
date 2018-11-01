@@ -52,6 +52,9 @@ const loadGQL = gql`
         }
       }
       position
+      anmeldeZeitpunkt {
+        german
+      }
     }
   }
 `

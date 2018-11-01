@@ -1,11 +1,11 @@
 <template>
   <ec-table title="Veranstaltungen" itemName="Veranstaltungen" :items="data.veranstaltungen" :config="tableConfig" suche @open="open" @sucheChanged="suchStringUpdate" :sucheVal="suchstring">
-    <ec-button-add @click="addVeranstaltung_show = true" v-if="auth.isMutationAllowed('addVeranstaltung')"/>
+    <ec-button-add @click="vAdd_show = true"/>
     <ec-form
-      title="Veranstatung hinzufügen"
-      v-model="addVeranstaltung_show"
-      :fieldConfig="addVeranstaltung_config"
-      @save="addVeranstaltung_save"
+      title="Veranstaltung hinzufügen"
+      v-model="vAdd_show"
+      :fieldConfig="vAdd_config"
+      @save="vAdd_save"
     />
   </ec-table>
 </template>
@@ -15,6 +15,15 @@ import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
 import auth from '@/plugins/auth'
+
+import {
+  bezeichnungConfig,
+  beginConfig,
+  endeConfig,
+  vOrtConfig,
+  minTNConfig,
+  maxTNConfig
+} from '@/plugins/formConfig/index'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
@@ -63,27 +72,45 @@ const loadGQL = gql`
 export default class VeranstaltungsListe extends reloaderBase {
   xButtonLogik = xButtonLogik
   suchstring: string = ''
-  addVeranstaltung_show: boolean = false
-  //TODO: Rules
-  addVeranstaltung_config = [
-    {
-      name: 'bezeichnung',
-      label: 'Bezeichnung',
-      counter: 50
-    },
-    {
-      name: 'begin',
-      label: 'Begin',
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      name: 'ende',
-      label: 'Ende',
-      componentName: 'ec-form-datePicker'
-    }
+
+  vAdd_show = false
+  vAdd_config = [
+    bezeichnungConfig,
+    beginConfig,
+    endeConfig,
+    vOrtConfig,
+    minTNConfig,
+    maxTNConfig
   ]
-  addVeranstaltung_save(value: any) {
-    alert('Comming Soon...')
+
+  vAdd_save(value: any) {
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation(
+          $bezeichnung: String!
+          $authToken: String!
+          $minTNAlter: Int!
+          $maxTNAlter: Int!
+          $vOrtID: Int!
+          $begin: String!
+          $ende: String!
+        ) {
+          veranstaltungAdd(
+            bezeichnung: $bezeichnung
+            authToken: $authToken
+            minTNAlter: $minTNAlter
+            maxTNAlter: $maxTNAlter
+            veranstaltungsortID: $vOrtID
+            begin: $begin
+            ende: $ende
+          )
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        ...value
+      }
+    }).then(this.refetch)
   }
 
   suchStringUpdate(val: string) {

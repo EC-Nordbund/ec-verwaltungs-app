@@ -1,5 +1,5 @@
 <template>
-  <v-menu v-model="menu" :close-on-content-click="false" max-width="384" min-width="384" offset-y>
+  <v-menu v-model="menu" :close-on-content-click="false" max-width="450" min-width="450" offset-y>
     <template slot="activator">
       <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
         <span slot="badge">
@@ -146,7 +146,7 @@ export default class App extends Vue {
   }
 
   unbookmark(index: number) {
-    if(index!==100){
+    if (index !== 100) {
       const bookmark = lesezeichen.liste[index]
       lesezeichen.delete(bookmark)
     }
