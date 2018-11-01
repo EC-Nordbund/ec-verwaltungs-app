@@ -42,18 +42,19 @@
       </v-tabs>
     </template>
     <template>
-      <v-tabs-items v-model="tabs" class="white">
+      <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
           <v-card>
              <ec-list
               :items="[
-                {subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
-                {subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
+                {click: 'v', subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
+                {click: 'p', subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
                 {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]},
                 {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung oder Abgemeldet':Math.abs(data.anmeldung.wartelistenPlatz)}
               ]"
               :mapper="item=>item"
               icon="info"
+              @click="cref"
             />
             <v-divider/>
             <ec-list
@@ -231,6 +232,7 @@ const loadGQL = gql`
     ) {
       anmeldeID
       person {
+        personID
         vorname
         nachname
         gebDat {
@@ -239,6 +241,7 @@ const loadGQL = gql`
         geschlecht
       }
       veranstaltung {
+        veranstaltungsID
         bezeichnung
         begin {
           input
@@ -374,6 +377,20 @@ export default class anmeldungsDetails extends reloaderBase {
   }
   test_2(json: string = '{}') {
     return this.test(JSON.parse(json))
+  }
+  cref(item: any) {
+    if (item.click == 'v') {
+      this.$router.push(
+        '/app/veranstaltungen/' +
+          this.data.anmeldung.veranstaltung.veranstaltungsID
+      )
+    }
+    if (item.click == 'p') {
+      this.$router.push(
+        '/app/personen/' +
+          this.data.anmeldung.person.personID
+      )
+    }
   }
 }
 </script>
