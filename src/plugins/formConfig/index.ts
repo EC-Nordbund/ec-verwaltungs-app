@@ -253,6 +253,7 @@ export const verteilerTypeConfig: IConfig = {
 export const bezeichnungConfig: IConfig = {
   name: 'bezeichnung',
   label: 'Bezeichnung',
+  counter: 50,
   required: true,
   rules: [
     required('eine Bezeichnung'),
@@ -266,4 +267,50 @@ export const personConfig: IConfig = {
   required: true,
   rules: [required('eine Person')],
   componentName: 'ec-select-person'
+}
+
+export const beginConfig: IConfig = {
+  name: 'begin',
+  label: 'Begin',
+  required: true,
+  rules: [required('ein Datum')],
+  componentName: 'ec-form-datePicker'
+}
+
+export const endeConfig: IConfig = {
+  name: 'ende',
+  label: 'Ende',
+  required: true,
+  rules: [required('ein Datum')],
+  componentName: 'ec-form-datePicker'
+}
+
+export const vOrtConfig: IConfig = {
+  name: 'vOrtID',
+  label: 'Veranstaltungsort',
+  required: true,
+  rules: [required('ein Veranstaltungsort')],
+  componentName: 'ec-select-vort'
+}
+
+export const minTNConfig: IConfig = {
+  name: 'minTNAlter',
+  label: 'Minimales TN Alter',
+  componentName: 'v-slider',
+  min: 0,
+  max: 300,
+  step: 1,
+  'thumb-label': true,
+  required: true
+}
+
+export const maxTNConfig: IConfig = {
+  name: 'maxTNAlter',
+  label: 'Maximale TN Alter',
+  componentName: 'v-slider',
+  min: 0,
+  max: 300,
+  step: 1,
+  'thumb-label': true,
+  required: true
 }

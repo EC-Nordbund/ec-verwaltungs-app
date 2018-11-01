@@ -33,7 +33,8 @@
               icon:'home'
             },
             {
-              title: `${data.vort.bezeichnung} (${data.vort.ort} ${data.vort.land})`,
+              click: true,
+              title: `${(data.vort.organisation||{}).bezeichnung} (${(data.vort.organisation||{}).ort} ${(data.vort.organisation||{}).land})`,
               subTitle: 'Organisation bei der gebucht'
             },
             {
@@ -103,8 +104,9 @@
           <ec-list
             :items="data.vort.veranstaltungen || []"
             :mapper="v=>({
-              title: `${v.bezeichnung} (${v.begin.german} - ${v.ende.german})`
+              title: `${v.bezeichnung} (${v.begin.german} - ${(v.ende||{}).german})`
             })"
+            @click="item=>$router.push('/app/veranstaltungen/' + item.veranstaltungsID)"
           />
         </v-tab-item>
       </v-tabs-items>
@@ -486,7 +488,9 @@ export default class vOrtDetails extends reloaderBase {
 
   tabs = null
   data: any = {
-    vort: {}
+    vort: {
+      organisation: {}
+    }
   }
 
   editKontakt(konatkt: any) {
@@ -495,6 +499,14 @@ export default class vOrtDetails extends reloaderBase {
       ...konatkt
     }
     this.kontaktEdit_show = true
+  }
+  open(item: any) {
+    if (item.click) {
+      this.$router.push(
+        '/app/organisationen/' +
+          this.data.vort.organisation.organisationsID
+      )
+    }
   }
 }
 </script>

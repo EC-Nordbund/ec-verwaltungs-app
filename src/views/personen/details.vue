@@ -89,6 +89,7 @@
               title: `${item.veranstaltung.bezeichnung} (${item.veranstaltung.begin.german} - ${item.veranstaltung.ende.german})`,
               subTitle: `${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Küchenleiter' : ''}${item.position === 6 ? 'Leiter' : ''}`
             })"
+            @click="item=>$router.push('/app/anmeldungen/'+item.anmeldeID)"
             icon="local_phone"
           />
         </v-tab-item>
@@ -106,6 +107,7 @@
                   icon="map"
                   @edit="editAK_open"
                   :edit="auth.isMutationAllowed('updateAKStatus')"
+                  @click="item=>$router.push('/app/arbeitskreise/' + item.ak.akID)"
                 />
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple lazy v-if="(data.person.ak||[]).length > 0">
@@ -119,6 +121,7 @@
                       title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
                       subTitle: `${item.date.german}`
                       })" icon="map"
+                      @click="$router.push('/app/arbeitskreise/' + ak.ak.akID)"
                     />
                   </v-expansion-panel-content>
                 </v-expansion-panel> 
@@ -512,7 +515,7 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
       ecMitglied: this.data.person.ecMitglied,
-      ecKreisID: this.data.person.ecKreis.ecKreisID
+      ecKreisID: (this.data.person.ecKreis || {ecKreisID: null}).ecKreisID
     }
     this.editSonstiges_show = true
   }

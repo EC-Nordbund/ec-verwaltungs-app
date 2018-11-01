@@ -34,15 +34,17 @@
     </template>
 
     <template>
-      <v-tabs-items v-model="tabs" class="white">
+      <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-1">
           <ec-list
             icon="."
+            @click="o"
             :items="[
               {
                 title: `${(data.veranstaltung.veranstaltungsort || {}).bezeichnung}`, 
                 subTitle: `${(data.veranstaltung.veranstaltungsort || {}).plz} ${(data.veranstaltung.veranstaltungsort || {}).ort} (${(data.veranstaltung.veranstaltungsort || {}).land})`, 
-                icon: 'home'
+                icon: 'home',
+                click: true
               },
               {
                 title: `min: ${data.veranstaltung.minTNAlter} max: ${data.veranstaltung.maxTNAlter}`,
@@ -128,14 +130,24 @@
           />
         </v-tab-item>
         <v-tab-item id="tab-3">
-          <ec-list
+          <ec-table
             :items="data.veranstaltung.anmeldungen || []"
-            :mapper="item=>({
-              title: `${item.person.vorname} ${item.person.nachname} (${item.person.gebDat.german})`,
-              subTitle: `${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Küchenleiter' : ''}${item.position === 6 ? 'Leiter' : ''}`
-            })"
-            icon="home"
-          />
+            noTitle
+            itemName="Anmeldung"
+            :config="[
+              {name: 'person.vorname', label: 'Vorname'},
+              {name: 'person.nachname', label: 'Nachname'},
+              {name: 'person.gebDat.german', label: 'GebDat'},
+              {name: 'role', label: 'Role', handleOutside: true} 
+            ]"
+            :countAnpassung="-3"
+            title="..."
+            @open="item => $router.push('/app/anmeldungen/' + item.anmeldeID)"
+          >
+            <template slot="handleOutside" slot-scope="{item}">
+              {{`${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Leiter' : ''}${item.position === 6 ? 'Hauptleiter' : ''}`}}
+            </template>
+          </ec-table>
         </v-tab-item>
       </v-tabs-items>
     </template>
@@ -214,6 +226,9 @@
           </v-tabs>
         </v-card>
       </v-dialog>
+      <v-btn @click="soon">
+        Nachrücken
+      </v-btn>
     </template>
 
     <template slot="forms">
@@ -250,7 +265,14 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import {} from '@/plugins/formConfig/index'
+import {
+  bezeichnungConfig,
+  beginConfig,
+  endeConfig,
+  vOrtConfig,
+  minTNConfig,
+  maxTNConfig
+} from '@/plugins/formConfig/index'
 
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
@@ -377,48 +399,14 @@ export default class veranstaltungsDetails extends reloaderBase {
     console.log(JSON.parse(JSON.stringify(value)))
     alert('comming Soon')
   }
-  // TODO: Rules
   editStamm_config = [
-    {
-      name: 'bezeichnung',
-      label: 'Bezeichnung',
-      counter: 50
-    },
-    {
-      name: 'begin',
-      label: 'Begin',
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      name: 'ende',
-      label: 'Ende',
-      componentName: 'ec-form-datePicker'
-    },
-    {
-      name: 'vOrtID',
-      label: 'Veranstaltungsort',
-      componentName: 'ec-select-vort'
-    },
-    {
-      name: 'minTNAlter',
-      label: 'Minimales TN Alter',
-      componentName: 'v-slider',
-      min: 0,
-      max: 300,
-      step: 1,
-      'thumb-label': true
-    },
-    {
-      name: 'maxTNAlter',
-      label: 'Maximale TN Alter',
-      componentName: 'v-slider',
-      min: 0,
-      max: 300,
-      step: 1,
-      'thumb-label': true
-    }
+    bezeichnungConfig,
+    beginConfig,
+    endeConfig,
+    vOrtConfig,
+    minTNConfig,
+    maxTNConfig
   ]
-  // TODO: Rules
   editKosten_config = [
     {
       name: 'preisFruehbucher',
@@ -568,6 +556,14 @@ export default class veranstaltungsDetails extends reloaderBase {
   }
   soon() {
     alert('comming soon')
+  }
+  o(item: any) {
+    if (item.click) {
+      this.$router.push(
+        '/app/vOrte/' +
+          this.data.veranstaltung.veranstaltungsort.vOrtID
+      )
+    }
   }
 }
 </script>

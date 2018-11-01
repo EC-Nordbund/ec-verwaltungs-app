@@ -1,12 +1,11 @@
 <template>
   <ec-wrapper title="Anmeldung Details" :label="`${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} - ${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.year}) - ${['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}`" type="Anmeldung" @share="share">
-    <template slot="label">
+     <template slot="label">
       <ec-headline>
         {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}})
         <ec-button-icon @click="soon"/>
       </ec-headline>
     </template>
-
     <template slot="extension">
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
@@ -42,20 +41,20 @@
         </v-tab>
       </v-tabs>
     </template>
-
     <template>
-      <v-tabs-items v-model="tabs" class="white">
+      <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
           <v-card>
              <ec-list
               :items="[
-                {subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
-                {subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
+                {click: 'v', subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
+                {click: 'p', subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
                 {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]},
                 {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung oder Abgemeldet':Math.abs(data.anmeldung.wartelistenPlatz)}
               ]"
               :mapper="item=>item"
               icon="info"
+              @click="cref"
             />
             <v-divider/>
             <ec-list
@@ -114,6 +113,7 @@
             Einige Felder müssen in der API noch hinzugefügt werden
           </v-card>
         </v-tab-item>
+        
         <v-tab-item id="tab-5">
           <v-card>
             <ec-list
@@ -146,19 +146,33 @@
         </v-tab-item>
         <v-tab-item id="tab-6">
           <v-card>
-            <v-treeview item-key="name" :open="[]"  open-on-click v-model="tree" activatable :items="test_2(data.anmeldung.extra_json)">
+            Comming Soon
+            <!-- <v-treeview item-key="name" :open="[]"  open-on-click v-model="tree" activatable :items="test_2(data.anmeldung.extra_json)">
               <template slot="prepend" slot-scope="props">
                 <v-icon v-if="props.item.children">
                   {{ props.open ? 'folder_open' : 'folder' }}
                 </v-icon>
               </template>
-            </v-treeview>
+            </v-treeview> -->
           </v-card>
         </v-tab-item>
       </v-tabs-items>
     </template>
 
     <template slot="actions">
+      <v-dialog>
+        <v-btn slot="activator">Abmelden</v-btn>
+        <v-card>
+          <p>Bitte beachte das das Abmelden NICHT rückgängig zu machen ist. Versichere dich, dass du dir sicher bist, dass auch die Person die sich angemeldet hat sich auch abmeldet. Dies sollte über einen der Kanäle der bei der Anmeldung angegeben wurde passieren.</p>
+          <v-btn @click="soon">
+            Habe ich Verstanden! Abmelden!
+          </v-btn>
+        </v-card>
+      </v-dialog>
+      
+      <v-btn @click="soon">Verschieben</v-btn>
+      <v-btn @click="soon">Aus Warteliste entfernen</v-btn>
+      <v-btn @click="soon">Nachrücken</v-btn>
     </template>
 
     <template slot="forms">
@@ -192,7 +206,7 @@
         :fieldConfig="[]"
         :show="false"
       />
-    </template>
+    </template> 
 
   </ec-wrapper>
 </template>
@@ -218,6 +232,7 @@ const loadGQL = gql`
     ) {
       anmeldeID
       person {
+        personID
         vorname
         nachname
         gebDat {
@@ -226,6 +241,7 @@ const loadGQL = gql`
         geschlecht
       }
       veranstaltung {
+        veranstaltungsID
         bezeichnung
         begin {
           input
@@ -361,6 +377,20 @@ export default class anmeldungsDetails extends reloaderBase {
   }
   test_2(json: string = '{}') {
     return this.test(JSON.parse(json))
+  }
+  cref(item: any) {
+    if (item.click == 'v') {
+      this.$router.push(
+        '/app/veranstaltungen/' +
+          this.data.anmeldung.veranstaltung.veranstaltungsID
+      )
+    }
+    if (item.click == 'p') {
+      this.$router.push(
+        '/app/personen/' +
+          this.data.anmeldung.person.personID
+      )
+    }
   }
 }
 </script>
