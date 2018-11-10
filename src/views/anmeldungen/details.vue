@@ -1,9 +1,9 @@
 <template>
   <ec-wrapper title="Anmeldung Details" :label="`${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} - ${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.year}) - ${['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}`" type="Anmeldung" @share="share">
-     <template slot="label">
+    <template slot="label">
       <ec-headline>
-        {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]}})
-        <ec-button-icon @click="soon"/>
+        {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} ({{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position-1]}})
+        <!-- <ec-button-icon @click="soon"/> -->
       </ec-headline>
     </template>
     <template slot="extension">
@@ -45,11 +45,12 @@
       <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
           <v-card>
-             <ec-list
+            <ec-list
               :items="[
+                {subTitle: 'AnmeldeID', title: data.anmeldung.anmeldeID},
                 {click: 'v', subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
                 {click: 'p', subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
-                {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position]},
+                {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][data.anmeldung.position-1]},
                 {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung oder Abgemeldet':Math.abs(data.anmeldung.wartelistenPlatz)}
               ]"
               :mapper="item=>item"
@@ -61,7 +62,7 @@
               :items="[
                 {subTitle: 'Anmeldezeitpunkt', title: (data.anmeldung.anmeldeZeitpunkt || {}).german},
                 {subTitle: 'Datenschutz Zustimmung', title: (data.anmeldung.DSGVO_einverstaendnis||{}).german },
-                 ...(!data.anmeldung.abmeldeZeitpunkt?[]:[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt.german}])
+                ...(!data.anmeldung.abmeldeZeitpunkt?[]:[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt.german}])
               ]"
               :mapper="item=>item"
               icon="alarm"
@@ -73,7 +74,7 @@
             <ec-list
               :items="[
                 {subTitle: `${(data.anmeldung.adresse||{}).plz} ${(data.anmeldung.adresse||{}).ort}`, title: (data.anmeldung.adresse||{}).strasse},
-                {subTitle: 'E-Mail', title: (data.anmeldung.email||{}).email},
+                {subTitle: 'E-Mail', title: (data.anmeldung.email||{}).eMail},
                 {subTitle: 'Telefon', title: (data.anmeldung.telefon||{}).telefon}
               ]"
               :mapper="item=>item"
@@ -87,9 +88,10 @@
           <v-card>
             <ec-list
               :items="[
+                {title: 'Cooming Soon...'},
                 {subTitle: 'Kosten (nach Anmeldezeitpunkt)', title: 'N/A'},
-                {subTitle: 'Anzahlung (nach Anmeldezeitpunkt)', title: 'N/A'},
-                {subTitle: 'Bezahlt', title: data.anmeldung.bisherBezahlt, edit: true},
+                {subTitle: 'Anzahlung (nach Anmeldezeitpunkt)'  , title: 'N/A'},
+                {subTitle: 'Bezahlt', title: data.anmeldung.bisherBezahl},
                 ...(!data.anmeldung.abmeldeZeitpunkt?[{subTitle: 'Noch offen [insgesamt]', title: 'N/A'}]:[])
               ]"
               :mapper="item=>item"
@@ -102,7 +104,7 @@
                 :items="[
                   {subTitle: 'Abmeldegebuehr (nach Abmeldezeitpunkt)', title: 'N/A'},
                   {subTitle: 'Zurückzuzahlen', title: 'N/A'},
-                  {subTitle: 'Zurückbezahlt', title: data.anmeldung.rueckbezahlt, edit: true},
+                  {subTitle: 'Zurückbezahlt', title: data.anmeldung.rueckbezahlt},
                   {subTitle: 'Noch offen [Bilanz insgesamt]', title: 'N/A'}
                 ]"
                 :mapper="item=>item"
@@ -160,44 +162,21 @@
     </template>
 
     <template slot="actions">
-      <v-dialog>
-        <v-btn slot="activator">Abmelden</v-btn>
-        <v-card>
-          <p>Bitte beachte das das Abmelden NICHT rückgängig zu machen ist. Versichere dich, dass du dir sicher bist, dass auch die Person die sich angemeldet hat sich auch abmeldet. Dies sollte über einen der Kanäle der bei der Anmeldung angegeben wurde passieren.</p>
-          <v-btn @click="soon">
-            Habe ich Verstanden! Abmelden!
-          </v-btn>
-        </v-card>
-      </v-dialog>
-      
+      <v-btn @click="soon" v-if="data.anmeldung.wartelistenPlatz == 0 && !data.anmeldung.abmeldeZeitpunkt">Abmelden</v-btn>
       <v-btn @click="soon">Verschieben</v-btn>
-      <v-btn @click="soon">Aus Warteliste entfernen</v-btn>
-      <v-btn @click="soon">Nachrücken</v-btn>
+      <!-- <v-btn @click="soon">Aus Warteliste entfernen</v-btn> -->
+      <v-btn @click="nachruecken" v-if="data.anmeldung.wartelistenPlatz > 0">Nachrücken</v-btn>
+      <v-btn @click="soon">Zahlung</v-btn>
     </template>
 
     <template slot="forms">
       <ec-form
-        title="Stammdaten editieren"
+        title="Abmelden"
         :fieldConfig="[]"
         :show="false"
       />
       <ec-form
-        title="Adresse editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="E-Mail editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Telefon editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Kontobewegung editieren"
+        title="Kontaktdaten editieren"
         :fieldConfig="[]"
         :show="false"
       />
@@ -364,6 +343,32 @@ export default class anmeldungsDetails extends reloaderBase {
 
   soon() {
     alert('Comming Soon...')
+  }
+
+  nachruecken() {
+    if (
+      confirm(
+        'Sicher, dass die Person Nachrücken soll?\n\n Die Person hat also bestätigt, dass sie Nachrücken kann.'
+      )
+    ) {
+      this.$apollo.mutate({
+        mutation: gql`
+          mutation(
+            $anmeldeID: String!
+            $authToken: String!
+          ) {
+            nachruecken(
+              anmeldeID: $anmeldeID
+              authToken: $authToken
+            )
+          }
+        `,
+        variables: {
+          anmeldeID: this.data.anmeldung.anmeldeID,
+          authToken: auth.authToken
+        }
+      })
+    }
   }
 
   test(json: any): Array<any> {
