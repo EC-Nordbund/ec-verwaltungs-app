@@ -17,7 +17,7 @@
         {{props.item.veranstaltung.bezeichnung}} ({{props.item.veranstaltung.begin.german}}{{props.item.veranstaltung.ende?` - ${props.item.veranstaltung.ende.german}`:''}})
       </template>
       <template v-if="props.config.name==='position'">
-        {{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][props.item.position]}}
+        {{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][props.item.position-1]}}
       </template>
     </template>
   </ec-table>
@@ -26,9 +26,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-
-import {} from '@/plugins/formConfig/index'
-
 import gql from 'graphql-tag'
 
 const loadGQL = gql`
@@ -90,6 +87,7 @@ export default class anmeldungsListe extends reloaderBase {
     anmeldungen: []
   }
   tableConfig = [
+    {name: 'anmeldeID', label: 'ID'},
     {
       name: 'person',
       label: 'Person',

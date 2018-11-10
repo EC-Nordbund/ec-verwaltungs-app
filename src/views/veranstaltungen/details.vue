@@ -132,13 +132,15 @@
         <v-tab-item id="tab-3">
           <ec-table
             :items="data.veranstaltung.anmeldungen || []"
+            suche
             noTitle
             itemName="Anmeldung"
             :config="[
               {name: 'person.vorname', label: 'Vorname'},
               {name: 'person.nachname', label: 'Nachname'},
               {name: 'person.gebDat.german', label: 'GebDat'},
-              {name: 'role', label: 'Role', handleOutside: true} 
+              {name: 'role', label: 'Role', handleOutside: true},
+              {name: 'wartelistenPlatz', label: 'Position auf Warteliste', width: '100px'}
             ]"
             :countAnpassung="-3"
             title="..."
@@ -333,6 +335,7 @@ const loadGQL = gql`
             german
           }
         }
+        wartelistenPlatz
       }
     }
   }
