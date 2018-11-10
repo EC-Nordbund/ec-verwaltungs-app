@@ -23,9 +23,8 @@ export default class positionRadio extends Vue {
     { label: 'Teilnehmer', value: 1 },
     { label: 'Mitarbeiter', value: 2 },
     { label: 'Küchenmitarbeiter', value: 3 },
-    { label: 'Küchenleitung', value: 4 },
-    { label: 'Leiter', value: 5 },
-    { label: 'Hauptleiter', value: 6 }
+    { label: 'Leiter', value: 4 },
+    { label: 'Hauptleiter', value: 5 }
   ]
 
   /**
