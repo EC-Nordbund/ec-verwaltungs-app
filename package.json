@@ -32,7 +32,7 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "yarn docs:build && vue-cli-service build",
+    "build": "npm run docs:build && vue-cli-service build",
     "start": "electron .",
     "docs:dev": "yarn docs:api && vuepress dev docs",
     "docs:build": "yarn docs:api && vuepress build docs",
