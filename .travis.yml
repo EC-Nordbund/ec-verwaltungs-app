@@ -19,11 +19,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils rpm fakeroot; fi
 
 install:
-- echo install
-- npm i
-- cd electron
-- npm i
-- cd ..
+- yarn :init
 
 script:
 - npm run build
