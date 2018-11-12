@@ -12,6 +12,12 @@ matrix:
 install:
 - yarn :init
 
+addons:
+  apt:
+    packages:
+    - libgnome-keyring-dev
+    - icnsutils
+
 script:
 - npm run build
 - cd electron
