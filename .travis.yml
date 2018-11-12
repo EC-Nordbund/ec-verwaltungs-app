@@ -1,32 +1,22 @@
 language: node_js
 
 node_js:
-- 10
+- 8
 
 matrix:
   include:
   - os: windows
   - os: osx
   - os: linux
-    env: CC=clang CXX=clang++ npm_config_clang=1
-    compiler: clang
-
-cache:
-  directories:
-  - "$HOME/.electron"
-  - "$HOME/.cache"
 
 install:
-- npm i
-- cd electron
-- npm i
-- cd ..
+- yarn :init
 
 script:
 - npm run build
 - cd electron
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run make; fi
-- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run publish; fi
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then yarn make; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then yarn run publish; fi
 
 branches:
   only:
