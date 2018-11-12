@@ -18,6 +18,9 @@ addons:
     - libgnome-keyring-dev
     - icnsutils
 
+before_install:
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils rpm fakeroot; fi
+
 script:
 - npm run build
 - cd electron
