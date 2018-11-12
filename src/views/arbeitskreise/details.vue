@@ -216,10 +216,7 @@ export default class AKDetails extends reloaderBase {
   edit(item: any) {
     this.editAKPerson_value = {
       personAKID: item.personAKID,
-      personID: item.person.personID,
-      eintritt: item.eintritt.input,
-      austritt: (item.austritt || {}).input,
-      leiter: item.leiter
+      personID: item.person.personID
     }
     this.editAKPerson_show = true
   }
