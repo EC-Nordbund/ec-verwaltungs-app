@@ -128,7 +128,7 @@
               :mapper="item=>item"
               icon="notes"
               edit
-              @edit="soon"
+              @edit="bemerkungen_edit"
             />
             <v-divider/>
             <ec-list
@@ -182,8 +182,10 @@
       />
       <ec-form
         title="Bemerkungen editieren"
-        :fieldConfig="[]"
-        :show="false"
+        :fieldConfig="bemerkungen_config"
+        v-model="bemerkungen_show"
+        :value="bemerkungen_value"
+        @save="bemerkungen_save"
       />
     </template> 
 
@@ -321,6 +323,58 @@ const loadGQL = gql`
   }
 })
 export default class anmeldungsDetails extends reloaderBase {
+  bemerkungen_value:any={}
+  bemerkungen_edit() {
+    this.bemerkungen_value={}
+    this.bemerkungen_value={
+      vegetarisch: this.data.anmeldung.vegetarisch,
+      lebensmittelAllergien: this.data.anmeldung.lebensmittelAllergien,
+      gesundheitsinformationen: this.data.anmeldung.gesundheitsinformationen,
+      bemerkungen: this.data.anmeldung.bemerkungen,
+    }
+    this.bemerkungen_show=true
+  }
+  bemerkungen_config = [
+    {
+      name: 'vegetarisch',
+      label: 'Verpflegung',
+      componentName: 'v-select',
+      items: [
+        {text: 'Vegetarisch', value: true},
+        {text: 'Normal', value: false}
+      ]
+    },
+    {
+      name: 'lebensmittelAllergien',
+      label: 'Lebensmittelallergien',
+      componentName: 'v-textarea'
+    },
+    {
+      name: 'gesundheitsinformationen',
+      label: 'Gesundheitsinformationen',
+      componentName: 'v-textarea'
+    },
+    {
+      name: 'bemerkungen',
+      label: 'Bemerkungen',
+      componentName: 'v-textarea'
+    }
+  ]
+  bemerkungen_save(value:any){
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($authToken: String!, $anmeldeID: String!, $vegetarisch: Boolean!, $gesundheitsinformationen: String!, $bemerkungen: String!, $lebensmittelAllergien: String!){
+          anmeldungBesonderheiten(authToken: $authToken, anmeldeID: $anmeldeID, vegetarisch: $vegetarisch, gesundheitsinformationen: $gesundheitsinformationen, bemerkungen: $bemerkungen, lebensmittelAllergien: $lebensmittelAllergien)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        anmeldeID: this.$route.params.id,
+        ...value
+      }
+    }).then(this.refetch)
+  }
+  bemerkungen_show=false
   tree = []
   data: any = {
     anmeldung: {
