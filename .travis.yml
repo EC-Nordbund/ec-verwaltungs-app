@@ -5,6 +5,7 @@ language: c
 
 matrix:
   include:
+  - os: windows
   - os: osx
   - os: linux
     env: CC=clang CXX=clang++ npm_config_clang=1
@@ -25,17 +26,19 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo apt-get install --no-install-recommends -y icnsutils graphicsmagick xz-utils rpm fakeroot; fi
 
 install:
-- nvm install 8
-- curl -o- -L https://yarnpkg.com/install.sh | bash
+- if [[ "$TRAVIS_OS_NAME" != "windows" ]]; then nvm install 8; fi
 - source ~/.bashrc
 - npm install -g xvfb-maybe
-- yarn :init
+- npm i
+- cd electron
+- npm i
+- cd ..
 
 script:
-- yarn build
+- npm run build
 - cd electron
-- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then yarn make; fi
-- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then yarn run publish; fi
+- if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then npm run make; fi
+- if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then npm run publish; fi
 
 branches:
   only:
