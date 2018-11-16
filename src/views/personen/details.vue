@@ -142,7 +142,7 @@
                   :items="data.person.fzs || []"
                   :mapper="(item)=>({
                     title: item.kommentar,
-                    subTitle: `Gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
+                    subTitle: `FZ vom ${item.fzVon.german} gesehen am ${item.gesehenAm.german} von ${item.gesehenVon.vorname} ${item.gesehenVon.nachname}`
                   })"
                   icon="extension"
                 />
@@ -151,9 +151,10 @@
                 <div slot="header">Sonstiges</div>
                 <ec-list
                   @edit="editSonstiges_open"
-                  :items="data.person !== {} ? [{title: data.person.juLeiCaNr || 'N/A', subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
+                  :items="data.person !== {} ? [
+                    {title: data.person.juLeiCaNr || 'N/A', subTitle: 'JuLeiCa', edit: auth.isMutationAllowed('editPersonSonstiges')},
                     ...(data.person.ecMitglied>=0?[{
-                      title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied-1],
+                      title: ['Kein EC-Mitglied', 'EC-Mitglied', 'EC-Förderer'][data.person.ecMitglied],
                       edit: auth.isMutationAllowed('editPersonSonstiges')
                     }]:[]),
                     ...(data.person.ecKreis?[{
@@ -165,7 +166,14 @@
                       title: data.person.datumDesLetztenFZ.german,
                       subTitle: 'Letztes FZ',
                       edit: false
-                    }]:[])
+                    }]:[]),
+                    ...(data.person.Führerschein?[{title: 'Besitzt einen Führerschein'}]:[]),
+                    ...(data.person.Rettungsschwimmer?[{title: 'Besitzt einen Rettungsschwimmer'}]:[]),
+                    ...(data.person.ErsteHilfe?[{title: 'Kennt sich in Erster Hilfe aus.'}]:[]),
+                    {
+                      title: data.person.Notizen,
+                      subTitle: 'Notizen'
+                    }
                   ] : []"
                   :mapper="item=>item"
                   icon="extension"
@@ -341,6 +349,10 @@ const loadGQL = gql`
       }
       geschlecht
       alter(wann: null)
+      Fuehrerschein
+      Rettungsschwimmer
+      ErsteHilfe
+      Notizen
       adressen {
         adressID
         strasse
@@ -383,6 +395,9 @@ const loadGQL = gql`
       fzs {
         fzID
         gesehenAm {
+          german
+        }
+        fzVon {
           german
         }
         kommentar
@@ -483,6 +498,7 @@ export default class PersonenDetails extends reloaderBase {
   editSonstiges_value: any = {}
   editSonstiges_show: boolean = false
   editSonstiges_save(value: any) {
+    console.log(value)
     this.$apollo
       .mutate({
         mutation: gql`
@@ -492,6 +508,10 @@ export default class PersonenDetails extends reloaderBase {
             $juLeiCaNr: String!
             $ecMitglied: Int!
             $ecKreis: Int
+            $Fuehrerschein: Boolean!
+            $Rettungsschwimmer: Boolean!
+            $ErsteHilfe: Boolean!
+            $notizen: String!
           ) {
             editSonstiges(
               personID: $personID
@@ -499,6 +519,10 @@ export default class PersonenDetails extends reloaderBase {
               juLeiCaNr: $juLeiCaNr
               ecMitglied: $ecMitglied
               ecKreis: $ecKreis
+              Fuehrerschein: $Fuehrerschein
+              Rettungsschwimmer: $Rettungsschwimmer
+              ErsteHilfe: $ErsteHilfe
+              notizen: $notizen
             )
           }
         `,
@@ -515,44 +539,84 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
       ecMitglied: this.data.person.ecMitglied,
-      ecKreisID: (this.data.person.ecKreis || {ecKreisID: null}).ecKreisID
+      ecKreisID: (
+        this.data.person.ecKreis || { ecKreisID: null }
+      ).ecKreisID,
+      Fuehrerschein: this.data.person.Fuehrerschein,
+      Rettungsschwimmer: this.data.person.Rettungsschwimmer,
+      ErsteHilfe: this.data.person.ErsteHilfe,
+      notizen: this.data.person.Notizen
     }
     this.editSonstiges_show = true
   }
-  editSonstiges_config = [juLeiCaConfig, ecMitgliedConfig, ecKreisConfig]
+  editSonstiges_config = [
+    juLeiCaConfig,
+    ecMitgliedConfig,
+    ecKreisConfig,
+    {
+      name: 'Fuehrerschein',
+      label: 'Fuehrerschein',
+      componentName: 'ec-form-switch'
+    },
+    {
+      name: 'Rettungsschwimmer',
+      label: 'Rettungsschwimmer',
+      componentName: 'ec-form-switch'
+    },
+    {
+      name: 'ErsteHilfe',
+      label: 'Erste Hilfe kenntnisse',
+      componentName: 'ec-form-switch'
+    },
+    {
+      name: 'notizen',
+      label: 'Notizen',
+      componentName: 'v-textarea'
+    }
+  ]
   addFZ_show = false
   addFZ_save(value: any) {
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation(
-          $personID: Int!
-          $authToken: String!
-          $gesehenAm: String!
-          $gesehenVon: Int!
-          $kommentar: String!
-        ) {
-          addFZ(
-            personID: $personID
-            authToken: $authToken
-            gesehenAm: $gesehenAm
-            gesehenVon: $gesehenVon
-            kommentar: $kommentar
-          )
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $personID: Int!
+            $authToken: String!
+            $gesehenAm: String!
+            $gesehenVon: Int!
+            $kommentar: String!
+            $fzVon: String!
+          ) {
+            addFZ(
+              personID: $personID
+              authToken: $authToken
+              gesehenAm: $gesehenAm
+              gesehenVon: $gesehenVon
+              kommentar: $kommentar
+              fzVon: $fzVon
+            )
+          }
+        `,
+        variables: {
+          authToken: this.auth.authToken,
+          personID: this.$route.params.id,
+          kommentar: value.notizen,
+          gesehenAm: value.date,
+          fzVon: value.fzVon,
+          gesehenVon: value.personID
         }
-      `,
-      variables: {
-        authToken: this.auth.authToken,
-        personID: this.$route.params.id,
-        kommentar: value.notizen,
-        gesehenAm: value.date,
-        gesehenVon: value.personID
-      }
-    }).then(this.refetch)
+      })
+      .then(this.refetch)
   }
   addFZ_config = [
     {
       ...personConfig,
       label: 'Gesehen von'
+    },
+    {
+      ...statusUpdateDate,
+      label: 'FZ vom',
+      name: 'fzVon'
     },
     {
       ...statusUpdateDate,

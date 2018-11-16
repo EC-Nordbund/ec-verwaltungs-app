@@ -147,7 +147,7 @@
             @open="item => $router.push('/app/anmeldungen/' + item.anmeldeID)"
           >
             <template slot="handleOutside" slot-scope="{item}">
-              {{`${item.position === 1 ? 'Teilnehmer' : ''}${item.position === 2 ? 'Mitarbeiter' : ''}${item.position === 3 ? 'Küchenmitarbeiter' : ''}${item.position === 5 ? 'Leiter' : ''}${item.position === 6 ? 'Hauptleiter' : ''}`}}
+              <ec-rolle :value="item.position"/>
             </template>
           </ec-table>
         </v-tab-item>

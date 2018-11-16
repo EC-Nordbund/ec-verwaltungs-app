@@ -17,7 +17,7 @@
         {{props.item.veranstaltung.bezeichnung}} ({{props.item.veranstaltung.begin.german}}{{props.item.veranstaltung.ende?` - ${props.item.veranstaltung.ende.german}`:''}})
       </template>
       <template v-if="props.config.name==='position'">
-        {{['Teilnehmer','Mitarbeiter','Küche','Leiter','Hauptleiter'][props.item.position-1]}}
+        <ec-rolle :value="props.item.position"/>
       </template>
     </template>
   </ec-table>
