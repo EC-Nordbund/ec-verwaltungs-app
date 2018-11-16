@@ -1,9 +1,9 @@
-import Vue from 'vue'
-import VueApollo from 'vue-apollo'
-import { ApolloClient } from 'apollo-client'
-import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-import { ApolloLink } from 'apollo-link'
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { ApolloLink } from 'apollo-link';
+import { HttpLink } from 'apollo-link-http';
+import Vue from 'vue';
+import VueApollo from 'vue-apollo';
 
 // Install Plugin
 Vue.use(VueApollo)
@@ -17,6 +17,7 @@ export function getClient() {
       link: ApolloLink.from([
         new HttpLink({
           uri: 'https://ec-api.de/graphql' //Direkter API-Request
+          // uri: 'http://ec-api.de:4000/graphql' //Dev API
           // uri: 'https://localhost/graphql'//Locale API
         })
       ]),
