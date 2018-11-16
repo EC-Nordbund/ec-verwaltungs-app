@@ -1,9 +1,5 @@
-import { CreateElement } from 'vue'
-import {
-  Component,
-  Vue,
-  Prop
-} from 'vue-property-decorator'
+import { CreateElement } from 'vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 
 /**
  * PositionsRadioButton
@@ -23,8 +19,9 @@ export default class positionRadio extends Vue {
     { label: 'Teilnehmer', value: 1 },
     { label: 'Mitarbeiter', value: 2 },
     { label: 'Küchenmitarbeiter', value: 3 },
-    { label: 'Leiter', value: 4 },
-    { label: 'Hauptleiter', value: 5 }
+    { label: 'Küchenleitung', value: 3 },
+    { label: 'Leiter', value: 5 },
+    { label: 'Hauptleiter', value: 6 }
   ]
 
   /**
