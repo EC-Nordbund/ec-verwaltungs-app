@@ -137,7 +137,7 @@
                 {subTitle: 'Klettern', title: data.anmeldung.klettern?'Ja':'Nein'},
                 {subTitle: 'Sich Entfenen (in 3er Gruppen)', title: data.anmeldung.sichEntfernen?'Ja':'Nein'},
                 {subTitle: 'Boot-Fahren', title: data.anmeldung.bootFahren?'Ja':'Nein'},
-                {subTitle: 'Schwimmen', title: 'N/A'},
+                {subTitle: 'Schwimmen', title: ['Nicht erlaubt', 'Nichtschwimmer', 'Mittelmäßig', 'Gut'][data.anmeldung.schwimen]},
                 {subTitle: 'Adresse in TN-Liste', title: data.anmeldung.fahrgemeinschaften?'Ja':'Nein'}
               ]"
               :mapper="item=>item"
