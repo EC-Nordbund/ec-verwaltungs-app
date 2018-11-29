@@ -209,7 +209,6 @@ import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
 import {jsZip, Docxtemplater} from '@/plugins/docx'
-import {exec} from 'child_process'
 
 const loadGQL = gql`
   query($authToken: String!, $anmeldeID: String!) {
@@ -475,7 +474,6 @@ export default class anmeldungsDetails extends reloaderBase {
       const zipData = new jsZip(fileContent)
       const briefTemplate = new Docxtemplater()
       briefTemplate.loadZip(zipData)
-      console.log(this.data.anmeldung)
       briefTemplate.setData(this.manageData(this.data.anmeldung))
       briefTemplate.render()
       const fertigerBrief = briefTemplate.getZip().generate({type: 'nodebuffer'});
@@ -483,7 +481,6 @@ export default class anmeldungsDetails extends reloaderBase {
       const tmpPath = electron.remote.app.getPath('temp').split('\\').join('/')
       const tmpFile = tmpPath + '/' + Math.random().toString(36).substring(7) + '.docx'
       fs.writeFileSync(tmpFile, fertigerBrief)
-      console.log(tmpFile)
       eval(`require('child_process').exec('start ${tmpFile}')`)
     } else {
       alert('Kein Brief ausgewählt.')

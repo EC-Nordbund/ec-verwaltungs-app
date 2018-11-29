@@ -1,10 +1,10 @@
 import {
-  rule,
-  required,
-  maxLength,
+  exactLength,
   inArray,
-  exactLength
-} from '@/plugins/rules'
+  maxLength,
+  required,
+  rule
+  } from '@/plugins/rules';
 
 interface IConfig {
   label?: string
@@ -178,7 +178,7 @@ export const akConfig: IConfig = {
 }
 
 export const ecKreisConfig: IConfig = {
-  name: 'ecKreisID',
+  name: 'ecKreis',
   label: 'Wähle einen EC-Kreis',
   componentName: 'ec-select-ecKreis',
   clearable: true
