@@ -167,6 +167,9 @@
       <!-- <v-btn @click="soon">Aus Warteliste entfernen</v-btn> -->
       <v-btn @click="nachruecken" v-if="data.anmeldung.wartelistenPlatz > 0">Nachrücken</v-btn>
       <v-btn @click="soon">Zahlung</v-btn>
+      <v-btn @click="createLetter">
+        (Workaround) Brief generieren
+      </v-btn>
     </template>
 
     <template slot="forms">
@@ -204,6 +207,9 @@ import {} from '@/plugins/formConfig/index'
 
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
+
+import {jsZip, Docxtemplater} from '@/plugins/docx'
+import {exec} from 'child_process'
 
 const loadGQL = gql`
   query($authToken: String!, $anmeldeID: String!) {
@@ -451,5 +457,54 @@ export default class anmeldungsDetails extends reloaderBase {
       )
     }
   }
+
+  createLetter(){
+    const filenames = electron.remote.dialog.showOpenDialog(
+      {
+        title: 'Word Datei des Briefes auswählen', 
+        filters: [
+          {name: 'Word', extensions : ['docx']}
+        ], 
+        properties : ['openFile']
+      }
+    )
+    if(filenames){
+      const fs = eval('require("fs")')
+      const file = filenames[0]
+      const fileContent = fs.readFileSync(file, 'binary')
+      const zipData = new jsZip(fileContent)
+      const briefTemplate = new Docxtemplater()
+      briefTemplate.loadZip(zipData)
+      console.log(this.data.anmeldung)
+      briefTemplate.setData(this.manageData(this.data.anmeldung))
+      briefTemplate.render()
+      const fertigerBrief = briefTemplate.getZip().generate({type: 'nodebuffer'});
+
+      const tmpPath = electron.remote.app.getPath('temp').split('\\').join('/')
+      const tmpFile = tmpPath + '/' + Math.random().toString(36).substring(7) + '.docx'
+      fs.writeFileSync(tmpFile, fertigerBrief)
+      console.log(tmpFile)
+      eval(`require('child_process').exec('start ${tmpFile}')`)
+    } else {
+      alert('Kein Brief ausgewählt.')
+    }
+  }
+
+  manageData(data:any) {
+    const nData: any = {}
+    Object.keys(data).forEach(key=>{
+      if(data[key] && typeof data[key]==='object') {
+        const rec = this.manageData(data[key])
+        Object.keys(rec).forEach(nKey=>{
+          nData[key + '.' + nKey] = rec[nKey]
+        })
+      } else {
+        nData[key] = data[key]
+      }
+    })
+    return nData
+  }
 }
+
+
 </script>

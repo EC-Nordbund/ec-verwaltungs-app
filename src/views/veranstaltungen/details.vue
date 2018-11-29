@@ -140,7 +140,8 @@
               {name: 'person.nachname', label: 'Nachname'},
               {name: 'person.gebDat.german', label: 'GebDat'},
               {name: 'role', label: 'Role', handleOutside: true},
-              {name: 'wartelistenPlatz', label: 'Position auf Warteliste', width: '100px'}
+              {name: 'wartelistenPlatz', label: 'Position auf Warteliste', width: '100px'},
+              {name: 'anmeldeZeitpunkt.german', label: 'Anmeldezeitpunkt', width: '75px'}
             ]"
             :countAnpassung="-3"
             title="..."
@@ -336,6 +337,12 @@ const loadGQL = gql`
           }
         }
         wartelistenPlatz
+        anmeldeZeitpunkt {
+          german
+          day
+          month
+          year
+        }
       }
     }
   }
