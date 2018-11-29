@@ -2941,6 +2941,12 @@ docsearch.js@^2.5.2:
     hogan.js "^3.0.2"
     to-factory "^1.0.0"
 
+docxtemplater@^3.9.4:
+  version "3.9.4"
+  resolved "https://registry.yarnpkg.com/docxtemplater/-/docxtemplater-3.9.4.tgz#3ba3e236dd74ed0b964eada9590dd1c4fa5b9d27"
+  dependencies:
+    xmldom "^0.1.27"
+
 dom-converter@~0.2:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/dom-converter/-/dom-converter-0.2.0.tgz#6721a9daee2e293682955b6afe416771627bb768"
@@ -4791,7 +4797,7 @@ jsprim@^1.2.2:
     json-schema "0.2.3"
     verror "1.10.0"
 
-jszip@^2.6.1:
+jszip@2, jszip@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/jszip/-/jszip-2.6.1.tgz#b88f3a7b2e67a2a048152982c7a3756d9c4828f0"
   dependencies:
@@ -9050,6 +9056,10 @@ xlsx-template@^0.3.1:
   dependencies:
     elementtree "0.1.6"
     jszip "^2.6.1"
+
+xmldom@^0.1.27:
+  version "0.1.27"
+  resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.27.tgz#d501f97b3bdb403af8ef9ecc20573187aadac0e9"
 
 xregexp@4.0.0:
   version "4.0.0"
