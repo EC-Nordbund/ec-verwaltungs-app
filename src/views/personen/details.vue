@@ -1,12 +1,19 @@
 <template>
-  <ec-wrapper title="Personen Details" :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''" type="Person" @share="share">
-
+  <ec-wrapper
+    title="Personen Details"
+    :label="data.person.vorname ? `${data.person.vorname} ${data.person.nachname} (${data.person.gebDat.german})` : ''"
+    type="Person"
+    @share="share"
+  >
     <template slot="label">
       <ec-headline>
-        <v-avatar :style="{ background: (data.person.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }">
-          <span class="headline" v-white>
-            {{(data.person.vorname || ' ')[0].toUpperCase()}}{{(data.person.nachname || ' ')[0].toUpperCase()}}
-          </span>
+        <v-avatar
+          :style="{ background: (data.person.geschlecht === 'm' ? $vuetify.theme.male : $vuetify.theme.female) }"
+        >
+          <span
+            class="headline"
+            v-white
+          >{{(data.person.vorname || ' ')[0].toUpperCase()}}{{(data.person.nachname || ' ')[0].toUpperCase()}}</span>
         </v-avatar>
         {{data.person.vorname || ''}} {{data.person.nachname || ''}} ({{data.person.gebDat ? data.person.gebDat.german : ''}})
         <ec-button-icon @click="editPersonStamm_open"/>
@@ -16,15 +23,9 @@
     <template slot="extension">
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
-        <v-tab href="#tab-2" v-secondary>
-          Kontaktdaten
-        </v-tab>
-        <v-tab href="#tab-3" v-secondary>
-          Veranstaltungen
-        </v-tab>
-        <v-tab href="#tab-4" v-secondary>
-          Sonstiges
-        </v-tab>
+        <v-tab href="#tab-2" v-secondary>Kontaktdaten</v-tab>
+        <v-tab href="#tab-3" v-secondary>Veranstaltungen</v-tab>
+        <v-tab href="#tab-4" v-secondary>Sonstiges</v-tab>
       </v-tabs>
     </template>
 
@@ -66,17 +67,22 @@
             <!-- Add Adresse, Email, Telefon -->
             <v-card-actions>
               <v-spacer/>
-              <v-btn flat @click="addAdresse_show = true" v-if="auth.isMutationAllowed('addKontakt')">
-                <v-icon>add</v-icon>
-                Adresse
+              <v-btn
+                flat
+                @click="addAdresse_show = true"
+                v-if="auth.isMutationAllowed('addKontakt')"
+              >
+                <v-icon>add</v-icon>Adresse
               </v-btn>
               <v-btn flat @click="addEmail_show = true" v-if="auth.isMutationAllowed('addKontakt')">
-                <v-icon>add</v-icon>
-                Email
+                <v-icon>add</v-icon>Email
               </v-btn>
-              <v-btn flat @click="addTelefon_show = true" v-if="auth.isMutationAllowed('addKontakt')">
-                <v-icon>add</v-icon>
-                Telefon
+              <v-btn
+                flat
+                @click="addTelefon_show = true"
+                v-if="auth.isMutationAllowed('addKontakt')"
+              >
+                <v-icon>add</v-icon>Telefon
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -95,8 +101,12 @@
         </v-tab-item>
         <v-tab-item id="tab-4">
           <v-card>
-            <v-expansion-panel> 
-              <v-expansion-panel-content ripple lazy v-if="(data.person.ak || []).filter(item=>(item.currentStatus > 0)).length > 0">
+            <v-expansion-panel>
+              <v-expansion-panel-content
+                ripple
+                lazy
+                v-if="(data.person.ak || []).filter(item=>(item.currentStatus > 0)).length > 0"
+              >
                 <div slot="header">Aktuelle Arbeitskreise</div>
                 <ec-list
                   :items="(data.person.ak || []).filter(item=>(item.currentStatus > 0))"
@@ -112,21 +122,31 @@
               </v-expansion-panel-content>
               <v-expansion-panel-content ripple lazy v-if="(data.person.ak||[]).length > 0">
                 <div slot="header">Alle Arbeitskreise</div>
-                <v-expansion-panel> 
-                  <v-expansion-panel-content ripple lazy v-for="ak in (data.person.ak||[])" :key="ak.ak.akID">
-                    <div slot="header">
-                      {{ak.ak.bezeichnung}}
-                    </div>
-                    <ec-list :items="ak.allUpdates" :mapper="item=>({
+                <v-expansion-panel>
+                  <v-expansion-panel-content
+                    ripple
+                    lazy
+                    v-for="ak in (data.person.ak||[])"
+                    :key="ak.ak.akID"
+                  >
+                    <div slot="header">{{ak.ak.bezeichnung}}</div>
+                    <ec-list
+                      :items="ak.allUpdates"
+                      :mapper="item=>({
                       title: `${['Ausgetreten', 'Mitglied', 'GV-Vertreter', 'Leiter'][item.neuerStatus]}`, 
                       subTitle: `${item.date.german}`
-                      })" icon="map"
+                      })"
+                      icon="map"
                       @click="$router.push('/app/arbeitskreise/' + ak.ak.akID)"
                     />
                   </v-expansion-panel-content>
-                </v-expansion-panel> 
+                </v-expansion-panel>
               </v-expansion-panel-content>
-              <v-expansion-panel-content ripple lazy v-if="(data.person.fzAntraege || []).length > 0">
+              <v-expansion-panel-content
+                ripple
+                lazy
+                v-if="(data.person.fzAntraege || []).length > 0"
+              >
                 <div slot="header">Führungszeungniss Anträge</div>
                 <ec-list
                   :items="data.person.fzAntraege || []"
@@ -183,17 +203,18 @@
             <!-- Add AK, FZ, FZ-Antrag -->
             <v-card-actions>
               <v-spacer/>
-              <v-btn flat @click="addAK_show = true" v-if="auth.isMutationAllowed('updateAKStatus')">
-                <v-icon>add</v-icon>
-                Arbeitskreis
+              <v-btn
+                flat
+                @click="addAK_show = true"
+                v-if="auth.isMutationAllowed('updateAKStatus')"
+              >
+                <v-icon>add</v-icon>Arbeitskreis
               </v-btn>
               <v-btn flat v-if="true" @click="addFZ_show = true">
-                <v-icon>add</v-icon>
-                Führungszeugnis
+                <v-icon>add</v-icon>Führungszeugnis
               </v-btn>
               <v-btn flat v-if="true" @click="fzAntrag">
-                <v-icon>add</v-icon>
-                Führungszeugnis-Antrag
+                <v-icon>add</v-icon>Führungszeugnis-Antrag
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -202,8 +223,7 @@
     </template>
 
     <template slot="actions">
-      <v-btn v-if="isElectron" color="primary" @click="alertCommingSoon">Auskunftsrecht</v-btn>
-      <v-btn @click="alertCommingSoon">Serienbrief</v-btn>
+      <v-btn @click="createLetter">Serienbrief</v-btn>
     </template>
 
     <template slot="forms">
@@ -302,7 +322,6 @@
         <p>{{mapData}}</p>
       </v-dialog>
     </template>
-
   </ec-wrapper>
 </template>
 <script lang="ts">
@@ -311,6 +330,7 @@ import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
+import { jsZip, Docxtemplater } from '@/plugins/docx'
 
 import {
   juLeiCaConfig,
@@ -498,7 +518,8 @@ export default class PersonenDetails extends reloaderBase {
   editSonstiges_value: any = {}
   editSonstiges_show: boolean = false
   editSonstiges_save(value: any) {
-    console.log(value)
+    console.log(value.ecKreis)
+    console.log(typeof value.ecKreis)
     this.$apollo
       .mutate({
         mutation: gql`
@@ -529,7 +550,9 @@ export default class PersonenDetails extends reloaderBase {
         variables: {
           authToken: this.auth.authToken,
           personID: this.$route.params.id,
-          ...value
+          ...value,
+          ecKreis: typeof value.ecKreis === 'string'?null:value.ecKreis,
+          ecMitglied: value.ecMitglied -1
         }
       })
       .then(this.refetch)
@@ -538,8 +561,8 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {}
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
-      ecMitglied: this.data.person.ecMitglied,
-      ecKreisID: (
+      ecMitglied: this.data.person.ecMitglied +1,
+      ecKreis: (
         this.data.person.ecKreis || { ecKreisID: null }
       ).ecKreisID,
       Fuehrerschein: this.data.person.Fuehrerschein,
@@ -1062,6 +1085,81 @@ export default class PersonenDetails extends reloaderBase {
         }
       }
     )
+  }
+
+  createLetter() {
+    const filenames = electron.remote.dialog.showOpenDialog(
+      {
+        title: 'Word Datei des Briefes auswählen',
+        filters: [{ name: 'Word', extensions: ['docx'] }],
+        properties: ['openFile']
+      }
+    )
+    if (filenames) {
+      const fs = eval('require("fs")')
+      const file = filenames[0]
+      const fileContent = fs.readFileSync(file, 'binary')
+      const zipData = new jsZip(fileContent)
+      const briefTemplate = new Docxtemplater()
+      briefTemplate.loadZip(zipData)
+      briefTemplate.setData({
+        ...this.manageData(this.data.person),
+        ecMitgliedStatus: [
+          'kein EC-Mitglied',
+          'EC-Mitglied',
+          'EC-Förderer'
+        ][this.data.person.ecMitglied - 1]
+      })
+      briefTemplate.render()
+      const fertigerBrief = briefTemplate
+        .getZip()
+        .generate({ type: 'nodebuffer' })
+
+      const tmpPath = electron.remote.app
+        .getPath('temp')
+        .split('\\')
+        .join('/')
+      const tmpFile =
+        tmpPath +
+        '/' +
+        Math.random()
+          .toString(36)
+          .substring(7) +
+        '.docx'
+      fs.writeFileSync(tmpFile, fertigerBrief)
+      eval(
+        `require('child_process').exec('start ${tmpFile}')`
+      )
+    } else {
+      alert('Kein Brief ausgewählt.')
+    }
+  }
+
+  manageData(data: any) {
+    const nData: any = {}
+    Object.keys(data).forEach(key => {
+      if (data[key] && data[key] instanceof Array) {
+        nData[key] = []
+        data[key].forEach((el: any) => {
+          if (typeof el === 'object') {
+            nData[key].push(this.manageData(el))
+          } else {
+            nData[key].push(el)
+          }
+        })
+      } else if (
+        data[key] &&
+        typeof data[key] === 'object'
+      ) {
+        const rec = this.manageData(data[key])
+        Object.keys(rec).forEach(nKey => {
+          nData[key + '.' + nKey] = rec[nKey]
+        })
+      } else {
+        nData[key] = data[key]
+      }
+    })
+    return nData
   }
 }
 </script>

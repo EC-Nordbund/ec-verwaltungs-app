@@ -1,60 +1,43 @@
-import version, {
-  isPrerelease
-} from '@/plugins/version/version'
-
-import electron, {
-  isElectron,
-  isProduction
-} from '@/plugins/electron'
+import electron, { isElectron, isProduction } from '@/plugins/electron';
+import version, { isPrerelease } from '@/plugins/version/version';
 
 // Wenn isElectron + isProduction Chack für Upates
-if (isElectron && isProduction) {
-  ;(async () => {
-    // get fetcher
-    const fetch = eval("require('node-fetch')")
+;(async () => {
+  // get fetcher
+  const fetch = eval("require('node-fetch')")
 
-    // querx
-    const res = await fetch(
-      'https://api.github.com/repos/ecnordbund/ec-verwaltungs-app/releases'
-    )
+  // querx
+  const res = await fetch('https://ec-api.de/version')
 
-    // get Result
-    const resultJSON: Array<{
-      prerelease: boolean
-      tag_name: string
-      published_at: string
-      assets: Array<{
-        name: string
-        browser_download_url: string
-      }>
-    }> = await res.json()
+  // get Result
+  const resultJSON: {
+    version: string
+  } = await res.json()
 
-    const latest = resultJSON.filter(
-      v => v.prerelease === isPrerelease
-    )[0]
+  if (version !== resultJSON.version) {
+    let url = ''
 
-    if (latest.tag_name === `v${version}`) {
-      return
+    switch (eval("require('os').platform()")) {
+      case 'win32':
+        url = `https://github.com/EC-Nordbund/ec-verwaltungs-app/releases/download/v${
+          resultJSON.version
+        }/EC-Verwaltungs-App-${
+          resultJSON.version
+        }.Setup.exe`
+        break
+      case 'darwin':
+        url = `https://github.com/EC-Nordbund/ec-verwaltungs-app/releases/download/v${
+          resultJSON.version
+        }/EC-Verwaltungs-App-${resultJSON.version}.dmg`
+        break
+      default:
+        url = `https://github.com/EC-Nordbund/ec-verwaltungs-app/releases/download/v${
+          resultJSON.version
+        }/ec-verwaltungs-app_${
+          resultJSON.version
+        }_amd64.deb`
+        break
     }
-
-    const url = latest.assets
-      .map(v => {
-        const endungsArray = v.name.split('.')
-        const endung = endungsArray[endungsArray.length - 1]
-        return {
-          url: v.browser_download_url,
-          endung
-        }
-      })
-      .filter(
-        v =>
-          v.endung ===
-          (<any>{
-            win32: 'exe',
-            darwin: 'dmg',
-            linux: 'deb'
-          })[(<any>window).process.platform]
-      )[0].url
 
     // show msgBox
     electron.remote.dialog.showMessageBox(
@@ -73,5 +56,5 @@ Wir empfehlen dir das Update sofort zu installieren! (Dauer: wenige Minuten)`,
         }
       }
     )
-  })()
-}
+  }
+})()
