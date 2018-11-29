@@ -223,8 +223,6 @@
     </template>
 
     <template slot="actions">
-      <v-btn v-if="isElectron" color="primary" @click="alertCommingSoon">Auskunftsrecht</v-btn>
-      <v-btn @click="alertCommingSoon">Serienbrief</v-btn>
       <v-btn @click="createLetter">Serienbrief</v-btn>
     </template>
 
