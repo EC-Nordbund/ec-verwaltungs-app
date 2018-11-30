@@ -1,6 +1,10 @@
 <template>
-  <ec-wrapper title="Veranstaltungs Details" :label="`${data.veranstaltung.bezeichnung} (${data.veranstaltung.begin?data.veranstaltung.begin.german:''} - ${data.veranstaltung.ende?data.veranstaltung.ende.german:''})`" type="Veranstaltung" @share="share">
-
+  <ec-wrapper
+    title="Veranstaltungs Details"
+    :label="`${data.veranstaltung.bezeichnung} (${data.veranstaltung.begin?data.veranstaltung.begin.german:''} - ${data.veranstaltung.ende?data.veranstaltung.ende.german:''})`"
+    type="Veranstaltung"
+    @share="share"
+  >
     <template slot="label">
       <ec-headline>
         {{data.veranstaltung.bezeichnung}}
@@ -76,7 +80,7 @@
         </v-tab-item>
         <v-tab-item id="tab-2">
           <ec-list
-            edit 
+            edit
             @edit="editKosten"
             icon="."
             :items="[
@@ -156,6 +160,7 @@
     </template>
 
     <template slot="actions">
+      <v-btn @click="tnListe">(Workaround) TN-Liste</v-btn>
       <v-dialog max-width="290px">
         <v-btn slot="activator">TN-Liste generieren</v-btn>
         <v-card>
@@ -190,37 +195,25 @@
           </v-card-title>
           <v-tabs centered icons-and-text>
             <v-tabs-slider/>
-            <v-tab href="#tab-1">
-              Bestätigungsbrief
+            <v-tab href="#tab-1">Bestätigungsbrief
               <v-icon>phone</v-icon>
             </v-tab>
 
-            <v-tab href="#tab-2">
-              Infobrief
+            <v-tab href="#tab-2">Infobrief
               <v-icon>favorite</v-icon>
             </v-tab>
 
-            <v-tab-item
-              v-for="i in 2"
-              :id="'tab-' + i"
-              :key="i"
-            >
+            <v-tab-item v-for="i in 2" :id="'tab-' + i" :key="i">
               <v-card flat>
                 <v-card-text>
                   <v-form>
                     <!-- Has no file -->
                     <template v-if="Math.random()>0.5">
-                      <v-btn @click="soon">
-                        Datei auswählen 
-                      </v-btn>
+                      <v-btn @click="soon">Datei auswählen</v-btn>
                     </template>
                     <template v-else>
-                      <v-btn @click="soon">
-                        Neue Datei wählen
-                      </v-btn>
-                      <v-btn @click="soon">
-                        Akltuelle Datei öffnen
-                      </v-btn>
+                      <v-btn @click="soon">Neue Datei wählen</v-btn>
+                      <v-btn @click="soon">Akltuelle Datei öffnen</v-btn>
                     </template>
                   </v-form>
                 </v-card-text>
@@ -229,9 +222,7 @@
           </v-tabs>
         </v-card>
       </v-dialog>
-      <v-btn @click="soon">
-        Nachrücken
-      </v-btn>
+      <v-btn @click="soon">Nachrücken</v-btn>
     </template>
 
     <template slot="forms">
@@ -281,6 +272,8 @@ import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'
+
+import {xlsx} from '@/plugins/docx'
 
 const loadGQL = gql`
   query($authToken: String!, $veranstaltungsID: Int!) {
@@ -332,10 +325,26 @@ const loadGQL = gql`
         person {
           vorname
           nachname
+          geschlecht
           gebDat {
             german
           }
         }
+        adresse {
+          strasse
+          plz
+          ort
+        }
+        telefon {
+          telefon
+        }
+        email{
+          eMail
+        }
+        bemerkungen
+        gesundheitsinformationen 
+        lebensmittelAllergien 
+        vegetarisch 
         wartelistenPlatz
         anmeldeZeitpunkt {
           german
@@ -574,6 +583,82 @@ export default class veranstaltungsDetails extends reloaderBase {
           this.data.veranstaltung.veranstaltungsort.vOrtID
       )
     }
+  }
+
+  tnListe() {
+    const filenames = electron.remote.dialog.showOpenDialog(
+      {
+        title: 'Excel Datei der Liste auswählen',
+        filters: [{ name: 'Excel', extensions: ['xlsx'] }],
+        properties: ['openFile']
+      }
+    )
+    if (filenames) {
+      const fs = eval('require("fs")')
+      // const xlsx = eval('require("xlsx-template")')
+      const filecontent = fs.readFileSync(filenames[0])
+      const template = new xlsx(filecontent)
+      template.substitute(1, {
+        ...this.data.veranstaltung,
+        anmeldungen: this.data.veranstaltung.anmeldungen.map((anmel:any)=>{
+          return {
+            ...anmel,
+            empty: '',
+            m: anmel.person.geschlecht === 'm'?'X':'',
+            w: anmel.person.geschlecht === 'w'?'X':'',
+            betreuer: anmel.position>1?'X':''
+          }
+        })
+      })
+      const fertigerBrief = template.generate({
+        type: 'nodebuffer'
+      })
+
+      const tmpPath = electron.remote.app
+        .getPath('temp')
+        .split('\\')
+        .join('/')
+      const tmpFile =
+        tmpPath +
+        '/' +
+        Math.random()
+          .toString(36)
+          .substring(7) +
+        '.xlsx'
+      fs.writeFileSync(tmpFile, fertigerBrief)
+      eval(
+        `require('child_process').exec('start ${tmpFile}')`
+      )
+    } else {
+      alert('Kein Brief ausgewählt.')
+    }
+  }
+
+  manageData(data: any) {
+    const nData: any = {}
+    Object.keys(data).forEach(key => {
+      if (data[key] && data[key] instanceof Array) {
+        nData[key] = []
+        data[key].forEach((el: any) => {
+          if (typeof el === 'object') {
+            nData[key].push(this.manageData(el))
+          } else {
+            nData[key].push(el)
+          }
+        })
+      } else if (
+        data[key] &&
+        typeof data[key] === 'object'
+      ) {
+        const rec = this.manageData(data[key])
+        Object.keys(rec).forEach(nKey => {
+          nData[key + '.' + nKey] = rec[nKey]
+        })
+      } else {
+        nData[key] = data[key]
+      }
+    })
+    return nData
   }
 }
 </script>
