@@ -12,6 +12,10 @@ module.exports = {
             link: '/hilfe/'
           },
           {
+            text: 'Generatoren',
+            link: '/generatoren/'
+          },
+          {
             text: 'API (Für Entwickler)',
             link: '/api/'
           },
