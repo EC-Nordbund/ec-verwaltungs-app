@@ -345,6 +345,12 @@ const loadGQL = gql`
         gesundheitsinformationen 
         lebensmittelAllergien 
         vegetarisch 
+        schwimmen
+        bootFahren
+        radfahren
+        klettern
+        sichEntfernen
+      	fahrgemeinschaften
         wartelistenPlatz
         anmeldeZeitpunkt {
           german
