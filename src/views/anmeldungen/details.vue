@@ -1,8 +1,14 @@
 <template>
-  <ec-wrapper title="Anmeldung Details" :label="`${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} - ${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.year}) - ${['Teilnehmer','Mitarbeiter','Küchenmitarbeiter','Küchenleitung','Leiter','Hauptleiter'][data.anmeldung.position-1]}`" type="Anmeldung" @share="share">
+  <ec-wrapper
+    title="Anmeldung Details"
+    :label="`${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} - ${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.year}) - ${['Teilnehmer','Mitarbeiter','Küchenmitarbeiter','Küchenleitung','Leiter','Hauptleiter'][data.anmeldung.position-1]}`"
+    type="Anmeldung"
+    @share="share"
+  >
     <template slot="label">
       <ec-headline>
-        {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} (<ec-rolle :value="data.anmeldung.position"/>)
+        {{data.anmeldung.veranstaltung.bezeichnung}}: {{data.anmeldung.person.vorname}} {{data.anmeldung.person.nachname}} (
+        <ec-rolle :value="data.anmeldung.position"/>)
         <!-- <ec-button-icon @click="soon"/> -->
       </ec-headline>
     </template>
@@ -62,7 +68,9 @@
               :items="[
                 {subTitle: 'Anmeldezeitpunkt', title: (data.anmeldung.anmeldeZeitpunkt || {}).german},
                 {subTitle: 'Datenschutz Zustimmung', title: (data.anmeldung.DSGVO_einverstaendnis||{}).german },
-                ...(!data.anmeldung.abmeldeZeitpunkt?[]:[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt.german}])
+                ...(!data.anmeldung.abmeldeZeitpunkt?[]:[{subTitle: 'Abmeldezeitpunkt', title: data.anmeldung.abmeldeZeitpunkt.german}]),
+                {subTitle: 'Bestätigungsbrief', title: data.anmeldung.bestaetigungsBrief ? data.anmeldung.bestaetigungsBrief.german : 'Nicht versendet'},
+                {subTitle: 'Infobrief', title: data.anmeldung.infoBrief ? data.anmeldung.infoBrief.german : 'Nicht versendet'}
               ]"
               :mapper="item=>item"
               icon="alarm"
@@ -111,11 +119,10 @@
                 icon="attach_money"
                 @edit="soon"
               />
-            </template>
-            Einige Felder müssen in der API noch hinzugefügt werden
+            </template>Einige Felder müssen in der API noch hinzugefügt werden
           </v-card>
         </v-tab-item>
-        
+
         <v-tab-item id="tab-5">
           <v-card>
             <ec-list
@@ -144,45 +151,36 @@
               icon="check_circle"
               @edit="soon"
             />
-          </v-card> 
+          </v-card>
         </v-tab-item>
         <v-tab-item id="tab-6">
-          <v-card>
-            Comming Soon
+          <v-card>Comming Soon
             <!-- <v-treeview item-key="name" :open="[]"  open-on-click v-model="tree" activatable :items="test_2(data.anmeldung.extra_json)">
               <template slot="prepend" slot-scope="props">
                 <v-icon v-if="props.item.children">
                   {{ props.open ? 'folder_open' : 'folder' }}
                 </v-icon>
               </template>
-            </v-treeview> -->
+            </v-treeview>-->
           </v-card>
         </v-tab-item>
       </v-tabs-items>
     </template>
 
     <template slot="actions">
-      <v-btn @click="soon" v-if="data.anmeldung.wartelistenPlatz == 0 && !data.anmeldung.abmeldeZeitpunkt">Abmelden</v-btn>
-      <v-btn @click="soon">Verschieben</v-btn>
+      <!-- <v-btn @click="soon" v-if="data.anmeldung.wartelistenPlatz == 0 && !data.anmeldung.abmeldeZeitpunkt">Abmelden</v-btn> -->
+      <!-- <v-btn @click="soon">Verschieben</v-btn> -->
       <!-- <v-btn @click="soon">Aus Warteliste entfernen</v-btn> -->
       <v-btn @click="nachruecken" v-if="data.anmeldung.wartelistenPlatz > 0">Nachrücken</v-btn>
-      <v-btn @click="soon">Zahlung</v-btn>
-      <v-btn @click="createLetter">
-        (Workaround) Brief generieren
-      </v-btn>
+      <!-- <v-btn @click="soon">Zahlung</v-btn> -->
+      <v-btn @click="createLetter">(Workaround) Brief generieren</v-btn>
+      <v-btn v-if="!data.anmeldung.bestaetigungsBrief" @click="bestaetigungsbrief">(Workaround) Bestätigungsbrief gesendet</v-btn>
+      <v-btn v-if="!data.anmeldung.infoBrief" @click="infobrief">(Workaround) Infobrief gesendet</v-btn>
     </template>
 
     <template slot="forms">
-      <ec-form
-        title="Abmelden"
-        :fieldConfig="[]"
-        :show="false"
-      />
-      <ec-form
-        title="Kontaktdaten editieren"
-        :fieldConfig="[]"
-        :show="false"
-      />
+      <ec-form title="Abmelden" :fieldConfig="[]" :show="false"/>
+      <ec-form title="Kontaktdaten editieren" :fieldConfig="[]" :show="false"/>
       <ec-form
         title="Bemerkungen editieren"
         :fieldConfig="bemerkungen_config"
@@ -190,8 +188,7 @@
         :value="bemerkungen_value"
         @save="bemerkungen_save"
       />
-    </template> 
-
+    </template>
   </ec-wrapper>
 </template>
 <script lang="ts">
@@ -208,7 +205,7 @@ import {} from '@/plugins/formConfig/index'
 import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
-import {jsZip, Docxtemplater} from '@/plugins/docx'
+import { jsZip, Docxtemplater } from '@/plugins/docx'
 
 const loadGQL = gql`
   query($authToken: String!, $anmeldeID: String!) {
@@ -279,6 +276,12 @@ const loadGQL = gql`
       DSGVO_einverstaendnis {
         german
       }
+      bestaetigungsBrief {
+        german
+      }
+      infoBrief {
+        german
+      }
       extra_json
     }
   }
@@ -328,16 +331,18 @@ const loadGQL = gql`
   }
 })
 export default class anmeldungsDetails extends reloaderBase {
-  bemerkungen_value:any={}
+  bemerkungen_value: any = {}
   bemerkungen_edit() {
-    this.bemerkungen_value={}
-    this.bemerkungen_value={
+    this.bemerkungen_value = {}
+    this.bemerkungen_value = {
       vegetarisch: this.data.anmeldung.vegetarisch,
-      lebensmittelAllergien: this.data.anmeldung.lebensmittelAllergien,
-      gesundheitsinformationen: this.data.anmeldung.gesundheitsinformationen,
-      bemerkungen: this.data.anmeldung.bemerkungen,
+      lebensmittelAllergien: this.data.anmeldung
+        .lebensmittelAllergien,
+      gesundheitsinformationen: this.data.anmeldung
+        .gesundheitsinformationen,
+      bemerkungen: this.data.anmeldung.bemerkungen
     }
-    this.bemerkungen_show=true
+    this.bemerkungen_show = true
   }
   bemerkungen_config = [
     {
@@ -345,8 +350,8 @@ export default class anmeldungsDetails extends reloaderBase {
       label: 'Verpflegung',
       componentName: 'v-select',
       items: [
-        {text: 'Vegetarisch', value: true},
-        {text: 'Normal', value: false}
+        { text: 'Vegetarisch', value: true },
+        { text: 'Normal', value: false }
       ]
     },
     {
@@ -365,21 +370,37 @@ export default class anmeldungsDetails extends reloaderBase {
       componentName: 'v-textarea'
     }
   ]
-  bemerkungen_save(value:any){
-    this.$apollo.mutate({
-      mutation: gql`
-        mutation($authToken: String!, $anmeldeID: String!, $vegetarisch: Boolean!, $gesundheitsinformationen: String!, $bemerkungen: String!, $lebensmittelAllergien: String!){
-          anmeldungBesonderheiten(authToken: $authToken, anmeldeID: $anmeldeID, vegetarisch: $vegetarisch, gesundheitsinformationen: $gesundheitsinformationen, bemerkungen: $bemerkungen, lebensmittelAllergien: $lebensmittelAllergien)
+  bemerkungen_save(value: any) {
+    this.$apollo
+      .mutate({
+        mutation: gql`
+          mutation(
+            $authToken: String!
+            $anmeldeID: String!
+            $vegetarisch: Boolean!
+            $gesundheitsinformationen: String!
+            $bemerkungen: String!
+            $lebensmittelAllergien: String!
+          ) {
+            anmeldungBesonderheiten(
+              authToken: $authToken
+              anmeldeID: $anmeldeID
+              vegetarisch: $vegetarisch
+              gesundheitsinformationen: $gesundheitsinformationen
+              bemerkungen: $bemerkungen
+              lebensmittelAllergien: $lebensmittelAllergien
+            )
+          }
+        `,
+        variables: {
+          authToken: auth.authToken,
+          anmeldeID: this.$route.params.id,
+          ...value
         }
-      `,
-      variables: {
-        authToken: auth.authToken,
-        anmeldeID: this.$route.params.id,
-        ...value
-      }
-    }).then(this.refetch)
+      })
+      .then(this.refetch)
   }
-  bemerkungen_show=false
+  bemerkungen_show = false
   tree = []
   data: any = {
     anmeldung: {
@@ -457,42 +478,55 @@ export default class anmeldungsDetails extends reloaderBase {
     }
   }
 
-  createLetter(){
+  createLetter() {
     const filenames = electron.remote.dialog.showOpenDialog(
       {
-        title: 'Word Datei des Briefes auswählen', 
-        filters: [
-          {name: 'Word', extensions : ['docx']}
-        ], 
-        properties : ['openFile']
+        title: 'Word Datei des Briefes auswählen',
+        filters: [{ name: 'Word', extensions: ['docx'] }],
+        properties: ['openFile']
       }
     )
-    if(filenames){
+    if (filenames) {
       const fs = eval('require("fs")')
       const file = filenames[0]
       const fileContent = fs.readFileSync(file, 'binary')
       const zipData = new jsZip(fileContent)
       const briefTemplate = new Docxtemplater()
       briefTemplate.loadZip(zipData)
-      briefTemplate.setData(this.manageData(this.data.anmeldung))
+      briefTemplate.setData(
+        this.manageData(this.data.anmeldung)
+      )
       briefTemplate.render()
-      const fertigerBrief = briefTemplate.getZip().generate({type: 'nodebuffer'});
+      const fertigerBrief = briefTemplate
+        .getZip()
+        .generate({ type: 'nodebuffer' })
 
-      const tmpPath = electron.remote.app.getPath('temp').split('\\').join('/')
-      const tmpFile = tmpPath + '/' + Math.random().toString(36).substring(7) + '.docx'
+      const tmpPath = electron.remote.app
+        .getPath('temp')
+        .split('\\')
+        .join('/')
+      const tmpFile =
+        tmpPath +
+        '/' +
+        Math.random()
+          .toString(36)
+          .substring(7) +
+        '.docx'
       fs.writeFileSync(tmpFile, fertigerBrief)
-      eval(`require('child_process').exec('start ${tmpFile}')`)
+      eval(
+        `require('child_process').exec('start ${tmpFile}')`
+      )
     } else {
       alert('Kein Brief ausgewählt.')
     }
   }
 
-  manageData(data:any) {
+  manageData(data: any) {
     const nData: any = {}
-    Object.keys(data).forEach(key=>{
-      if(data[key] && typeof data[key]==='object') {
+    Object.keys(data).forEach(key => {
+      if (data[key] && typeof data[key] === 'object') {
         const rec = this.manageData(data[key])
-        Object.keys(rec).forEach(nKey=>{
+        Object.keys(rec).forEach(nKey => {
           nData[key + '.' + nKey] = rec[nKey]
         })
       } else {
@@ -501,7 +535,32 @@ export default class anmeldungsDetails extends reloaderBase {
     })
     return nData
   }
+
+  bestaetigungsbrief(){
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($anmeldeID: String!, $authToken: String!) {
+          anmeldungBestaetigungsbrief(anmeldeID: $anmeldeID, authToken: $authToken)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        anmeldeID: this.$route.params.id
+      }
+    })
+  }
+  infobrief(){
+    this.$apollo.mutate({
+      mutation: gql`
+        mutation($anmeldeID: String!, $authToken: String!) {
+          anmeldunginfobrief(anmeldeID: $anmeldeID, authToken: $authToken)
+        }
+      `,
+      variables: {
+        authToken: auth.authToken,
+        anmeldeID: this.$route.params.id
+      }
+    })
+  }
 }
-
-
 </script>
