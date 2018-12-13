@@ -57,7 +57,7 @@
                 {click: 'v', subTitle: 'Veranstaltung', title: `${data.anmeldung.veranstaltung.bezeichnung} (${data.anmeldung.veranstaltung.begin.german} - ${data.anmeldung.veranstaltung.ende.german})`},
                 {click: 'p', subTitle: 'Person', title: `${data.anmeldung.person.vorname} ${data.anmeldung.person.nachname} (${data.anmeldung.person.gebDat.german})`},
                 {subTitle: 'Rolle', title: ['Teilnehmer','Mitarbeiter','Küchenmitarbeiter', 'Küchenleitung','Leiter','Hauptleiter'][data.anmeldung.position-1]},
-                {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung oder Abgemeldet':Math.abs(data.anmeldung.wartelistenPlatz)}
+                {subTitle: 'Wartelistenplatz', title: data.anmeldung.wartelistenPlatz===0?'In Veranstaltung':(data.anmeldung.wartelistenPlatz<0?'Abgemeldet':data.anmeldung.wartelistenPlatz)}
               ]"
               :mapper="item=>item"
               icon="info"
