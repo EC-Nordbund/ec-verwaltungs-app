@@ -2,9 +2,7 @@
   <div v-if="!button">
     <slot :data="data" :loading="loading" :errored="errored" :mutate="doQuery"/>
   </div>
-  <v-btn v-else>
-    {{label}}
-  </v-bt>
+  <v-btn v-else>{{label}}</v-btn>
 </template>
 <script lang="ts">
 import {
@@ -24,13 +22,13 @@ import electron from '@/plugins/electron'
 export default class ecGQLmutate extends Vue {
   auth = auth
   @Prop({ type: Boolean, default: false })
-  button!:boolean
+  button!: boolean
 
   @Prop({ type: Object, default: () => ({}) })
   variables!: any
 
-  @Prop({ type: String, default: "Speichern" })
-  label!:string
+  @Prop({ type: String, default: 'Speichern' })
+  label!: string
 
   query: any
 
