@@ -2,13 +2,10 @@ import ApolloClient from 'apollo-boost';
 import Vue from 'vue';
 import VueApollo from 'vue-apollo';
 
-// Install Plugin
-Vue.use(VueApollo)
-
-// Create Client
 let client: null | ApolloClient<any> = null
 
-export function getClient() {
+// Create Client
+function getClient() {
   if (client === null) {
     client = new ApolloClient({
       uri: 'https://ec-api.de/graphql' //Direkter API-Request
@@ -19,9 +16,17 @@ export function getClient() {
   return client
 }
 
-// Create Client
-export default () => {
+// Create Provider
+function getProvider() {
   return new VueApollo({
     defaultClient: getClient()
   })
+}
+export type IgetApolloClient = () => ApolloClient < any >
+export default {
+  install(vue: typeof Vue) {
+    VueApollo.install(vue)
+    vue.prototype.$getApolloClient = getClient
+  },
+  getProvider
 }

@@ -106,7 +106,6 @@ import electron, {
   isElectron,
   isProduction
 } from '@/plugins/electron'
-import settings from '@/plugins/settings'
 import version from '@/plugins/version/version'
 import { BrowserWindow } from 'electron'
 
@@ -146,7 +145,8 @@ export default class App extends Vue {
   }
   created() {
     if (isElectron) {
-      this.dark = <any>settings.get('dark', false)
+      this.$updateCheker()
+      this.dark = this.$require.settings.get('dark', false)
     }
     this.event.on('showLoading', () => {
       this.loading = true
@@ -174,7 +174,7 @@ export default class App extends Vue {
   darkChange() {
     this.dark = !this.dark
     if (isElectron) {
-      settings.set('dark', this.dark)
+      this.$require.settings.set('dark', this.dark)
     }
   }
   @Watch('soonLogOut')

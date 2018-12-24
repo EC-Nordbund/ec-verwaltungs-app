@@ -1,23 +1,23 @@
-import electron, { isElectron, isProduction } from '@/plugins/electron';
-import version, { isPrerelease } from '@/plugins/version/version';
+import { data } from '@/realPlugins/electron';
+import Vue from 'vue';
+const { electron, isElectron, isProduction, os } = data
 
-// Wenn isElectron + isProduction Chack für Upates
-;(async () => {
-  // get fetcher
-  const fetch = eval("require('node-fetch')")
+export default {
+  install(vue: typeof Vue) {
+    if (isElectron && isProduction) {
+      vue.prototype.$updateChecker = updateChecker
+    } else {
+      vue.prototype.$updateChecker = () => {}
+    }
+  }
+}
 
-  // querx
-  const res = await fetch('https://ec-api.de/version')
-
-  // get Result
-  const resultJSON: {
-    version: string
-  } = await res.json()
-
-  if (version !== resultJSON.version) {
+export async function updateChecker() {
+  if (electron && os) {
+    const res = await fetch('https://ec-api.de/version')
+    const resultJSON: { version: string } = await res.json()
     let url = ''
-
-    switch (eval("require('os').platform()")) {
+    switch (os.platform()) {
       case 'win32':
         url = `https://github.com/EC-Nordbund/ec-verwaltungs-app/releases/download/v${
           resultJSON.version
@@ -57,4 +57,4 @@ Wir empfehlen dir das Update sofort zu installieren! (Dauer: wenige Minuten)`,
       }
     )
   }
-})()
+}

@@ -1,7 +1,5 @@
-import { isElectron } from '@/plugins/electron'
-import settings from '@/plugins/settings'
-
-import _xButton from '@/plugins/xButton/logic'
+import { isElectron } from '@/plugins/electron';
+import _xButton from '@/plugins/xButton/logic';
 
 export class Lesezeichen {
   constructor(
@@ -32,12 +30,17 @@ class LesezeichenList {
   }
 
   save() {
-    settings.set('lesezeichen', JSON.stringify(this.liste))
+    this.$require.settings.set(
+      'lesezeichen',
+      JSON.stringify(this.liste)
+    )
   }
 
   load() {
     ;(<Array<any>>(
-      JSON.parse(<string>settings.get('lesezeichen', '[]'))
+      JSON.parse(<string>(
+        this.$require.settings.get('lesezeichen', '[]')
+      ))
     )).forEach((v: any) => {
       this.addLesezeichen(
         new Lesezeichen(

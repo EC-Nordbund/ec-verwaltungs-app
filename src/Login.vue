@@ -63,7 +63,6 @@ import electron, {
   isElectron,
   isProduction
 } from '@/plugins/electron'
-import settings from '@/plugins/settings'
 import {
   Component,
   Vue,
@@ -111,7 +110,7 @@ export default class loginForm extends Vue {
   login() {
     this.checking = true
     if (isElectron) {
-      settings.set('username', this.username)
+      this.$require.settings.set('username', this.username)
     }
     auth
       .logIn(this.username, this.password)
@@ -130,8 +129,8 @@ export default class loginForm extends Vue {
 
   created() {
     if (isElectron) {
-      this.username = <any>settings.get('username', '')
-      this.dark = <any>settings.get('dark', false)
+      this.username = this.$require.settings.get('username', '')
+      this.dark = this.$require.settings.get('dark', false)
     }
     window.addEventListener('keyup', this.checkCaps)
 

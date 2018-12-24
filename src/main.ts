@@ -2,7 +2,7 @@ import DSGVO from './views/DSGVO.vue';
 import ecGQLmutate from '@/gql/ecGQLmutate.vue';
 import ecGQLquery from '@/gql/ecGQLquery.vue';
 import ecGQLwatch from '@/gql/ecGQLwatch.vue';
-import apolloProvider from '@/plugins/apollo';
+import extra from '@/plugins';
 import '@/plugins/auth';
 import auth from '@/plugins/auth';
 import '@/plugins/design/theme-directives';
@@ -15,11 +15,11 @@ import '@/plugins/lib/componentLib';
 import '@/plugins/qrCode';
 import '@/plugins/router/routeHandler';
 import router from '@/plugins/router/router';
-import '@/plugins/updateChecker';
 import '@/plugins/widgets';
 import wrapper from '@/plugins/wrapper.vue';
 import xButton from '@/plugins/xButton/btn.vue';
 import Vue from 'vue';
+// import apolloProvider from '@/plugins/apollo';
 Vue.component('gql-query', ecGQLquery)
 Vue.component('gql-watch', ecGQLwatch)
 Vue.component('gql-mutate', ecGQLmutate)
@@ -54,7 +54,7 @@ Vue.config.productionTip = isProduction
 
 // create Vue Instance
 new Vue({
-  apolloProvider: apolloProvider(),
   render: h => h('router-view'),
-  router
+  router,
+  ...extra
 }).$mount('#app')
