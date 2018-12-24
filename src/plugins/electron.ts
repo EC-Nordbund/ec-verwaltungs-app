@@ -1,23 +1,15 @@
-import * as electron from 'electron'
-const _isElectron = (window as any).require !== undefined
+import * as _electron from 'electron';
+import * as _fs from 'fs';
+export const isElectron = (window as any).require !== undefined
 
-const el: typeof electron = _isElectron
+export const electron: typeof _electron = isElectron
   ? eval('require("electron")')
   : null
 
-const _prod: boolean = _isElectron
+export const isProduction: boolean = isElectron
   ? process.env.NODE_ENV !== 'development'
   : true
 
-/**
- * Gibt an ob in Electron
- */
-export const isElectron = _isElectron
-/**
- *  Gibt an ob in Produktion-Mode
- */
-export const isProduction = _prod
-/**
- * Electron API or Null
- */
-export default el
+export const fs: typeof _fs = isElectron ? eval('require("fs")') :null
+
+export default electron
