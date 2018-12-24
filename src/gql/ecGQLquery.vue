@@ -43,7 +43,7 @@ export default class ecGQLquery extends Vue {
       this.reloading = true
     }
 
-    const data = await getClient()
+    const data = await this.$getApolloClient()
       .query({
         query: this.query,
         variables: {

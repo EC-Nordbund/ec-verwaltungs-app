@@ -53,7 +53,7 @@ export default class ecGQLwatch extends Vue {
       `
     }
 
-    this._query = getClient()
+    this._query = this.$getApolloClient()
       .watchQuery({
         query: this.query,
         variables: {

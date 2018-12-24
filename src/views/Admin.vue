@@ -93,7 +93,6 @@ import {
 import { required } from '@/plugins/rules'
 
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
 
 const loadGQL = gql`
   query($authToken: String!) {
@@ -120,7 +119,7 @@ const loadGQL = gql`
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    getClient()
+    $getApolloClient()
       .query({
         query: loadGQL,
         variables: {

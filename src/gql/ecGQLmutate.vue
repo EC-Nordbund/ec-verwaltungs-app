@@ -43,7 +43,7 @@ export default class ecGQLmutate extends Vue {
       `
     }
 
-    const data = await getClient()
+    const data = await this.$getApolloClient()
       .mutate({
         mutation: this.query,
         variables: {

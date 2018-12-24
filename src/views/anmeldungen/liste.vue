@@ -65,7 +65,7 @@ import { getClient } from '@/plugins/apollo'
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    getClient()
+    this.$getApolloClient()
       .query({
         query: loadGQL,
         variables: {

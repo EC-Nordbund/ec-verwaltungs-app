@@ -36,7 +36,7 @@ const loadGQL = gql`
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    getClient()
+    this.$getApolloClient()
       .query({
         query: loadGQL,
         variables: {

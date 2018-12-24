@@ -43,7 +43,7 @@ export default class dsgvo extends Vue {
 
   accept() {
     this.ishow = false
-    getClient().mutate({
+    this.$getApolloClient().mutate({
       mutation: gql`
         mutation($authToken: String!) {
           acceptsDSE(authToken: $authToken)
@@ -65,7 +65,7 @@ export default class dsgvo extends Vue {
 
   getData() {
     this.loading = true
-    ;(<any>getClient())
+    ;(<any>this.$getApolloClient())
       .query({
         query: gql`
         query{

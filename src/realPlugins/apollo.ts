@@ -5,7 +5,7 @@ import VueApollo from 'vue-apollo';
 let client: null | ApolloClient<any> = null
 
 // Create Client
-function getClient() {
+export function getClient() {
   if (client === null) {
     client = new ApolloClient({
       uri: 'https://ec-api.de/graphql' //Direkter API-Request
@@ -22,7 +22,7 @@ function getProvider() {
     defaultClient: getClient()
   })
 }
-export type IgetApolloClient = () => ApolloClient < any >
+export type IgetApolloClient = () => ApolloClient<any>
 export default {
   install(vue: typeof Vue) {
     VueApollo.install(vue)

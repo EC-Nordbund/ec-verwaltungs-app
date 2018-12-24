@@ -19,7 +19,6 @@ import '@/plugins/widgets';
 import wrapper from '@/plugins/wrapper.vue';
 import xButton from '@/plugins/xButton/btn.vue';
 import Vue from 'vue';
-// import apolloProvider from '@/plugins/apollo';
 Vue.component('gql-query', ecGQLquery)
 Vue.component('gql-watch', ecGQLwatch)
 Vue.component('gql-mutate', ecGQLmutate)
