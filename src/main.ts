@@ -17,11 +17,13 @@ if (data.isElectron) {
   })
 }
 
+
+
 // set Config
 Vue.config.productionTip = data.isProduction
 
 // create Vue Instance
 new Vue({
   render: h => h('router-view'),
-  ...extra
+  ...extra()
 }).$mount('#app')
