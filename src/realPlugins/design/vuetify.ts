@@ -5,7 +5,7 @@ import 'vuetify/dist/vuetify.min.css';
 
 export default {
   install(vue: typeof Vue) {
-    Vuetify.install(vue, {
+    vue.use(Vuetify, {
       theme: theme,
       lang: {
         locales: {

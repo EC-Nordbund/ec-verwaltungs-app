@@ -36,7 +36,7 @@ function getProvider() {
 export type IgetApolloClient = () => ApolloClient<any>
 export default {
   install(vue: typeof Vue) {
-    VueApollo.install(vue)
+    vue.use(VueApollo)
     vue.prototype.$getApolloClient = getClient
   },
   getProvider

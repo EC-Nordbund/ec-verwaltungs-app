@@ -4,7 +4,9 @@ import Router from 'vue-router';
 
 export default {
   install(vue: typeof Vue) {
-    Router.install(vue)
+    vue.use(Router)
   },
   router: new Router({ routes })
 }
+
+require('@/realPlugins/router/routeHandler')
