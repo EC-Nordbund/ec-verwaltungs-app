@@ -15,8 +15,6 @@ import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
 
 
-import electron from '@/plugins/electron'
-
 @Component({})
 export default class ecGQLquery extends Vue {
   auth = auth
@@ -52,7 +50,7 @@ export default class ecGQLquery extends Vue {
         }
       })
       .catch(err => {
-        electron.remote.dialog.showErrorBox(
+        this.$require.electron.remote.dialog.showErrorBox(
           'Bei der Abfrage von Daten ist ein Fehler aufgetreten!',
           err.toString()
         )

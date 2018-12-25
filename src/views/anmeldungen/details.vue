@@ -193,8 +193,6 @@
 </template>
 <script lang="ts">
 import gql from 'graphql-tag'
-
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
@@ -479,7 +477,7 @@ export default class anmeldungsDetails extends reloaderBase {
   }
 
   createLetter() {
-    const filenames = electron.remote.dialog.showOpenDialog(
+    const filenames = this.$require.electron.remote.dialog.showOpenDialog(
       {
         title: 'Word Datei des Briefes auswählen',
         filters: [{ name: 'Word', extensions: ['docx'] }],
@@ -501,7 +499,7 @@ export default class anmeldungsDetails extends reloaderBase {
         .getZip()
         .generate({ type: 'nodebuffer' })
 
-      const tmpPath = electron.remote.app
+      const tmpPath = this.$require.electron.remote.app
         .getPath('temp')
         .split('\\')
         .join('/')

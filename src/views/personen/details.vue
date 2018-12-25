@@ -325,7 +325,6 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
@@ -351,7 +350,6 @@ import {
   notizConfig,
   ecKreisConfig
 } from '@/plugins/formConfig/index'
-
 
 import event from '@/plugins/eventbus'
 
@@ -551,8 +549,11 @@ export default class PersonenDetails extends reloaderBase {
           authToken: this.auth.authToken,
           personID: this.$route.params.id,
           ...value,
-          ecKreis: typeof value.ecKreis === 'string'?null:value.ecKreis,
-          ecMitglied: value.ecMitglied -1
+          ecKreis:
+            typeof value.ecKreis === 'string'
+              ? null
+              : value.ecKreis,
+          ecMitglied: value.ecMitglied - 1
         }
       })
       .then(this.refetch)
@@ -561,7 +562,7 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {}
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
-      ecMitglied: this.data.person.ecMitglied +1,
+      ecMitglied: this.data.person.ecMitglied + 1,
       ecKreis: (
         this.data.person.ecKreis || { ecKreisID: null }
       ).ecKreisID,
@@ -648,7 +649,6 @@ export default class PersonenDetails extends reloaderBase {
     notizConfig
   ]
 
-  isElectron: boolean = isElectron
   data: any = { person: {} }
   editPersonStamm_show = false
   editPersonStamm_open() {
@@ -1053,7 +1053,7 @@ export default class PersonenDetails extends reloaderBase {
   }
   fzAntrag() {
     // Confirm.
-    electron.remote.dialog.showMessageBox(
+    this.$require.electron.remote.dialog.showMessageBox(
       {
         type: 'question',
         buttons: ['Yes', 'No'],
@@ -1088,7 +1088,7 @@ export default class PersonenDetails extends reloaderBase {
   }
 
   createLetter() {
-    const filenames = electron.remote.dialog.showOpenDialog(
+    const filenames = this.$require.electron.remote.dialog.showOpenDialog(
       {
         title: 'Word Datei des Briefes auswählen',
         filters: [{ name: 'Word', extensions: ['docx'] }],
@@ -1115,7 +1115,7 @@ export default class PersonenDetails extends reloaderBase {
         .getZip()
         .generate({ type: 'nodebuffer' })
 
-      const tmpPath = electron.remote.app
+      const tmpPath = this.$require.electron.remote.app
         .getPath('temp')
         .split('\\')
         .join('/')

@@ -102,10 +102,6 @@
 import anmeldungSelect from '@/views/AnmeldungSelect.vue'
 import auth from '@/plugins/auth'
 import nav from '@/plugins/config/nav.config'
-import electron, {
-  isElectron,
-  isProduction
-} from '@/plugins/electron'
 import version from '@/plugins/version/version'
 import { BrowserWindow } from 'electron'
 
@@ -137,14 +133,14 @@ export default class App extends Vue {
   xButtonLogic = xButtonLogic
   click(route: string) {
     if (route === '_hilfe') {
-      electron.ipcRenderer.send('openHelp')
+      this.$require.electron.ipcRenderer.send('openHelp')
       return
     }
     this.$router.push(route)
     this.xButtonLogic.reset()
   }
   created() {
-    if (isElectron) {
+    if (this.$require.isElectron) {
       this.$updateChecker()
       this.dark = <boolean>(
         this.$require.settings.get('dark', false)
@@ -175,7 +171,7 @@ export default class App extends Vue {
 
   darkChange() {
     this.dark = !this.dark
-    if (isElectron) {
+    if (this.$require.isElectron) {
       this.$require.settings.set('dark', this.dark)
     }
   }

@@ -7,21 +7,17 @@
           <v-btn icon style="visibility: hidden;"/>
           <v-spacer/>
           <v-toolbar-title>
-            <h1 v-font v-primary>
-              {{title}}
-            </h1>
+            <h1 v-font v-primary>{{title}}</h1>
           </v-toolbar-title>
           <v-spacer/>
           <v-btn icon @click="share" v-if="isElectron">
-            <v-icon>
-              share
-            </v-icon>
+            <v-icon>share</v-icon>
           </v-btn>
-          <ec-lesezeichen-add 
+          <ec-lesezeichen-add
             v-if="!mini"
-            :route="$route.path" 
-            :label="label" 
-            :type="type" 
+            :route="$route.path"
+            :label="label"
+            :type="type"
             :elID="$route.params.id"
           />
           <slot slot="extension" name="extension" v-if="mini"/>
@@ -46,7 +42,6 @@
 </template>
 
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import {
   Component,
   Vue,
@@ -55,8 +50,6 @@ import {
 
 @Component({})
 export default class wrapper extends Vue {
-  isElectron = isElectron
-
   @Prop({ type: Boolean, default: false })
   mini!: boolean
 
@@ -71,7 +64,9 @@ export default class wrapper extends Vue {
 
   share() {
     this.$emit('share', (url: string) => {
-      electron.clipboard.writeText(`ec://${url}`)
+      this.$require.electron.clipboard.writeText(
+        `ec://${url}`
+      )
     })
   }
 }

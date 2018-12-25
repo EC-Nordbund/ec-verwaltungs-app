@@ -1,6 +1,5 @@
 <template>
   <ec-wrapper title="Organisation Details" :label="data.orga.bezeichnung" type="Organisation">
-
     <template slot="label">
       <ec-headline>
         {{data.orga.bezeichnung}}
@@ -11,28 +10,26 @@
     <template slot="extension">
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
-        <v-tab href="#tab-2" v-secondary v-if="data.orga.organisationsID!==1">
-          Allgemein
-        </v-tab>
-        <v-tab href="#tab-3" v-secondary>
-          Veranstaltungsorte
-        </v-tab>
-        <v-tab href="#tab-4" v-secondary>
-          Veranstaltungen
-        </v-tab>
+        <v-tab href="#tab-2" v-secondary v-if="data.orga.organisationsID!==1">Allgemein</v-tab>
+        <v-tab href="#tab-3" v-secondary>Veranstaltungsorte</v-tab>
+        <v-tab href="#tab-4" v-secondary>Veranstaltungen</v-tab>
       </v-tabs>
     </template>
 
     <template>
       <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
-          <ec-list :items="[
+          <ec-list
+            :items="[
             {title: data.orga.ansprechpartner, subTitle: 'Ansprechpartner', icon: 'person'},
             {title: data.orga.strasse, subTitle: `${data.orga.plz} ${data.orga.ort} (${data.orga.land})`, icon: 'home'},
             {title: data.orga.telefon, subTitle: 'Telefon'},
             {title: data.orga.email, subTitle: 'E-Mail'},
             {title: data.orga.notizen, subTitle: 'Notizen'}
-          ]" :mapper="v=>v" icon="map"/>
+          ]"
+            :mapper="v=>v"
+            icon="map"
+          />
         </v-tab-item>
         <v-tab-item id="tab-3">
           <ec-list
@@ -45,9 +42,10 @@
             @click="item => $router.push('/app/vOrte/' + item.vOrtID)"
           />
         </v-tab-item>
-        <v-tab-item id="tab-4">
-          Hier kommt eine Liste der Veranstaltungen der Veranstaltungsorte der Organisation hin.<br>
-          (Comming Soon...)
+        <v-tab-item
+          id="tab-4"
+        >Hier kommt eine Liste der Veranstaltungen der Veranstaltungsorte der Organisation hin.
+          <br>(Comming Soon...)
         </v-tab-item>
       </v-tabs-items>
     </template>
@@ -64,12 +62,10 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
-
 
 import event from '@/plugins/eventbus'
 

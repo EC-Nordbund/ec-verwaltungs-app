@@ -253,7 +253,6 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
@@ -592,7 +591,7 @@ export default class veranstaltungsDetails extends reloaderBase {
   }
 
   tnListe() {
-    const filenames = electron.remote.dialog.showOpenDialog(
+    const filenames = this.$require.electron.remote.dialog.showOpenDialog(
       {
         title: 'Excel Datei der Liste auswählen',
         filters: [{ name: 'Excel', extensions: ['xlsx'] }],
@@ -620,7 +619,7 @@ export default class veranstaltungsDetails extends reloaderBase {
         type: 'nodebuffer'
       })
 
-      const tmpPath = electron.remote.app
+      const tmpPath = this.$require.electron.remote.app
         .getPath('temp')
         .split('\\')
         .join('/')

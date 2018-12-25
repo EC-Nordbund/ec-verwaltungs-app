@@ -59,10 +59,6 @@
   </v-app>
 </template>
 <script lang="ts">
-import electron, {
-  isElectron,
-  isProduction
-} from '@/plugins/electron'
 import {
   Component,
   Vue,
@@ -109,7 +105,7 @@ export default class loginForm extends Vue {
   }
   login() {
     this.checking = true
-    if (isElectron) {
+    if (this.$require.isElectron) {
       this.$require.settings.set('username', this.username)
     }
     auth
@@ -128,7 +124,7 @@ export default class loginForm extends Vue {
   showUrlInfo: boolean = false
 
   created() {
-    if (isElectron) {
+    if (this.$require.isElectron) {
       this.username = <string>this.$require.settings.get('username', '')
       this.dark = <boolean>this.$require.settings.get('dark', false)
     }

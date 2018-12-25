@@ -150,7 +150,6 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
