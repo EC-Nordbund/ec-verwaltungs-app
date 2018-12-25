@@ -17,8 +17,6 @@ if (data.isElectron) {
   })
 }
 
-
-
 // set Config
 Vue.config.productionTip = data.isProduction
 

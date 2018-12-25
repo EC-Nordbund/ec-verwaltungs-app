@@ -1,6 +1,6 @@
 import AppComponent from '@/App.vue';
+import RouteComponent from '@/config/router.vue';
 import LoginComponent from '@/Login.vue';
-import RouteComponent from '@/realPlugins/router/router.vue';
 import AdminComponent from '@/views/Admin.vue';
 import anmeldungDetails from '@/views/anmeldungen/details.vue';
 import anmeldungListe from '@/views/anmeldungen/liste.vue';
@@ -22,7 +22,7 @@ import unterkünfteListe from '@/views/unterkünfte/liste.vue'
 import unterkünfteDetails from '@/views/unterkünfte/details.vue'
 
 // Setup Routes
-const routes: RouteConfig[] = [
+export const routes: RouteConfig[] = [
   {
     path: '/',
     redirect: '/login'
@@ -274,5 +274,3 @@ const routes: RouteConfig[] = [
     ]
   }
 ]
-
-export default routes

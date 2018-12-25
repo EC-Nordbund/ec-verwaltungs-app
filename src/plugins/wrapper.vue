@@ -10,7 +10,7 @@
             <h1 v-font v-primary>{{title}}</h1>
           </v-toolbar-title>
           <v-spacer/>
-          <v-btn icon @click="share" v-if="isElectron">
+          <v-btn icon @click="share" v-if="$require.isElectron">
             <v-icon>share</v-icon>
           </v-btn>
           <ec-lesezeichen-add

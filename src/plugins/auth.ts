@@ -1,7 +1,6 @@
 import eventbus from '@/plugins/eventbus';
 import { getClient } from '@/realPlugins/apollo';
 import { data } from '@/realPlugins/electron';
-import router from '@/realPlugins/router/router';
 import gql from 'graphql-tag';
 
 const { electron, version } = data
