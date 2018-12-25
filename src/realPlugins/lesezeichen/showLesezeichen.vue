@@ -1,28 +1,21 @@
 <template>
   <v-menu v-model="menu" :close-on-content-click="false" max-width="450" min-width="450" offset-y>
     <template slot="activator">
-      <v-badge overlap bottom color="accent" v-if="lesezeichen.liste.length > 0">
-        <span slot="badge">
-          {{lesezeichen.liste.length >= 16 ? ':-)' : lesezeichen.liste.length}}
-        </span>
-        <v-icon medium v-white>
-          {{lesezeichen.liste.length === 0 ? 'star_border' : 'star'}}
-        </v-icon>
+      <v-badge overlap bottom color="accent" v-if="$liste.liste.length > 0">
+        <span slot="badge">{{$liste.liste.length >= 16 ? ':-)' : $liste.liste.length}}</span>
+        <v-icon medium v-white>{{$liste.liste.length === 0 ? 'star_border' : 'star'}}</v-icon>
       </v-badge>
-      <v-icon medium v-white v-else>
-        star_border
-      </v-icon>
+      <v-icon medium v-white v-else>star_border</v-icon>
     </template>
     <v-card>
-
       <v-card-title>
         <h1 v-font v-primary>Lesezeichen</h1>
       </v-card-title>
 
       <v-divider/>
-    
+
       <v-card-text>
-        <v-list v-if="lesezeichen.liste.length > 0">
+        <v-list v-if="$liste.liste.length > 0">
           <v-list-tile v-if="selectedBookmarks.length > 0" inactive>
             <v-list-tile-action>
               <v-btn @click="selectedBookmarks = []" icon>
@@ -45,17 +38,13 @@
                 <v-icon>delete</v-icon>
               </v-btn>
             </v-list-tile-action>
-
           </v-list-tile>
 
           <v-divider v-if="selectedBookmarks.length > 0"/>
 
-          <template v-for="(item, index) in lesezeichen.liste">
+          <template v-for="(item, index) in $liste.liste">
             <v-list-tile :key="item.type + '-' + item.id" @click="click(index)">
-
-              <v-list-tile-action
-                v-if="lesezeichen.liste.length > 1"
-                @click.stop>
+              <v-list-tile-action v-if="$liste.liste.length > 1" @click.stop>
                 <v-checkbox v-model="selectedBookmarks" :value="index"/>
               </v-list-tile-action>
 
@@ -69,7 +58,6 @@
                   <v-icon>close</v-icon>
                 </v-btn>
               </v-list-tile-action>
-
             </v-list-tile>
           </template>
         </v-list>
@@ -77,10 +65,11 @@
           <v-list-tile inactive>
             <v-list-tile-content>
               <v-list-tile-title centered>Keine Lesezeichen</v-list-tile-title>
-              <v-list-tile-sub-title>Klicke auf das <v-icon small>star_border</v-icon>-Symbol auf den Details-Seiten um die jeweilige hinzuzufügen.</v-list-tile-sub-title>
+              <v-list-tile-sub-title>Klicke auf das
+                <v-icon small>star_border</v-icon>-Symbol auf den Details-Seiten um die jeweilige hinzuzufügen.
+              </v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-
         </v-list>
       </v-card-text>
     </v-card>
@@ -94,9 +83,7 @@ import {
   Prop
 } from 'vue-property-decorator'
 
-import  {
-  Lesezeichen
-} from '@/realPlugins/lesezeichen/lesezeichen.ts'
+import { Lesezeichen } from '@/realPlugins/lesezeichen/lesezeichen.ts'
 
 import xButtonLogic from '@/realPlugins/xButton/logic'
 
