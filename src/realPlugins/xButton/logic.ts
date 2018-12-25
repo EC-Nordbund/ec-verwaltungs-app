@@ -50,12 +50,11 @@ export class xButton {
   }
 
   static install(vue: typeof Vue) {
-    xb = new xButton()
     vue.component('ec-x-btn', xButtonC)
     vue.prototype.$xButton = xb
   }
 }
 
-let xb: xButton = <any>null
+let xb: xButton = new xButton()
 
 export default xb

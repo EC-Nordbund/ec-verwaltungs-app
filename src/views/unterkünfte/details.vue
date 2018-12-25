@@ -159,7 +159,7 @@ import auth from '@/plugins/auth'
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'
-
+import {getClient} from '@/realPlugins/apollo'
 const loadGQL = gql`
   query($authToken: String!, $vOrtID: Int!) {
     vort(authToken: $authToken, vOrtID: $vOrtID) {
@@ -214,7 +214,7 @@ import {
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {
@@ -233,7 +233,7 @@ import {
   },
   beforeRouteUpdate(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {

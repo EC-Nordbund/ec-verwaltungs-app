@@ -11,7 +11,7 @@ export default {
 export function error(err: Error) {
   if (electron) {
     electron.remote.dialog.showErrorBox(
-      err.name,
+      err.name || 'Error',
       'Ein Fehler ist Aufgetreten\n' + err.message
     )
   } else {

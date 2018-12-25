@@ -140,10 +140,12 @@ const loadGQL = gql`
   }
 `
 
+import {getClient} from '@/realPlugins/apollo'
+
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {
@@ -162,7 +164,7 @@ const loadGQL = gql`
   },
   beforeRouteUpdate(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {

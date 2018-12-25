@@ -13,7 +13,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
-
+import {getClient} from '@/realPlugins/apollo'
 import auth from '@/plugins/auth'
 
 import {
@@ -52,7 +52,7 @@ const loadGQL = gql`
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {

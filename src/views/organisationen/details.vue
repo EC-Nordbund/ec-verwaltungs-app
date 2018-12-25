@@ -63,6 +63,7 @@
 </template>
 <script lang="ts">
 import { Component } from 'vue-property-decorator'
+import {getClient} from '@/realPlugins/apollo'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
@@ -112,7 +113,7 @@ const loadGQL = gql`
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {
@@ -131,7 +132,7 @@ const loadGQL = gql`
   },
   beforeRouteUpdate(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {

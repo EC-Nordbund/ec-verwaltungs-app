@@ -19,6 +19,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import {getClient} from '@/realPlugins/apollo'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
@@ -42,11 +43,10 @@ const addAKGQL = gql`
     addAK(bezeichnung: $bezeichnung, authToken: $authToken)
   }
 `
-
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
-    this.$getApolloClient()
+    getClient()
       .query({
         query: loadGQL,
         variables: {

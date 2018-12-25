@@ -1,4 +1,3 @@
-import auth from '@/plugins/auth';
 import * as _electron from 'electron';
 import * as _settings from 'electron-settings';
 import * as _fs from 'fs';
