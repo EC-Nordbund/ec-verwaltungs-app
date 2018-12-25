@@ -25,7 +25,7 @@ import {
 } from '@/plugins/formConfig/index'
 
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 
 import { required, maxLength } from '@/plugins/rules'
 import xButtonLogik from '@/plugins/xButton/logic'

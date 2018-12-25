@@ -156,7 +156,7 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import { getClient } from '@/plugins/apollo'
+
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'

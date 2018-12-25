@@ -27,7 +27,7 @@ import {
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 
 const loadGQL = gql`
   query($authToken: String!) {
@@ -138,7 +138,7 @@ export default class VeranstaltungsListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.suchstring = this.$route.query.suche || ''
+    this.suchstring = (typeof this.$route.query.suche === 'string') ? this.$route.query.suche : ''
     super.created()
   }
 

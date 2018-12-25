@@ -1,5 +1,6 @@
-import { isElectron } from '@/plugins/electron';
 import _xButton from '@/plugins/xButton/logic';
+import { data } from '@/realPlugins/electron';
+const { isElectron, settings } = data
 
 export class Lesezeichen {
   constructor(
@@ -30,28 +31,32 @@ class LesezeichenList {
   }
 
   save() {
-    this.$require.settings.set(
-      'lesezeichen',
-      JSON.stringify(this.liste)
-    )
+    if (isElectron) {
+      settings.set(
+        'lesezeichen',
+        JSON.stringify(this.liste)
+      )
+    }
   }
 
   load() {
-    ;(<Array<any>>(
-      JSON.parse(<string>(
-        this.$require.settings.get('lesezeichen', '[]')
-      ))
-    )).forEach((v: any) => {
-      this.addLesezeichen(
-        new Lesezeichen(
-          v.route,
-          v.label,
-          v.type,
-          v.id,
-          v.xButton
+    if (isElectron) {
+      ;(<Array<any>>(
+        JSON.parse(<string>(
+          settings.get('lesezeichen', '[]')
+        ))
+      )).forEach((v: any) => {
+        this.addLesezeichen(
+          new Lesezeichen(
+            v.route,
+            v.label,
+            v.type,
+            v.id,
+            v.xButton
+          )
         )
-      )
-    })
+      })
+    }
   }
 
   delete(lesezeichen: Lesezeichen | string) {

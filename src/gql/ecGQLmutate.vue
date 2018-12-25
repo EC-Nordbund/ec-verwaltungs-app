@@ -14,7 +14,7 @@ import {
 
 import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
-import { getClient } from '@/plugins/apollo'
+
 
 import electron from '@/plugins/electron'
 

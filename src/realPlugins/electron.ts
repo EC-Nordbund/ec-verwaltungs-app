@@ -14,12 +14,12 @@ const isProduction: boolean = isElectron
 export interface Irequire {
   isElectron: boolean
   isProduction: boolean
-  electron: typeof _electron | null
-  fs: typeof _fs | null
-  os: typeof _os | null
+  electron: typeof _electron
+  fs: typeof _fs
+  os: typeof _os
   version: string
   isPrerelease: boolean
-  settings: typeof _settings | null
+  settings: typeof _settings
 }
 
 export let data: Irequire
@@ -36,7 +36,7 @@ if (isElectron) {
     isPrerelease: config.forge.publishers[0].prerelease
   }
 } else {
-  data = {
+  data = <any>{
     isElectron,
     isProduction,
     electron: null,

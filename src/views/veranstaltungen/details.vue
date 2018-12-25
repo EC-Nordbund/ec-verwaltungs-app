@@ -268,7 +268,7 @@ import {
   maxTNConfig
 } from '@/plugins/formConfig/index'
 
-import { getClient } from '@/plugins/apollo'
+
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'

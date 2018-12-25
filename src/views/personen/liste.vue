@@ -59,7 +59,7 @@ import auth from '@/plugins/auth'
 
 import xButtonLogik from '@/plugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 
 const loadGQL = gql`
   query($authToken: String!) {
@@ -172,7 +172,7 @@ export default class PersonenListe extends reloaderBase {
       authToken: auth.authToken
     }
     this.query = loadGQL
-    this.suchstring = this.$route.query.suche || ''
+    this.suchstring = (typeof this.$route.query.suche === 'string') ? this.$route.query.suche : ''
     super.created()
   }
 }

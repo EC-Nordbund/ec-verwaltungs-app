@@ -108,7 +108,7 @@ import {
   akStatusConfig
 } from '@/plugins/formConfig/index'
 import auth from '@/plugins/auth'
-import { getClient } from '@/plugins/apollo'
+
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'

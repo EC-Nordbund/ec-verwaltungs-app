@@ -129,8 +129,8 @@ export default class loginForm extends Vue {
 
   created() {
     if (isElectron) {
-      this.username = this.$require.settings.get('username', '')
-      this.dark = this.$require.settings.get('dark', false)
+      this.username = <string>this.$require.settings.get('username', '')
+      this.dark = <boolean>this.$require.settings.get('dark', false)
     }
     window.addEventListener('keyup', this.checkCaps)
 

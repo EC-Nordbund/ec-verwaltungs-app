@@ -145,7 +145,7 @@ export default class App extends Vue {
   }
   created() {
     if (isElectron) {
-      this.$updateCheker()
+      this.$updateChecker()
       this.dark = this.$require.settings.get('dark', false)
     }
     this.event.on('showLoading', () => {

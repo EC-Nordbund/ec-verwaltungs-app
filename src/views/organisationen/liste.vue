@@ -19,7 +19,7 @@ import { bezeichnungConfig } from '@/plugins/formConfig/index'
 import xButtonLogik from '@/plugins/xButton/logic'
 
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 
 const loadGQL = gql`
   query($authToken: String!) {
