@@ -74,7 +74,7 @@
       <v-progress-circular indeterminate color="accent" v-if="loading"/>
       <span v-white>{{auth.personBeschreibung}}</span>
       <v-spacer/>
-      <span v-white>Version: {{ version }}</span>
+      <span v-white>Version: {{ $require.version }}</span>
       <v-spacer/>
       <span v-white>
         © 2017 - {{ (new Date()).getFullYear() }}
@@ -101,8 +101,7 @@
 <script lang="ts">
 import anmeldungSelect from '@/views/AnmeldungSelect.vue'
 import auth from '@/plugins/auth'
-import nav from '@/plugins/config/nav.config'
-import version from '@/plugins/version/version'
+import nav from '@/config/nav'
 import { BrowserWindow } from 'electron'
 
 import {
@@ -123,7 +122,6 @@ export default class App extends Vue {
   sec: number = 0
   loading: boolean = false
   drawer: boolean | null = null
-  version: string = version
   dark: boolean = false
   soonLogOut: boolean = false
   countdown: null | NodeJS.Timer = null

@@ -5,8 +5,6 @@ import ecGQLwatch from '@/gql/ecGQLwatch.vue';
 import extra from '@/plugins';
 import '@/plugins/auth';
 import auth from '@/plugins/auth';
-import '@/plugins/design/theme-directives';
-import '@/plugins/design/vuetify';
 import lesezeichenToggele from '@/plugins/lesezeichen/addLesezeichen.vue';
 import lesezeichenShow from '@/plugins/lesezeichen/showLesezeichen.vue';
 import '@/plugins/lib_extension/componentLib_extension';
