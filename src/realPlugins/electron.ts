@@ -54,13 +54,3 @@ export default {
     vue.prototype.$require = data
   }
 }
-
-if (isElectron) {
-  eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")
-  eval("window.fetch = require('node-fetch')")
-
-  //Auto LogOut
-  data.electron.remote.powerMonitor.on('suspend', () => {
-    auth.logOut(true)
-  })
-}

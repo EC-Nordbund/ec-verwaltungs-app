@@ -599,7 +599,7 @@ export default class veranstaltungsDetails extends reloaderBase {
       }
     )
     if (filenames) {
-      const fs = eval('require("fs")')
+      const fs = this.$require.fs
       // const xlsx = eval('require("xlsx-template")')
       const filecontent = fs.readFileSync(filenames[0])
       const template = new xlsx(filecontent)

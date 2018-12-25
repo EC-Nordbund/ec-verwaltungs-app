@@ -1096,7 +1096,7 @@ export default class PersonenDetails extends reloaderBase {
       }
     )
     if (filenames) {
-      const fs = eval('require("fs")')
+      const fs = this.$require.fs
       const file = filenames[0]
       const fileContent = fs.readFileSync(file, 'binary')
       const zipData = new jsZip(fileContent)
