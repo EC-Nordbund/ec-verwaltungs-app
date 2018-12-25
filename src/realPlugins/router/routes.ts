@@ -1,32 +1,25 @@
-import { RouteConfig } from 'vue-router'
-
-import RouteComponent from '@/plugins/router/routes/router.vue'
-
-import LoginComponent from '@/Login.vue'
-import AppComponent from '@/App.vue'
-
-import HomeComponent from '@/views/Home.vue'
-import DruckenComponent from '@/views/Drucken.vue'
-import AdminComponent from '@/views/Admin.vue'
-import ImpressumComponent from '@/views/Impressum.vue'
-import ProfilComponent from '@/views/Profil.vue'
-
-import PersonenListe from '@/views/personen/liste.vue'
-import PersonenDetails from '@/views/personen/details.vue'
-import AKListe from '@/views/arbeitskreise/liste.vue'
-import AKDetails from '@/views/arbeitskreise/details.vue'
-
-import anmeldungListe from '@/views/anmeldungen/liste.vue'
-import anmeldungDetails from '@/views/anmeldungen/details.vue'
+import AppComponent from '@/App.vue';
+import LoginComponent from '@/Login.vue';
+import RouteComponent from '@/realPlugins/router/router.vue';
+import AdminComponent from '@/views/Admin.vue';
+import anmeldungDetails from '@/views/anmeldungen/details.vue';
+import anmeldungListe from '@/views/anmeldungen/liste.vue';
+import AKDetails from '@/views/arbeitskreise/details.vue';
+import AKListe from '@/views/arbeitskreise/liste.vue';
+import DruckenComponent from '@/views/Drucken.vue';
+import HomeComponent from '@/views/Home.vue';
+import ImpressumComponent from '@/views/Impressum.vue';
+import orgaDetails from '@/views/organisationen/details.vue';
+import orgaListe from '@/views/organisationen/liste.vue';
+import PersonenDetails from '@/views/personen/details.vue';
+import PersonenListe from '@/views/personen/liste.vue';
+import ProfilComponent from '@/views/Profil.vue';
+import veranstaltungenDetails from '@/views/veranstaltungen/details.vue';
+import veranstaltungenListe from '@/views/veranstaltungen/liste.vue';
+import { RouteConfig } from 'vue-router';
 
 import unterkünfteListe from '@/views/unterkünfte/liste.vue'
 import unterkünfteDetails from '@/views/unterkünfte/details.vue'
-
-import orgaListe from '@/views/organisationen/liste.vue'
-import orgaDetails from '@/views/organisationen/details.vue'
-
-import veranstaltungenListe from '@/views/veranstaltungen/liste.vue'
-import veranstaltungenDetails from '@/views/veranstaltungen/details.vue'
 
 // Setup Routes
 const routes: RouteConfig[] = [

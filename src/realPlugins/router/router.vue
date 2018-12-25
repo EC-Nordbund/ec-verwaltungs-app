@@ -5,7 +5,6 @@
 </template>
 
 <script lang="ts">
-import { CreateElement } from 'vue'
 import {
   Component,
   Vue,

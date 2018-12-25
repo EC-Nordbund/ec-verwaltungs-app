@@ -1,6 +1,7 @@
-import auth from '@/plugins/auth'
-import router from '@/plugins/router/router'
-import eventbus from '@/plugins/eventbus'
+import auth from '@/plugins/auth';
+import eventbus from '@/plugins/eventbus';
+import { data } from '@/realPlugins/electron';
+import routerPlugin from '@/realPlugins/router/router';
 
 const startPage = '/app'
 const loginPage = '/login'
@@ -8,7 +9,7 @@ const loginPage = '/login'
 const routesWithOutLogIn = [loginPage]
 
 // Router Guard
-router.beforeEach((to, from, next) => {
+routerPlugin.router.beforeEach((to, from, next) => {
   // wenn /login und angemeldet -> startpage
   if (auth.isLogedIn()) {
     if (
@@ -32,5 +33,18 @@ router.beforeEach((to, from, next) => {
 })
 
 eventbus.on('logedOut', () => {
-  router.push(loginPage)
+  routerPlugin.router.push(loginPage)
 })
+
+if (data.isElectron) {
+  data.electron.ipcRenderer.on(
+    'proto-set-route',
+    (e: any, url: string) => {
+      if (auth.isLogedIn()) {
+        routerPlugin.router.push(url)
+      } else {
+        auth.protoUrl(url)
+      }
+    }
+  )
+}
