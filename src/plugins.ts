@@ -3,6 +3,7 @@ import themDirectivesPlugin from '@/realPlugins/design/theme-directives';
 import vuetifyPlugin from '@/realPlugins/design/vuetify';
 import electronPlugin from '@/realPlugins/electron';
 import errorPlugin from '@/realPlugins/error';
+import '@/realPlugins/qrCode';
 import routerPlugin from '@/realPlugins/router/router';
 import updateCheckerPlugin from '@/realPlugins/updateChecker';
 import Vue from 'vue';

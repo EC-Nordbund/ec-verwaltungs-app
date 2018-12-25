@@ -1,3 +1,4 @@
+import auth from '@/plugins/auth';
 import * as _electron from 'electron';
 import * as _settings from 'electron-settings';
 import * as _fs from 'fs';
@@ -50,6 +51,16 @@ if (isElectron) {
 
 export default {
   install(vue: typeof Vue) {
-    Vue.prototype.$require = data
+    vue.prototype.$require = data
   }
+}
+
+if (isElectron) {
+  eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")
+  eval("window.fetch = require('node-fetch')")
+
+  //Auto LogOut
+  data.electron.remote.powerMonitor.on('suspend', () => {
+    auth.logOut(true)
+  })
 }
