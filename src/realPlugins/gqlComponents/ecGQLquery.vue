@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot :data="data" :loading="loading" :reloading="reloading" :errored="errored"/>
+    <slot :data="data" :loading="loading" :reloading="reloading" :errored="errored" :refetch="refetch"/>
   </div>
 </template>
 <script lang="ts">
@@ -65,7 +65,7 @@ export default class ecGQLquery extends Vue {
   }
 
   public refetch(){
-   this.doQuery()
+    this.doQuery()
   }
 }
 </script>

@@ -5,8 +5,9 @@ import {
   required,
   rule
   } from '@/plugins/rules';
+import Vue from 'vue';
 
-interface IConfig {
+export interface IConfig {
   label?: string
   name: string
   required?: boolean
@@ -313,4 +314,40 @@ export const maxTNConfig: IConfig = {
   step: 1,
   'thumb-label': true,
   required: true
+}
+
+export default {
+  install(vue: typeof Vue) {
+    vue.prototype.$formConfig = {
+      vornameConfig,
+      usernameConfig,
+      usergroupConfig,
+      nachnameConfig,
+      gebDatConfig,
+      geschlechtConfig,
+      strasseConfig,
+      plzConfig,
+      ortConfig,
+      landConfig,
+      juLeiCaConfig,
+      notizConfig,
+      eMailConfig,
+      telefonConfig,
+      akConfig,
+      ecKreisConfig,
+      orgaConfig,
+      verteilerConfig,
+      akStatusConfig,
+      ecMitgliedConfig,
+      statusUpdateDate,
+      verteilerTypeConfig,
+      bezeichnungConfig,
+      personConfig,
+      beginConfig,
+      endeConfig,
+      vOrtConfig,
+      minTNConfig,
+      maxTNConfig
+    }
+  }
 }

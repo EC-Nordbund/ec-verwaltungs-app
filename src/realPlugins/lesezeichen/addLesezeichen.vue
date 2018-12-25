@@ -14,13 +14,12 @@ import {
   Prop
 } from 'vue-property-decorator'
 
-import lesezeichen, {
+import {
   Lesezeichen
 } from '@/plugins/lesezeichen/lesezeichen.ts'
 
 @Component({})
 export default class App extends Vue {
-  lesezeichen = lesezeichen
   isInLesezeichen: boolean = false
 
   @Watch('lesezeichen.liste', {
@@ -28,15 +27,15 @@ export default class App extends Vue {
   })
   onLesezeichenChange() {
     this.isInLesezeichen =
-      lesezeichen.liste.filter(v => v.route === this.route)
+      this.$liste.liste.filter(v => v.route === this.route)
         .length !== 0
   }
 
   onBtnClick() {
     if (this.isInLesezeichen) {
-      this.lesezeichen.delete(this.route)
+      this.$liste.delete(this.route)
     } else {
-      this.lesezeichen.addLesezeichen(
+      this.$liste.addLesezeichen(
         new Lesezeichen(
           this.route,
           this.label,

@@ -5,6 +5,8 @@ import themDirectivesPlugin from '@/realPlugins/design/theme-directives';
 import vuetifyPlugin from '@/realPlugins/design/vuetify';
 import electronPlugin, { data } from '@/realPlugins/electron';
 import errorPlugin from '@/realPlugins/error';
+import gqlComponents from '@/realPlugins/gqlComponents/gql';
+import lesezeichenPlugin from '@/realPlugins/lesezeichen/lesezeichen';
 import '@/realPlugins/qrCode';
 import routeHandler from '@/realPlugins/routeHandler';
 import updateCheckerPlugin from '@/realPlugins/updateChecker';
@@ -18,6 +20,8 @@ Vue.use(apolloPlugin)
 Vue.use(errorPlugin)
 Vue.use(vuetifyPlugin)
 Vue.use(themDirectivesPlugin)
+Vue.use(gqlComponents)
+Vue.use(lesezeichenPlugin)
 
 export const router = new Router({ routes })
 

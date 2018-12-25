@@ -1,6 +1,6 @@
 <template>
   <div>
-    <slot :data="data" :loading="loading" :reloading="reloading" :errored="errored"/>
+    <slot :data="data" :loading="loading" :reloading="reloading" :errored="errored" :refetch="refetch"/>
   </div>
 </template>
 <script lang="ts">

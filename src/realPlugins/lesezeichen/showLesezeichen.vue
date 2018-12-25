@@ -94,7 +94,7 @@ import {
   Prop
 } from 'vue-property-decorator'
 
-import lesezeichen, {
+import  {
   Lesezeichen
 } from '@/plugins/lesezeichen/lesezeichen.ts'
 
@@ -102,7 +102,6 @@ import xButtonLogic from '@/plugins/xButton/logic'
 
 @Component({})
 export default class App extends Vue {
-  lesezeichen = lesezeichen
   xButtonLogic = xButtonLogic
 
   menu: boolean = false
@@ -127,18 +126,18 @@ export default class App extends Vue {
   selectAll() {
     if (
       this.selectedBookmarks.length ===
-      this.lesezeichen.liste.length
+      this.$liste.liste.length
     ) {
       this.selectedBookmarks = [100]
     } else {
       this.selectedBookmarks = Array.from(
-        this.lesezeichen.liste.keys()
+        this.$liste.liste.keys()
       )
     }
   }
 
   click(index: number) {
-    const bookmark = lesezeichen.liste[index]
+    const bookmark = this.$liste.liste[index]
 
     xButtonLogic.reset(bookmark.xButton)
     this.menu = false //close menu
@@ -147,7 +146,7 @@ export default class App extends Vue {
 
   unbookmark(index: number) {
     if (index !== 100) {
-      const bookmark = lesezeichen.liste[index]
+      const bookmark = this.$liste.liste[index]
       lesezeichen.delete(bookmark)
     }
     this.selectedBookmarks = []
