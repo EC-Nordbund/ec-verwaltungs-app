@@ -1,6 +1,6 @@
-import ecGQLmutate from '@/gql/ecGQLmutate.vue';
-import ecGQLquery from '@/gql/ecGQLquery.vue';
-import ecGQLwatch from '@/gql/ecGQLwatch.vue';
+import ecGQLmutate from '@/realPlugins/gqlComponents/ecGQLmutate.vue';
+import ecGQLquery from '@/realPlugins/gqlComponents/ecGQLquery.vue';
+import ecGQLwatch from '@/realPlugins/gqlComponents/ecGQLwatch.vue';
 import Vue from 'vue';
 
 export default {

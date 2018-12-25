@@ -349,7 +349,7 @@ import {
   personConfig,
   notizConfig,
   ecKreisConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 import event from '@/plugins/eventbus'
 

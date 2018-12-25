@@ -96,9 +96,9 @@ import {
 
 import  {
   Lesezeichen
-} from '@/plugins/lesezeichen/lesezeichen.ts'
+} from '@/realPlugins/lesezeichen/lesezeichen.ts'
 
-import xButtonLogic from '@/plugins/xButton/logic'
+import xButtonLogic from '@/realPlugins/xButton/logic'
 
 @Component({})
 export default class App extends Vue {
@@ -147,7 +147,7 @@ export default class App extends Vue {
   unbookmark(index: number) {
     if (index !== 100) {
       const bookmark = this.$liste.liste[index]
-      lesezeichen.delete(bookmark)
+      this.$liste.delete(bookmark)
     }
     this.selectedBookmarks = []
   }

@@ -22,8 +22,8 @@ import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
-import { bezeichnungConfig } from '@/plugins/formConfig/index'
-import xButtonLogik from '@/plugins/xButton/logic'
+import { bezeichnungConfig } from '@/realPlugins/formConfig'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
 
 import auth from '@/plugins/auth'

@@ -23,9 +23,9 @@ import {
   vOrtConfig,
   minTNConfig,
   maxTNConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
-import xButtonLogik from '@/plugins/xButton/logic'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
 
 

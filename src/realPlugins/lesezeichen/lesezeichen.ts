@@ -1,7 +1,7 @@
-import lesezeichenToggele from '@/plugins/lesezeichen/addLesezeichen.vue';
-import lesezeichenShow from '@/plugins/lesezeichen/showLesezeichen.vue';
-import _xButton from '@/plugins/xButton/logic';
 import { data } from '@/realPlugins/electron';
+import lesezeichenToggele from '@/realPlugins/lesezeichen/addLesezeichen.vue';
+import lesezeichenShow from '@/realPlugins/lesezeichen/showLesezeichen.vue';
+import _xButton from '@/realPlugins/xButton/logic';
 import Vue, { CreateElement } from 'vue';
 const { isElectron, settings } = data
 
@@ -19,7 +19,7 @@ export class Lesezeichen {
   }
 }
 
-class LesezeichenList {
+export class LesezeichenList {
   public liste: Array<Lesezeichen> = []
 
   public constructor() {

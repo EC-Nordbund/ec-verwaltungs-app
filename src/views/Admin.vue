@@ -88,9 +88,9 @@ import {
   personConfig,
   usernameConfig,
   usergroupConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
-import { required } from '@/plugins/rules'
+import { required } from '@/config/rules'
 
 import event from '@/plugins/eventbus'
 

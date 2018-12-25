@@ -16,7 +16,7 @@ import {
 
 import {
   Lesezeichen
-} from '@/plugins/lesezeichen/lesezeichen.ts'
+} from '@/realPlugins/lesezeichen/lesezeichen.ts'
 
 @Component({})
 export default class App extends Vue {

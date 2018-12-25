@@ -53,11 +53,11 @@ import {
   nachnameConfig,
   gebDatConfig,
   geschlechtConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 import auth from '@/plugins/auth'
 
-import xButtonLogik from '@/plugins/xButton/logic'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
 
 

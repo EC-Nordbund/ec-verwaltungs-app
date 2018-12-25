@@ -62,9 +62,9 @@
             </v-list-tile-content>
           </v-list-tile>
         </template>
-        <anmeldungSelect>
+        <ec-anmeldungSelect>
           <v-btn>Anmeldung wählen</v-btn>
-        </anmeldungSelect>
+        </ec-anmeldungSelect>
       </v-list>
     </v-navigation-drawer>
     <v-content>
@@ -99,7 +99,7 @@
 </template>
 
 <script lang="ts">
-import anmeldungSelect from '@/views/AnmeldungSelect.vue'
+
 import auth from '@/plugins/auth'
 import nav from '@/config/nav'
 import { BrowserWindow } from 'electron'
@@ -111,13 +111,9 @@ import {
 } from 'vue-property-decorator'
 import event from '@/plugins/eventbus'
 
-import xButtonLogic from '@/plugins/xButton/logic'
+import xButtonLogic from '@/realPlugins/xButton/logic'
 
-@Component({
-  components: {
-    anmeldungSelect
-  }
-})
+@Component({})
 export default class App extends Vue {
   sec: number = 0
   loading: boolean = false

@@ -1,7 +1,6 @@
 import extra from '@/plugins';
 import auth from '@/plugins/auth';
 import '@/plugins/components';
-import '@/plugins/lib_extension/componentLib_extension';
 import '@/plugins/lib/componentLib';
 import '@/plugins/widgets';
 import { data } from '@/realPlugins/electron';

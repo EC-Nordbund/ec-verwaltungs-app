@@ -1,47 +1,48 @@
-import { Component } from 'vue-property-decorator'
-import select_base from '@/plugins/lib/formElements/selects/select'
-import auth from '@/plugins/auth'
+import auth from '@/plugins/auth';
+import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import gql from 'graphql-tag';
+import { CreateElement } from 'vue';
+import { Component } from 'vue-property-decorator';
 
-import gql from 'graphql-tag'
-import { CreateElement } from 'vue'
 
 /**
  * AK-Select
  *
  * @export
- * @class userGroup
+ * @class akSelect
  * @extends {select_base}
  */
 @Component({})
-export default class userGroup extends select_base {
+export default class vOrtSelect extends select_base {
   /**
    * Created
    *
-   * @memberof userGroup
+   * @memberof akSelect
    */
   created() {
     this.query = gql`
       query($authToken: String!) {
-        userGroups(authToken: $authToken) {
-          userGroupID
+        vorte(authToken: $authToken) {
+          vOrtID
           bezeichnung
+          ort
+          land
         }
       }
     `
 
-    this.queryName = 'userGroups'
+    this.queryName = 'vorte'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
-    this.mapper = (item: {
-      userGroupID: number
-      bezeichnung: string
-    }) => {
+    this.mapper = (item: any) => {
       return {
-        id: item.userGroupID,
-        beschreibung: item.bezeichnung
+        id: item.vOrtID,
+        beschreibung: `${item.bezeichnung} (${item.ort} - ${
+          item.land
+        })`
       }
     }
 
@@ -53,7 +54,7 @@ export default class userGroup extends select_base {
    *
    * @param {CreateElement} h
    * @returns
-   * @memberof userGroup
+   * @memberof akSelect
    */
   render(h: CreateElement) {
     return h('v-autocomplete', {

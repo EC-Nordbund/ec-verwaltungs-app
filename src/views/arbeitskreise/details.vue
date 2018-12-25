@@ -106,7 +106,7 @@ import {
   bezeichnungConfig,
   statusUpdateDate,
   akStatusConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 import auth from '@/plugins/auth'
 
 import event from '@/plugins/eventbus'

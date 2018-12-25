@@ -10,6 +10,7 @@ import lesezeichenPlugin from '@/realPlugins/lesezeichen/lesezeichen';
 import '@/realPlugins/qrCode';
 import routeHandler from '@/realPlugins/routeHandler';
 import updateCheckerPlugin from '@/realPlugins/updateChecker';
+import { xButton as xButtonPlugin } from '@/realPlugins/xButton/logic';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -22,6 +23,7 @@ Vue.use(vuetifyPlugin)
 Vue.use(themDirectivesPlugin)
 Vue.use(gqlComponents)
 Vue.use(lesezeichenPlugin)
+Vue.use(xButtonPlugin)
 
 export const router = new Router({ routes })
 

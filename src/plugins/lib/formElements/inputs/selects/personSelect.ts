@@ -1,12 +1,8 @@
-import { CreateElement } from 'vue'
-import {
-  Component,
-  Vue,
-  Emit
-} from 'vue-property-decorator'
-import select_base from '@/plugins/lib/formElements/selects/select'
-import auth from '@/plugins/auth'
-import gql from 'graphql-tag'
+import auth from '@/plugins/auth';
+import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import gql from 'graphql-tag';
+import { CreateElement } from 'vue';
+import { Component, Emit, Vue } from 'vue-property-decorator';
 
 /**
  * PErsonen Select

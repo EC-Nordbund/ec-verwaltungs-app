@@ -265,7 +265,7 @@ import {
   vOrtConfig,
   minTNConfig,
   maxTNConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 
 import event from '@/plugins/eventbus'

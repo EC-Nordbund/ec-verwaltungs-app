@@ -14,7 +14,7 @@ import {
   Prop
 } from 'vue-property-decorator'
 
-import xButtonLogic from '@/plugins/xButton/logic'
+import xButtonLogic from '@/realPlugins/xButton/logic'
 
 @Component({})
 export default class App extends Vue {

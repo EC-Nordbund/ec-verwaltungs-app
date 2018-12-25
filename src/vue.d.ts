@@ -1,6 +1,7 @@
 import { IgetApolloClient } from '@/realPlugins/apollo';
 import { Irequire } from '@/realPlugins/electron';
 import { IConfig } from '@/realPlugins/formConfig';
+import { LesezeichenList } from '@/realPlugins/lesezeichen/lesezeichen';
 import { updateChecker } from '@/realPlugins/updateChecker';
 import Vue from 'vue';
 
@@ -9,6 +10,7 @@ declare module 'vue/types/vue' {
     $require: Irequire
     $getApolloClient: IgetApolloClient
     $updateChecker: typeof updateChecker
+    $liste: LesezeichenList
     $formConfig: {
       [name: string]: IConfig
     }

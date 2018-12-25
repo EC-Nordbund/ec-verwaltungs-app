@@ -198,7 +198,7 @@ import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import {} from '@/plugins/formConfig/index'
+import {} from '@/realPlugins/formConfig'
 
 
 import event from '@/plugins/eventbus'

@@ -4,7 +4,7 @@ import {
   maxLength,
   required,
   rule
-  } from '@/plugins/rules';
+  } from '@/config/rules';
 import Vue from 'vue';
 
 export interface IConfig {

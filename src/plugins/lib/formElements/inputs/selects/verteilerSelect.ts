@@ -1,46 +1,45 @@
-import { Component } from 'vue-property-decorator'
-import select_base from '@/plugins/lib/formElements/selects/select'
-import auth from '@/plugins/auth'
-
-import gql from 'graphql-tag'
-import { CreateElement } from 'vue'
+import auth from '@/plugins/auth';
+import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import gql from 'graphql-tag';
+import { CreateElement } from 'vue';
+import { Component } from 'vue-property-decorator';
 
 /**
- * AK-Select
+ * Verteiler Select
  *
  * @export
- * @class akSelect
+ * @class verteilerSelect
  * @extends {select_base}
  */
 @Component({})
-export default class ecKreisSelect extends select_base {
+export default class verteilerSelect extends select_base {
   /**
-   * Created
+   * Created Hook
    *
-   * @memberof akSelect
+   * @memberof verteilerSelect
    */
   created() {
     this.query = gql`
       query($authToken: String!) {
-        ecKreise(authToken: $authToken) {
-          ecKreisID
+        verteilerList(authToken: $authToken) {
+          verteilerID
           bezeichnung
         }
       }
     `
 
-    this.queryName = 'ecKreise'
+    this.queryName = 'verteilerList'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
     this.mapper = (item: {
-      ecKreisID: number
+      verteilerID: number
       bezeichnung: string
     }) => {
       return {
-        id: item.ecKreisID,
+        id: item.verteilerID,
         beschreibung: item.bezeichnung
       }
     }
@@ -49,11 +48,11 @@ export default class ecKreisSelect extends select_base {
   }
 
   /**
-   * RenderFunktion
+   * Render Funktion
    *
    * @param {CreateElement} h
    * @returns
-   * @memberof akSelect
+   * @memberof verteilerSelect
    */
   render(h: CreateElement) {
     return h('v-autocomplete', {

@@ -22,13 +22,13 @@ import {
   plzConfig,
   ortConfig,
   landConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 import event from '@/plugins/eventbus'
 
 
-import { required, maxLength } from '@/plugins/rules'
-import xButtonLogik from '@/plugins/xButton/logic'
+import { required, maxLength } from '@/config/rules'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 
 const loadGQL = gql`
   query($authToken: String!) {

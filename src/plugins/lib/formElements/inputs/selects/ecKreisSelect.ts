@@ -1,9 +1,9 @@
-import { Component } from 'vue-property-decorator'
-import select_base from '@/plugins/lib/formElements/selects/select'
-import auth from '@/plugins/auth'
+import auth from '@/plugins/auth';
+import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import gql from 'graphql-tag';
+import { CreateElement } from 'vue';
+import { Component } from 'vue-property-decorator';
 
-import gql from 'graphql-tag'
-import { CreateElement } from 'vue'
 
 /**
  * AK-Select
@@ -13,7 +13,7 @@ import { CreateElement } from 'vue'
  * @extends {select_base}
  */
 @Component({})
-export default class akSelect extends select_base {
+export default class ecKreisSelect extends select_base {
   /**
    * Created
    *
@@ -22,25 +22,25 @@ export default class akSelect extends select_base {
   created() {
     this.query = gql`
       query($authToken: String!) {
-        orgas(authToken: $authToken) {
-          organisationsID
+        ecKreise(authToken: $authToken) {
+          ecKreisID
           bezeichnung
         }
       }
     `
 
-    this.queryName = 'orgas'
+    this.queryName = 'ecKreise'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
     this.mapper = (item: {
-      organisationsID: number
+      ecKreisID: number
       bezeichnung: string
     }) => {
       return {
-        id: item.organisationsID,
+        id: item.ecKreisID,
         beschreibung: item.bezeichnung
       }
     }

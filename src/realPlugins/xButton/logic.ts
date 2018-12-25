@@ -1,4 +1,6 @@
-class xButton {
+import xButtonC from '@/plugins/xButton/btn.vue';
+import Vue from 'vue';
+export class xButton {
   liste: Array<{
     route: string
     viewConfig: any
@@ -46,6 +48,14 @@ class xButton {
     }
     $router.forward()
   }
+
+  static install(vue: typeof Vue) {
+    xb = new xButton()
+    vue.component('ec-x-btn', xButtonC)
+    vue.prototype.$xButton = xb
+  }
 }
 
-export default new xButton()
+let xb: xButton = <any>null
+
+export default xb

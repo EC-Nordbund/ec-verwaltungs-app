@@ -78,11 +78,11 @@ import {
   telefonConfig,
   landConfig,
   notizConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 import gql from 'graphql-tag'
 
-import { required, maxLength } from '@/plugins/rules'
+import { required, maxLength } from '@/config/rules'
 
 const loadGQL = gql`
   query($authToken: String!, $orgaID: Int!) {
