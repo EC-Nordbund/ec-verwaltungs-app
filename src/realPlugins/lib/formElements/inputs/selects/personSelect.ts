@@ -1,47 +1,54 @@
 import auth from '@/plugins/auth';
-import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import select_base from '@/realPlugins/lib/formElements/inputs/selects/base';
 import gql from 'graphql-tag';
 import { CreateElement } from 'vue';
-import { Component } from 'vue-property-decorator';
-
+import { Component, Emit, Vue } from 'vue-property-decorator';
 
 /**
- * AK-Select
+ * PErsonen Select
  *
  * @export
- * @class userGroup
+ * @class personSelect
  * @extends {select_base}
  */
 @Component({})
-export default class userGroup extends select_base {
+export default class personSelect extends select_base {
   /**
-   * Created
+   * Created Hook
    *
-   * @memberof userGroup
+   * @memberof personSelect
    */
   created() {
     this.query = gql`
       query($authToken: String!) {
-        userGroups(authToken: $authToken) {
-          userGroupID
-          bezeichnung
+        personen(authToken: $authToken) {
+          personID
+          vorname
+          nachname
+          gebDat {
+            german
+          }
         }
       }
     `
 
-    this.queryName = 'userGroups'
+    this.queryName = 'personen'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
     this.mapper = (item: {
-      userGroupID: number
-      bezeichnung: string
+      personID: number
+      vorname: string
+      nachname: string
+      gebDat: { german: string }
     }) => {
       return {
-        id: item.userGroupID,
-        beschreibung: item.bezeichnung
+        id: item.personID,
+        beschreibung: `${item.vorname} ${item.nachname} (${
+          item.gebDat.german
+        })`
       }
     }
 
@@ -49,11 +56,11 @@ export default class userGroup extends select_base {
   }
 
   /**
-   * RenderFunktion
+   * Redner Funktion
    *
    * @param {CreateElement} h
    * @returns
-   * @memberof userGroup
+   * @memberof personSelect
    */
   render(h: CreateElement) {
     return h('v-autocomplete', {

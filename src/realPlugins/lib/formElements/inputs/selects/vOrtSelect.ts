@@ -1,5 +1,5 @@
 import auth from '@/plugins/auth';
-import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import select_base from '@/realPlugins/lib/formElements/inputs/selects/base';
 import gql from 'graphql-tag';
 import { CreateElement } from 'vue';
 import { Component } from 'vue-property-decorator';
@@ -13,7 +13,7 @@ import { Component } from 'vue-property-decorator';
  * @extends {select_base}
  */
 @Component({})
-export default class ecKreisSelect extends select_base {
+export default class vOrtSelect extends select_base {
   /**
    * Created
    *
@@ -22,26 +22,27 @@ export default class ecKreisSelect extends select_base {
   created() {
     this.query = gql`
       query($authToken: String!) {
-        ecKreise(authToken: $authToken) {
-          ecKreisID
+        vorte(authToken: $authToken) {
+          vOrtID
           bezeichnung
+          ort
+          land
         }
       }
     `
 
-    this.queryName = 'ecKreise'
+    this.queryName = 'vorte'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
-    this.mapper = (item: {
-      ecKreisID: number
-      bezeichnung: string
-    }) => {
+    this.mapper = (item: any) => {
       return {
-        id: item.ecKreisID,
-        beschreibung: item.bezeichnung
+        id: item.vOrtID,
+        beschreibung: `${item.bezeichnung} (${item.ort} - ${
+          item.land
+        })`
       }
     }
 

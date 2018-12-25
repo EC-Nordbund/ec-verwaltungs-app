@@ -1,7 +1,5 @@
 import extra from '@/plugins';
 import auth from '@/plugins/auth';
-import '@/plugins/components';
-import '@/plugins/lib/componentLib';
 import '@/plugins/widgets';
 import { data } from '@/realPlugins/electron';
 import Vue from 'vue';

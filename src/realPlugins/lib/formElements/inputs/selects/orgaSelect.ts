@@ -1,54 +1,46 @@
 import auth from '@/plugins/auth';
-import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import select_base from '@/realPlugins/lib/formElements/inputs/selects/base';
 import gql from 'graphql-tag';
 import { CreateElement } from 'vue';
-import { Component, Emit, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 
 /**
- * PErsonen Select
+ * AK-Select
  *
  * @export
- * @class personSelect
+ * @class akSelect
  * @extends {select_base}
  */
 @Component({})
-export default class personSelect extends select_base {
+export default class akSelect extends select_base {
   /**
-   * Created Hook
+   * Created
    *
-   * @memberof personSelect
+   * @memberof akSelect
    */
   created() {
     this.query = gql`
       query($authToken: String!) {
-        personen(authToken: $authToken) {
-          personID
-          vorname
-          nachname
-          gebDat {
-            german
-          }
+        orgas(authToken: $authToken) {
+          organisationsID
+          bezeichnung
         }
       }
     `
 
-    this.queryName = 'personen'
+    this.queryName = 'orgas'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
     this.mapper = (item: {
-      personID: number
-      vorname: string
-      nachname: string
-      gebDat: { german: string }
+      organisationsID: number
+      bezeichnung: string
     }) => {
       return {
-        id: item.personID,
-        beschreibung: `${item.vorname} ${item.nachname} (${
-          item.gebDat.german
-        })`
+        id: item.organisationsID,
+        beschreibung: item.bezeichnung
       }
     }
 
@@ -56,11 +48,11 @@ export default class personSelect extends select_base {
   }
 
   /**
-   * Redner Funktion
+   * RenderFunktion
    *
    * @param {CreateElement} h
    * @returns
-   * @memberof personSelect
+   * @memberof akSelect
    */
   render(h: CreateElement) {
     return h('v-autocomplete', {

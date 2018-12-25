@@ -1,4 +1,4 @@
-import xButtonC from '@/plugins/xButton/btn.vue';
+import xButtonC from '@/realPlugins/xButton/btn.vue';
 import Vue from 'vue';
 export class xButton {
   liste: Array<{

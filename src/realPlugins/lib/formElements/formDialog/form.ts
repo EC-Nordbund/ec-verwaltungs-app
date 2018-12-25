@@ -1,4 +1,4 @@
-import formElement from '@/plugins/lib/formElements/formDialog/element'
+import formElement from '@/realPlugins/lib/formElements/formDialog/element'
 import { CreateElement } from 'vue'
 import {
   Component,

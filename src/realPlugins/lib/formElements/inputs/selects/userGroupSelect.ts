@@ -1,5 +1,5 @@
 import auth from '@/plugins/auth';
-import select_base from '@/plugins/lib/formElements/inputs/selects/base';
+import select_base from '@/realPlugins/lib/formElements/inputs/selects/base';
 import gql from 'graphql-tag';
 import { CreateElement } from 'vue';
 import { Component } from 'vue-property-decorator';
@@ -9,38 +9,38 @@ import { Component } from 'vue-property-decorator';
  * AK-Select
  *
  * @export
- * @class akSelect
+ * @class userGroup
  * @extends {select_base}
  */
 @Component({})
-export default class akSelect extends select_base {
+export default class userGroup extends select_base {
   /**
    * Created
    *
-   * @memberof akSelect
+   * @memberof userGroup
    */
   created() {
     this.query = gql`
       query($authToken: String!) {
-        aks(authToken: $authToken) {
-          akID
+        userGroups(authToken: $authToken) {
+          userGroupID
           bezeichnung
         }
       }
     `
 
-    this.queryName = 'aks'
+    this.queryName = 'userGroups'
 
     this.variabels = {
       authToken: auth.authToken
     }
 
     this.mapper = (item: {
-      akID: number
+      userGroupID: number
       bezeichnung: string
     }) => {
       return {
-        id: item.akID,
+        id: item.userGroupID,
         beschreibung: item.bezeichnung
       }
     }
@@ -53,7 +53,7 @@ export default class akSelect extends select_base {
    *
    * @param {CreateElement} h
    * @returns
-   * @memberof akSelect
+   * @memberof userGroup
    */
   render(h: CreateElement) {
     return h('v-autocomplete', {
