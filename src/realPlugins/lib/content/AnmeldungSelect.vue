@@ -7,10 +7,10 @@
       </v-card-title>
       <v-card-text>
         <gql-query>
-          <template slot-scope="result">
-            <template v-if="result.data">
+          <template slot-scope="{data}">
+            <template v-if="data">
               <v-autocomplete
-                :items="(result.data.anmeldungen||[]).map(v=>v.anmeldeID)"
+                :items="(data.anmeldungen||[]).map(v=>v.anmeldeID)"
                 label="AnmeldeID wählen."
                 v-model="aID"
               />
