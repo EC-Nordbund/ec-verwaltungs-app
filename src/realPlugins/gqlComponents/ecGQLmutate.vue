@@ -1,8 +1,18 @@
 <template>
-  <div v-if="!button">
-    <slot :data="data" :loading="loading" :errored="errored" :mutate="doQuery"/>
+  <div>
+    <slot name="activation" :mutate="doQuery">
+      <v-btn @click="doQuery">
+        {{label}}
+      </v-btn>
+    </slot>
+    <slot name="loading" v-if="loading">
+      Laden...
+    </slot>
+    <slot name="error" v-if="errored">
+      <b>Bei einer Abfrage ist ein Fehler aufgetreten</b>
+    </slot>
+    <slot :data="data"/>
   </div>
-  <v-btn v-else>{{label}}</v-btn>
 </template>
 <script lang="ts">
 import {
@@ -19,8 +29,6 @@ import gql from 'graphql-tag'
 @Component({})
 export default class ecGQLmutate extends Vue {
   auth = auth
-  @Prop({ type: Boolean, default: false })
-  button!: boolean
 
   @Prop({ type: Object, default: () => ({}) })
   variables!: any

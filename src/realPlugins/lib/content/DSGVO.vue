@@ -1,25 +1,43 @@
 <template>
-  <v-dialog :value="ishow" :persistent="!force" max-width="600px" v-if="!loading">
-    <slot slot="activator"/>
-    <v-card v-if="data!==null">
-      <v-card-title>
-        <h1 v-font v-primary>
-          Datenschutzerklärung
-        </h1>
-      </v-card-title>
-      <v-card-text id="content" v-if="data!==''" v-html="data"/>
-      <v-card-text v-if="data===''">
-        Es scheint Probleme mit unserem Server zu geben. 
-        Bitte starte das Programm erneut.
-      </v-card-text>
-      <v-card-actions v-if="data!=='' && !force">
-        <v-spacer/>
-        <v-btn @click="accept" v-primary-bg>
-          Ich stimme der Datenschutzerklärung zu.
-        </v-btn>
-      </v-card-actions>
-    </v-card>
-  </v-dialog>
+  <gql-query :variables="{force}">
+    <template slot="query">
+      query($authToken: String!, $force: Boolean!){
+      getDSE(authToken: $authToken, force: $force)
+      }
+    </template>
+    <template slot-scope="{data}">
+      <v-dialog :value="show" :persistent="!force" max-width="600px" v-if="data.getDSE">
+        <slot slot="activator"/>
+        <v-card>
+          <v-card-title>
+            <h1 v-font v-primary>Datenschutzerklärung</h1>
+          </v-card-title>
+          <v-card-text id="content" v-html="data.getDSE"/>
+          <v-card-actions>
+            <v-spacer/>
+            <gql-mutate v-if="!force" label="Ich stimme der Datenschutzerklärung zu.">
+              <template slot="activation" slot-scope="{mutate}">
+                <v-btn
+                  @click="show=false;mutate"
+                  v-primary-bg
+                >Ich stimme der Datenschutzerklärung zu.</v-btn>
+              </template>
+              <template slot="query">
+                mutation($authToken: String!) {
+                acceptsDSE(authToken: $authToken)
+                }
+              </template>
+              <template slot="loading"></template>
+              <template slot="error"></template>
+            </gql-mutate>
+            <v-btn v-if="force" @click="isShow = false" v-primary-bg>Schließen</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </template>
+    <template slot="loading"></template>
+    <template slot="error"></template>
+  </gql-query>
 </template>
 <script lang="ts">
 import {
@@ -32,61 +50,16 @@ import {
 import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
 
-
 @Component({})
 export default class dsgvo extends Vue {
-  ishow = false
-  data = ''
+  show = false
 
   @Prop({ type: Boolean, required: false, default: false })
   force!: boolean
 
-  accept() {
-    this.ishow = false
-    this.$getApolloClient().mutate({
-      mutation: gql`
-        mutation($authToken: String!) {
-          acceptsDSE(authToken: $authToken)
-        }
-      `,
-      variables: {
-        authToken: auth.authToken
-      }
-    })
-  }
-
   @Watch('force', { immediate: true })
   onForceChange() {
-    this.ishow = !this.force
-    this.getData()
-  }
-
-  loading = true
-
-  getData() {
-    this.loading = true
-    ;(<any>this.$getApolloClient())
-      .query({
-        query: gql`
-        query{
-          getDSE(authToken: "${auth.authToken}", force: ${
-          this.force
-        })
-        }
-      `
-      })
-      .then((v: { data: { getDSE: string } }) => v.data)
-      .then((v: { getDSE: string }) => {
-        this.data = v.getDSE
-        this.loading = false
-      })
-  }
-
-  @Watch('data', {})
-  onDataChange(data: string | null) {
-    if (data === null) {
-      this.ishow = false
-    }
+    this.show = !this.force
   }
 }
 </script>

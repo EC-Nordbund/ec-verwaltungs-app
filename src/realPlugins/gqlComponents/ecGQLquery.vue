@@ -1,6 +1,12 @@
 <template>
   <div>
-    <slot :data="data" :loading="loading" :reloading="reloading" :errored="errored" :refetch="refetch"/>
+    <slot v-if="data" :data="data" :reloading="reloading" :refetch="refetch"/>
+    <slot name="loading" v-if="loading || reloading" :loading="loading" :reloading="reloading">
+      Laden...
+    </slot>
+    <slot name="error" v-if="errored">
+      <b>Bei einer Abfrage ist ein Fehler aufgetreten</b>
+    </slot>
   </div>
 </template>
 <script lang="ts">
@@ -13,7 +19,6 @@ import {
 
 import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
-
 
 @Component({})
 export default class ecGQLquery extends Vue {

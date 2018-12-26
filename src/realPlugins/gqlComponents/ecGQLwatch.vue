@@ -1,6 +1,15 @@
 <template>
   <div>
-    <slot :data="data" :loading="loading" :reloading="reloading" :errored="errored" :refetch="refetch"/>
+    <slot v-if="data" :data="data" :reloading="reloading" :refetch="refetch"/>
+    <slot
+      name="loading"
+      v-if="loading || reloading"
+      :loading="loading"
+      :reloading="reloading"
+    >Laden...</slot>
+    <slot name="error" v-if="errored">
+      <b>Bei einer Abfrage ist ein Fehler aufgetreten</b>
+    </slot>
   </div>
 </template>
 <script lang="ts">
@@ -13,7 +22,6 @@ import {
 
 import auth from '@/plugins/auth'
 import gql from 'graphql-tag'
-
 
 @Component({})
 export default class ecGQLwatch extends Vue {
@@ -29,20 +37,21 @@ export default class ecGQLwatch extends Vue {
   reloading = false
   loading = true
 
-  _query:any 
+  _query: any
 
   @Watch('variables')
-  onVarChange(){
+  onVarChange() {
     this.loading = true
-    this._query.setVariable({
-      ...this.variables,
-      authToken: auth.authToken
-    }).then((val:any)=>{
-      this.loading = false
-      this.data = val.data
-    })
+    this._query
+      .setVariable({
+        ...this.variables,
+        authToken: auth.authToken
+      })
+      .then((val: any) => {
+        this.loading = false
+        this.data = val.data
+      })
   }
-
 
   async mounted() {
     if (!this.query) {
@@ -51,15 +60,14 @@ export default class ecGQLwatch extends Vue {
       `
     }
 
-    this._query = this.$getApolloClient()
-      .watchQuery({
-        query: this.query,
-        variables: {
-          ...this.variables,
-          authToken: auth.authToken
-        }
-      })
-      
+    this._query = this.$getApolloClient().watchQuery({
+      query: this.query,
+      variables: {
+        ...this.variables,
+        authToken: auth.authToken
+      }
+    })
+
     if (this._query !== null) {
       // subscribe to response
       this._query.subscribe((val: any) => {
@@ -69,16 +77,16 @@ export default class ecGQLwatch extends Vue {
           this.reloading = false
         }
       }),
-      (err: any)=>{
-        this.$require.electron.remote.dialog.showErrorBox(
-          'Bei der Abfrage von Daten ist ein Fehler aufgetreten!',
-          err.toString()
-        )
-      }
+        (err: any) => {
+          this.$require.electron.remote.dialog.showErrorBox(
+            'Bei der Abfrage von Daten ist ein Fehler aufgetreten!',
+            err.toString()
+          )
+        }
     }
   }
 
-  public refetch(){
+  public refetch() {
     this.reloading = true
 
     this._query.refetch().then((val: any) => {
@@ -87,7 +95,7 @@ export default class ecGQLwatch extends Vue {
     })
   }
 
-  destroyed(){
+  destroyed() {
     this._query.unsubscribe()
   }
 }
