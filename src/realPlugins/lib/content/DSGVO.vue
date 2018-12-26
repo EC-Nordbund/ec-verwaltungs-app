@@ -27,16 +27,16 @@
                 acceptsDSE(authToken: $authToken)
                 }
               </template>
-              <template slot="loading"></template>
-              <template slot="error"></template>
+              <template slot="loading"/>
+              <template slot="error"/>
             </gql-mutate>
             <v-btn v-if="force" @click="isShow = false" v-primary-bg>Schließen</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
     </template>
-    <template slot="loading"></template>
-    <template slot="error"></template>
+    <template slot="loading"/>
+    <template slot="error"/>
   </gql-query>
 </template>
 <script lang="ts">
