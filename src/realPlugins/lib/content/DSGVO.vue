@@ -47,9 +47,6 @@ import {
   Watch
 } from 'vue-property-decorator'
 
-import auth from '@/plugins/auth'
-import gql from 'graphql-tag'
-
 @Component({})
 export default class dsgvo extends Vue {
   show = false
@@ -63,7 +60,7 @@ export default class dsgvo extends Vue {
   }
 }
 </script>
-<style>
+<style scoped>
 #content h2 {
   font-family: ec-font;
 }
