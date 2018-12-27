@@ -12,6 +12,7 @@ import '@/realPlugins/qrCode';
 import routeHandler from '@/realPlugins/routeHandler';
 import updateCheckerPlugin from '@/realPlugins/updateChecker';
 import { xButton as xButtonPlugin } from '@/realPlugins/xButton/logic';
+import xButtonNew from '@/realPlugins/xButtonNew';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -27,7 +28,9 @@ Vue.use(lesezeichenPlugin)
 Vue.use(xButtonPlugin)
 Vue.use(libPlugin)
 
-export const router = new Router({ routes })
+Vue.component('x-btn-new', xButtonNew)
+
+export const router = new Router({ routes, mode: data.isElectron?'hash':'history' })
 
 Vue.use(routeHandler, {
   router,

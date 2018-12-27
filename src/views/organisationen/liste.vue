@@ -5,7 +5,7 @@
         <v-toolbar color="transparent" class="elevation-0">
           <v-spacer/>
           <v-toolbar-title>
-            <h1 v-font v-primary>Unterkünfte</h1>
+            <h1 v-font v-primary>Organisationen</h1>
           </v-toolbar-title>
           <v-spacer/>
           <v-btn icon @click="refetch" :disabled="reloading">
@@ -39,7 +39,9 @@
             ]"
           >
             <template slot="items" slot-scope="{item}">
-              <tr @click="$router.push(`/app/organisationen/${item.organisationsID}`)">
+              <tr
+                @click="$router.push({ path: `/app/organisationen/${item.organisationsID}/allgemein`, query: {prev: $route.fullPath}})"
+              >
                 <td>{{ item.bezeichnung }}</td>
                 <td>{{item.plz}} {{item.ort}} ({{item.land}})</td>
               </tr>
@@ -66,40 +68,46 @@
   </gql-watch>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import {
+  Component,
+  Vue,
+  Watch
+} from 'vue-property-decorator'
 
 @Component({})
 export default class orgaListe extends Vue {
   count = Math.floor(
     (document.body.offsetHeight - 438) / 48
   )
-  
-  suchString:any = ""
 
-  created(){
+  suchString: any = ''
+
+  created() {
     this.pageI = {
       page: this.$route.query.page || 1,
-      sortBy: this.$route.query.sortBy || "bezeichnung",
+      sortBy: this.$route.query.sortBy || 'bezeichnung',
       descending: this.$route.query.descending || false
     }
     this.suchString = this.$route.query.suchString || ''
   }
 
   pageI: any = {}
-  
-  
+
   @Watch('suchString')
-  onSucheChange(){
+  onSucheChange() {
     this.onQueryChange()
   }
 
   @Watch('pageI')
-  onPageIChange(){
+  onPageIChange() {
     this.onQueryChange()
   }
 
-  onQueryChange(){
-    this.$router.replace({path: this.$route.path, query: {...this.pageI,suchString: this.suchString}})
+  onQueryChange() {
+    this.$router.replace({
+      path: this.$route.path,
+      query: { ...this.pageI, suchString: this.suchString }
+    })
   }
 }
 </script>

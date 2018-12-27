@@ -39,19 +39,19 @@ export default class ecGQLwatch extends Vue {
 
   _query: any
 
-  @Watch('variables')
-  onVarChange() {
-    this.loading = true
-    this._query
-      .setVariable({
-        ...this.variables,
-        authToken: auth.authToken
-      })
-      .then((val: any) => {
-        this.loading = false
-        this.data = val.data
-      })
-  }
+  // @Watch('variables')
+  // onVarChange() {
+  //   this.loading = true
+  //   this._query
+  //     .setVariable({
+  //       ...this.variables,
+  //       authToken: auth.authToken
+  //     })
+  //     .then((val: any) => {
+  //       this.loading = false
+  //       this.data = val.data
+  //     })
+  // }
 
   async mounted() {
     if (!this.query) {
@@ -93,10 +93,6 @@ export default class ecGQLwatch extends Vue {
       this.data = val.data
       this.reloading = false
     })
-  }
-
-  destroyed() {
-    this._query.unsubscribe()
   }
 }
 </script>

@@ -2,10 +2,10 @@
   <v-app app :dark="dark">
     <v-toolbar fixed app clipped-left color="primary">
       <v-toolbar-side-icon v-white @click="drawer = !drawer"/>
-      <v-btn v-white icon @click="xButtonLogic.back($router)">
+      <v-btn v-white icon @click="$router.back()">
         <v-icon>navigate_before</v-icon>
       </v-btn>
-      <v-btn v-white icon @click="xButtonLogic.forward($router)">
+      <v-btn v-white icon @click="$router.forward()">
         <v-icon>navigate_next</v-icon>
       </v-btn>
       <v-spacer/>

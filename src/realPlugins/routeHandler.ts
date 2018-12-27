@@ -15,6 +15,7 @@ export default {
   ) {
     // Router Guard
     options.router.beforeEach((to, from, next) => {
+      console.log(to.path)
       // wenn /login und angemeldet -> startpage
       if (auth.isLogedIn()) {
         if (

@@ -4,6 +4,7 @@ import anmeldungSelect from '@/realPlugins/lib/content/AnmeldungSelect.vue';
 import DSGVO from '@/realPlugins/lib/content/DSGVO.vue';
 import headline from '@/realPlugins/lib/design/headline';
 import liste from '@/realPlugins/lib/design/list';
+import newList from '@/realPlugins/lib/design/newList.vue';
 import position from '@/realPlugins/lib/design/positionen.vue';
 import table from '@/realPlugins/lib/design/table.vue';
 import wrapper from '@/realPlugins/lib/design/wrapper.vue';
@@ -48,5 +49,6 @@ export default {
     vue.component('ec-list', liste)
     vue.component('ec-form', formDialog)
     vue.component('ec-rolle', position)
+    vue.component('ec-list-new', newList)
   }
 }
