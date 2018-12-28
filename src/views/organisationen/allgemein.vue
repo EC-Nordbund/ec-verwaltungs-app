@@ -48,7 +48,6 @@
           title: data.orga.notizen || 'N/A',
           iconA: 'extension',
           iconB: 'edit',
-          click: ()=>{},
           clickB: edit
         }
       ]"
