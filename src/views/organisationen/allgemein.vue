@@ -86,13 +86,13 @@ export default class orgaDetailsAllgemein extends Vue {
   }
 
   edit(){
-    console.log("test")
+    console.log("edit")
   }
   mail(){
     window.location.href="mailto:" + this.data.orga.email
   }
   map(){
-    console.log('test2')
+    console.log('map')
   }
 }
 </script>

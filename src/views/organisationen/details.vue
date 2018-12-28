@@ -1,37 +1,44 @@
 <template>
+  <!-- Lade Daten von API -->
   <gql-watch :variables="{orgaID: $route.params.id}">
+    <!-- Tatsächlicher Content -->
     <template slot-scope="{data, reloading, refetch}">
+      <!-- V-Card mit etwas Platz zu allen Seiten -->
       <v-card v-if="data.orga" style="margin: 5px">
+        <!-- Kopfzeile -->
         <v-toolbar color="transparent" class="elevation-0">
+          <!-- X-Button -->
           <x-btn-new/>
           <v-spacer/>
           <v-toolbar-title>
             <h1 v-font v-primary>{{data.orga.bezeichnung}}</h1>
           </v-toolbar-title>
           <v-spacer/>
+          <!-- Neuladen -->
           <v-btn icon @click="refetch" :disabled="reloading">
-            <v-icon :class="{rot: reloading}">replay</v-icon>
+            <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
           </v-btn>
         </v-toolbar>
+        <!-- Content -->
         <router-view v-bind="{data, reloading, refetch, countPerPage: anzahlElement}"/>
-        <v-card-actions>
-          <v-bottom-nav :value="true" color="transparent">
-            <v-btn :to="{path: 'allgemein', query: {prev: $route.query.prev}}" replace>
-              <span>Allgemein</span>
-              <v-icon>history</v-icon>
-            </v-btn>
-            <v-btn :to="{path: 'veranstaltungsorte', query: {prev: $route.query.prev}}" replace>
-              <span>Veranstaltungsorte</span>
-              <v-icon>history</v-icon>
-            </v-btn>
-            <v-btn :to="{path: 'veranstaltungen', query: {prev: $route.query.prev}}" replace>
-              <span>Veranstaltungen</span>
-              <v-icon>history</v-icon>
-            </v-btn>
-          </v-bottom-nav>
-        </v-card-actions/>
+        <!-- Navigation mit Buttons -->
+        <v-bottom-nav :value="true" color="transparent">
+          <v-btn :to="{path: 'allgemein', query: {prev: $route.query.prev}}" replace>
+            <span>Allgemein</span>
+            <v-icon>history</v-icon>
+          </v-btn>
+          <v-btn :to="{path: 'veranstaltungsorte', query: {prev: $route.query.prev}}" replace>
+            <span>Veranstaltungsorte</span>
+            <v-icon>history</v-icon>
+          </v-btn>
+          <v-btn :to="{path: 'veranstaltungen', query: {prev: $route.query.prev}}" replace>
+            <span>Veranstaltungen</span>
+            <v-icon>history</v-icon>
+          </v-btn>
+        </v-bottom-nav>
       </v-card>
     </template>
+    <!-- GQL-Abfrage -->
     <template slot="query">
       query($authToken: String!, $orgaID: Int!) {
       orga(authToken: $authToken, organisationsID: $orgaID) {
@@ -53,6 +60,7 @@
       bezeichnung
       begin {
       german
+      input
       }
       ende {
       german
@@ -65,7 +73,9 @@
       }
       }
     </template>
+    <!-- Bei Fehler anzuzeigen -->
     <template slot="error">Ein Fehler ist beim Laden der Daten aufgetreten</template>
+    <!-- Beim Laden anzuzeigen -->
     <template slot="loading" slot-scope="{loading}">
       <template v-if="loading">Laden {initial}</template>
     </template>
@@ -79,16 +89,3 @@ export default class orgaDetails extends Vue {
   anzahlElement = Math.floor((document.body.offsetHeight - 280)/72)
 }
 </script>
-<style scoped>
-@keyframes rotate {
-  0% {
-    transfrom: rotate(0deg);
-  }
-  100% {
-    transform: rotate(-360deg);
-  }
-}
-.rot {
-  animation: rotate 0.5s infinite;
-}
-</style>

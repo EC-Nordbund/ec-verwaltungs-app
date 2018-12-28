@@ -66,7 +66,6 @@ export default class orgaDetailsVeranstaltungen extends Vue {
 
   @Watch('page')
   onPageChange(){
-    console.log('pageChange')
     this.$emit('input', this.page)
   }
 

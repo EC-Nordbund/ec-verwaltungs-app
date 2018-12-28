@@ -21,7 +21,7 @@ export default class orgaDetailsVeranstaltungsOrte extends Vue {
   page: any = 1
 
   created(){
-    this.page=this.$route.query.page?parseInt(<string>this.$route.query.page):1
+    this.page=this.$route.query.page || 1
   }
 
   @Watch('page')
