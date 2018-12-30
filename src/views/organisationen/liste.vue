@@ -57,7 +57,16 @@
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <ec-button-add/>
+          <v-dialog>
+            <ec-button-add slot="activator"/>
+            <v-card>
+              <v-card-title>
+                <h1 v-font v-primary>
+                  Hinzufügen einer Organisation
+                </h1>
+              </v-card-title>
+            </v-card>
+          </v-dialog>
         </v-card-actions>
       </v-card>
     </template>

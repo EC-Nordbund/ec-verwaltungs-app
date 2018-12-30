@@ -16,8 +16,12 @@ import {
 export default class addLesezeichen extends Vue {
   isInLesezeichen: boolean = false
 
+  destroyed() {
+    this.$liste.removeAllListeners('changed')
+  }
+
   mounted() {
-    this.$liste.on('changed', ()=>{
+    this.$liste.on('changed', () => {
       this.isInLesezeichen = this.$liste.contains({
         elID: this.elID,
         type: this.type,

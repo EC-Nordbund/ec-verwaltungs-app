@@ -14,12 +14,34 @@
             <h1 v-font v-primary>{{data.orga.bezeichnung}}</h1>
           </v-toolbar-title>
           <v-spacer/>
-          <!-- Lesezeichen -->
-          <ec-lesezeichen-add :route="$route.fullPath" :label="data.orga.bezeichnung" :elID="$route.params.id" type="organisation"/>
-          <!-- Neuladen -->
-          <v-btn icon @click="refetch" :disabled="reloading">
-            <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
-          </v-btn>
+          <v-speed-dial
+            direction="left"
+            :open-on-hover="true"
+            transition="slide-y-reverse-transition"
+          >
+            <v-btn icon slot="activator">
+              <v-icon>more_vert</v-icon>
+            </v-btn>
+            <!-- Neuladen -->
+            <v-btn icon @click="refetch" :disabled="reloading">
+              <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
+            </v-btn>
+            <!-- Lesezeichen -->
+            <ec-lesezeichen-add
+              :route="$route.fullPath"
+              :label="data.orga.bezeichnung"
+              :elID="$route.params.id"
+              type="Organisation"
+            />
+            <!-- Share -->
+            <v-btn
+              icon
+              @click="$require.electron.clipboard.writeText(`ec://${route.fullPath}`)"
+              v-if="$require.isElectron"
+            >
+              <v-icon>share</v-icon>
+            </v-btn>
+          </v-speed-dial>
         </v-toolbar>
         <!-- Content -->
         <router-view v-bind="{data, reloading, refetch, countPerPage: anzahlElement}"/>
@@ -84,10 +106,16 @@
   </gql-watch>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator'
+import {
+  Component,
+  Vue,
+  Watch
+} from 'vue-property-decorator'
 
 @Component({})
 export default class orgaDetails extends Vue {
-  anzahlElement = Math.floor((document.body.offsetHeight - 280)/72)
+  anzahlElement = Math.floor(
+    (document.body.offsetHeight - 280) / 72
+  )
 }
 </script>

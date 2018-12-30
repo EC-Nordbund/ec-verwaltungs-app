@@ -18,6 +18,7 @@ export class LesezeichenList extends EventEmitter {
   public constructor() {
     super()
     this.load()
+    this.setMaxListeners(1000)
   }
 
   public add(lesezeichen: Lesezeichen) {
@@ -39,6 +40,7 @@ export class LesezeichenList extends EventEmitter {
   private save() {
     settings.set('lesezeichen', JSON.stringify(this.liste))
     this.emit('changed')
+    this.emit('changed2')
   }
 
   private load() {

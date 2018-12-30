@@ -91,7 +91,7 @@ export default class showLesezeichen extends Vue {
   count = 0
 
   mounted(){
-    this.$liste.on('changed', ()=>{
+    this.$liste.on('changed2', ()=>{
       this.count = this.$liste.liste.length
     })
     this.count = this.$liste.liste.length
