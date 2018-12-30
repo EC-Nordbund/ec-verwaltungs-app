@@ -56,6 +56,9 @@
             </template>
           </v-data-table>
         </v-card-text>
+        <v-card-actions>
+          <ec-button-add/>
+        </v-card-actions>
       </v-card>
     </template>
     <!-- GQL-Abfrage -->

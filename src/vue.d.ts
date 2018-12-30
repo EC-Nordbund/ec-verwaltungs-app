@@ -1,7 +1,7 @@
 import { IgetApolloClient } from '@/realPlugins/apollo';
 import { Irequire } from '@/realPlugins/electron';
 import { IConfig } from '@/realPlugins/formConfig';
-import { LesezeichenList } from '@/realPlugins/lesezeichen/lesezeichen';
+import { LesezeichenList } from '@/realPlugins/lesezeichen/neueLesezeichen';
 import { updateChecker } from '@/realPlugins/updateChecker';
 import Vue from 'vue';
 

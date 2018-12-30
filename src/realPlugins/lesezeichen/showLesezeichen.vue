@@ -1,8 +1,8 @@
 <template>
   <v-menu v-model="menu" :close-on-content-click="false" max-width="450" min-width="450" offset-y>
     <template slot="activator">
-      <v-badge overlap bottom color="accent" v-if="$liste.liste.length > 0">
-        <span slot="badge">{{$liste.liste.length >= 16 ? ':-)' : $liste.liste.length}}</span>
+      <v-badge overlap bottom color="accent" v-if="count > 0">
+        <span slot="badge">{{count >= 16 ? ':-)' : count}}</span>
         <v-icon medium v-white>{{$liste.liste.length === 0 ? 'star_border' : 'star'}}</v-icon>
       </v-badge>
       <v-icon medium v-white v-else>star_border</v-icon>
@@ -15,7 +15,7 @@
       <v-divider/>
 
       <v-card-text>
-        <v-list v-if="$liste.liste.length > 0">
+        <v-list v-if="count > 0">
           <v-list-tile v-if="selectedBookmarks.length > 0" inactive>
             <v-list-tile-action>
               <v-btn @click="selectedBookmarks = []" icon>
@@ -44,7 +44,7 @@
 
           <template v-for="(item, index) in $liste.liste">
             <v-list-tile :key="item.type + '-' + item.id" @click="click(index)">
-              <v-list-tile-action v-if="$liste.liste.length > 1" @click.stop>
+              <v-list-tile-action v-if="count > 1" @click.stop>
                 <v-checkbox v-model="selectedBookmarks" :value="index"/>
               </v-list-tile-action>
 
@@ -83,16 +83,19 @@ import {
   Prop
 } from 'vue-property-decorator'
 
-import { Lesezeichen } from '@/realPlugins/lesezeichen/lesezeichen.ts'
-
-import xButtonLogic from '@/realPlugins/xButton/logic'
 
 @Component({})
-export default class App extends Vue {
-  xButtonLogic = xButtonLogic
-
+export default class showLesezeichen extends Vue {
   menu: boolean = false
   selectedBookmarks: Array<number> = []
+  count = 0
+
+  mounted(){
+    this.$liste.on('changed', ()=>{
+      this.count = this.$liste.liste.length
+    })
+    this.count = this.$liste.liste.length
+  }
 
   toggleSelection(index: number) {
     if (this.selectedBookmarks.includes(index)) {
@@ -125,8 +128,6 @@ export default class App extends Vue {
 
   click(index: number) {
     const bookmark = this.$liste.liste[index]
-
-    xButtonLogic.reset(bookmark.xButton)
     this.menu = false //close menu
     this.$router.push(bookmark.route)
   }

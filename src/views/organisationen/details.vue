@@ -14,6 +14,8 @@
             <h1 v-font v-primary>{{data.orga.bezeichnung}}</h1>
           </v-toolbar-title>
           <v-spacer/>
+          <!-- Lesezeichen -->
+          <ec-lesezeichen-add :route="$route.fullPath" :label="data.orga.bezeichnung" :elID="$route.params.id" type="organisation"/>
           <!-- Neuladen -->
           <v-btn icon @click="refetch" :disabled="reloading">
             <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>

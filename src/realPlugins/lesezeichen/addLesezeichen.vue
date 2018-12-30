@@ -1,8 +1,6 @@
 <template>
   <v-btn icon @click="onBtnClick">
-    <v-icon>
-      {{isInLesezeichen ? 'star' : 'star_border'}}
-    </v-icon>
+    <v-icon>{{isInLesezeichen ? 'star' : 'star_border'}}</v-icon>
   </v-btn>
 </template>
 
@@ -14,35 +12,42 @@ import {
   Prop
 } from 'vue-property-decorator'
 
-import {
-  Lesezeichen
-} from '@/realPlugins/lesezeichen/lesezeichen.ts'
-
 @Component({})
-export default class App extends Vue {
+export default class addLesezeichen extends Vue {
   isInLesezeichen: boolean = false
 
-  @Watch('lesezeichen.liste', {
-    immediate: true
-  })
-  onLesezeichenChange() {
-    this.isInLesezeichen =
-      this.$liste.liste.filter(v => v.route === this.route)
-        .length !== 0
+  mounted() {
+    this.$liste.on('changed', ()=>{
+      this.isInLesezeichen = this.$liste.contains({
+        elID: this.elID,
+        type: this.type,
+        label: this.label,
+        route: this.route
+      })
+    })
+    this.isInLesezeichen = this.$liste.contains({
+      elID: this.elID,
+      type: this.type,
+      label: this.label,
+      route: this.route
+    })
   }
 
   onBtnClick() {
     if (this.isInLesezeichen) {
-      this.$liste.delete(this.route)
+      this.$liste.delete({
+        elID: this.elID,
+        type: this.type,
+        label: this.label,
+        route: this.route
+      })
     } else {
-      this.$liste.addLesezeichen(
-        new Lesezeichen(
-          this.route,
-          this.label,
-          this.type,
-          this.elID
-        )
-      )
+      this.$liste.add({
+        elID: this.elID,
+        type: this.type,
+        label: this.label,
+        route: this.route
+      })
     }
   }
 
