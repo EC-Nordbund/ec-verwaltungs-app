@@ -156,9 +156,11 @@ export default class orgaDetailsAllgemein extends Vue {
     }
     this.editShow = true
   }
+
   mail() {
     window.location.href = 'mailto:' + this.data.orga.email
   }
+  
   map() {
     // TODO:
     alert('Hier folgt in Kürze eine Karte!')

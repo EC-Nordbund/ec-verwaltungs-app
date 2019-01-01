@@ -1,25 +1,18 @@
 <template>
-  <!-- Lade Daten von API -->
   <gql-watch>
-    <!-- Tatsächlicher Content -->
     <template slot-scope="{data, reloading, refetch}">
-      <!-- V-Card mit etwas Platz zu allen Seiten -->
       <v-card style="margin: 5px">
-        <!-- Kopfzeile -->
         <v-toolbar color="transparent" class="elevation-0">
           <v-spacer/>
           <v-toolbar-title>
             <h1 v-font v-primary>Organisationen</h1>
           </v-toolbar-title>
           <v-spacer/>
-          <!-- Neuladen -->
           <v-btn icon @click="refetch" :disabled="reloading">
             <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
           </v-btn>
         </v-toolbar>
-        <!-- Content -->
         <v-card-text>
-          <!-- Eingabe der Suche -->
           <v-text-field
             label="Suchen"
             prepend-icon="search"
@@ -27,7 +20,6 @@
             v-model="suchString"
             @click:append="()=>{suchString = ''}"
           />
-          <!-- Darstellung der Tabelle -->
           <v-data-table
             :rows-per-page-items="[count]"
             :items="data.orgas"
@@ -92,7 +84,6 @@
         </v-card-actions>
       </v-card>
     </template>
-    <!-- GQL-Abfrage -->
     <template slot="query">
       query($authToken: String!) {
       orgas(authToken: $authToken) {
@@ -104,9 +95,7 @@
       }
       }
     </template>
-    <!-- Bei Fehler anzuzeigen -->
     <template slot="error">Ein Fehler ist beim Laden der Daten aufgetreten</template>
-    <!-- Beim Laden anzuzeigen -->
     <template slot="loading" slot-scope="{loading}">
       <template v-if="loading">Laden {initial}</template>
     </template>

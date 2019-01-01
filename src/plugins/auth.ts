@@ -3,7 +3,7 @@ import { getClient } from '@/realPlugins/apollo';
 import { data } from '@/realPlugins/electron';
 import gql from 'graphql-tag';
 
-const { electron, version } = data
+const { electron, isElectron, version } = data
 
 /**
  * Class with handels the authentication.
@@ -244,10 +244,12 @@ class auth {
         } ${conf.person.nachname} bis ${
           conf.ablaufDatum.german
         }`
-        electron.ipcRenderer.send(
-          'set-UG',
-          conf.userGroup.bezeichnung
-        )
+        if (isElectron) {
+          electron.ipcRenderer.send(
+            'set-UG',
+            conf.userGroup.bezeichnung
+          )
+        }
       })
   }
 
