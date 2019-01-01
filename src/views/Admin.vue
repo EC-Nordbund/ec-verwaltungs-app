@@ -88,12 +88,13 @@ import {
   personConfig,
   usernameConfig,
   usergroupConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
-import { required } from '@/plugins/rules'
+import { required } from '@/config/rules'
 
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
+import {getClient} from '@/realPlugins/apollo'
 
 const loadGQL = gql`
   query($authToken: String!) {

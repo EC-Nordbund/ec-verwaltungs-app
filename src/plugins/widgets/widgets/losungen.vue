@@ -7,7 +7,7 @@
       <v-spacer/>
       <img width="64px" src="../../../../public/losung.png"/>
     </v-card-title>
-    <template v-if="isElectron">
+    <template v-if="$require.isElectron">
       <v-card-text v-if="losung.length > 0" :style="{ display: 'grid', gridTemplateRows: 'auto auto auto', gridGap: '20px' }">
         <div>
           <span v-font v-primary v-html="losung[0]" :style="{ fontSize: '16px' }" />
@@ -30,7 +30,7 @@
         </div>
       </v-card-text>
     </template>
-    <v-card-text v-if="!isElectron">
+    <v-card-text v-if="!$require.isElectron">
       <span v-font v-primary :style="{ fontSize: '16px' }">Leider werden die Losungen im Browser nicht unterstützt... Nutze dafür bitte unsere App!</span>
     </v-card-text>
   </v-card>
@@ -42,16 +42,12 @@ import {
 } from '@/plugins/widgets/widgets/index.ts'
 import { Component, Vue } from 'vue-property-decorator'
 
-import electron, { isElectron } from '@/plugins/electron'
-
 @Component({})
 class losungen extends widgetComponent {
   losung: Array<string> = []
 
-  isElectron = isElectron
-
   async created() {
-    if (isElectron) {
+    if (this.$require.isElectron) {
       const res = await window.fetch(
         'https://www.losungen.de/heute.php'
       )
@@ -73,13 +69,13 @@ class losungen extends widgetComponent {
   }
 
   openL(){
-    if (isElectron) {
-      electron.shell.openExternal('www.losungen.de')
+    if (this.$require.isElectron) {
+      this.$require.electron.shell.openExternal('www.losungen.de')
     }
   }
   openH(){
-    if (isElectron) {
-      electron.shell.openExternal('www.herrnhuter.de')
+    if (this.$require.isElectron) {
+      this.$require.electron.shell.openExternal('www.herrnhuter.de')
     }
   }
 }

@@ -59,11 +59,6 @@
   </v-app>
 </template>
 <script lang="ts">
-import electron, {
-  isElectron,
-  isProduction
-} from '@/plugins/electron'
-import settings from '@/plugins/settings'
 import {
   Component,
   Vue,
@@ -110,8 +105,8 @@ export default class loginForm extends Vue {
   }
   login() {
     this.checking = true
-    if (isElectron) {
-      settings.set('username', this.username)
+    if (this.$require.isElectron) {
+      this.$require.settings.set('username', this.username)
     }
     auth
       .logIn(this.username, this.password)
@@ -129,9 +124,9 @@ export default class loginForm extends Vue {
   showUrlInfo: boolean = false
 
   created() {
-    if (isElectron) {
-      this.username = <any>settings.get('username', '')
-      this.dark = <any>settings.get('dark', false)
+    if (this.$require.isElectron) {
+      this.username = <string>this.$require.settings.get('username', '')
+      this.dark = <boolean>this.$require.settings.get('dark', false)
     }
     window.addEventListener('keyup', this.checkCaps)
 

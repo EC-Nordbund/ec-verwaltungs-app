@@ -1,6 +1,9 @@
 <template>
-  <ec-wrapper title="Veranstaltungsort Details" :label="data.vort.bezeichnung" type="Veranstaltungsort">
-
+  <ec-wrapper
+    title="Veranstaltungsort Details"
+    :label="data.vort.bezeichnung"
+    type="Veranstaltungsort"
+  >
     <template slot="label">
       <ec-headline>
         {{data.vort.bezeichnung}} ({{(data.vort.organisation || {}).bezeichnung}})
@@ -11,22 +14,20 @@
     <template slot="extension">
       <v-tabs v-model="tabs" fixed-tabs color="transparent">
         <v-tabs-slider/>
-        <v-tab href="#tab-2" v-secondary>
-          Allgemeines
-        </v-tab>
-        <v-tab href="#tab-4" v-secondary>
-          Kontakt
-        </v-tab>
-        <v-tab href="#tab-3" v-secondary>
-          Veranstaltungen
-        </v-tab>
+        <v-tab href="#tab-2" v-secondary>Allgemeines</v-tab>
+        <v-tab href="#tab-4" v-secondary>Kontakt</v-tab>
+        <v-tab href="#tab-3" v-secondary>Veranstaltungen</v-tab>
       </v-tabs>
     </template>
 
     <template>
       <v-tabs-items v-model="tabs">
         <v-tab-item id="tab-2">
-          <ec-list @edit="sonstiges_open" :mapper="v=>v" icon="map" :items="[
+          <ec-list
+            @edit="sonstiges_open"
+            :mapper="v=>v"
+            icon="map"
+            :items="[
             {
               title: data.vort.strasse,
               subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
@@ -64,7 +65,8 @@
               subTitle: 'Notizen',
               edit: true
             }
-          ]"/>
+          ]"
+          />
         </v-tab-item>
         <v-tab-item id="tab-4">
           <div v-for="(kontakt, index) in data.vort.kontakte || []" :key="index">
@@ -146,21 +148,18 @@
         @save="kontaktEdit_save"
       />
     </template>
-
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'
-
+import {getClient} from '@/realPlugins/apollo'
 const loadGQL = gql`
   query($authToken: String!, $vOrtID: Int!) {
     vort(authToken: $authToken, vOrtID: $vOrtID) {
@@ -210,7 +209,7 @@ import {
   landConfig,
   orgaConfig,
   notizConfig
-} from '@/plugins/formConfig'
+} from '@/realPlugins/formConfig'
 
 @Component({
   beforeRouteEnter(to, from, next) {

@@ -253,7 +253,6 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
@@ -266,9 +265,9 @@ import {
   vOrtConfig,
   minTNConfig,
   maxTNConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
-import { getClient } from '@/plugins/apollo'
+
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'
@@ -362,6 +361,8 @@ const loadGQL = gql`
     }
   }
 `
+
+import {getClient} from '@/realPlugins/apollo'
 
 @Component({
   beforeRouteEnter(to, from, next) {
@@ -592,7 +593,7 @@ export default class veranstaltungsDetails extends reloaderBase {
   }
 
   tnListe() {
-    const filenames = electron.remote.dialog.showOpenDialog(
+    const filenames = this.$require.electron.remote.dialog.showOpenDialog(
       {
         title: 'Excel Datei der Liste auswählen',
         filters: [{ name: 'Excel', extensions: ['xlsx'] }],
@@ -600,7 +601,7 @@ export default class veranstaltungsDetails extends reloaderBase {
       }
     )
     if (filenames) {
-      const fs = eval('require("fs")')
+      const fs = this.$require.fs
       // const xlsx = eval('require("xlsx-template")')
       const filecontent = fs.readFileSync(filenames[0])
       const template = new xlsx(filecontent)
@@ -620,7 +621,7 @@ export default class veranstaltungsDetails extends reloaderBase {
         type: 'nodebuffer'
       })
 
-      const tmpPath = electron.remote.app
+      const tmpPath = this.$require.electron.remote.app
         .getPath('temp')
         .split('\\')
         .join('/')

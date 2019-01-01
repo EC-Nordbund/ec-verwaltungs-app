@@ -10,13 +10,39 @@
       <h1 v-font>Ich brauche Hilfe!</h1>
       <p>Bitte schaue dir in diesem Fall unsere Hilfe an, die du unter dem Punkt Hilfe findest.</p>
       <p>Solltest du dort nicht finden, was du suchst schreibe eine E-Mail an Tobias Krause, Sebastian Krüger (<a href="mailto:app@ec-nordbund.de">app@ec-nordbund.de</a>) oder an Thomas Seeger (<a href="mailto:referent@ec-nordbund.de">referent@ec-nordbund.de</a>).</p>
+      <h1 v-font>Wir benutzen hauptsächlich folgenden OpenSource Frameworks</h1>
+      <v-card>
+        <v-card-text>
+          <h2>Electron</h2>
+          Version: <b>{{electronVersion}}</b><br>
+          Lizent: <b>MIT</b>
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-text>
+          <h2>Vue</h2>
+          Version: <b>{{vueVersion}}</b><br>
+          Lizent: <b>MIT</b>
+        </v-card-text>
+      </v-card>
+      <v-card>
+        <v-card-text>
+          <h2>Vuetify</h2>
+          Version: <b>{{vuetifyVersion}}</b><br>
+          Lizent: <b>MIT</b>
+        </v-card-text>
+      </v-card>
     </v-card-text>
   </ec-wrapper>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-
+import Vuetify from 'vuetify'
 @Component({})
-export default class Impressum extends Vue {}
+export default class Impressum extends Vue {
+  electronVersion = (<any>window).process.versions.electron
+  vueVersion = (<any>Vue).version
+  vuetifyVersion = Vuetify.version
+}
 </script>

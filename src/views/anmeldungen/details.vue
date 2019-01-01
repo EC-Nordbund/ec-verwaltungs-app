@@ -193,16 +193,14 @@
 </template>
 <script lang="ts">
 import gql from 'graphql-tag'
-
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
 import auth from '@/plugins/auth'
 
-import {} from '@/plugins/formConfig/index'
+import {} from '@/realPlugins/formConfig'
 
-import { getClient } from '@/plugins/apollo'
+
 import event from '@/plugins/eventbus'
 
 import { jsZip, Docxtemplater } from '@/plugins/docx'
@@ -286,6 +284,7 @@ const loadGQL = gql`
     }
   }
 `
+import {getClient} from '@/realPlugins/apollo'
 
 @Component({
   beforeRouteEnter(to, from, next) {
@@ -479,7 +478,7 @@ export default class anmeldungsDetails extends reloaderBase {
   }
 
   createLetter() {
-    const filenames = electron.remote.dialog.showOpenDialog(
+    const filenames = this.$require.electron.remote.dialog.showOpenDialog(
       {
         title: 'Word Datei des Briefes auswählen',
         filters: [{ name: 'Word', extensions: ['docx'] }],
@@ -487,7 +486,7 @@ export default class anmeldungsDetails extends reloaderBase {
       }
     )
     if (filenames) {
-      const fs = eval('require("fs")')
+      const fs = this.$require.fs
       const file = filenames[0]
       const fileContent = fs.readFileSync(file, 'binary')
       const zipData = new jsZip(fileContent)
@@ -501,7 +500,7 @@ export default class anmeldungsDetails extends reloaderBase {
         .getZip()
         .generate({ type: 'nodebuffer' })
 
-      const tmpPath = electron.remote.app
+      const tmpPath = this.$require.electron.remote.app
         .getPath('temp')
         .split('\\')
         .join('/')

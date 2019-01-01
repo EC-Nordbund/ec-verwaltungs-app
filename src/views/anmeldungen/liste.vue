@@ -1,26 +1,27 @@
 <template>
-<div>
-  <ec-table
-    title="Anmeldungen"
-    itemName="Anmeldung"
-    :items="data.anmeldungen"
-    :config="tableConfig"
-    suche
-    @open="open"
-    @sucheChanged="suchStringUpdate" 
-    :sucheVal="suchstring">
-    <template slot="handleOutside" slot-scope="props">
-      <template v-if="props.config.name==='person'">
-        {{props.item.person.vorname}} {{props.item.person.nachname}} ({{props.item.person.gebDat.german}})
+  <div>
+    <ec-table
+      title="Anmeldungen"
+      itemName="Anmeldung"
+      :items="data.anmeldungen"
+      :config="tableConfig"
+      suche
+      @open="open"
+      @sucheChanged="suchStringUpdate"
+      :sucheVal="suchstring"
+    >
+      <template slot="handleOutside" slot-scope="props">
+        <template
+          v-if="props.config.name==='person'"
+        >{{props.item.person.vorname}} {{props.item.person.nachname}} ({{props.item.person.gebDat.german}})</template>
+        <template
+          v-if="props.config.name==='veranstaltung'"
+        >{{props.item.veranstaltung.bezeichnung}} ({{props.item.veranstaltung.begin.german}}{{props.item.veranstaltung.ende?` - ${props.item.veranstaltung.ende.german}`:''}})</template>
+        <template v-if="props.config.name==='position'">
+          <ec-rolle :value="props.item.position"/>
+        </template>
       </template>
-      <template v-if="props.config.name==='veranstaltung'">
-        {{props.item.veranstaltung.bezeichnung}} ({{props.item.veranstaltung.begin.german}}{{props.item.veranstaltung.ende?` - ${props.item.veranstaltung.ende.german}`:''}})
-      </template>
-      <template v-if="props.config.name==='position'">
-        <ec-rolle :value="props.item.position"/>
-      </template>
-    </template>
-  </ec-table>
+    </ec-table>
   </div>
 </template>
 <script lang="ts">
@@ -58,10 +59,9 @@ const loadGQL = gql`
 
 import auth from '@/plugins/auth'
 
-import xButtonLogik from '@/plugins/xButton/logic'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
-
+import {getClient} from '@/realPlugins/apollo'
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
@@ -87,7 +87,7 @@ export default class anmeldungsListe extends reloaderBase {
     anmeldungen: []
   }
   tableConfig = [
-    {name: 'anmeldeID', label: 'ID'},
+    { name: 'anmeldeID', label: 'ID' },
     {
       name: 'person',
       label: 'Person',
@@ -130,7 +130,10 @@ export default class anmeldungsListe extends reloaderBase {
       authToken: auth.authToken
     }
     this.query = loadGQL
-    this.suchstring = this.$route.query.suche || ''
+    this.suchstring =
+      typeof this.$route.query.suche === 'string'
+        ? this.$route.query.suche
+        : ''
     super.created()
   }
 }
