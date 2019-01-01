@@ -5,6 +5,7 @@ import themDirectivesPlugin from '@/realPlugins/design/theme-directives';
 import vuetifyPlugin from '@/realPlugins/design/vuetify';
 import electronPlugin, { data } from '@/realPlugins/electron';
 import errorPlugin from '@/realPlugins/error';
+import formConfigPlugin from '@/realPlugins/formConfig';
 import gqlComponents from '@/realPlugins/gqlComponents/gql';
 import { LesezeichenList } from '@/realPlugins/lesezeichen/neueLesezeichen';
 import libPlugin from '@/realPlugins/lib/componentLib';
@@ -16,6 +17,7 @@ import xButtonNew from '@/realPlugins/xButtonNew';
 import Vue from 'vue';
 import Router from 'vue-router';
 
+Vue.use(formConfigPlugin)
 Vue.use(Router)
 Vue.use(electronPlugin)
 Vue.use(updateCheckerPlugin)

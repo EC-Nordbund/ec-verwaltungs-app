@@ -90,6 +90,10 @@ export default class showLesezeichen extends Vue {
   selectedBookmarks: Array<number> = []
   count = 0
 
+  destroyed() {
+    this.$liste.removeAllListeners('changed2')
+  }
+
   mounted(){
     this.$liste.on('changed2', ()=>{
       this.count = this.$liste.liste.length

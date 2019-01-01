@@ -57,14 +57,36 @@
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <v-dialog>
+          <v-dialog v-model="editShow" persistend max-width="500px">
             <ec-button-add slot="activator"/>
             <v-card>
               <v-card-title>
-                <h1 v-font v-primary>
-                  Hinzufügen einer Organisation
-                </h1>
+                <h1 v-font v-primary>Hinzufügen einer Organisation</h1>
               </v-card-title>
+              <v-card-text>
+                <v-form v-model="valid">
+                  <v-text-field v-bind="$formConfig.bezeichnungConfig" v-model="value.bezeichnung"/>
+                </v-form>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer/>
+                <v-btn @click="editShow=false">Abbrechen</v-btn>
+                <div style="margin: 0px 3px;"/>
+                <gql-mutate :variables="value" @done="refetch">
+                  <v-btn
+                    slot="activation"
+                    slot-scope="{mutate}"
+                    @click="mutate();editShow=false"
+                    :disabled="!valid"
+                    color="primary"
+                  >Speichern</v-btn>
+                  <template slot="query">
+                    mutation ($authToken: String!, $bezeichnung: String!) {
+                    addOrganisation(authToken: $authToken, bezeichnung: $bezeichnung)
+                    }
+                  </template>
+                </gql-mutate>
+              </v-card-actions>
             </v-card>
           </v-dialog>
         </v-card-actions>
@@ -99,23 +121,20 @@ import {
 
 @Component({})
 export default class orgaListe extends Vue {
-  /**
-   * Wie viele Datensätze dürfen auf eine Seite?
-   */
+  valid = false
+  editShow = false
+
+  value = {
+    bezeichnung: ''
+  }
+
   count = Math.floor(
     (document.body.offsetHeight - 438) / 48
   )
 
-  /**
-   * Speichern des Strings zum Suchen
-   */
   suchString: any = ''
 
-  /**
-   * Wenn erzeugt und alles Injected wurde
-   */
   created() {
-    // Lade Sitendarstellung von Query
     this.pageI = {
       page: this.$route.query.page || 1,
       sortBy: this.$route.query.sortBy || 'bezeichnung',
@@ -124,9 +143,6 @@ export default class orgaListe extends Vue {
     this.suchString = this.$route.query.suchString || ''
   }
 
-  /**
-   * Speichern von Sortierung und Seitenzahl
-   */
   pageI: any = {}
 
   @Watch('suchString')
@@ -139,9 +155,6 @@ export default class orgaListe extends Vue {
     this.onQueryChange()
   }
 
-  /**
-   * Setze Router Query neu.
-   */
   onQueryChange() {
     this.$router.replace({
       path: this.$route.path,

@@ -28,7 +28,7 @@ export const maxLength = (
   artikel: string,
   length: number
 ) => (value: string) =>
-  value && value.length > length
+  (value || '').length > length
     ? `Du musst ${name} angeben, ${artikel} maximal ${length} Zeichen lang ist!`
     : true
 

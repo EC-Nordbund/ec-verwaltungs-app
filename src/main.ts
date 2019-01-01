@@ -12,6 +12,28 @@ if (data.isElectron) {
   data.electron.remote.powerMonitor.on('suspend', () => {
     auth.logOut(true)
   })
+
+  Vue.config.errorHandler = (
+    err: Error,
+    vm: Vue,
+    info: string
+  ) => {
+    data.electron.remote.dialog.showErrorBox(
+      `Vue-Error - ${err.name}`,
+      err.message + '\n' + info
+    )
+  }
+
+  Vue.config.warnHandler = function(
+    msg: string,
+    vm,
+    trace
+  ) {
+    data.electron.remote.dialog.showErrorBox(
+      'Vue-Warn',
+      msg
+    )
+  }
 }
 
 // set Config

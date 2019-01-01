@@ -17,6 +17,7 @@
           <v-speed-dial
             direction="left"
             :open-on-hover="true"
+            v-if="$require.isElectron"
             transition="slide-y-reverse-transition"
           >
             <v-btn icon slot="activator">
@@ -42,6 +43,10 @@
               <v-icon>share</v-icon>
             </v-btn>
           </v-speed-dial>
+          <!-- Neuladen -->
+          <v-btn v-else icon @click="refetch" :disabled="reloading">
+            <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
+          </v-btn>
         </v-toolbar>
         <!-- Content -->
         <router-view v-bind="{data, reloading, refetch, countPerPage: anzahlElement}"/>

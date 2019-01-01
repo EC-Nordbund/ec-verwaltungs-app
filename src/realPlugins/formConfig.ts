@@ -140,6 +140,18 @@ export const landConfig: IConfig = {
   componentName: 'v-text-field'
 }
 
+export const ansprechpartnerConfig: IConfig = {
+  name: 'ansprechpartner',
+  label: 'Ansprechpartner',
+  required: true,
+  rules: [
+    required('ein Ansprechpartner'),
+    maxLength('ein Ansprechpartner', 'der', 200)
+  ],
+  counter: 200,
+  componentName: 'v-text-field'
+}
+
 export const notizConfig: IConfig = {
   name: 'notizen',
   label: 'Notizen',
@@ -347,7 +359,8 @@ export default {
       endeConfig,
       vOrtConfig,
       minTNConfig,
-      maxTNConfig
+      maxTNConfig,
+      ansprechpartnerConfig
     }
   }
 }
