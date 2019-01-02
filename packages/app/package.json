@@ -1,6 +1,6 @@
 {
   "name": "@ec-nordbund/app",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -9,7 +9,7 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
-    "@ec-nordbund/lib": "^1.0.0-alpha.1",
+    "@ec-nordbund/lib": "^1.0.0-alpha.2",
     "@vue/cli-plugin-typescript": "^3.2.2",
     "apollo-boost": "^0.1.23",
     "electron-settings": "^3.2.0",
