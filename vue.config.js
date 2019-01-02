@@ -4,7 +4,7 @@ module.exports = {
       ? undefined
       : './',
   outputDir: 'electron/src/renderer',
-  runtimeCompiler: false,
+  runtimeCompiler: true,
   productionSourceMap: false,
   devServer: {
     port: 8080
