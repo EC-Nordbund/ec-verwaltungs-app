@@ -1,0 +1,9 @@
+63 error Error: Command failed: git push --follow-tags --no-verify origin monorepro
+63 error fatal: AggregateException encountered.
+63 error    Mindestens ein Fehler ist aufgetreten.
+63 error bash: /dev/tty: No such device or address
+63 error error: failed to execute prompt script (exit code 1)
+63 error fatal: could not read Username for 'https://github.com': Invalid argument
+63 error
+63 error     at makeError (B:\app\node_modules\execa\index.js:174:9)
+63 error     at Promise.all.then.arr (B:\app\node_modules\execa\index.js:278:16)
