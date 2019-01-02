@@ -21,17 +21,19 @@
     "url": "git+https://github.com/EC-Nordbund/ec-verwaltungs-app.git"
   },
   "scripts": {
-    "build:dev": "webpack --config webpack.dev.build.config.js",
-    "build:prod": "webpack --config webpack.prod.config.js",
-    "dev": "webpack --config webpack.dev.watch.config.js",
-    "lint": "tslint",
-    "lint:fix": "tslint -fix"
+    "build:dev": "webpack --config webpack.dev.build.config.js --resolveJsonModule",
+    "build:prod": "webpack --config webpack.prod.config.js --resolveJsonModule",
+    "dev": "webpack --config webpack.dev.watch.config.js --resolveJsonModule",
+    "dev:start": "node ./dist-live/server.js",
+    "lint": "tslint -p tsconfig.json",
+    "lint:fix": "tslint -p tsconfig.json --fix"
   },
   "bugs": {
     "url": "https://github.com/EC-Nordbund/ec-verwaltungs-app/issues"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
+    "@babel/plugin-transform-runtime": "^7.2.0",
     "@babel/preset-env": "^7.2.3",
     "@types/cors": "^2.8.4",
     "@types/eventemitter2": "^4.1.0",

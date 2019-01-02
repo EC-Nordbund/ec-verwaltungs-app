@@ -1,6 +1,7 @@
 import { query } from "./mysql";
 import { createTransport } from "nodemailer";
-
+// import * as smtpConfig from '../../smtp.json';
+const smtpConfig = require("../../smtp.json");
 interface empfaenger {
   to: string;
   cc?: string;
@@ -14,11 +15,11 @@ export default async function sendMail(
   body: string,
   isHTML = true,
   attachments: {
-    content: string
-    filename: string
-  }[] = [],
+    content: string;
+    filename: string;
+  }[] = []
 ) {
-  const smtp = createTransport(eval("require('../../smtp.json')"));
+  const smtp = createTransport(smtpConfig);
   const mailData = {
     from,
     to: e.to,
@@ -28,11 +29,15 @@ export default async function sendMail(
     ...(isHTML ? { html: body } : { text: body }),
     attachments: attachments.map(at => ({
       ...at,
-      encoding: "base64",
-    })),
+      encoding: "base64"
+    }))
   };
   await smtp.sendMail(mailData);
-  await query(`INSERT INTO gesendeteEmails (content) VALUES ('${JSON.stringify(mailData)}')`);
+  await query(
+    `INSERT INTO gesendeteEmails (content) VALUES ('${JSON.stringify(
+      mailData
+    )}')`
+  );
 
   return true;
 }

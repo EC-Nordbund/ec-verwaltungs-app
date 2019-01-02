@@ -1,18 +1,16 @@
+import { getUser } from "../../users";
+import { query } from "../mysql";
+import { addAuth, handleAuth } from "../sonstiges";
+import { anmeldung } from "../types";
 import {
+  GraphQLBoolean,
+  GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLString,
-  GraphQLInt,
-  GraphQLBoolean
-} from "graphql";
-import { query } from "../mysql";
-import { getUser } from "../../users";
-import { anmeldung } from "../types";
+  GraphQLString
+  } from "graphql";
 
-const wpTokens: string[] = eval(
-  "require('../../../wpTokens.json')"
-);
-import { addAuth, handleAuth } from "../sonstiges";
+const wpTokens: string[] = require("../../../wpTokens.json");
 
 export default {
   anmeldungen: {
@@ -34,9 +32,7 @@ export default {
     type: anmeldung,
     resolve: handleAuth((_, args) => {
       return query(
-        `SELECT * FROM anmeldungen WHERE anmeldeID = '${
-          args.anmeldeID
-        }'`
+        `SELECT * FROM anmeldungen WHERE anmeldeID = '${args.anmeldeID}'`
       ).then(res => res[0]);
     })
   },
@@ -57,9 +53,7 @@ export default {
         allowed = wpTokens.indexOf(args.token) !== -1;
       } else {
         allowed =
-          getUser(
-            args.token
-          ).userGroup.mutationRechte.indexOf("anmelden") !==
+          getUser(args.token).userGroup.mutationRechte.indexOf("anmelden") !==
           -1;
       }
 

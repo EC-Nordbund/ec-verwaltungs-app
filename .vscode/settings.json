@@ -16,5 +16,6 @@
   "prettier.disableLanguages": [],
   "importCost.debug": true,
   "typescript.extension.sortImports.sortMethod": "path",
-  "typescript.extension.sortImports.sortOnSave": true
+  "typescript.extension.sortImports.sortOnSave": true,
+  "prettier.bracketSpacing": false
 }

@@ -22,7 +22,7 @@ module.exports = {
       },
       {
         test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
@@ -45,7 +45,7 @@ module.exports = {
     new MinifyPlugin(),
     new ProgressBarPlugin(),
     new TSLintPlugin({
-      files: ["./src/**/*.ts"]
+      config: "./tslint.json"
     })
   ]
 };

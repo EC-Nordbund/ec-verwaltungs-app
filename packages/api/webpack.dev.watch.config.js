@@ -16,20 +16,21 @@ module.exports = {
   ],
   module: {
     rules: [
-      // {
-      //   test: /\.ts$/,
-      //   enforce: "pre",
-      //   use: [
-      //     {
-      //       loader: "tslint-loader",
-      //       options: {}
-      //     }
-      //   ]
-      // },
       {
         test: /.tsx?$/,
         use: "ts-loader",
         exclude: /node_modules/
+      },
+      {
+        test: /\.m?js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+          options: {
+            presets: ["@babel/preset-env"],
+            plugins: ["@babel/plugin-transform-runtime"]
+          }
+        }
       }
     ]
   },
@@ -41,11 +42,11 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new ProgressBarPlugin(),
     new TSLintPlugin({
-      files: ["./src/**/*.ts"]
+      config: "./tslint.json"
     })
   ],
   output: {
-    path: path.join(__dirname, "dist"),
-    filename: "serverDev.js"
+    path: path.join(__dirname, "dist-live"),
+    filename: "server.js"
   }
 };

@@ -14,16 +14,6 @@ module.exports = {
   ],
   module: {
     rules: [
-      // {
-      //   test: /\.ts$/,
-      //   enforce: "pre",
-      //   use: [
-      //     {
-      //       loader: "tslint-loader",
-      //       options: {}
-      //     }
-      //   ]
-      // },
       {
         test: /.tsx?$/,
         use: "ts-loader",
@@ -31,7 +21,7 @@ module.exports = {
       },
       {
         test: /\.m?js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /node_modules/,
         use: {
           loader: "babel-loader",
           options: {
@@ -50,7 +40,11 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "serverProd.js"
   },
-  plugins: [new MinifyPlugin(), new ProgressBarPlugin(), new TSLintPlugin({
-    files: ['./src/**/*.ts']
-  })]
+  plugins: [
+    new MinifyPlugin(),
+    new ProgressBarPlugin(),
+    new TSLintPlugin({
+      config: "./tslint.json"
+    })
+  ]
 };
