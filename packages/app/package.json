@@ -1,5 +1,5 @@
 {
-  "name": "@ec-nordbund/app",
+  "name": "@ec-nordbund/ec-app",
   "version": "2.0.0-alpha.1",
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -45,5 +45,5 @@
     "vuetify-loader": "^1.0.5"
   },
   "main": "background.js",
-  "gitHead": "7c318fa223948d853245900990c414836b79bde3"
+  "gitHead": "111fb66ee0a250b3a22104b65c0a1f8c0db3bc4b"
 }
