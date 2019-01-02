@@ -8,6 +8,7 @@
     "electron:serve": "vue-cli-service electron:serve",
     "postinstall": "electron-builder install-app-deps"
   },
+  "private": false,
   "dependencies": {
     "@ec-nordbund/lib": "^1.0.0-alpha.2",
     "@vue/cli-plugin-typescript": "^3.2.2",
@@ -44,5 +45,5 @@
     "vuetify-loader": "^1.0.5"
   },
   "main": "background.js",
-  "gitHead": "81ecbe3add4129b7c1991b47195473e9253aec48"
+  "gitHead": "e3ef7144de9a595ab99756c039c381ac5f02eda4"
 }
