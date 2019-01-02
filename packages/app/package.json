@@ -1,6 +1,6 @@
 {
   "name": "@ec-nordbund/ec-app",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,7 +10,7 @@
   },
   "private": false,
   "dependencies": {
-    "@ec-nordbund/lib": "^2.0.0-alpha.1",
+    "@ec-nordbund/lib": "^2.0.0-alpha.2",
     "@vue/cli-plugin-typescript": "^3.2.2",
     "apollo-boost": "^0.1.23",
     "electron-settings": "^3.2.0",
