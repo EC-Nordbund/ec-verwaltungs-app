@@ -5,16 +5,16 @@
 0 silly argv    'C:\\Users\\Sebastian\\AppData\\Roaming\\npm\\node_modules\\lerna\\cli.js' }
 1 notice cli v3.8.1
 2 verbose rootPath B:\app
-3 verbose session eacc8cba55ac9f2c
+3 verbose session 4425494f25b303bc
 4 verbose user-agent lerna/3.8.1/node@v10.6.0+x64 (win32)
 5 info Verifying npm credentials
 6 verbose Retrieving npm user profile
-7 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 2464ms
+7 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 2629ms
 8 silly npm profile get received {"tfa":false,"name":"mathe42","email":"2pi_r2@gmx.de","email_verified":true,"created":"2017-10-20T18:02:18.959Z","updated":"2017-10-20T18:02:18.953Z","cidr_whitelist":null}
 9 silly npm whoami received {"username":"mathe42"}
 10 silly argv { _: [ 'publish' ], composed: 'publish', lernaVersion: '3.8.1' }
 11 verbose rootPath B:\app
-12 info current version 2.0.0-alpha.0
+12 info current version 2.0.0-alpha.1
 13 silly isAnythingCommitted
 14 verbose isAnythingCommitted 1
 15 silly currentBranch
@@ -24,16 +24,16 @@
 19 silly isBehindUpstream monorepro is behind origin/monorepro by 0 commit(s) and ahead by 1
 20 silly hasTags
 21 verbose hasTags true
-22 silly git-describe.sync "v2.0.0-alpha.0-1-gacbcd92" => {"lastTagName":"v2.0.0-alpha.0","lastVersion":"v2.0.0-alpha.0","refCount":"1","sha":"acbcd92","isDirty":false}
-23 info Looking for changed packages since v2.0.0-alpha.0
+22 silly git-describe.sync "v2.0.0-alpha.1-1-g47b2510" => {"lastTagName":"v2.0.0-alpha.1","lastVersion":"v2.0.0-alpha.1","refCount":"1","sha":"47b2510","isDirty":false}
+23 info Looking for changed packages since v2.0.0-alpha.1
 24 verbose updated @ec-nordbund/anmeldung
 25 verbose updated @ec-nordbund/api
-26 verbose updated @ec-nordbund/app
+26 verbose updated @ec-nordbund/ec-app
 27 verbose updated @ec-nordbund/docs
 28 verbose updated @ec-nordbund/help
 29 verbose updated @ec-nordbund/lib
-30 verbose git-describe undefined => "v2.0.0-alpha.0-1-gacbcd92"
-31 silly git-describe parsed => {"lastTagName":"v2.0.0-alpha.0","lastVersion":"v2.0.0-alpha.0","refCount":"1","sha":"acbcd92","isDirty":false}
+30 verbose git-describe undefined => "v2.0.0-alpha.1-1-g47b2510"
+31 silly git-describe parsed => {"lastTagName":"v2.0.0-alpha.1","lastVersion":"v2.0.0-alpha.1","refCount":"1","sha":"47b2510","isDirty":false}
 32 silly batched [ PackageGraphNode {
 32 silly batched     name: '@ec-nordbund/anmeldung',
 32 silly batched     externalDependencies: Map { 'typescript' => [Object] },
@@ -80,9 +80,9 @@
 32 silly batched     name: '@ec-nordbund/lib',
 32 silly batched     externalDependencies: Map { 'typescript' => [Object], 'vue' => [Object] },
 32 silly batched     localDependencies: Map {},
-32 silly batched     localDependents: Map { '@ec-nordbund/app' => [PackageGraphNode] } } ]
+32 silly batched     localDependents: Map { '@ec-nordbund/ec-app' => [PackageGraphNode] } } ]
 33 silly batched [ PackageGraphNode {
-33 silly batched     name: '@ec-nordbund/app',
+33 silly batched     name: '@ec-nordbund/ec-app',
 33 silly batched     externalDependencies:
 33 silly batched      Map {
 33 silly batched        '@types/electron-settings' => [Object],
@@ -123,28 +123,28 @@
 37 silly run-lifecycle No script for "preversion" in "@ec-nordbund/docs", continuing
 38 silly run-lifecycle No script for "preversion" in "@ec-nordbund/help", continuing
 39 silly run-lifecycle No script for "preversion" in "@ec-nordbund/lib", continuing
-40 silly run-lifecycle No script for "version" in "@ec-nordbund/anmeldung", continuing
-41 silly run-lifecycle No script for "version" in "@ec-nordbund/docs", continuing
-42 silly run-lifecycle No script for "version" in "@ec-nordbund/api", continuing
-43 silly run-lifecycle No script for "version" in "@ec-nordbund/help", continuing
-44 silly run-lifecycle No script for "version" in "@ec-nordbund/lib", continuing
-45 silly run-lifecycle No script for "preversion" in "@ec-nordbund/app", continuing
-46 silly run-lifecycle No script for "version" in "@ec-nordbund/app", continuing
+40 silly run-lifecycle No script for "version" in "@ec-nordbund/help", continuing
+41 silly run-lifecycle No script for "version" in "@ec-nordbund/api", continuing
+42 silly run-lifecycle No script for "version" in "@ec-nordbund/docs", continuing
+43 silly run-lifecycle No script for "version" in "@ec-nordbund/lib", continuing
+44 silly run-lifecycle No script for "version" in "@ec-nordbund/anmeldung", continuing
+45 silly run-lifecycle No script for "preversion" in "@ec-nordbund/ec-app", continuing
+46 silly run-lifecycle No script for "version" in "@ec-nordbund/ec-app", continuing
 47 silly run-lifecycle No script for "version" in "ec-verwaltungs-app", continuing
-48 silly gitAdd [ 'B:\\app\\packages\\anmeldung\\package.json',
-48 silly gitAdd   'B:\\app\\packages\\docs\\package.json',
+48 silly gitAdd [ 'B:\\app\\packages\\help\\package.json',
 48 silly gitAdd   'B:\\app\\packages\\api\\package.json',
-48 silly gitAdd   'B:\\app\\packages\\help\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\docs\\package.json',
 48 silly gitAdd   'B:\\app\\packages\\lib\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\anmeldung\\package.json',
 48 silly gitAdd   'B:\\app\\packages\\app\\package.json',
 48 silly gitAdd   'B:\\app\\lerna.json' ]
-49 silly gitCommit v2.0.0-alpha.1
-50 verbose git [ 'commit', '-m', 'v2.0.0-alpha.1' ]
-51 silly gitTag v2.0.0-alpha.1
-52 verbose git [ 'tag', 'v2.0.0-alpha.1', '-m', 'v2.0.0-alpha.1' ]
+49 silly gitCommit v2.0.0-alpha.2
+50 verbose git [ 'commit', '-m', 'v2.0.0-alpha.2' ]
+51 silly gitTag v2.0.0-alpha.2
+52 verbose git [ 'tag', 'v2.0.0-alpha.2', '-m', 'v2.0.0-alpha.2' ]
 53 silly run-lifecycle No script for "postversion" in "@ec-nordbund/anmeldung", continuing
 54 silly run-lifecycle No script for "postversion" in "@ec-nordbund/api", continuing
-55 silly run-lifecycle No script for "postversion" in "@ec-nordbund/app", continuing
+55 silly run-lifecycle No script for "postversion" in "@ec-nordbund/ec-app", continuing
 56 silly run-lifecycle No script for "postversion" in "@ec-nordbund/docs", continuing
 57 silly run-lifecycle No script for "postversion" in "@ec-nordbund/help", continuing
 58 silly run-lifecycle No script for "postversion" in "@ec-nordbund/lib", continuing
@@ -186,9 +186,9 @@
 62 silly batched     name: '@ec-nordbund/lib',
 62 silly batched     externalDependencies: Map {},
 62 silly batched     localDependencies: Map {},
-62 silly batched     localDependents: Map { '@ec-nordbund/app' => [PackageGraphNode] } } ]
+62 silly batched     localDependents: Map { '@ec-nordbund/ec-app' => [PackageGraphNode] } } ]
 63 silly batched [ PackageGraphNode {
-63 silly batched     name: '@ec-nordbund/app',
+63 silly batched     name: '@ec-nordbund/ec-app',
 63 silly batched     externalDependencies:
 63 silly batched      Map {
 63 silly batched        '@vue/cli-plugin-typescript' => [Object],
@@ -210,9 +210,9 @@
 63 silly batched     localDependents: Map {} } ]
 64 info publish Publishing packages to npm...
 65 silly verifyNpmPackageAccess
-66 http fetch GET 200 https://registry.npmjs.org/-/org/mathe42/package?format=cli 1133ms
+66 http fetch GET 200 https://registry.npmjs.org/-/org/mathe42/package?format=cli 418ms
 67 silly getCurrentSHA
-68 verbose getCurrentSHA 111fb66ee0a250b3a22104b65c0a1f8c0db3bc4b
+68 verbose getCurrentSHA d3c023cb53fcd90861d042d106a9456c1d75cbf4
 69 silly run-lifecycle No script for "prepare" in "ec-verwaltungs-app", continuing
 70 silly run-lifecycle No script for "prepublishOnly" in "ec-verwaltungs-app", continuing
 71 silly run-lifecycle No script for "prepack" in "ec-verwaltungs-app", continuing
@@ -234,80 +234,80 @@
 87 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/anmeldung", continuing
 88 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/api", continuing
 89 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/docs", continuing
-90 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/lib", continuing
-91 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/help", continuing
+90 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/help", continuing
+91 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/lib", continuing
 92 silly run-lifecycle No script for "prepack" in "@ec-nordbund/anmeldung", continuing
 93 silly run-lifecycle No script for "prepack" in "@ec-nordbund/api", continuing
 94 silly run-lifecycle No script for "prepack" in "@ec-nordbund/docs", continuing
-95 silly run-lifecycle No script for "prepack" in "@ec-nordbund/lib", continuing
-96 silly run-lifecycle No script for "prepack" in "@ec-nordbund/help", continuing
-97 silly run-lifecycle No script for "postpack" in "@ec-nordbund/lib", continuing
-98 silly run-lifecycle No script for "postpack" in "@ec-nordbund/anmeldung", continuing
+95 silly run-lifecycle No script for "prepack" in "@ec-nordbund/help", continuing
+96 silly run-lifecycle No script for "prepack" in "@ec-nordbund/lib", continuing
+97 silly run-lifecycle No script for "postpack" in "@ec-nordbund/anmeldung", continuing
+98 silly run-lifecycle No script for "postpack" in "@ec-nordbund/lib", continuing
 99 silly run-lifecycle No script for "postpack" in "@ec-nordbund/docs", continuing
 100 silly run-lifecycle No script for "postpack" in "@ec-nordbund/help", continuing
 101 silly run-lifecycle No script for "postpack" in "@ec-nordbund/api", continuing
 102 verbose pack-directory packages\app
-103 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/app", continuing
-104 silly run-lifecycle No script for "prepare" in "@ec-nordbund/app", continuing
-105 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/app", continuing
-106 silly run-lifecycle No script for "prepack" in "@ec-nordbund/app", continuing
-107 silly run-lifecycle No script for "postpack" in "@ec-nordbund/app", continuing
+103 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/ec-app", continuing
+104 silly run-lifecycle No script for "prepare" in "@ec-nordbund/ec-app", continuing
+105 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/ec-app", continuing
+106 silly run-lifecycle No script for "prepack" in "@ec-nordbund/ec-app", continuing
+107 silly run-lifecycle No script for "postpack" in "@ec-nordbund/ec-app", continuing
 108 silly run-lifecycle No script for "postpack" in "ec-verwaltungs-app", continuing
 109 verbose publish @ec-nordbund/anmeldung
 110 verbose publish @ec-nordbund/api
 111 verbose publish @ec-nordbund/docs
 112 verbose publish @ec-nordbund/help
-113 silly run-lifecycle No script for "publish" in "@ec-nordbund/help", continuing
-114 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/help", continuing
-115 success published @ec-nordbund/help 2.0.0-alpha.1
+113 silly run-lifecycle No script for "publish" in "@ec-nordbund/anmeldung", continuing
+114 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/anmeldung", continuing
+115 success published @ec-nordbund/anmeldung 2.0.0-alpha.2
 116 notice
-117 notice package: @ec-nordbund/help@2.0.0-alpha.1
+117 notice package: @ec-nordbund/anmeldung@2.0.0-alpha.2
 118 notice === Tarball Contents ===
-119 notice 707B    package.json
-119 notice 35.8kB  LICENSE
-119 notice 844B    README.md
-119 notice 245.2kB yarn.lock
-119 notice 453B    .vuepress/config.js
-119 notice 3.8kB   generatoren/README.md
-119 notice 1.8kB   hilfe/README.md
+119 notice 815B   package.json
+119 notice 35.8kB LICENSE
+119 notice 146B   README.md
+119 notice 81B    lib/anmeldung.js
 120 notice === Tarball Details ===
-121 notice name:          @ec-nordbund/help
-121 notice version:       2.0.0-alpha.1
-121 notice filename:      ec-nordbund-help-2.0.0-alpha.1.tgz
-121 notice package size:  78.9 kB
-121 notice unpacked size: 288.5 kB
-121 notice shasum:        74b0212ea56fbf10e9902eacd3af6c7284b520d0
-121 notice integrity:     sha512-1O/5tZ5pgwcxb[...]T8a0r+CY3LNwg==
-121 notice total files:   7
+121 notice name:          @ec-nordbund/anmeldung
+121 notice version:       2.0.0-alpha.2
+121 notice filename:      ec-nordbund-anmeldung-2.0.0-alpha.2.tgz
+121 notice package size:  13.1 kB
+121 notice unpacked size: 36.9 kB
+121 notice shasum:        30ea5d3e8247feb4939aa2a9f4064a2a68550cb7
+121 notice integrity:     sha512-qzEkOtFPB8rKQ[...]Wjo+4UFP8fNMg==
+121 notice total files:   4
 122 notice
 123 verbose publish @ec-nordbund/lib
-124 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fhelp 5594ms
-125 silly run-lifecycle No script for "publish" in "@ec-nordbund/anmeldung", continuing
-126 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/anmeldung", continuing
-127 success published @ec-nordbund/anmeldung 2.0.0-alpha.1
+124 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fanmeldung 4347ms
+125 silly run-lifecycle No script for "publish" in "@ec-nordbund/help", continuing
+126 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/help", continuing
+127 success published @ec-nordbund/help 2.0.0-alpha.2
 128 notice
-129 notice package: @ec-nordbund/anmeldung@2.0.0-alpha.1
+129 notice package: @ec-nordbund/help@2.0.0-alpha.2
 130 notice === Tarball Contents ===
-131 notice 815B   package.json
-131 notice 35.8kB LICENSE
-131 notice 146B   README.md
-131 notice 81B    lib/anmeldung.js
+131 notice 707B    package.json
+131 notice 35.8kB  LICENSE
+131 notice 844B    README.md
+131 notice 245.2kB yarn.lock
+131 notice 453B    .vuepress/config.js
+131 notice 3.8kB   generatoren/README.md
+131 notice 1.8kB   hilfe/README.md
 132 notice === Tarball Details ===
-133 notice name:          @ec-nordbund/anmeldung
-133 notice version:       2.0.0-alpha.1
-133 notice filename:      ec-nordbund-anmeldung-2.0.0-alpha.1.tgz
-133 notice package size:  13.1 kB
-133 notice unpacked size: 36.9 kB
-133 notice shasum:        55e9fc7419e0d0d0484d8f341548f54fefc0a9f1
-133 notice integrity:     sha512-3/Z1rapKzBzF8[...]/95BOicXVqe3g==
-133 notice total files:   4
+133 notice name:          @ec-nordbund/help
+133 notice version:       2.0.0-alpha.2
+133 notice filename:      ec-nordbund-help-2.0.0-alpha.2.tgz
+133 notice package size:  78.9 kB
+133 notice unpacked size: 288.5 kB
+133 notice shasum:        076059e7a9e909e9e6cafdff9905765c3337ee9f
+133 notice integrity:     sha512-XyOUnq6zy6jDR[...]k13PvTKpWy27A==
+133 notice total files:   7
 134 notice
-135 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fanmeldung 6785ms
+135 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fhelp 4897ms
 136 silly run-lifecycle No script for "publish" in "@ec-nordbund/api", continuing
 137 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/api", continuing
-138 success published @ec-nordbund/api 2.0.0-alpha.1
+138 success published @ec-nordbund/api 2.0.0-alpha.2
 139 notice
-140 notice package: @ec-nordbund/api@2.0.0-alpha.1
+140 notice package: @ec-nordbund/api@2.0.0-alpha.2
 141 notice === Tarball Contents ===
 142 notice 1.3kB  package.json
 142 notice 35.8kB LICENSE
@@ -372,20 +372,20 @@
 142 notice 35B    lib/version.ts
 143 notice === Tarball Details ===
 144 notice name:          @ec-nordbund/api
-144 notice version:       2.0.0-alpha.1
-144 notice filename:      ec-nordbund-api-2.0.0-alpha.1.tgz
+144 notice version:       2.0.0-alpha.2
+144 notice filename:      ec-nordbund-api-2.0.0-alpha.2.tgz
 144 notice package size:  35.4 kB
 144 notice unpacked size: 166.7 kB
-144 notice shasum:        cabe3ad28403f02c23ed6ebcff2f265dc240cb00
-144 notice integrity:     sha512-/zfNbCEmdYL4X[...]UhAx4cAa2k5ig==
+144 notice shasum:        a5c5dac12ec70ce7f08d8cf76929ce45ab4df575
+144 notice integrity:     sha512-5FzGxMgyGRDa/[...]xuw+U9hj/qDLg==
 144 notice total files:   61
 145 notice
-146 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fapi 9448ms
+146 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fapi 6776ms
 147 silly run-lifecycle No script for "publish" in "@ec-nordbund/docs", continuing
 148 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/docs", continuing
-149 success published @ec-nordbund/docs 2.0.0-alpha.1
+149 success published @ec-nordbund/docs 2.0.0-alpha.2
 150 notice
-151 notice package: @ec-nordbund/docs@2.0.0-alpha.1
+151 notice package: @ec-nordbund/docs@2.0.0-alpha.2
 152 notice === Tarball Contents ===
 153 notice 1.0kB   package.json
 153 notice 35.8kB  LICENSE
@@ -396,20 +396,20 @@
 153 notice 604B    app/README.md
 154 notice === Tarball Details ===
 155 notice name:          @ec-nordbund/docs
-155 notice version:       2.0.0-alpha.1
-155 notice filename:      ec-nordbund-docs-2.0.0-alpha.1.tgz
+155 notice version:       2.0.0-alpha.2
+155 notice filename:      ec-nordbund-docs-2.0.0-alpha.2.tgz
 155 notice package size:  83.5 kB
 155 notice unpacked size: 374.6 kB
-155 notice shasum:        b8f94bfe0d92e483a0ec990ba9c4fecac37d9afd
-155 notice integrity:     sha512-O/8Sd1vrenEua[...]5XrrfCEOZbPXA==
+155 notice shasum:        2cf73387dd7e78b28ce3fd11c802b4ff71b89bf5
+155 notice integrity:     sha512-g8PIxm/8XeTxh[...]XuCY2CPYkqKKQ==
 155 notice total files:   7
 156 notice
-157 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fdocs 10060ms
+157 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fdocs 7120ms
 158 silly run-lifecycle No script for "publish" in "@ec-nordbund/lib", continuing
 159 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/lib", continuing
-160 success published @ec-nordbund/lib 2.0.0-alpha.1
+160 success published @ec-nordbund/lib 2.0.0-alpha.2
 161 notice
-162 notice package: @ec-nordbund/lib@2.0.0-alpha.1
+162 notice package: @ec-nordbund/lib@2.0.0-alpha.2
 163 notice === Tarball Contents ===
 164 notice 819B   package.json
 164 notice 35.8kB LICENSE
@@ -417,16 +417,16 @@
 164 notice 74B    lib/lib.ts
 165 notice === Tarball Details ===
 166 notice name:          @ec-nordbund/lib
-166 notice version:       2.0.0-alpha.1
-166 notice filename:      ec-nordbund-lib-2.0.0-alpha.1.tgz
+166 notice version:       2.0.0-alpha.2
+166 notice filename:      ec-nordbund-lib-2.0.0-alpha.2.tgz
 166 notice package size:  13.1 kB
 166 notice unpacked size: 36.8 kB
-166 notice shasum:        503a9374066386aee13fce0eadbdbd6fa7728f44
-166 notice integrity:     sha512-0qWJ71KW8PSaU[...]ua0+zWsjzZbLg==
+166 notice shasum:        fabec5f298467bcc8281ca529a1ba651b7b5e87a
+166 notice integrity:     sha512-P1Ma41f23gZdP[...]O0Hdml9deCJ3w==
 166 notice total files:   4
 167 notice
-168 verbose publish @ec-nordbund/app
-169 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2flib 3817ms
-170 http fetch PUT 402 https://registry.npmjs.org/@ec-nordbund%2fapp 1851ms
-171 error Error: 402 Payment Required - PUT https://registry.npmjs.org/@ec-nordbund%2fapp - You must sign up for private packages
+168 verbose publish @ec-nordbund/ec-app
+169 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2flib 3396ms
+170 http fetch PUT 402 https://registry.npmjs.org/@ec-nordbund%2fec-app 2247ms
+171 error Error: 402 Payment Required - PUT https://registry.npmjs.org/@ec-nordbund%2fec-app - You must sign up for private packages
 171 error     at res.buffer.catch.then.body (B:\app\node_modules\npm-registry-fetch\check-response.js:104:15)
