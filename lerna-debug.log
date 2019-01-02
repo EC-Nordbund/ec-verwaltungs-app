@@ -1,9 +1,433 @@
-63 error Error: Command failed: git push --follow-tags --no-verify origin monorepro
-63 error fatal: AggregateException encountered.
-63 error    Mindestens ein Fehler ist aufgetreten.
-63 error bash: /dev/tty: No such device or address
-63 error error: failed to execute prompt script (exit code 1)
-63 error fatal: could not read Username for 'https://github.com': Invalid argument
-63 error
-63 error     at makeError (B:\app\node_modules\execa\index.js:174:9)
-63 error     at Promise.all.then.arr (B:\app\node_modules\execa\index.js:278:16)
+0 silly argv { _: [ 'publish' ],
+0 silly argv   composed: 'publish',
+0 silly argv   lernaVersion: '3.8.1',
+0 silly argv   '$0':
+0 silly argv    'C:\\Users\\Sebastian\\AppData\\Roaming\\npm\\node_modules\\lerna\\cli.js' }
+1 notice cli v3.8.1
+2 verbose rootPath B:\app
+3 verbose session 70b26c96387a6ff8
+4 verbose user-agent lerna/3.8.1/node@v10.6.0+x64 (win32)
+5 info Verifying npm credentials
+6 verbose Retrieving npm user profile
+7 http fetch GET 200 https://registry.npmjs.org/-/npm/v1/user 1960ms
+8 silly npm profile get received {"tfa":false,"name":"mathe42","email":"2pi_r2@gmx.de","email_verified":false,"created":"2017-10-20T18:02:18.959Z","updated":"2017-10-20T18:02:18.953Z","cidr_whitelist":null}
+9 silly npm whoami received {"username":"mathe42"}
+10 silly argv { _: [ 'publish' ], composed: 'publish', lernaVersion: '3.8.1' }
+11 verbose rootPath B:\app
+12 info current version 1.0.0-alpha.0
+13 silly isAnythingCommitted
+14 verbose isAnythingCommitted 1
+15 silly currentBranch
+16 verbose currentBranch monorepro
+17 silly remoteBranchExists
+18 silly isBehindUpstream
+19 silly isBehindUpstream monorepro is behind origin/monorepro by 0 commit(s) and ahead by 4
+20 silly hasTags
+21 verbose hasTags true
+22 silly git-describe.sync "v1.0.0-alpha.0-1-g4b34695" => {"lastTagName":"v1.0.0-alpha.0","lastVersion":"v1.0.0-alpha.0","refCount":"1","sha":"4b34695","isDirty":false}
+23 info Looking for changed packages since v1.0.0-alpha.0
+24 verbose updated @ec-nordbund/anmeldung
+25 verbose updated @ec-nordbund/api
+26 verbose updated @ec-nordbund/app
+27 verbose updated @ec-nordbund/docs
+28 verbose updated @ec-nordbund/help
+29 verbose updated @ec-nordbund/lib
+30 verbose git-describe undefined => "v1.0.0-alpha.0-1-g4b34695"
+31 silly git-describe parsed => {"lastTagName":"v1.0.0-alpha.0","lastVersion":"v1.0.0-alpha.0","refCount":"1","sha":"4b34695","isDirty":false}
+32 silly batched [ PackageGraphNode {
+32 silly batched     name: '@ec-nordbund/anmeldung',
+32 silly batched     externalDependencies: Map { 'typescript' => [Object] },
+32 silly batched     localDependencies: Map {},
+32 silly batched     localDependents: Map {} },
+32 silly batched   PackageGraphNode {
+32 silly batched     name: '@ec-nordbund/api',
+32 silly batched     externalDependencies:
+32 silly batched      Map {
+32 silly batched        '@types/cors' => [Object],
+32 silly batched        '@types/eventemitter2' => [Object],
+32 silly batched        '@types/express' => [Object],
+32 silly batched        '@types/graphql' => [Object],
+32 silly batched        '@types/node' => [Object],
+32 silly batched        '@types/nodemailer' => [Object],
+32 silly batched        'typescript' => [Object],
+32 silly batched        'apollo-server-express' => [Object],
+32 silly batched        'body-parser' => [Object],
+32 silly batched        'cors' => [Object],
+32 silly batched        'express' => [Object],
+32 silly batched        'graphql' => [Object],
+32 silly batched        'graphql-subscriptions' => [Object],
+32 silly batched        'js-sha3' => [Object],
+32 silly batched        'node-latex' => [Object],
+32 silly batched        'nodemailer' => [Object],
+32 silly batched        'promise-mysql' => [Object] },
+32 silly batched     localDependencies: Map {},
+32 silly batched     localDependents: Map {} },
+32 silly batched   PackageGraphNode {
+32 silly batched     name: '@ec-nordbund/docs',
+32 silly batched     externalDependencies:
+32 silly batched      Map {
+32 silly batched        'graphql-markdown' => [Object],
+32 silly batched        'typescript' => [Object],
+32 silly batched        'vuepress' => [Object] },
+32 silly batched     localDependencies: Map {},
+32 silly batched     localDependents: Map {} },
+32 silly batched   PackageGraphNode {
+32 silly batched     name: '@ec-nordbund/help',
+32 silly batched     externalDependencies: Map { 'typescript' => [Object], 'vuepress' => [Object] },
+32 silly batched     localDependencies: Map {},
+32 silly batched     localDependents: Map {} },
+32 silly batched   PackageGraphNode {
+32 silly batched     name: '@ec-nordbund/lib',
+32 silly batched     externalDependencies: Map { 'typescript' => [Object], 'vue' => [Object] },
+32 silly batched     localDependencies: Map {},
+32 silly batched     localDependents: Map { '@ec-nordbund/app' => [PackageGraphNode] } } ]
+33 silly batched [ PackageGraphNode {
+33 silly batched     name: '@ec-nordbund/app',
+33 silly batched     externalDependencies:
+33 silly batched      Map {
+33 silly batched        '@types/electron-settings' => [Object],
+33 silly batched        '@types/electron-unhandled' => [Object],
+33 silly batched        '@types/graphql' => [Object],
+33 silly batched        '@types/node' => [Object],
+33 silly batched        '@types/node-fetch' => [Object],
+33 silly batched        '@vue/cli-service' => [Object],
+33 silly batched        'electron' => [Object],
+33 silly batched        'graphql-tag' => [Object],
+33 silly batched        'stylus' => [Object],
+33 silly batched        'stylus-loader' => [Object],
+33 silly batched        'typescript' => [Object],
+33 silly batched        'vue-cli-plugin-electron-builder' => [Object],
+33 silly batched        'vue-cli-plugin-vuetify' => [Object],
+33 silly batched        'vue-template-compiler' => [Object],
+33 silly batched        'vuetify-loader' => [Object],
+33 silly batched        '@vue/cli-plugin-typescript' => [Object],
+33 silly batched        'apollo-boost' => [Object],
+33 silly batched        'electron-settings' => [Object],
+33 silly batched        'electron-unhandled' => [Object],
+33 silly batched        'graphql' => [Object],
+33 silly batched        'js-sha3' => [Object],
+33 silly batched        'material-design-icons-iconfont' => [Object],
+33 silly batched        'node-fetch' => [Object],
+33 silly batched        'roboto-fontface' => [Object],
+33 silly batched        'vue' => [Object],
+33 silly batched        'vue-apollo' => [Object],
+33 silly batched        'vue-class-component' => [Object],
+33 silly batched        'vue-property-decorator' => [Object],
+33 silly batched        'vue-router' => [Object],
+33 silly batched        'vuetify' => [Object] },
+33 silly batched     localDependencies: Map {},
+33 silly batched     localDependents: Map {} } ]
+34 silly run-lifecycle No script for "preversion" in "ec-verwaltungs-app", continuing
+35 silly run-lifecycle No script for "preversion" in "@ec-nordbund/anmeldung", continuing
+36 silly run-lifecycle No script for "preversion" in "@ec-nordbund/api", continuing
+37 silly run-lifecycle No script for "preversion" in "@ec-nordbund/docs", continuing
+38 silly run-lifecycle No script for "preversion" in "@ec-nordbund/help", continuing
+39 silly run-lifecycle No script for "preversion" in "@ec-nordbund/lib", continuing
+40 silly run-lifecycle No script for "version" in "@ec-nordbund/anmeldung", continuing
+41 silly run-lifecycle No script for "version" in "@ec-nordbund/api", continuing
+42 silly run-lifecycle No script for "version" in "@ec-nordbund/help", continuing
+43 silly run-lifecycle No script for "version" in "@ec-nordbund/docs", continuing
+44 silly run-lifecycle No script for "version" in "@ec-nordbund/lib", continuing
+45 silly run-lifecycle No script for "preversion" in "@ec-nordbund/app", continuing
+46 silly run-lifecycle No script for "version" in "@ec-nordbund/app", continuing
+47 silly run-lifecycle No script for "version" in "ec-verwaltungs-app", continuing
+48 silly gitAdd [ 'B:\\app\\packages\\anmeldung\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\api\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\help\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\docs\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\lib\\package.json',
+48 silly gitAdd   'B:\\app\\packages\\app\\package.json',
+48 silly gitAdd   'B:\\app\\lerna.json' ]
+49 silly gitCommit v1.0.0-alpha.1
+50 verbose git [ 'commit', '-m', 'v1.0.0-alpha.1' ]
+51 silly gitTag v1.0.0-alpha.1
+52 verbose git [ 'tag', 'v1.0.0-alpha.1', '-m', 'v1.0.0-alpha.1' ]
+53 silly run-lifecycle No script for "postversion" in "@ec-nordbund/anmeldung", continuing
+54 silly run-lifecycle No script for "postversion" in "@ec-nordbund/api", continuing
+55 silly run-lifecycle No script for "postversion" in "@ec-nordbund/app", continuing
+56 silly run-lifecycle No script for "postversion" in "@ec-nordbund/docs", continuing
+57 silly run-lifecycle No script for "postversion" in "@ec-nordbund/help", continuing
+58 silly run-lifecycle No script for "postversion" in "@ec-nordbund/lib", continuing
+59 silly run-lifecycle No script for "postversion" in "ec-verwaltungs-app", continuing
+60 info git Pushing tags...
+61 silly gitPush origin monorepro
+62 silly batched [ PackageGraphNode {
+62 silly batched     name: '@ec-nordbund/anmeldung',
+62 silly batched     externalDependencies: Map {},
+62 silly batched     localDependencies: Map {},
+62 silly batched     localDependents: Map {} },
+62 silly batched   PackageGraphNode {
+62 silly batched     name: '@ec-nordbund/api',
+62 silly batched     externalDependencies:
+62 silly batched      Map {
+62 silly batched        'apollo-server-express' => [Object],
+62 silly batched        'body-parser' => [Object],
+62 silly batched        'cors' => [Object],
+62 silly batched        'express' => [Object],
+62 silly batched        'graphql' => [Object],
+62 silly batched        'graphql-subscriptions' => [Object],
+62 silly batched        'js-sha3' => [Object],
+62 silly batched        'node-latex' => [Object],
+62 silly batched        'nodemailer' => [Object],
+62 silly batched        'promise-mysql' => [Object] },
+62 silly batched     localDependencies: Map {},
+62 silly batched     localDependents: Map {} },
+62 silly batched   PackageGraphNode {
+62 silly batched     name: '@ec-nordbund/docs',
+62 silly batched     externalDependencies: Map {},
+62 silly batched     localDependencies: Map {},
+62 silly batched     localDependents: Map {} },
+62 silly batched   PackageGraphNode {
+62 silly batched     name: '@ec-nordbund/help',
+62 silly batched     externalDependencies: Map {},
+62 silly batched     localDependencies: Map {},
+62 silly batched     localDependents: Map {} },
+62 silly batched   PackageGraphNode {
+62 silly batched     name: '@ec-nordbund/lib',
+62 silly batched     externalDependencies: Map {},
+62 silly batched     localDependencies: Map {},
+62 silly batched     localDependents: Map { '@ec-nordbund/app' => [PackageGraphNode] } } ]
+63 silly batched [ PackageGraphNode {
+63 silly batched     name: '@ec-nordbund/app',
+63 silly batched     externalDependencies:
+63 silly batched      Map {
+63 silly batched        '@vue/cli-plugin-typescript' => [Object],
+63 silly batched        'apollo-boost' => [Object],
+63 silly batched        'electron-settings' => [Object],
+63 silly batched        'electron-unhandled' => [Object],
+63 silly batched        'graphql' => [Object],
+63 silly batched        'js-sha3' => [Object],
+63 silly batched        'material-design-icons-iconfont' => [Object],
+63 silly batched        'node-fetch' => [Object],
+63 silly batched        'roboto-fontface' => [Object],
+63 silly batched        'vue' => [Object],
+63 silly batched        'vue-apollo' => [Object],
+63 silly batched        'vue-class-component' => [Object],
+63 silly batched        'vue-property-decorator' => [Object],
+63 silly batched        'vue-router' => [Object],
+63 silly batched        'vuetify' => [Object] },
+63 silly batched     localDependencies: Map {},
+63 silly batched     localDependents: Map {} } ]
+64 info publish Publishing packages to npm...
+65 silly verifyNpmPackageAccess
+66 http fetch GET 200 https://registry.npmjs.org/-/org/mathe42/package?format=cli 948ms
+67 warn The logged-in user does not have any previously-published packages, skipping permission checks...
+68 silly getCurrentSHA
+69 verbose getCurrentSHA 81ecbe3add4129b7c1991b47195473e9253aec48
+70 silly run-lifecycle No script for "prepare" in "ec-verwaltungs-app", continuing
+71 silly run-lifecycle No script for "prepublishOnly" in "ec-verwaltungs-app", continuing
+72 silly run-lifecycle No script for "prepack" in "ec-verwaltungs-app", continuing
+73 verbose pack-directory packages\anmeldung
+74 verbose pack-directory packages\api
+75 verbose pack-directory packages\docs
+76 verbose pack-directory packages\help
+77 verbose pack-directory packages\lib
+78 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/anmeldung", continuing
+79 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/api", continuing
+80 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/docs", continuing
+81 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/help", continuing
+82 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/lib", continuing
+83 silly run-lifecycle No script for "prepare" in "@ec-nordbund/anmeldung", continuing
+84 silly run-lifecycle No script for "prepare" in "@ec-nordbund/api", continuing
+85 silly run-lifecycle No script for "prepare" in "@ec-nordbund/docs", continuing
+86 silly run-lifecycle No script for "prepare" in "@ec-nordbund/help", continuing
+87 silly run-lifecycle No script for "prepare" in "@ec-nordbund/lib", continuing
+88 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/anmeldung", continuing
+89 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/api", continuing
+90 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/docs", continuing
+91 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/help", continuing
+92 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/lib", continuing
+93 silly run-lifecycle No script for "prepack" in "@ec-nordbund/anmeldung", continuing
+94 silly run-lifecycle No script for "prepack" in "@ec-nordbund/api", continuing
+95 silly run-lifecycle No script for "prepack" in "@ec-nordbund/docs", continuing
+96 silly run-lifecycle No script for "prepack" in "@ec-nordbund/help", continuing
+97 silly run-lifecycle No script for "prepack" in "@ec-nordbund/lib", continuing
+98 silly run-lifecycle No script for "postpack" in "@ec-nordbund/anmeldung", continuing
+99 silly run-lifecycle No script for "postpack" in "@ec-nordbund/lib", continuing
+100 silly run-lifecycle No script for "postpack" in "@ec-nordbund/docs", continuing
+101 silly run-lifecycle No script for "postpack" in "@ec-nordbund/help", continuing
+102 silly run-lifecycle No script for "postpack" in "@ec-nordbund/api", continuing
+103 verbose pack-directory packages\app
+104 silly run-lifecycle No script for "prepublish" in "@ec-nordbund/app", continuing
+105 silly run-lifecycle No script for "prepare" in "@ec-nordbund/app", continuing
+106 silly run-lifecycle No script for "prepublishOnly" in "@ec-nordbund/app", continuing
+107 silly run-lifecycle No script for "prepack" in "@ec-nordbund/app", continuing
+108 silly run-lifecycle No script for "postpack" in "@ec-nordbund/app", continuing
+109 silly run-lifecycle No script for "postpack" in "ec-verwaltungs-app", continuing
+110 verbose publish @ec-nordbund/anmeldung
+111 verbose publish @ec-nordbund/api
+112 verbose publish @ec-nordbund/docs
+113 verbose publish @ec-nordbund/help
+114 silly run-lifecycle No script for "publish" in "@ec-nordbund/anmeldung", continuing
+115 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/anmeldung", continuing
+116 success published @ec-nordbund/anmeldung 1.0.0-alpha.1
+117 notice
+118 notice package: @ec-nordbund/anmeldung@1.0.0-alpha.1
+119 notice === Tarball Contents ===
+120 notice 815B   package.json
+120 notice 35.8kB LICENSE
+120 notice 146B   README.md
+120 notice 81B    lib/anmeldung.js
+121 notice === Tarball Details ===
+122 notice name:          @ec-nordbund/anmeldung
+122 notice version:       1.0.0-alpha.1
+122 notice filename:      ec-nordbund-anmeldung-1.0.0-alpha.1.tgz
+122 notice package size:  13.1 kB
+122 notice unpacked size: 36.9 kB
+122 notice shasum:        1e5c1cf3305fc3578b4ac58989949fd802c70f91
+122 notice integrity:     sha512-I54P8OHMPWguJ[...]CixF8Rk4JwMaA==
+122 notice total files:   4
+123 notice
+124 verbose publish @ec-nordbund/lib
+125 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fanmeldung 4543ms
+126 silly run-lifecycle No script for "publish" in "@ec-nordbund/help", continuing
+127 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/help", continuing
+128 success published @ec-nordbund/help 1.0.0-alpha.1
+129 notice
+130 notice package: @ec-nordbund/help@1.0.0-alpha.1
+131 notice === Tarball Contents ===
+132 notice 707B    package.json
+132 notice 35.8kB  LICENSE
+132 notice 844B    README.md
+132 notice 245.2kB yarn.lock
+132 notice 453B    .vuepress/config.js
+132 notice 3.8kB   generatoren/README.md
+132 notice 1.8kB   hilfe/README.md
+133 notice === Tarball Details ===
+134 notice name:          @ec-nordbund/help
+134 notice version:       1.0.0-alpha.1
+134 notice filename:      ec-nordbund-help-1.0.0-alpha.1.tgz
+134 notice package size:  78.9 kB
+134 notice unpacked size: 288.5 kB
+134 notice shasum:        0d25899882d03946380e574117d233ebf951dfb3
+134 notice integrity:     sha512-uWw3SL2n5amJS[...]beDFFmGKnepVQ==
+134 notice total files:   7
+135 notice
+136 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fhelp 5266ms
+137 silly run-lifecycle No script for "publish" in "@ec-nordbund/api", continuing
+138 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/api", continuing
+139 success published @ec-nordbund/api 1.0.0-alpha.1
+140 notice
+141 notice package: @ec-nordbund/api@1.0.0-alpha.1
+142 notice === Tarball Contents ===
+143 notice 1.3kB  package.json
+143 notice 35.8kB LICENSE
+143 notice 128B   README.md
+143 notice 116B   lib/api_dev.ts
+143 notice 394B   lib/api_master.ts
+143 notice 798B   lib/express.ts
+143 notice 159B   lib/nichtErlaubteVersionen.ts
+143 notice 2.0kB  lib/schema/index.ts
+143 notice 854B   lib/schema/mail.ts
+143 notice 1.9kB  lib/schema/mutationen/ak.ts
+143 notice 19.3kB lib/schema/mutationen/anmeldungen.ts
+143 notice 8.8kB  lib/schema/mutationen/kontakt.ts
+143 notice 1.7kB  lib/schema/mutationen/organisation.ts
+143 notice 6.7kB  lib/schema/mutationen/personen.ts
+143 notice 1.4kB  lib/schema/mutationen/serienbriefe.ts
+143 notice 823B   lib/schema/mutationen/sonstiges.ts
+143 notice 5.6kB  lib/schema/mutationen/users.ts
+143 notice 7.9kB  lib/schema/mutationen/veranstaltungen.ts
+143 notice 4.9kB  lib/schema/mutationen/veranstaltungsOrte.ts
+143 notice 354B   lib/schema/mysql.ts
+143 notice 768B   lib/schema/querys/ak.ts
+143 notice 2.1kB  lib/schema/querys/anmeldungen.ts
+143 notice 19B    lib/schema/querys/dublikate.ts
+143 notice 380B   lib/schema/querys/ecKreis.ts
+143 notice 902B   lib/schema/querys/organisationen.ts
+143 notice 1.4kB  lib/schema/querys/personen.ts
+143 notice 894B   lib/schema/querys/serienbriefe.ts
+143 notice 1.7kB  lib/schema/querys/sonstiges.ts
+143 notice 966B   lib/schema/querys/users.ts
+143 notice 953B   lib/schema/querys/veranstaltungen.ts
+143 notice 814B   lib/schema/querys/veranstaltungsorte.ts
+143 notice 1.2kB  lib/schema/sonstiges.ts
+143 notice 665B   lib/schema/types/adresse.ts
+143 notice 1.0kB  lib/schema/types/ak.ts
+143 notice 885B   lib/schema/types/akStatus.ts
+143 notice 403B   lib/schema/types/alert.ts
+143 notice 8.0kB  lib/schema/types/anmeldung.ts
+143 notice 1.3kB  lib/schema/types/date.ts
+143 notice 417B   lib/schema/types/ecKreis.ts
+143 notice 522B   lib/schema/types/email.ts
+143 notice 767B   lib/schema/types/fz.ts
+143 notice 324B   lib/schema/types/fzAntrag.ts
+143 notice 1.5kB  lib/schema/types/index.ts
+143 notice 1.2kB  lib/schema/types/organisation.ts
+143 notice 7.1kB  lib/schema/types/person.ts
+143 notice 1.4kB  lib/schema/types/personAK.ts
+143 notice 521B   lib/schema/types/serienbriefe.ts
+143 notice 644B   lib/schema/types/telefon.ts
+143 notice 1.8kB  lib/schema/types/timeStamp.ts
+143 notice 856B   lib/schema/types/user.ts
+143 notice 800B   lib/schema/types/userGroup.ts
+143 notice 3.2kB  lib/schema/types/veranstaltung.ts
+143 notice 3.6kB  lib/schema/types/vOrte.ts
+143 notice 560B   lib/schema/types/vOrtKontakt.ts
+143 notice 6.9kB  lib/serienbrief/fz.ts
+143 notice 120B   lib/serienbrief/latex.ts
+143 notice 575B   lib/users/authKey.ts
+143 notice 6.0kB  lib/users/index.ts
+143 notice 2.1kB  lib/users/user.ts
+143 notice 319B   lib/users/userGroup.ts
+143 notice 35B    lib/version.ts
+144 notice === Tarball Details ===
+145 notice name:          @ec-nordbund/api
+145 notice version:       1.0.0-alpha.1
+145 notice filename:      ec-nordbund-api-1.0.0-alpha.1.tgz
+145 notice package size:  35.4 kB
+145 notice unpacked size: 166.7 kB
+145 notice shasum:        7e57ddfa1cd664b7c7f5e5da30e55d7883da5216
+145 notice integrity:     sha512-NfiGGrV4+T0/0[...]C8g05nbhaaGpQ==
+145 notice total files:   61
+146 notice
+147 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fapi 9557ms
+148 silly run-lifecycle No script for "publish" in "@ec-nordbund/docs", continuing
+149 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/docs", continuing
+150 success published @ec-nordbund/docs 1.0.0-alpha.1
+151 notice
+152 notice package: @ec-nordbund/docs@1.0.0-alpha.1
+153 notice === Tarball Contents ===
+154 notice 1.0kB   package.json
+154 notice 35.8kB  LICENSE
+154 notice 844B    README.md
+154 notice 246.6kB yarn.lock
+154 notice 441B    .vuepress/config.js
+154 notice 89.3kB  api/README.md
+154 notice 604B    app/README.md
+155 notice === Tarball Details ===
+156 notice name:          @ec-nordbund/docs
+156 notice version:       1.0.0-alpha.1
+156 notice filename:      ec-nordbund-docs-1.0.0-alpha.1.tgz
+156 notice package size:  83.5 kB
+156 notice unpacked size: 374.6 kB
+156 notice shasum:        1eebba2c4c3ded2f7fa1b71522f06149d1617687
+156 notice integrity:     sha512-y6L/TZffW/NAw[...]ovg4Ay+V4Ve4A==
+156 notice total files:   7
+157 notice
+158 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2fdocs 9949ms
+159 silly run-lifecycle No script for "publish" in "@ec-nordbund/lib", continuing
+160 silly run-lifecycle No script for "postpublish" in "@ec-nordbund/lib", continuing
+161 success published @ec-nordbund/lib 1.0.0-alpha.1
+162 notice
+163 notice package: @ec-nordbund/lib@1.0.0-alpha.1
+164 notice === Tarball Contents ===
+165 notice 819B   package.json
+165 notice 35.8kB LICENSE
+165 notice 128B   README.md
+165 notice 74B    lib/lib.ts
+166 notice === Tarball Details ===
+167 notice name:          @ec-nordbund/lib
+167 notice version:       1.0.0-alpha.1
+167 notice filename:      ec-nordbund-lib-1.0.0-alpha.1.tgz
+167 notice package size:  13.2 kB
+167 notice unpacked size: 36.8 kB
+167 notice shasum:        47ea4429dd117c1afc9fc31ad26029d011c61588
+167 notice integrity:     sha512-AIMXFKAiO+NFu[...]D/s3lKAFjc+jw==
+167 notice total files:   4
+168 notice
+169 verbose publish @ec-nordbund/app
+170 http fetch PUT 200 https://registry.npmjs.org/@ec-nordbund%2flib 5769ms
+171 http fetch PUT 402 https://registry.npmjs.org/@ec-nordbund%2fapp 2993ms
+172 error Error: 402 Payment Required - PUT https://registry.npmjs.org/@ec-nordbund%2fapp - You must sign up for private packages
+172 error     at res.buffer.catch.then.body (B:\app\node_modules\npm-registry-fetch\check-response.js:104:15)

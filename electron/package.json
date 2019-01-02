@@ -31,7 +31,6 @@
     "win32"
   ],
   "main": "src/main/main.js",
-  "private": false,
   "scripts": {
     "start": "node ./node_modules/@electron-forge/cli/dist/electron-forge.js start",
     "package": "node ./node_modules/@electron-forge/cli/dist/electron-forge.js package",

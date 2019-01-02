@@ -29,5 +29,6 @@
   "devDependencies": {
     "typescript": "^3.2.2",
     "vue": "^2.5.21"
-  }
+  },
+  "gitHead": "81ecbe3add4129b7c1991b47195473e9253aec48"
 }

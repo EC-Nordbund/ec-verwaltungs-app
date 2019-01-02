@@ -22,5 +22,6 @@
   "devDependencies": {
     "typescript": "^3.2.2",
     "vuepress": "^0.14.8"
-  }
+  },
+  "gitHead": "81ecbe3add4129b7c1991b47195473e9253aec48"
 }

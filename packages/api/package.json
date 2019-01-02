@@ -46,5 +46,6 @@
     "node-latex": "^2.4.4",
     "nodemailer": "^5.0.0",
     "promise-mysql": "^3.3.1"
-  }
+  },
+  "gitHead": "81ecbe3add4129b7c1991b47195473e9253aec48"
 }
