@@ -1,18 +1,16 @@
-import { query } from '../mysql';
-import { vorte } from '.';
-import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants';
+import { query } from "../mysql";
+import { vorte } from ".";
+import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from "constants";
 import {
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-  } from 'graphql';
-
-
+  } from "graphql";
 
 export const _organisationen = new GraphQLObjectType({
-  name: 'oraType',
+  name: "oraType",
   fields: () => ({
     organisationsID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -30,7 +28,7 @@ export const _organisationen = new GraphQLObjectType({
           `SELECT * FROM vOrte WHERE organisitationID = ${
             parent.organisationsID
           }`
-        )
+        );
       }
     },
     strasse: {
@@ -55,4 +53,4 @@ export const _organisationen = new GraphQLObjectType({
       type: GraphQLString
     }
   })
-})
+});

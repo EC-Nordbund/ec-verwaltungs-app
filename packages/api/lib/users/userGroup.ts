@@ -2,14 +2,14 @@ export class userGroup {
   constructor(
     public userGroupID: number,
     public bezeichnung: string,
-    public mutationRechte: Array<string>,
-    public fieldAccess: Array<{
+    public mutationRechte: string[],
+    public fieldAccess: {
       table: string
       field: string
-    }>
+    }[]
   ) { }
   
-  toSave(): String {
-    return JSON.stringify(this, null, 2)
+  public toSave(): String {
+    return JSON.stringify(this, null, 2);
   }
 }

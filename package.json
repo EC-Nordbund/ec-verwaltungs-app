@@ -1,6 +1,6 @@
 {
-  "name": "ec-verwaltungs-app",
-  "version": "2.0.0",
+  "name": "@ec-nordbund/mono-app",
+  "version": "0.0.0",
   "description": "EC-Verwaltungs Application",
   "keywords": [],
   "homepage": "https://ec-nordbund.de",
@@ -37,8 +37,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "lerna": "^3.8.1",
-    "typescript": "^3.2.2",
-    "vue": "^2.5.21"
+    "lerna": "^3.8.1"
   }
 }

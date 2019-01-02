@@ -1,15 +1,15 @@
-import { person, date, userGroup } from '.'
+import { person, date, userGroup } from ".";
 import {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLInt,
   GraphQLString
-} from 'graphql'
+} from "graphql";
 
-import { query } from '../mysql'
+import { query } from "../mysql";
 
 export const _user = new GraphQLObjectType({
-  name: 'user',
+  name: "user",
   fields: () => ({
     userID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -24,17 +24,17 @@ export const _user = new GraphQLObjectType({
           `SELECT * FROM personen WHERE personID = ${
             _.personID
           }`
-        ).then(v => v[0])
+        ).then(v => v[0]);
       }
     },
     ablaufDatum: {
       type: new GraphQLNonNull(date),
       resolve(_) {
-        return new Date(_.ablaufDatum)
+        return new Date(_.ablaufDatum);
       }
     },
     userGroup: {
       type: new GraphQLNonNull(userGroup)
     }
   })
-})
+});

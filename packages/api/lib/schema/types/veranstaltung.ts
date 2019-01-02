@@ -1,5 +1,5 @@
-import { query } from '../mysql';
-import { anmeldung, date, vorte } from '.';
+import { query } from "../mysql";
+import { anmeldung, date, vorte } from ".";
 import {
   GraphQLBoolean,
   GraphQLInt,
@@ -7,10 +7,10 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-  } from 'graphql';
+  } from "graphql";
 
 export const _veranstaltung = new GraphQLObjectType({
-  name: 'veranstaltung',
+  name: "veranstaltung",
   fields: () => ({
     veranstaltungsID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -28,7 +28,7 @@ export const _veranstaltung = new GraphQLObjectType({
           `SELECT * FROM anmeldungen WHERE veranstaltungsID = ${
             parent.veranstaltungsID
           } ORDER BY anmeldeZeitpunkt`
-        )
+        );
       }
     },
     veranstaltungsort: {
@@ -38,7 +38,7 @@ export const _veranstaltung = new GraphQLObjectType({
           `SELECT * FROM vOrte WHERE vOrtID = ${
             parent.veranstaltungsort
           }`
-        ).then(v => v[0])
+        ).then(v => v[0]);
       }
     },
     begin: {
@@ -56,19 +56,19 @@ export const _veranstaltung = new GraphQLObjectType({
     anzahlPlaetze: {
       type: new GraphQLNonNull(GraphQLInt),
       resolve(parent) {
-        return parent.anzahlPlätze
+        return parent.anzahlPlätze;
       }
     },
     anzahlPlaetzeW: {
       type: new GraphQLNonNull(GraphQLInt),
       resolve(parent) {
-        return parent.anzahlPlätzeWeiblich
+        return parent.anzahlPlätzeWeiblich;
       }
     },
     anzahlPlaetzeM: {
       type: new GraphQLNonNull(GraphQLInt),
       resolve(parent) {
-        return parent.anzahlPlätzeMännlich
+        return parent.anzahlPlätzeMännlich;
       }
     },
     preisFruehbucher: {
@@ -126,4 +126,4 @@ export const _veranstaltung = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString)
     }
   })
-})
+});

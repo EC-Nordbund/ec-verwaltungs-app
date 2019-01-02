@@ -1,5 +1,5 @@
-import { user } from '../../users/user';
-import { query } from '../mysql';
+import { user } from "../../users/user";
+import { query } from "../mysql";
 import {
   adresse,
   email,
@@ -7,7 +7,7 @@ import {
   telefon,
   timeStamp,
   veranstaltung
-  } from '.';
+  } from ".";
 import {
   GraphQLBoolean,
   GraphQLFloat,
@@ -15,10 +15,10 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-  } from 'graphql';
+  } from "graphql";
 
 export const _anmeldung = new GraphQLObjectType({
-  name: 'anmeldung',
+  name: "anmeldung",
   fields: () => ({
     anmeldeID: {
       type: new GraphQLNonNull(GraphQLString),
@@ -26,15 +26,15 @@ export const _anmeldung = new GraphQLObjectType({
     person: {
       type: new GraphQLNonNull(person),
       async resolve(parent) {
-        const person = await query(`SELECT * FROM personen WHERE personID = ${parent.personID}`)
-        return person[0]
+        const person = await query(`SELECT * FROM personen WHERE personID = ${parent.personID}`);
+        return person[0];
       },
     },
     veranstaltung: {
       type: new GraphQLNonNull(veranstaltung),
       async resolve(parent) {
-        const veranstaltung = await query(`SELECT * FROM veranstaltungen WHERE veranstaltungsID = ${parent.veranstaltungsID}`)
-        return veranstaltung[0]
+        const veranstaltung = await query(`SELECT * FROM veranstaltungen WHERE veranstaltungsID = ${parent.veranstaltungsID}`);
+        return veranstaltung[0];
       },
     },
     position: {
@@ -43,22 +43,22 @@ export const _anmeldung = new GraphQLObjectType({
     adresse: {
       type: new GraphQLNonNull(adresse),
       async resolve(parent) {
-        const adresse = await query(`SELECT * FROM adressen WHERE adressID = ${parent.adressID}`)
-        return adresse[0]
+        const adresse = await query(`SELECT * FROM adressen WHERE adressID = ${parent.adressID}`);
+        return adresse[0];
       },
     },
     email: {
       type: new GraphQLNonNull(email),
       async resolve(parent) {
-        const email = await query(`SELECT * FROM eMails WHERE eMailID = ${parent.eMailID}`)
-        return email[0]
+        const email = await query(`SELECT * FROM eMails WHERE eMailID = ${parent.eMailID}`);
+        return email[0];
       },
     },
     telefon: {
       type: new GraphQLNonNull(telefon),
       async resolve(parent) {
-        const telefon = await query(`SELECT * FROM telefone WHERE telefonID = ${parent.telefonID}`)
-        return telefon[0]
+        const telefon = await query(`SELECT * FROM telefone WHERE telefonID = ${parent.telefonID}`);
+        return telefon[0];
       },
     },
     wartelistenPlatz: {
@@ -69,13 +69,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'finanzen',
+            table: "anmeldungen",
+            field: "finanzen",
           })
         ) {
-          return parent.bisherBezahlt
+          return parent.bisherBezahlt;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -90,13 +90,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'finanzen',
+            table: "anmeldungen",
+            field: "finanzen",
           })
         ) {
-          return parent.abmeldeGebuehr
+          return parent.abmeldeGebuehr;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -105,13 +105,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'abmeldung',
+            table: "anmeldungen",
+            field: "abmeldung",
           })
         ) {
-          return parent.wegDerAbmeldung
+          return parent.wegDerAbmeldung;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -120,13 +120,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'finanzen',
+            table: "anmeldungen",
+            field: "finanzen",
           })
         ) {
-          return parent.rueckbezahlt
+          return parent.rueckbezahlt;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -135,13 +135,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'abmeldung',
+            table: "anmeldungen",
+            field: "abmeldung",
           })
         ) {
-          return parent.kommentarAbmeldung
+          return parent.kommentarAbmeldung;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -150,13 +150,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'bemerkungen',
+            table: "anmeldungen",
+            field: "bemerkungen",
           })
         ) {
-          return parent.vegetarisch
+          return parent.vegetarisch;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -165,13 +165,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'bemerkungen',
+            table: "anmeldungen",
+            field: "bemerkungen",
           })
         ) {
-          return parent.lebensmittelAllergien
+          return parent.lebensmittelAllergien;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -180,13 +180,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'bemerkungen',
+            table: "anmeldungen",
+            field: "bemerkungen",
           })
         ) {
-          return parent.gesundheitsinformationen
+          return parent.gesundheitsinformationen;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -195,13 +195,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'bemerkungen',
+            table: "anmeldungen",
+            field: "bemerkungen",
           })
         ) {
-          return parent.bemerkungen
+          return parent.bemerkungen;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -210,13 +210,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'erlaubnisse',
+            table: "anmeldungen",
+            field: "erlaubnisse",
           })
         ) {
-          return parent.radfahren
+          return parent.radfahren;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -225,13 +225,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'erlaubnisse',
+            table: "anmeldungen",
+            field: "erlaubnisse",
           })
         ) {
-          return parent.fahrgemeinschaften
+          return parent.fahrgemeinschaften;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -240,13 +240,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'erlaubnisse',
+            table: "anmeldungen",
+            field: "erlaubnisse",
           })
         ) {
-          return parent.klettern
+          return parent.klettern;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -255,13 +255,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'erlaubnisse',
+            table: "anmeldungen",
+            field: "erlaubnisse",
           })
         ) {
-          return parent.sichEntfernen
+          return parent.sichEntfernen;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -270,13 +270,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'erlaubnisse',
+            table: "anmeldungen",
+            field: "erlaubnisse",
           })
         ) {
-          return parent.bootFahren
+          return parent.bootFahren;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -285,13 +285,13 @@ export const _anmeldung = new GraphQLObjectType({
       resolve(parent, args, context: { user: user }) {
         if (
           context.user.checkAlowedFileds({
-            table: 'anmeldungen',
-            field: 'erlaubnisse',
+            table: "anmeldungen",
+            field: "erlaubnisse",
           })
         ) {
-          return parent.schwimmen
+          return parent.schwimmen;
         } else {
-          return null
+          return null;
         }
       },
     },
@@ -308,4 +308,4 @@ export const _anmeldung = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString),
     },
   }),
-})
+});

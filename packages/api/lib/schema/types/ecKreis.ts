@@ -3,10 +3,10 @@ import {
   GraphQLNonNull,
   GraphQLInt,
   GraphQLString
-} from 'graphql'
+} from "graphql";
 
 export const _ecKreis = new GraphQLObjectType({
-  name: 'ecKreis',
+  name: "ecKreis",
   fields: () => ({
     ecKreisID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -18,4 +18,4 @@ export const _ecKreis = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString)
     }
   })
-})
+});

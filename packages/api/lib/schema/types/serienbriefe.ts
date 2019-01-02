@@ -3,10 +3,10 @@ import {
   GraphQLNonNull,
   GraphQLInt,
   GraphQLString
-} from 'graphql'
+} from "graphql";
 
 export const _serienbrief = new GraphQLObjectType({
-  name: 'Serienbrief',
+  name: "Serienbrief",
   fields: () => ({
     sbID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -21,4 +21,4 @@ export const _serienbrief = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString)
     }
   })
-})
+});

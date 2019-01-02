@@ -1,12 +1,11 @@
-import { query } from '../mysql';
-import { addAuth, handleAllowed } from '../sonstiges';
+import { query } from "../mysql";
+import { addAuth, handleAllowed } from "../sonstiges";
 import {
   GraphQLBoolean,
   GraphQLInt,
   GraphQLNonNull,
   GraphQLString
-  } from 'graphql';
-
+  } from "graphql";
 
 export default {
   addVeranstaltungsort: {
@@ -36,8 +35,8 @@ export default {
         `INSERT INTO vOrte(bezeichnung, strasse, plz, ort, land, organisitationID) VALUES("${args.bezeichnung}", "${args.strasse}", "${args.plz}", "${args.ort}", "${args.land}", "${
           args.organisationsID
         }")`,
-      )
-    }, 'vorte'),
+      );
+    }, "vorte"),
   },
   veranstaltungsortEditStamm: {
     type: GraphQLBoolean,
@@ -69,8 +68,8 @@ export default {
         `UPDATE vOrte SET bezeichnung = "${args.bezeichnung}", strasse = "${args.strasse}",  plz= "${args.plz}", ort = "${args.ort}",land  = "${args.land}", organisitationID=${
           args.organisationsID
         } WHERE vOrtID = ${args.vOrtID}`,
-      )
-    }, 'vorte'),
+      );
+    }, "vorte"),
   },
   veranstaltungsortEditSonstiges: {
     type: GraphQLBoolean,
@@ -99,8 +98,8 @@ export default {
         `UPDATE vOrte SET anzahl_min=${args.anzahl_min}, anzahl_max=${args.anzahl_max}, notizen = ${args.notizen ? '"' + args.notizen + '"' : null}, vollverpflegung=${
           args.vollverpflegung
         }, selbstversorger=${args.selbstversorger} WHERE vOrtID = ${args.vOrtID}`,
-      )
-    }, 'vorte'),
+      );
+    }, "vorte"),
   },
   veranstaltungsortAddKontakt: {
     type: GraphQLBoolean,
@@ -122,8 +121,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`INSERT INTO vOrtKontakt (vOrt, ansprechpartner, typ, telefon, email) VALUES (${args.vOrtID}, "${args.ansprechpartner}", "${args.typ}", "${args.telefon}", "${args.email}")`)
-    }, 'vorte'),
+      return query(`INSERT INTO vOrtKontakt (vOrt, ansprechpartner, typ, telefon, email) VALUES (${args.vOrtID}, "${args.ansprechpartner}", "${args.typ}", "${args.telefon}", "${args.email}")`);
+    }, "vorte"),
   },
   veranstaltungsortEditKontakt: {
     type: GraphQLBoolean,
@@ -152,8 +151,8 @@ export default {
         `UPDATE vOrtKontakt SET ansprechpartner="${args.ansprechpartner}", typ="${args.typ}", telefon="${args.telefon}", email="${args.email}", notizen="${args.notizen}" WHERE vOrtKontaktID= ${
           args.vOrtKontaktID
         }`,
-      )
-    }, 'vorte'),
+      );
+    }, "vorte"),
   },
   veranstaltungsortDeleteKontakt: {
     type: GraphQLBoolean,
@@ -163,7 +162,7 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`DELETE FROM vOrtKontakt WHERE vOrtKontaktID = ${args.vOrtKontaktID}`)
-    }, 'vorte'),
+      return query(`DELETE FROM vOrtKontakt WHERE vOrtKontaktID = ${args.vOrtKontaktID}`);
+    }, "vorte"),
   },
-}
+};

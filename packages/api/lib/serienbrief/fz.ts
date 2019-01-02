@@ -1,19 +1,19 @@
-import { latex } from './latex';
-import mail from '../schema/mail';
-import { query } from '../schema/mysql';
-import { createWriteStream, readFileSync } from 'fs';
+import { latex } from "./latex";
+import mail from "../schema/mail";
+import { query } from "../schema/mysql";
+import { createWriteStream, readFileSync } from "fs";
 
-export const createFZ = (personID: number, email: string, adressID: number = -1) => {
+export const createFZ = (personID: number, email: string, adressID = -1) => {
   createFZWithData(personID, adressID).then(file => {
     query(`SELECT vorname, nachname, geschlecht FROM personen WHERE personID = ${personID}`).then(rows => {
-      const p = rows[0]
+      const p = rows[0];
       mail(
-        'fz@ec-nordbund.de',
+        "fz@ec-nordbund.de",
         { to: email },
-        'Erweitertes Führungszeugnis',
+        "Erweitertes Führungszeugnis",
         `<p>Hey <b>${p.vorname} ${p.nachname}</b>,</p>
         <p>du bist als Mitarbeiter${
-          p.geschlecht === 'w' ? 'in' : ''
+          p.geschlecht === "w" ? "in" : ""
         } im EC-Nordbund überregional oder in deiner Gemeinschaft/Gemeinde vor Ort tätig. Das freut uns ungemein. <b>Danke für deinen Einsatz.</b><br>
         Der Gesetzgeber verlangt von uns, dass wir alle fünf Jahre Einsicht in ein <u><i>aktuelles</i> erweitertes Führungszeugnis</u> nehmen müssen.<br>
         Im Anhang findest du das Formular, mit dem Du <u>bei deiner zuständigen Meldebehörde</u> das Führungszeugnis beantragen kannst.<br>
@@ -24,41 +24,41 @@ export const createFZ = (personID: number, email: string, adressID: number = -1)
         <p>Entschieden für Christus grüßt</p>
         <p><b>ThomaS:-)</b></p>`,
         true,
-        [{ content: file, filename: 'fzAntrag.pdf' }],
-      )
-    })
-  })
-}
+        [{ content: file, filename: "fzAntrag.pdf" }],
+      );
+    });
+  });
+};
 
-export function createFZWithData(personID: number, adressID: number = -1): Promise<string> {
+export function createFZWithData(personID: number, adressID = -1): Promise<string> {
   return new Promise((res, rej) => {
     if (adressID === -1) {
-      query(`SELECT adressID FROM adressen WHERE personID = ${personID} AND isOld = 0 ORDER BY lastUsed LIMIT 1`).then((row: Array<{ adressID: number }>) => {
+      query(`SELECT adressID FROM adressen WHERE personID = ${personID} AND isOld = 0 ORDER BY lastUsed LIMIT 1`).then((row: { adressID: number }[]) => {
         if (row.length === 0) {
-          res('Keine Gültige Adresse gefunden')
+          res("Keine Gültige Adresse gefunden");
         } else {
-          createFZWithData(personID, row[0].adressID).then(res)
+          createFZWithData(personID, row[0].adressID).then(res);
         }
-      })
+      });
     } else {
-      query(`SELECT strasse, plz, ort FROM adressen WHERE adressID = ${adressID}`).then((adressen: Array<{ strasse: string; plz: string; ort: string }>) => {
+      query(`SELECT strasse, plz, ort FROM adressen WHERE adressID = ${adressID}`).then((adressen: { strasse: string; plz: string; ort: string }[]) => {
         query(`SELECT vorname, nachname, gebDat, geschlecht FROM personen WHERE personID = ${personID}`).then(
           (
-            personen: Array<{
+            personen: {
               vorname: string
               nachname: string
               gebDat: Date
               geschlecht: string
-            }>,
+            }[],
           ) => {
-            const p = personen[0]
-            const a = adressen[0]
-            createFZDocument(p.vorname, p.nachname, `${p.gebDat.getDate()}.${p.gebDat.getMonth() + 1}.${p.gebDat.getFullYear()}`, a.strasse, a.plz, a.ort, p.geschlecht).then(res)
+            const p = personen[0];
+            const a = adressen[0];
+            createFZDocument(p.vorname, p.nachname, `${p.gebDat.getDate()}.${p.gebDat.getMonth() + 1}.${p.gebDat.getFullYear()}`, a.strasse, a.plz, a.ort, p.geschlecht).then(res);
           },
-        )
-      })
+        );
+      });
     }
-  })
+  });
 }
 
 function createFZDocument(vorname: string, nachname: string, gebDat: string, strasse: string, plz: string, ort: string, geschlecht: string): Promise<string> {
@@ -68,8 +68,8 @@ function createFZDocument(vorname: string, nachname: string, gebDat: string, str
     \\newcommand{\\ecStrasse}{${strasse}}
     \\newcommand{\\ecPLZ}{${plz}}
     \\newcommand{\\ecOrt}{${ort}}
-    \\newcommand{\\ecGeschlecht}{${geschlecht === 'm' ? 0 : 1}}
-  `
+    \\newcommand{\\ecGeschlecht}{${geschlecht === "m" ? 0 : 1}}
+  `;
 
   const latexCode = `
   \\documentclass[version=last]{scrlttr2}
@@ -137,14 +137,14 @@ Wir bitten darum, \\ecName{} Gebührenbefreiung gemäß §12 JVKostO zu gewähre
 \\closing{Mit freundlichen Grüßen}
 \\end{letter}
 \\end{document}
-  `
+  `;
 
   return new Promise<string>((res, rej) => {
-    let pdf = latex(latexCode)
-    pdf.pipe(createWriteStream('../../tmp/output.pdf'))
-    pdf.on('error', rej)
-    pdf.on('finish', () => {
-      res(readFileSync('../../tmp/output.pdf').toString('base64'))
-    })
-  })
+    const pdf = latex(latexCode);
+    pdf.pipe(createWriteStream("../../tmp/output.pdf"));
+    pdf.on("error", rej);
+    pdf.on("finish", () => {
+      res(readFileSync("../../tmp/output.pdf").toString("base64"));
+    });
+  });
 }

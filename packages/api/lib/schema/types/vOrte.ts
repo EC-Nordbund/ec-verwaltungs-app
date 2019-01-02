@@ -5,14 +5,14 @@ import {
   GraphQLObjectType,
   GraphQLList,
   GraphQLBoolean
-} from 'graphql'
+} from "graphql";
 
-import { query } from '../mysql'
+import { query } from "../mysql";
 
-import { vortKontakt, organisation, veranstaltung } from '.'
+import { vortKontakt, organisation, veranstaltung } from ".";
 
 export const _vorte = new GraphQLObjectType({
-  name: 'vorteType',
+  name: "vorteType",
   fields: () => ({
     vOrtID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -24,7 +24,7 @@ export const _vorte = new GraphQLObjectType({
           `SELECT * FROM veranstaltungen WHERE veranstaltungsort = ${
             parent.vOrtID
           } `
-        )
+        );
       }
     },
     organisation: {
@@ -32,17 +32,17 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
           return query(
             `SELECT * FROM organisationen WHERE organisationsID = ${
               parent.organisitationID
             }`
-          ).then(v => v[0])
+          ).then(v => v[0]);
         } else {
-          return null
+          return null;
         }
       }
     },
@@ -66,13 +66,13 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
-          return parent.notizen
+          return parent.notizen;
         } else {
-          return null
+          return null;
         }
       }
     },
@@ -81,13 +81,13 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
-          return parent.anzahl_max
+          return parent.anzahl_max;
         } else {
-          return null
+          return null;
         }
       }
     },
@@ -96,13 +96,13 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
-          return parent.anzahl_min
+          return parent.anzahl_min;
         } else {
-          return null
+          return null;
         }
       }
     },
@@ -111,13 +111,13 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
-          return parent.vollverpflegung
+          return parent.vollverpflegung;
         } else {
-          return null
+          return null;
         }
       }
     },
@@ -126,13 +126,13 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
-          return parent.selbstversorger
+          return parent.selbstversorger;
         } else {
-          return null
+          return null;
         }
       }
     },
@@ -141,19 +141,19 @@ export const _vorte = new GraphQLObjectType({
       resolve(parent, _, context) {
         if (
           context.user.checkAlowedFileds({
-            table: 'vOrte',
-            field: 'extended'
+            table: "vOrte",
+            field: "extended"
           })
         ) {
           return query(
             `SELECT * FROM vOrtKontakt WHERE vOrt=${
               parent.vOrtID
             }`
-          )
+          );
         } else {
-          return []
+          return [];
         }
       }
     }
   })
-})
+});

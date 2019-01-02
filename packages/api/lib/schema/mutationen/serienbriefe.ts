@@ -1,13 +1,12 @@
-import { query } from '../mysql';
-import { addAuth, handleAllowed } from '../sonstiges';
-import * as Promise from 'bluebird';
+import { query } from "../mysql";
+import { addAuth, handleAllowed } from "../sonstiges";
+import * as Promise from "bluebird";
 import {
   GraphQLBoolean,
   GraphQLInt,
   GraphQLNonNull,
   GraphQLString
-  } from 'graphql';
-
+  } from "graphql";
 
 export default {
   serienbriefAdd: {
@@ -24,8 +23,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`INSERT INTO serienbriefe(bezeichnung, docxDocument, geschlechterspizifischeAttribute) VALUES ("${args.bezeichnung}","${args.docx}","${args.geschlecht}")`)
-    }, 'serienbrief'),
+      return query(`INSERT INTO serienbriefe(bezeichnung, docxDocument, geschlechterspizifischeAttribute) VALUES ("${args.bezeichnung}","${args.docx}","${args.geschlecht}")`);
+    }, "serienbrief"),
   },
   serienbriefEdit: {
     type: GraphQLBoolean,
@@ -44,7 +43,7 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE serienbriefe SET bezeichnung="${args.bezeichnung}", docxDocument="${args.docx}", geschlechterspizifischeAttribute="${args.geschlecht}"`)
-    }, 'serienbrief'),
+      return query(`UPDATE serienbriefe SET bezeichnung="${args.bezeichnung}", docxDocument="${args.docx}", geschlechterspizifischeAttribute="${args.geschlecht}"`);
+    }, "serienbrief"),
   },
-}
+};

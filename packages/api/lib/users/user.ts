@@ -1,13 +1,13 @@
-import { userGroup } from './userGroup';
-import { userGroups } from '.';
+import { userGroup } from "./userGroup";
+import { userGroups } from ".";
 
 interface fieldAlowed {
-  table: string
-  field: string
+  table: string;
+  field: string;
 }
 
 export class user {
-  public userGroup: userGroup
+  public userGroup: userGroup;
 
   constructor(
     public userID: number,
@@ -20,10 +20,10 @@ export class user {
   ) {
     this.userGroup = userGroups.filter(
       v => v.userGroupID === userGroupID
-    )[0]
+    )[0];
   }
 
-  toSave(ohnePWD: boolean = false): string {
+  public toSave(ohnePWD = false): string {
     if (ohnePWD) {
       return JSON.stringify(
         {
@@ -35,7 +35,7 @@ export class user {
         },
         null,
         2
-      )
+      );
     } else {
       return JSON.stringify(
         {
@@ -49,42 +49,42 @@ export class user {
         },
         null,
         2
-      )
+      );
     }
   }
   public checkAlowedFileds(
-    args: fieldAlowed | Array<fieldAlowed>
+    args: fieldAlowed | fieldAlowed[]
   ): boolean {
     // return true
     if (args instanceof Array) {
-      return this._checkAlowedFileds(args)
+      return this._checkAlowedFileds(args);
     } else {
-      return this._checkAlowedFileds([args])
+      return this._checkAlowedFileds([args]);
     }
   }
   private _checkAlowedFileds(
-    args: Array<fieldAlowed>
+    args: fieldAlowed[]
   ): boolean {
     args.map(singleCheck => {
       return (
         this.userGroup.fieldAccess.filter(value => {
           if (
-            value.field !== '*' &&
+            value.field !== "*" &&
             value.field !== singleCheck.field
           ) {
-            return false
+            return false;
           }
           if (
-            value.table !== '*' &&
+            value.table !== "*" &&
             value.table !== singleCheck.table
           ) {
-            return false
+            return false;
           }
-          return true
+          return true;
         }).length > 0
-      )
-    })
-    return true
+      );
+    });
+    return true;
   }
 }
-export default user
+export default user;

@@ -3,10 +3,10 @@ import {
   GraphQLNonNull,
   GraphQLInt,
   GraphQLString
-} from 'graphql'
+} from "graphql";
 
 export const _alert = new GraphQLObjectType({
-  name: 'alert',
+  name: "alert",
   fields: () => ({
     alertID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -18,4 +18,4 @@ export const _alert = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLString)
     }
   })
-})
+});

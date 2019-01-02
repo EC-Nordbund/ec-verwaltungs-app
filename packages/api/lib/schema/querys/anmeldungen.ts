@@ -4,30 +4,30 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLBoolean
-} from 'graphql'
-import { query } from '../mysql'
-import { getUser } from '../../users'
-import { anmeldung } from '../types'
+} from "graphql";
+import { query } from "../mysql";
+import { getUser } from "../../users";
+import { anmeldung } from "../types";
 
-const wpTokens: Array<string> = eval(
+const wpTokens: string[] = eval(
   "require('../../../wpTokens.json')"
-)
-import { addAuth, handleAuth } from '../sonstiges'
+);
+import { addAuth, handleAuth } from "../sonstiges";
 
 export default {
   anmeldungen: {
-    description: 'Comming Soon...',
+    description: "Comming Soon...",
     args: addAuth({}),
     type: new GraphQLList(anmeldung),
     resolve: handleAuth(() => {
-      return query(`SELECT * FROM anmeldungen`)
+      return query(`SELECT * FROM anmeldungen`);
     })
   },
   anmeldung: {
-    description: 'Comming Soon...',
+    description: "Comming Soon...",
     args: addAuth({
       anmeldeID: {
-        description: 'Comming Soon...',
+        description: "Comming Soon...",
         type: new GraphQLNonNull(GraphQLString)
       }
     }),
@@ -37,14 +37,14 @@ export default {
         `SELECT * FROM anmeldungen WHERE anmeldeID = '${
           args.anmeldeID
         }'`
-      ).then(res => res[0])
+      ).then(res => res[0]);
     })
   },
   anmeldeStatus: {
     type: new GraphQLNonNull(GraphQLInt),
     args: addAuth({
       anmeldeID: {
-        description: 'Comming Soon...',
+        description: "Comming Soon...",
         type: new GraphQLNonNull(GraphQLString)
       },
       isWP: {
@@ -52,15 +52,15 @@ export default {
       }
     }),
     resolve(_, args) {
-      let allowed = false
+      let allowed = false;
       if (args.isWP) {
-        allowed = wpTokens.indexOf(args.token) !== -1
+        allowed = wpTokens.indexOf(args.token) !== -1;
       } else {
         allowed =
           getUser(
             args.token
-          ).userGroup.mutationRechte.indexOf('anmelden') !==
-          -1
+          ).userGroup.mutationRechte.indexOf("anmelden") !==
+          -1;
       }
 
       if (allowed) {
@@ -72,14 +72,14 @@ export default {
           .then(row => row[0])
           .then(row => {
             if (row.abmeldeZeitpunkt) {
-              return -2
+              return -2;
             } else {
-              return row.wartelistenPlatz
+              return row.wartelistenPlatz;
             }
-          })
+          });
       } else {
-        return -1
+        return -1;
       }
     }
   }
-}
+};

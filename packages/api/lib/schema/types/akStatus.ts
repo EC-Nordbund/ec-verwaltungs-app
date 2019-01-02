@@ -1,9 +1,9 @@
-import { query } from '../mysql';
-import { ak, date, person } from '.';
-import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import { query } from "../mysql";
+import { ak, date, person } from ".";
+import { GraphQLInt, GraphQLNonNull, GraphQLObjectType } from "graphql";
 
 export const _akStatus = new GraphQLObjectType({
-  name: 'akStatus',
+  name: "akStatus",
   fields: () => ({
     akPersonID: {
       type: new GraphQLNonNull(GraphQLInt),
@@ -11,15 +11,15 @@ export const _akStatus = new GraphQLObjectType({
     person: {
       type: new GraphQLNonNull(person),
       async resolve(parent) {
-        const person = await query(`SELECT * FROM personen WHERE personID = ${parent.personID}`)
-        return person[0]
+        const person = await query(`SELECT * FROM personen WHERE personID = ${parent.personID}`);
+        return person[0];
       },
     },
     ak: {
       type: new GraphQLNonNull(ak),
       async resolve(parent) {
-        const ak = await query(`SELECT * FROM ak WHERE akID = ${parent.akID}`)
-        return ak[0]
+        const ak = await query(`SELECT * FROM ak WHERE akID = ${parent.akID}`);
+        return ak[0];
       },
     },
     date: {
@@ -29,4 +29,4 @@ export const _akStatus = new GraphQLObjectType({
       type: new GraphQLNonNull(GraphQLInt),
     },
   }),
-})
+});

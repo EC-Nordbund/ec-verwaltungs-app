@@ -4,12 +4,12 @@ import {
   GraphQLNonNull,
   GraphQLString,
   GraphQLBoolean
-} from 'graphql'
+} from "graphql";
 
-import { timeStamp } from '.'
+import { timeStamp } from ".";
 
 export const _adresse = new GraphQLObjectType({
-  name: 'adresse',
+  name: "adresse",
   fields: () => ({
     adressID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -30,4 +30,4 @@ export const _adresse = new GraphQLObjectType({
       type: new GraphQLNonNull(timeStamp)
     }
   })
-})
+});

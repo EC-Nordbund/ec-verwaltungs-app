@@ -4,10 +4,10 @@ import {
   GraphQLInt,
   GraphQLString,
   GraphQLList
-} from 'graphql'
+} from "graphql";
 
 export const _userGroup = new GraphQLObjectType({
-  name: 'userGroup',
+  name: "userGroup",
   fields: () => ({
     userGroupID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -21,7 +21,7 @@ export const _userGroup = new GraphQLObjectType({
     fieldAccess: {
       type: new GraphQLList(
         new GraphQLObjectType({
-          name: 'field',
+          name: "field",
           fields: {
             table: {
               type: new GraphQLNonNull(GraphQLString)
@@ -34,4 +34,4 @@ export const _userGroup = new GraphQLObjectType({
       )
     }
   })
-})
+});

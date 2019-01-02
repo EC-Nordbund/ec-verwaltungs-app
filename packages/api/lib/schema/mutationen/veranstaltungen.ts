@@ -1,12 +1,11 @@
-import { query } from '../mysql';
-import { addAuth, handleAllowed } from '../sonstiges';
+import { query } from "../mysql";
+import { addAuth, handleAllowed } from "../sonstiges";
 import {
   GraphQLBoolean,
   GraphQLInt,
   GraphQLNonNull,
   GraphQLString
-  } from 'graphql';
-
+  } from "graphql";
 
 export default {
   veranstaltungAdd: {
@@ -33,12 +32,12 @@ export default {
     }),
     resolve: handleAllowed((_, args) => {
       return query(`INSERT INTO veranstaltungen (bezeichnung, begin, ende, veranstaltungsort, minTNAlter, maxTNAlter) VALUES ("${args.bezeichnung}", "${args.begin}", ${
-        args.ende ? '"' + args.ende + '"' : 'null'
+        args.ende ? '"' + args.ende + '"' : "null"
       },
         ${args.veranstaltungsortID},
         ${args.minTNAlter},
-        ${args.maxTNAlter})`)
-    }, 'veranstaltungenAdd'),
+        ${args.maxTNAlter})`);
+    }, "veranstaltungenAdd"),
   },
   veranstaltungenStamm: {
     type: GraphQLBoolean,
@@ -71,10 +70,10 @@ export default {
     resolve: handleAllowed((_, args) => {
       return query(
         `UPDATE veranstaltungen SET bezeichnung = "${args.bezeichnung}", kurzBezeichnung = ${args.kurzBezeichnung}, begin = "${args.begin}", ende=${
-          args.ende ? '"' + args.ende + '"' : 'null'
+          args.ende ? '"' + args.ende + '"' : "null"
         }, veranstaltungsort = ${args.veranstaltungsortID}, minTNAlter=${args.minTNAlter}, maxTNAlter=${args.maxTNAlter} WHERE veranstaltungsID= ${args.veranstaltungsID}`,
-      )
-    }, 'veranstaltungenStamm'),
+      );
+    }, "veranstaltungenStamm"),
   },
   veranstaltungenPreise: {
     type: GraphQLBoolean,
@@ -115,8 +114,8 @@ export default {
         args.preisNormal
       }, preisAnzahlungNormal=${args.preisAnzahlungNormal}, preisLastMinute=${args.preisLastMinute}, preisAnzahlungLastMinute=${args.preisAnzahlungLastMinute},
       kannVorortBezahltWerden = ${args.kannVorortBezahltWerden},
-      fruehbucherBis="${args.fruehbucherBis}", lastMinuteAb="${args.lastMinuteAb}" WHERE veranstaltungsID= ${args.veranstaltungsID}`)
-    }, 'veranstaltungenPreise'),
+      fruehbucherBis="${args.fruehbucherBis}", lastMinuteAb="${args.lastMinuteAb}" WHERE veranstaltungsID= ${args.veranstaltungsID}`);
+    }, "veranstaltungenPreise"),
   },
   veranstaltungenWarteliste: {
     type: GraphQLBoolean,
@@ -142,8 +141,8 @@ export default {
         `UPDATE veranstaltungen SET hatGWarteliste = ${args.hatGeschlechterSpezifischeWarteliste}, anzahlPlätze=${args.anzahlPlaetze}, anzahlPlätzeWeiblich=${
           args.anzahlPlaetzeW
         }, anzahlPlätzeMännlich=${args.anzahlPlaetzeM} WHERE veranstaltungsID=${args.veranstaltungsID}`,
-      )
-    }, 'veranstaltungenWarteliste'),
+      );
+    }, "veranstaltungenWarteliste"),
   },
   veranstaltungenTNListeZuschuesse: {
     type: GraphQLBoolean,
@@ -156,8 +155,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE veranstaltungen SET xlsxZuschuesse="${args.xlsx}"  WHERE veranstaltungsID=${args.veranstaltungsID}`)
-    }, 'veranstaltungenTNListe'),
+      return query(`UPDATE veranstaltungen SET xlsxZuschuesse="${args.xlsx}"  WHERE veranstaltungsID=${args.veranstaltungsID}`);
+    }, "veranstaltungenTNListe"),
   },
   veranstaltungenTNListeLeiter: {
     type: GraphQLBoolean,
@@ -170,8 +169,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE veranstaltungen SET xlsxLeiter="${args.xlsx}"  WHERE veranstaltungsID=${args.veranstaltungsID}`)
-    }, 'veranstaltungenTNListe'),
+      return query(`UPDATE veranstaltungen SET xlsxLeiter="${args.xlsx}"  WHERE veranstaltungsID=${args.veranstaltungsID}`);
+    }, "veranstaltungenTNListe"),
   },
   veranstaltungenTNListeMitarbeiter: {
     type: GraphQLBoolean,
@@ -184,8 +183,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE veranstaltungen SET xlsxMitarbeiter="${args.xlsx}"  WHERE veranstaltungsID=${args.veranstaltungsID}`)
-    }, 'veranstaltungenTNListe'),
+      return query(`UPDATE veranstaltungen SET xlsxMitarbeiter="${args.xlsx}"  WHERE veranstaltungsID=${args.veranstaltungsID}`);
+    }, "veranstaltungenTNListe"),
   },
   veranstaltungenTNListeKueche: {
     type: GraphQLBoolean,
@@ -198,8 +197,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE veranstaltungen SET xlsxKueche="${args.xlsx}" WHERE veranstaltungsID=${args.veranstaltungsID}`)
-    }, 'veranstaltungenTNListe'),
+      return query(`UPDATE veranstaltungen SET xlsxKueche="${args.xlsx}" WHERE veranstaltungsID=${args.veranstaltungsID}`);
+    }, "veranstaltungenTNListe"),
   },
   veranstaltungBestaetigungsbrief: {
     type: GraphQLBoolean,
@@ -215,8 +214,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE veranstaltungen SET bestaetigungsBrief="${args.brief}", bestaetigungsBriefGeschlecht="${args.geschlechter}" WHERE veranstaltungsID=${args.veranstaltungsID}`)
-    }, 'veranstaltungenBriefe'),
+      return query(`UPDATE veranstaltungen SET bestaetigungsBrief="${args.brief}", bestaetigungsBriefGeschlecht="${args.geschlechter}" WHERE veranstaltungsID=${args.veranstaltungsID}`);
+    }, "veranstaltungenBriefe"),
   },
   veranstaltunginfobrief: {
     type: GraphQLBoolean,
@@ -232,7 +231,7 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE veranstaltungen SET infoBrief="${args.brief}", infoBriefGeschlecht="${args.geschlechter}" WHERE veranstaltungsID=${args.veranstaltungsID}`)
-    }, 'veranstaltungenBriefe'),
+      return query(`UPDATE veranstaltungen SET infoBrief="${args.brief}", infoBriefGeschlecht="${args.geschlechter}" WHERE veranstaltungsID=${args.veranstaltungsID}`);
+    }, "veranstaltungenBriefe"),
   },
-}
+};

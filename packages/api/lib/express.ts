@@ -1,33 +1,33 @@
-import { schema } from './schema';
-import { appVersion } from './version';
-import { graphiqlExpress, graphqlExpress } from 'apollo-server-express';
-import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
-import * as express from 'express';
+import { schema } from "./schema";
+import { appVersion } from "./version";
+import * as bodyParser from "body-parser";
+import * as cors from "cors";
+import * as express from "express";
+const { graphiqlExpress, graphqlExpress } = require("apollo-server-express");
 
 export const getApp = (dev: boolean) => {
   const app = express()
     .use(cors())
     .use(
-      '/graphql',
+      "/graphql",
       bodyParser.json(),
       graphqlExpress({
-        schema,
-      }),
+        schema
+      })
     )
-    .use('/check', (req, res) => {
-      res.end('{online: true}')
-    })
+    .use("/check", (req, res) => {
+      res.end("{online: true}");
+    });
   if (dev) {
     return app.use(
-      '/graphiql',
+      "/graphiql",
       graphiqlExpress({
-        endpointURL: '/graphql',
-      }),
-    )
+        endpointURL: "/graphql"
+      })
+    );
   } else {
-    return app.use('/version', (req, res) => {
-      res.end(`{"version": "${appVersion}"}`)
-    })
+    return app.use("/version", (req, res) => {
+      res.end(`{"version": "${appVersion}"}`);
+    });
   }
-}
+};

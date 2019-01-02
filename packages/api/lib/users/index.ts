@@ -1,131 +1,131 @@
-import { authKey } from './authKey';
-import { user } from './user';
-import { userGroup } from './userGroup';
-import sendMail from '../schema/mail';
-import { query } from '../schema/mysql';
-import { readFileSync, writeFileSync } from 'fs';
-import { sha3_512 } from 'js-sha3';
+import { authKey } from "./authKey";
+import { user } from "./user";
+import { userGroup } from "./userGroup";
+import sendMail from "../schema/mail";
+import { query } from "../schema/mysql";
+import { readFileSync, writeFileSync } from "fs";
+import { sha3_512 } from "js-sha3";
 
 function hash(pwd: string, salt: string): string {
-  return sha3_512(salt + pwd)
+  return sha3_512(salt + pwd);
 }
 
 export function login(username: string, password: string): string {
-  const tmpDate = new Date()
+  const tmpDate = new Date();
   const getUsers = users
     .filter(v => v.userName === username)
     .filter(user => {
-      return tmpDate <= new Date(user.ablaufDatum)
-    })
+      return tmpDate <= new Date(user.ablaufDatum);
+    });
   if (getUsers.length !== 1) {
-    throw 'Username und Password passen nicht zusammen'
+    throw "Username und Password passen nicht zusammen";
   } else {
-    let ckUser = getUsers[0]
-    let h = hash(password, ckUser.salt)
+    const ckUser = getUsers[0];
+    const h = hash(password, ckUser.salt);
     if (h === ckUser.pwdHash) {
-      let authToken = new authKey(ckUser)
-      authKeys.push(authToken)
-      return authToken.authToken
+      const authToken = new authKey(ckUser);
+      authKeys.push(authToken);
+      return authToken.authToken;
     } else {
-      throw 'Username und Password passen nicht zusammen'
+      throw "Username und Password passen nicht zusammen";
     }
   }
 }
 
 export function logout(authToken: string): boolean {
-  authKeys = authKeys.filter(v => v.authToken !== authToken)
-  return true
+  authKeys = authKeys.filter(v => v.authToken !== authToken);
+  return true;
 }
 
 export function extend(authToken: string): boolean {
-  const tmpDate = new Date()
-  let keys = authKeys
+  const tmpDate = new Date();
+  const keys = authKeys
     .filter(v => v.authToken === authToken)
     .filter(v => {
-      return v.ablaufTime > tmpDate
-    })
+      return v.ablaufTime > tmpDate;
+    });
   if (keys.length !== 1) {
-    return false
+    return false;
   } else {
-    keys[0].extend()
-    return true
+    keys[0].extend();
+    return true;
   }
 }
 
 export function getUser(authToken: string): user {
-  const tmpDate = new Date()
+  const tmpDate = new Date();
   const auth = authKeys
     .filter(v => v.authToken === authToken)
     .filter(v => {
-      return v.ablaufTime > tmpDate
-    })[0]
+      return v.ablaufTime > tmpDate;
+    })[0];
   if (auth === undefined) {
-    throw 'User not Found'
+    throw "User not Found";
   }
-  auth.extend()
-  return auth.user
+  auth.extend();
+  return auth.user;
 }
 
-export let users: Array<user> = []
-export let userGroups: Array<userGroup> = []
-export let authKeys: Array<authKey> = []
+export let users: user[] = [];
+export let userGroups: userGroup[] = [];
+export let authKeys: authKey[] = [];
 
 function load() {
-  let saveObj = JSON.parse(readFileSync('./save.json').toString())
+  const saveObj = JSON.parse(readFileSync("./save.json").toString());
 
   saveObj.userGroups.map(JSON.parse).forEach(v => {
-    userGroups.push(new userGroup(v.userGroupID, v.bezeichnung, v.mutationRechte, v.fieldAccess))
-  })
+    userGroups.push(new userGroup(v.userGroupID, v.bezeichnung, v.mutationRechte, v.fieldAccess));
+  });
 
   saveObj.users.map(JSON.parse).forEach(v => {
-    users.push(new user(v.userID, v.personID, v.userName, v.pwdHash, v.salt, v.ablaufDatum, v.userGroupID))
-  })
+    users.push(new user(v.userID, v.personID, v.userName, v.pwdHash, v.salt, v.ablaufDatum, v.userGroupID));
+  });
 }
 
 function save() {
   const saveObj = {
     users: users.map(user => user.toSave()),
     userGroups: userGroups.map(group => group.toSave()),
-  }
-  writeFileSync('./save.json', JSON.stringify(saveObj, null, 2))
+  };
+  writeFileSync("./save.json", JSON.stringify(saveObj, null, 2));
 
   const saveObj2 = {
     users: users.map(user => JSON.parse(user.toSave(true))),
     userGroups: userGroups.map(group => group.toSave()),
-  }
+  };
 
   // Logge status to DB
-  query(`INSERT INTO userLogging (JSON) VALUES ('${JSON.stringify(saveObj2)}');`).catch(console.log)
+  query(`INSERT INTO userLogging (JSON) VALUES ('${JSON.stringify(saveObj2)}');`).catch(console.log);
 }
 
-load()
-save()
+load();
+save();
 
-setInterval(save, 60 * 60 * 1000)
+setInterval(save, 60 * 60 * 1000);
 
 export function deleteUser(userID: number) {
-  users = users.filter(v => v.userID !== userID)
-  save()
+  users = users.filter(v => v.userID !== userID);
+  save();
 }
 export function addUser(personID: number, username: string, email: string, gueltigBis: string, userGroupID: number) {
-  const pwd = sha3_512(`${username}jkfhhksjdfhjkdfjk${Math.random()}${new Date().toISOString()}`).substr(1, 10)
-  const salt = sha3_512(`${username}${pwd}clkkk${Math.random()}${new Date().toISOString()}`)
-  const pwdHash = hash(pwd, salt)
+  const pwd = sha3_512(`${username}jkfhhksjdfhjkdfjk${Math.random()}${new Date().toISOString()}`).substr(1, 10);
+  const salt = sha3_512(`${username}${pwd}clkkk${Math.random()}${new Date().toISOString()}`);
+  const pwdHash = hash(pwd, salt);
 
-  let nID = -1
+  let nID = -1;
   users.forEach(v => {
     if (nID < v.userID) {
-      nID = v.userID
+      nID = v.userID;
     }
-  })
-  nID++
+  });
+  nID++;
 
-  users.push(new user(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID))
+  users.push(new user(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID));
 
-  save()
+  save();
 
-  const subject = 'Anmeldedaten für den EC-Nordbund'
-  const to = email
+  const subject = "Anmeldedaten für den EC-Nordbund";
+  const to = email;
   const body = `Moin,
 
 Vielen Dank für deinen Einsatz im EC-Nordbund. Du erhälst in dieser E-Mail alle Informationen zu deinem Zugang zu unserer Software dazu folge bitte den folgenden Schritten:
@@ -141,27 +141,27 @@ Vielen Dank für deinen Einsatz im EC-Nordbund. Du erhälst in dieser E-Mail all
 
 Entschieden für Christus grüßt
 Thomas Seeger sowie Tobias Krause und Sebastian Krüger
-`
+`;
 
-  return sendMail('app@ec-nordbund.de', { to }, subject, body, false)
+  return sendMail("app@ec-nordbund.de", { to }, subject, body, false);
 }
 export function updateUser(userID: number, gueltigBis: string, userGroupID: number) {
-  let u = users.filter(v => v.userID === userID)[0]
-  u.ablaufDatum = gueltigBis
-  u.userGroupID = userGroupID
-  save()
+  const u = users.filter(v => v.userID === userID)[0];
+  u.ablaufDatum = gueltigBis;
+  u.userGroupID = userGroupID;
+  save();
 }
 
 export function changePWD(userID: number, oldPWD: string, newPWD: string): boolean {
-  let u = users.filter(v => v.userID === userID)[0]
-  let oldHash = hash(oldPWD, u.salt)
+  const u = users.filter(v => v.userID === userID)[0];
+  const oldHash = hash(oldPWD, u.salt);
   if (oldHash === u.pwdHash) {
-    const nSalt = sha3_512(`${u.pwdHash}${oldPWD}${Math.random()}${new Date().toISOString()}${newPWD}kjsfksjd`)
-    const nHsh = hash(newPWD, nSalt)
-    u.salt = nSalt
-    u.pwdHash = nHsh
-    return true
+    const nSalt = sha3_512(`${u.pwdHash}${oldPWD}${Math.random()}${new Date().toISOString()}${newPWD}kjsfksjd`);
+    const nHsh = hash(newPWD, nSalt);
+    u.salt = nSalt;
+    u.pwdHash = nHsh;
+    return true;
   } else {
-    return false
+    return false;
   }
 }

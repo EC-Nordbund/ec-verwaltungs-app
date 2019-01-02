@@ -1,9 +1,9 @@
-import { createFZ } from '../../serienbrief/fz';
-import { getUser } from '../../users';
-import sendMail from '../mail';
-import { query } from '../mysql';
-import { addAuth, handleAllowed } from '../sonstiges';
-import { writeFileSync } from 'fs';
+import { createFZ } from "../../serienbrief/fz";
+import { getUser } from "../../users";
+import sendMail from "../mail";
+import { query } from "../mysql";
+import { addAuth, handleAllowed } from "../sonstiges";
+import { writeFileSync } from "fs";
 import {
   GraphQLBoolean,
   GraphQLFloat,
@@ -11,10 +11,10 @@ import {
   GraphQLNonNull,
   GraphQLObjectType,
   GraphQLString
-  } from 'graphql';
-import { sha3_512 } from 'js-sha3';
+  } from "graphql";
+import { sha3_512 } from "js-sha3";
 
-const wpTokens: Array<string> = eval("require('../../../wpTokens.json')")
+const wpTokens: string[] = eval("require('../../../wpTokens.json')");
 
 export default {
   anmeldungBesonderheiten: {
@@ -41,8 +41,8 @@ export default {
         `UPDATE anmeldungen SET vegetarisch = ${args.vegetarisch}, lebensmittelAllergien="${args.lebensmittelAllergien}", gesundheitsinformationen="${args.gesundheitsinformationen}", bemerkungen="${
           args.bemerkungen
         }" WHERE anmeldeID="${args.anmeldeID}"`,
-      )
-    }, 'anmeldungBesonderheiten'),
+      );
+    }, "anmeldungBesonderheiten"),
   },
   anmeldungBezahlt: {
     type: GraphQLBoolean,
@@ -55,8 +55,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      return query(`UPDATE anmeldungen SET bisherBezahlt = ${args.betrag} WHERE anmeldeID="${args.anmeldeID}"`)
-    }, 'anmeldungFinanzen'),
+      return query(`UPDATE anmeldungen SET bisherBezahlt = ${args.betrag} WHERE anmeldeID="${args.anmeldeID}"`);
+    }, "anmeldungFinanzen"),
   },
   anmeldungRueckbezahlt: {
     type: GraphQLBoolean,
@@ -69,8 +69,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      query(`UPDATE anmeldungen SET rueckbezahlt = ${args.betrag} WHERE anmeldeID="${args.anmeldeID}"`)
-    }, 'anmeldungFinanzen'),
+      query(`UPDATE anmeldungen SET rueckbezahlt = ${args.betrag} WHERE anmeldeID="${args.anmeldeID}"`);
+    }, "anmeldungFinanzen"),
   },
   anmeldungKontakt: {
     type: GraphQLBoolean,
@@ -89,8 +89,8 @@ export default {
       },
     }),
     resolve: handleAllowed((_, args) => {
-      query(`UPDATE anmeldungen SET adressID=${args.adressID}, eMailID=${args.emailID}, telefonID=${args.telefonID} WHERE anmeldeID = '${args.anmeldeID}'`)
-    }, 'anmeldungKontakt'),
+      query(`UPDATE anmeldungen SET adressID=${args.adressID}, eMailID=${args.emailID}, telefonID=${args.telefonID} WHERE anmeldeID = '${args.anmeldeID}'`);
+    }, "anmeldungKontakt"),
   },
   abmelden: {
     type: GraphQLBoolean,
@@ -113,8 +113,8 @@ export default {
         `UPDATE anmeldungen SET abmeldeZeitpunkt=CURRENT_TIMESTAMP,abmeldeGebuehr=${args.gebuehr},wegDerAbmeldung="${args.weg}", kommentarAbmeldung="${args.kommentar}" WHERE anmeldeID = "${
           args.anmeldeID
         }"`,
-      )
-    }, 'anmeldungAbmelden'),
+      );
+    }, "anmeldungAbmelden"),
   },
   nachruecken: {
     type: GraphQLBoolean,
@@ -136,20 +136,20 @@ export default {
                     `UPDATE anmeldungen SET wartelistenPlatz=wartelistenPlatz-1 WHERE wartelistenPlatz > ${
                       r.wartelistenPlatz
                     } AND personen.personID = anmeldungen.personID AND personen.geschlecht = "${r.geschlecht}"`,
-                  )
-                })
+                  );
+                });
               } else {
                 query(`UPDATE anmeldungen SET wartelistenPlatz=0 WHERE anmeldeID="${args.anmeldeID}"`).then(v => {
-                  query(`UPDATE anmeldungen SET wartelistenPlatz=wartelistenPlatz-1 WHERE wartelistenPlatz > ${r.wartelistenPlatz}`)
-                })
+                  query(`UPDATE anmeldungen SET wartelistenPlatz=wartelistenPlatz-1 WHERE wartelistenPlatz > ${r.wartelistenPlatz}`);
+                });
               }
-            })
-        })
-    }, 'anmeldungWarteliste'),
+            });
+        });
+    }, "anmeldungWarteliste"),
   },
   anmelden: {
     type: new GraphQLObjectType({
-      name: 'anmeldeReturn',
+      name: "anmeldeReturn",
       fields: {
         status: {
           type: new GraphQLNonNull(GraphQLInt),
@@ -237,21 +237,21 @@ export default {
       },
     },
     async resolve(_, args) {
-      let allowed = false
+      let allowed = false;
       if (args.isWP) {
-        allowed = wpTokens.indexOf(args.token) !== -1
+        allowed = wpTokens.indexOf(args.token) !== -1;
       } else {
-        allowed = getUser(args.token).userGroup.mutationRechte.indexOf('anmelden') !== -1
+        allowed = getUser(args.token).userGroup.mutationRechte.indexOf("anmelden") !== -1;
       }
 
       if (allowed) {
-        const j = JSON.stringify(args)
-        const h = sha3_512(j)
-        const d = new Date().toISOString()
+        const j = JSON.stringify(args);
+        const h = sha3_512(j);
+        const d = new Date().toISOString();
 
-        writeFileSync(__dirname + '/../../../log/anmel_' + h + '_' + d + '.log.json', j)
+        writeFileSync(__dirname + "/../../../log/anmel_" + h + "_" + d + ".log.json", j);
 
-        const vData = await query(`SELECT * FROM veranstaltungen WHERE veranstaltungsID = ${args.veranstaltungsID}`).then(row => row[0])
+        const vData = await query(`SELECT * FROM veranstaltungen WHERE veranstaltungsID = ${args.veranstaltungsID}`).then(row => row[0]);
 
         const anmeldeID_start =
           args.vorname.substr(0, 2) +
@@ -260,176 +260,176 @@ export default {
           vData.begin
             .getFullYear()
             .toString()
-            .substr(2, 2)
-        const anmeldeID_ende = args.position
+            .substr(2, 2);
+        const anmeldeID_ende = args.position;
 
-        let genFour = () => {
-          return Math.floor(Math.random() * 10).toString() + Math.floor(Math.random() * 10).toString() + Math.floor(Math.random() * 10).toString() + Math.floor(Math.random() * 10).toString()
-        }
-        let checkAnmeldeID = (id: string) => {
-          return query(`SELECT anmeldeID FROM anmeldungen WHERE anmeldeID = '${id}'`).then(v => v.length === 0)
-        }
+        const genFour = () => {
+          return Math.floor(Math.random() * 10).toString() + Math.floor(Math.random() * 10).toString() + Math.floor(Math.random() * 10).toString() + Math.floor(Math.random() * 10).toString();
+        };
+        const checkAnmeldeID = (id: string) => {
+          return query(`SELECT anmeldeID FROM anmeldungen WHERE anmeldeID = '${id}'`).then(v => v.length === 0);
+        };
 
-        let anmeldeID = anmeldeID_start + genFour() + anmeldeID_ende
+        let anmeldeID = anmeldeID_start + genFour() + anmeldeID_ende;
         while (!checkAnmeldeID(anmeldeID)) {
-          anmeldeID = anmeldeID_start + genFour() + anmeldeID_ende
+          anmeldeID = anmeldeID_start + genFour() + anmeldeID_ende;
         }
 
-        let persons = await query(`SELECT personID FROM personen WHERE vorname="${args.vorname}"AND  nachname="${args.nachname}" AND gebDat="${args.gebDat}"`)
+        let persons = await query(`SELECT personID FROM personen WHERE vorname="${args.vorname}"AND  nachname="${args.nachname}" AND gebDat="${args.gebDat}"`);
         if (persons.length === 0) {
-          await query(`INSERT INTO personen (vorname, nachname, gebDat, geschlecht) VALUES ("${args.vorname}", "${args.nachname}", "${args.gebDat}", "${args.geschlecht}")`)
-          persons = await query(`SELECT personID FROM personen WHERE vorname="${args.vorname}"AND  nachname="${args.nachname}" AND gebDat="${args.gebDat}"`)
+          await query(`INSERT INTO personen (vorname, nachname, gebDat, geschlecht) VALUES ("${args.vorname}", "${args.nachname}", "${args.gebDat}", "${args.geschlecht}")`);
+          persons = await query(`SELECT personID FROM personen WHERE vorname="${args.vorname}"AND  nachname="${args.nachname}" AND gebDat="${args.gebDat}"`);
         }
-        const personID = persons[0].personID
+        const personID = persons[0].personID;
 
-        let eMails = await query(`SELECT eMailID FROM eMails WHERE eMail="${args.eMail}" AND personID=${personID}`)
+        let eMails = await query(`SELECT eMailID FROM eMails WHERE eMail="${args.eMail}" AND personID=${personID}`);
         if (eMails.length === 0) {
-          await query(`INSERT INTO eMails(eMail, personID) VALUES ("${args.eMail}",${personID})`)
-          eMails = await query(`SELECT eMailID FROM eMails WHERE eMail="${args.eMail}" AND personID=${personID}`)
+          await query(`INSERT INTO eMails(eMail, personID) VALUES ("${args.eMail}",${personID})`);
+          eMails = await query(`SELECT eMailID FROM eMails WHERE eMail="${args.eMail}" AND personID=${personID}`);
         }
-        const eMailID = eMails[0].eMailID
+        const eMailID = eMails[0].eMailID;
 
-        let telefone = await query(`SELECT telefonID FROM telefone WHERE telefon="${args.telefon}" AND personID=${personID}`)
+        let telefone = await query(`SELECT telefonID FROM telefone WHERE telefon="${args.telefon}" AND personID=${personID}`);
         if (telefone.length === 0) {
-          await query(`INSERT INTO telefone(telefon, personID) VALUES ("${args.telefon}",${personID})`)
-          telefone = await query(`SELECT telefonID FROM telefone WHERE telefon="${args.telefon}" AND personID=${personID}`)
+          await query(`INSERT INTO telefone(telefon, personID) VALUES ("${args.telefon}",${personID})`);
+          telefone = await query(`SELECT telefonID FROM telefone WHERE telefon="${args.telefon}" AND personID=${personID}`);
         }
-        const telefonID = telefone[0].telefonID
+        const telefonID = telefone[0].telefonID;
 
-        let adressen = await query(`SELECT adressID FROM adressen WHERE personID=${personID} AND strasse="${args.strasse}" AND plz="${args.plz}" AND ort="${args.ort}"`)
+        let adressen = await query(`SELECT adressID FROM adressen WHERE personID=${personID} AND strasse="${args.strasse}" AND plz="${args.plz}" AND ort="${args.ort}"`);
         if (adressen.length === 0) {
-          await query(`INSERT INTO adressen (personID, strasse, plz, ort) VALUES (${personID},"${args.strasse}","${args.plz}","${args.ort}")`)
-          adressen = await query(`SELECT adressID FROM adressen WHERE personID=${personID} AND strasse="${args.strasse}" AND plz="${args.plz}" AND ort="${args.ort}"`)
+          await query(`INSERT INTO adressen (personID, strasse, plz, ort) VALUES (${personID},"${args.strasse}","${args.plz}","${args.ort}")`);
+          adressen = await query(`SELECT adressID FROM adressen WHERE personID=${personID} AND strasse="${args.strasse}" AND plz="${args.plz}" AND ort="${args.ort}"`);
         }
-        const adressID = adressen[0].adressID
+        const adressID = adressen[0].adressID;
 
-        const vorhandeneAnmeldungen = await query(`SELECT anmeldeID FROM anmeldungen WHERE personID=${personID} AND veranstaltungsID=${args.veranstaltungsID}`)
+        const vorhandeneAnmeldungen = await query(`SELECT anmeldeID FROM anmeldungen WHERE personID=${personID} AND veranstaltungsID=${args.veranstaltungsID}`);
 
         if (vorhandeneAnmeldungen.length > 0) {
           return {
             status: -2,
             anmeldeID: vorhandeneAnmeldungen[0].anmeldeID,
-          }
+          };
         } else {
-          let wartelistenplatz = 0
+          let wartelistenplatz = 0;
           if (args.position === 1) {
-            const maxWListPlatz: Array<any> = await query(
+            const maxWListPlatz: any[] = await query(
               `SELECT personen.geschlecht AS geschlecht, MAX(anmeldungen.wartelistenPlatz) AS maxWlistPos FROM anmeldungen, personen WHERE personen.personID = anmeldungen.personID AND anmeldungen.veranstaltungsID = ${
                 args.veranstaltungsID
               } GROUP BY personen.geschlecht`,
-            )
-            const anzahlPersonen: Array<any> = await query(
+            );
+            const anzahlPersonen: any[] = await query(
               `SELECT COUNT(personen.personID) AS anzahlPersonen, personen.geschlecht AS geschlecht FROM personen, anmeldungen WHERE personen.personID = anmeldungen.personID AND anmeldungen.veranstaltungsID = ${
                 args.veranstaltungsID
               } AND anmeldungen.wartelistenPlatz = 0 GROUP BY personen.geschlecht`,
-            )
+            );
 
-            let maxWlistMännlich = 0
-            let maxWlistWeiblich = 0
-            let anzahlMännlich = 0
-            let anzahlWeiblich = 0
+            let maxWlistMännlich = 0;
+            let maxWlistWeiblich = 0;
+            let anzahlMännlich = 0;
+            let anzahlWeiblich = 0;
 
             maxWListPlatz.forEach(per => {
               switch (per.geschlecht) {
-                case 'm':
-                  maxWlistMännlich = per.maxWlistPos
-                  break
-                case 'w':
-                  maxWlistWeiblich = per.maxWlistPos
-                  break
+                case "m":
+                  maxWlistMännlich = per.maxWlistPos;
+                  break;
+                case "w":
+                  maxWlistWeiblich = per.maxWlistPos;
+                  break;
               }
-            })
+            });
 
-            const maxWlistGesamt = Math.max(maxWlistMännlich, maxWlistWeiblich)
+            const maxWlistGesamt = Math.max(maxWlistMännlich, maxWlistWeiblich);
 
             anzahlPersonen.forEach(per => {
               switch (per.geschlecht) {
-                case 'm':
-                  anzahlMännlich = per.anzahlPersonen
-                  break
-                case 'w':
-                  anzahlWeiblich = per.anzahlPersonen
-                  break
+                case "m":
+                  anzahlMännlich = per.anzahlPersonen;
+                  break;
+                case "w":
+                  anzahlWeiblich = per.anzahlPersonen;
+                  break;
               }
-            })
+            });
 
-            const anzahlGesamt = anzahlMännlich + anzahlWeiblich
+            const anzahlGesamt = anzahlMännlich + anzahlWeiblich;
 
-            const hatGWarteliste = vData.hatGWarteliste
-            const anzahlPlätze = vData.anzahlPlätze
-            const anzahlPlätzeWeiblich = vData.anzahlPlätzeWeiblich
-            const anzahlPlätzeMännlich = vData.anzahlPlätzeMännlich
+            const hatGWarteliste = vData.hatGWarteliste;
+            const anzahlPlätze = vData.anzahlPlätze;
+            const anzahlPlätzeWeiblich = vData.anzahlPlätzeWeiblich;
+            const anzahlPlätzeMännlich = vData.anzahlPlätzeMännlich;
 
-            const myGeschlecht = args.geschlecht
+            const myGeschlecht = args.geschlecht;
 
             if (hatGWarteliste) {
-              if (myGeschlecht === 'm') {
+              if (myGeschlecht === "m") {
                 if (maxWlistMännlich > 0) {
-                  wartelistenplatz = maxWlistMännlich + 1
+                  wartelistenplatz = maxWlistMännlich + 1;
                 } else {
                   if (anzahlMännlich < anzahlPlätzeMännlich) {
                     if (anzahlGesamt < anzahlPlätze) {
-                      wartelistenplatz = 0
+                      wartelistenplatz = 0;
                     } else {
-                      wartelistenplatz = 1
+                      wartelistenplatz = 1;
                     }
                   } else {
-                    wartelistenplatz = 1
+                    wartelistenplatz = 1;
                   }
                 }
               } else {
                 if (maxWlistWeiblich > 0) {
-                  wartelistenplatz = maxWlistMännlich + 1
+                  wartelistenplatz = maxWlistMännlich + 1;
                 } else {
                   if (anzahlWeiblich < anzahlPlätzeWeiblich) {
                     if (anzahlGesamt < anzahlPlätze) {
-                      wartelistenplatz = 0
+                      wartelistenplatz = 0;
                     } else {
-                      wartelistenplatz = 1
+                      wartelistenplatz = 1;
                     }
                   } else {
-                    wartelistenplatz = 1
+                    wartelistenplatz = 1;
                   }
                 }
               }
             } else {
               if (maxWlistGesamt > 0) {
-                wartelistenplatz = maxWlistGesamt + 1
+                wartelistenplatz = maxWlistGesamt + 1;
               } else {
                 if (anzahlGesamt < anzahlPlätze) {
-                  wartelistenplatz = 0
+                  wartelistenplatz = 0;
                 } else {
-                  wartelistenplatz = 1
+                  wartelistenplatz = 1;
                 }
               }
             }
           } else {
-            let generateFlag = false
+            let generateFlag = false;
 
-            let wann: Date
+            let wann: Date;
             if (vData.ende === null) {
-              wann = vData.begin
+              wann = vData.begin;
             } else {
-              wann = vData.ende
+              wann = vData.ende;
             }
 
-            const fzData = await query(`SELECT fzVon FROM fz WHERE personID = ${personID} ORDER BY fzVon DESC LIMIT 1`)
+            const fzData = await query(`SELECT fzVon FROM fz WHERE personID = ${personID} ORDER BY fzVon DESC LIMIT 1`);
 
             if (fzData.length === 0) {
-              generateFlag = true
+              generateFlag = true;
             } else {
-              const fzVon = fzData[0].fzVon
-              const wannArr = [wann.getFullYear(), wann.getMonth() + 1, wann.getDate()]
-              wannArr[0] -= 5
-              const fzMinDate = new Date(wannArr.join('-'))
+              const fzVon = fzData[0].fzVon;
+              const wannArr = [wann.getFullYear(), wann.getMonth() + 1, wann.getDate()];
+              wannArr[0] -= 5;
+              const fzMinDate = new Date(wannArr.join("-"));
               if (fzMinDate > fzVon) {
-                generateFlag = true
+                generateFlag = true;
               }
             }
 
             if (generateFlag) {
-              createFZ(personID, args.eMail, adressID)
-              await query(`INSERT INTO fzAntrag(personID) VALUES (${personID})`)
+              createFZ(personID, args.eMail, adressID);
+              await query(`INSERT INTO fzAntrag(personID) VALUES (${personID})`);
             }
           }
           await Promise.all([
@@ -437,7 +437,7 @@ export default {
             query(`UPDATE eMails SET isOld=0, lastUsed=CURRENT_TIMESTAMP WHERE eMailID = ${eMailID}`),
             query(`UPDATE telefone SET isOld=0, lastUsed=CURRENT_TIMESTAMP WHERE telefonID = ${telefonID}`),
             query(`UPDATE personen SET letzteAenderung=CURRENT_TIMESTAMP WHERE personID=${personID}`),
-          ])
+          ]);
           await query(`
             INSERT INTO anmeldungen(
               anmeldeID,
@@ -481,23 +481,23 @@ export default {
               ${args.sichEntfernen},
               ${args.bootFahren},
               "${args.extra_json}"
-            )`)
+            )`);
           if (vData.informAnmeldecenter) {
             sendMail(
-              'automated@ec-nordbund.de',
+              "automated@ec-nordbund.de",
               { to: vData.informAnmeldecenter },
               `Neue Anmeldung bei Veranstaltung ${vData.bezeichnung}`,
               `<h1>Neue Anmeldung</h1><p>Es gibt eine Anmeldung mit der AnmeldeID: ${anmeldeID}<br>Klicke <a href="ec:///app/anmeldungen/${anmeldeID}">HIER</a> um die Anmeldung einzusehen.</p>`,
-            )
+            );
           }
 
           return {
             status: wartelistenplatz,
-            anmeldeID: anmeldeID,
-          }
+            anmeldeID,
+          };
         }
       } else {
-        return { status: -1 }
+        return { status: -1 };
       }
     },
   },
@@ -509,9 +509,9 @@ export default {
       },
     }),
     resolve: handleAllowed(async function(_, args) {
-      await query(`UPDATE anmeldungen SET bestaetigungsBrief=CURRENT_TIMESTAMP WHERE anmeldeID = '${args.anmeldeID}'`)
-      return true
-    }, 'anmeldungBesonderheiten'),
+      await query(`UPDATE anmeldungen SET bestaetigungsBrief=CURRENT_TIMESTAMP WHERE anmeldeID = '${args.anmeldeID}'`);
+      return true;
+    }, "anmeldungBesonderheiten"),
   },
   anmeldunginfobrief: {
     type: GraphQLBoolean,
@@ -521,8 +521,8 @@ export default {
       },
     }),
     resolve: handleAllowed(async function(_, args) {
-      await query(`UPDATE anmeldungen SET infoBrief=CURRENT_TIMESTAMP WHERE anmeldeID = '${args.anmeldeID}'`)
-      return true
-    }, 'anmeldungBesonderheiten'),
+      await query(`UPDATE anmeldungen SET infoBrief=CURRENT_TIMESTAMP WHERE anmeldeID = '${args.anmeldeID}'`);
+      return true;
+    }, "anmeldungBesonderheiten"),
   },
-}
+};

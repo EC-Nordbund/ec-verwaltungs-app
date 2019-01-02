@@ -4,11 +4,11 @@ import {
   GraphQLInt,
   GraphQLBoolean,
   GraphQLString
-} from 'graphql'
-import { timeStamp } from '.'
+} from "graphql";
+import { timeStamp } from ".";
 
 export const _email = new GraphQLObjectType({
-  name: 'email',
+  name: "email",
   fields: () => ({
     eMailID: {
       type: new GraphQLNonNull(GraphQLInt)
@@ -23,4 +23,4 @@ export const _email = new GraphQLObjectType({
       type: new GraphQLNonNull(timeStamp)
     }
   })
-})
+});
