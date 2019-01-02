@@ -2,3 +2,4 @@ ec-cert*
 smtp.json
 config.json
 wpTokens.json
+dist-live
