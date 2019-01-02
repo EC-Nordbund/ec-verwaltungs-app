@@ -47,5 +47,5 @@
     "nodemailer": "^5.0.0",
     "promise-mysql": "^3.3.1"
   },
-  "gitHead": "e3ef7144de9a595ab99756c039c381ac5f02eda4"
+  "gitHead": "7c318fa223948d853245900990c414836b79bde3"
 }
