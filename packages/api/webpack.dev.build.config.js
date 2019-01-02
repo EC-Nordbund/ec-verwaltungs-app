@@ -45,7 +45,8 @@ module.exports = {
     new MinifyPlugin(),
     new ProgressBarPlugin(),
     new TSLintPlugin({
-      config: "./tslint.json"
+      config: "./tslint.json",
+      files: ["lib/**/*.ts"]
     })
   ]
 };
