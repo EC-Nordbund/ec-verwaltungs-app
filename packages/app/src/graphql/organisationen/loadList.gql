@@ -1,0 +1,9 @@
+query($authToken: String!) {
+  orgas(authToken: $authToken) {
+    organisationsID
+    bezeichnung
+    plz
+    ort
+    land
+  }
+}

@@ -24,7 +24,7 @@
     "tests/**/*.ts",
     "tests/**/*.tsx",
     "../lib/lib/lib.ts",
-    "../vue-plugin-native-api/lib/index.ts"
+    "../vue-plugin-native-api/lib/index.ts", "lib.ts", "../lib/src/lib.ts"
   ],
   "exclude": ["node_modules"]
 }

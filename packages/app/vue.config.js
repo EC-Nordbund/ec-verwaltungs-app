@@ -9,18 +9,18 @@ module.exports = {
   devServer: {
     port: 8080
   },
-  configureWebpack: {
-    module: {
-      rules: [
-        {
-          test: /\.(graphql|gql)$/,
-          exclude: /node_modules/,
-          loader: 'graphql-tag/loader'
-        }
-      ]
-    },
-    plugins: []
-  },
+  // configureWebpack: {
+  //   module: {
+  //     rules: [
+  //       {
+  //         test: /\.(graphql|gql)$/,
+  //         exclude: /node_modules/,
+  //         loader: 'graphql-tag/loader'
+  //       }
+  //     ]
+  //   },
+  //   plugins: []
+  // },
   pluginOptions: {
     electronBuilder: {
       chainWebpackMainProcess: config => {
