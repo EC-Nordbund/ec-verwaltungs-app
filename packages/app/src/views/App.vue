@@ -190,7 +190,6 @@ import {
   Emit
 } from 'vue-property-decorator'
 
-
 @Component({})
 export default class App extends Vue {
   drawer=null

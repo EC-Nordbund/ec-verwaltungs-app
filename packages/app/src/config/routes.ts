@@ -27,7 +27,7 @@ const routes: RouteConfig[] = [
         {path: '', redirect: 'allgemein'},
         {path: 'allgemein', component: orgaDetailsAllgemein},
         {path: 'veranstaltungen', component: orgaDetailsVeranstaltungen},
-        {path: 'veranstatungsorte', component: orgaDetailsVeranstaltungsorte},
+        {path: 'veranstaltungsorte', component: orgaDetailsVeranstaltungsorte},
         notFound
       ]},
       notFound

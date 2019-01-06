@@ -1,0 +1,32 @@
+query($authToken: String!, $orgaID: Int!) {
+  orga(authToken: $authToken, organisationsID: $orgaID) {
+    organisationsID
+    bezeichnung
+    ansprechpartner
+    strasse
+    plz
+    ort
+    land
+    telefon
+    email
+    notizen
+    vOrte {
+      vOrtID
+      bezeichnung
+      veranstaltungen {
+        veranstaltungsID
+        bezeichnung
+        begin {
+          german
+          input
+        }
+        ende {
+          german
+        }
+      }
+      plz
+      ort
+      land
+    }
+  }
+}

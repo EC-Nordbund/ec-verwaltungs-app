@@ -1,4 +1,3 @@
-import App from './App.vue';
 import './plugins/vuetify';
 import routes from '@/config/routes';
 import '@/lib';
@@ -10,6 +9,7 @@ import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import Vue, { CreateElement } from 'vue';
 import VueApollo from 'vue-apollo';
 import VueRouter from 'vue-router';
+import {auth} from '@/plugins/auth'
 
 if (require) {
   eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'");
@@ -19,7 +19,8 @@ if (require) {
 Vue.use(VueRouter);
 Vue.use(VueApollo);
 Vue.use(themeDirectives);
-Vue.use(LesezeichenList);
+Vue.use(LesezeichenList); 
+Vue.use(auth)
 
 Vue.config.productionTip = false;
 

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-const requireComponent = require.context("./lib", true, /(\w+\.vue|ec-\w+\.ts)/);
+const requireComponent = require.context("./lib", true, /(\w+\.vue|\w+\.ts)/);
 
 const comps = requireComponent.keys().map((fileName: string) => {
   const componentConfig = requireComponent(fileName);

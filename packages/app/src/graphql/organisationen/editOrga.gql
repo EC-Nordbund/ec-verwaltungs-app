@@ -1,0 +1,27 @@
+mutation(
+  $organisationsID: Int!
+  $authToken: String!
+  $bezeichnung: String!
+  $ansprechpartner: String!
+  $strasse: String!
+  $plz: String!
+  $ort: String!
+  $land: String!
+  $telefon: String!
+  $email: String!
+  $notizen: String
+) {
+  editOrganisation(
+    authToken: $authToken
+    organisationsID: $organisationsID
+    bezeichnung: $bezeichnung
+    ansprechpartner: $ansprechpartner
+    strasse: $strasse
+    plz: $plz
+    ort: $ort
+    land: $land
+    telefon: $telefon
+    email: $email
+    notizen: $notizen
+  )
+}

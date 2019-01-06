@@ -1,45 +1,34 @@
 <template>
-  <gql-watch :variables="{orgaID: $route.params.id}">
-    <template slot-scope="{data, reloading, refetch}">
-      <v-card v-if="data.orga" style="margin: 5px">
+  <ApolloQuery
+    :query="require('@/graphql/organisationen/loadDetails.gql')"
+    :variables="{ authToken: $auth.instance.authToken, orgaID: $route.params.id }"
+    tag
+  >
+    <template slot-scope="{ result: { loading, error, data }}">
+      <div v-if="loading" class="loading apollo">Loading...</div>
+      <div v-else-if="error" class="error apollo">An error occured {{error}}</div>
+      <v-card v-else-if="data" class="result apollo" style="margin: 5px">
         <v-toolbar color="transparent" class="elevation-0">
-          <x-btn-new/>
+          <!-- <x-btn-new/> -->
           <v-spacer/>
           <v-toolbar-title>
             <h1 v-font v-primary>{{data.orga.bezeichnung}}</h1>
           </v-toolbar-title>
           <v-spacer/>
-          <v-speed-dial
-            direction="left"
-            :open-on-hover="true"
-            v-if="$require.isElectron"
-            transition="slide-y-reverse-transition"
-          >
-            <v-btn icon slot="activator">
-              <v-icon>more_vert</v-icon>
-            </v-btn>
-            <v-btn icon @click="refetch" :disabled="reloading">
-              <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
-            </v-btn>
-            <ec-lesezeichen-add
-              :route="$route.fullPath"
-              :label="data.orga.bezeichnung"
-              :elID="$route.params.id"
-              type="Organisation"
-            />
-            <v-btn
-              icon
-              @click="$require.electron.clipboard.writeText(`ec://${route.fullPath}`)"
-              v-if="$require.isElectron"
-            >
-              <v-icon>share</v-icon>
-            </v-btn>
-          </v-speed-dial>
-          <v-btn v-else icon @click="refetch" :disabled="reloading">
-            <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
+          <!-- <v-btn icon slot="activator">
+            <v-icon>more_vert</v-icon>
           </v-btn>
+          <v-btn icon @click="refetch" :disabled="reloading">
+            <v-icon :class="{'ec-rotate': reloading}">replay</v-icon>
+          </v-btn>-->
+          <ec-lesezeichen-add
+            :route="$route.fullPath"
+            :label="data.orga.bezeichnung"
+            :elID="$route.params.id"
+            type="Organisation"
+          />
         </v-toolbar>
-        <router-view v-bind="{data, reloading, refetch, countPerPage: anzahlElement}"/>
+        <router-view v-bind="{data, countPerPage: anzahlElement}"/>
         <v-bottom-nav :value="true" color="transparent">
           <v-btn :to="{path: 'allgemein', query: {prev: $route.query.prev}}" replace>
             <span>Allgemein</span>
@@ -56,57 +45,13 @@
         </v-bottom-nav>
       </v-card>
     </template>
-    <template slot="query">
-      query($authToken: String!, $orgaID: Int!) {
-      orga(authToken: $authToken, organisationsID: $orgaID) {
-      organisationsID
-      bezeichnung
-      ansprechpartner
-      strasse
-      plz
-      ort
-      land
-      telefon
-      email
-      notizen
-      vOrte {
-      vOrtID
-      bezeichnung
-      veranstaltungen {
-      veranstaltungsID
-      bezeichnung
-      begin {
-      german
-      input
-      }
-      ende {
-      german
-      }
-      }
-      plz
-      ort
-      land
-      }
-      }
-      }
-    </template>
-    <template slot="error">Ein Fehler ist beim Laden der Daten aufgetreten</template>
-    <template slot="loading" slot-scope="{loading}">
-      <template v-if="loading">Laden {initial}</template>
-    </template>
-  </gql-watch>
+  </ApolloQuery>
 </template>
 <script lang="ts">
-import {
-  Component,
-  Vue,
-  Watch
-} from 'vue-property-decorator'
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class orgaDetails extends Vue {
-  anzahlElement = Math.floor(
-    (document.body.offsetHeight - 280) / 72
-  )
+  anzahlElement = Math.floor((document.body.offsetHeight - 280) / 72);
 }
 </script>

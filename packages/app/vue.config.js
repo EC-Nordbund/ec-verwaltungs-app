@@ -9,18 +9,9 @@ module.exports = {
   devServer: {
     port: 8080
   },
-  // configureWebpack: {
-  //   module: {
-  //     rules: [
-  //       {
-  //         test: /\.(graphql|gql)$/,
-  //         exclude: /node_modules/,
-  //         loader: 'graphql-tag/loader'
-  //       }
-  //     ]
-  //   },
-  //   plugins: []
-  // },
+  configureWebpack: {
+    devtool: 'source-map'
+  },
   pluginOptions: {
     electronBuilder: {
       chainWebpackMainProcess: config => {
@@ -31,6 +22,21 @@ module.exports = {
           args[0]['IS_ELECTRON'] = true
           return args
         })
+      },
+      builderOptions: {
+        appID: 'de.ec-nordbund.app',
+        productName: 'EC-Verwaltungs-App',
+        copyright: "Copyright © 2019 S.Krüger + T.Krause für den EC-Nordbund",
+        linux: {
+          // icon: '',
+          // synopsis : 'kurzbeschreibung',
+
+        },
+        appImage: {},
+        win: {},
+        nsis: {},
+        mac: {},
+        dmg: {}
       }
     }
   }

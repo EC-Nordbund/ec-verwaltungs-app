@@ -1,11 +1,11 @@
-import { query } from "../mysql";
-import { addAuth, handleAllowed } from "../sonstiges";
+import { query } from '../mysql';
+import { addAuth, handleAllowed } from '../sonstiges';
 import {
   GraphQLBoolean,
   GraphQLInt,
   GraphQLNonNull,
   GraphQLString
-  } from "graphql";
+  } from 'graphql';
 
 export default {
   addOrganisation: {
@@ -55,7 +55,7 @@ export default {
     }),
     resolve: handleAllowed((_, args) => {
       return query(
-        `UPDATE organisationen SET bezeichnung="${args.bezeichnung}",ansprechpartner="${args.ansprechpartner}",strasse="${args.strasse}",plz="${args.plz}",ort="${args.plz}",land="${
+        `UPDATE organisationen SET bezeichnung="${args.bezeichnung}",ansprechpartner="${args.ansprechpartner}",strasse="${args.strasse}",plz="${args.plz}",ort="${args.ort}",land="${
           args.land
         }",telefon="${args.telefon}",email="${args.email}",notizen="${args.notizen}" WHERE organisationsID = ${args.organisationsID}`,
       );

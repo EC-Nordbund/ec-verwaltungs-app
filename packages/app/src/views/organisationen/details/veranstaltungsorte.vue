@@ -1,6 +1,6 @@
 <template>
   <v-card-text>
-    <ec-list-new 
+    <ec-liste
       :items="data.orga.vOrte.map((v)=>({iconA: 'place', title: v.bezeichnung, subTitle: `${v.plz} ${v.ort} (${v.land})`, click: ()=>{$router.push({path: '/app/vOrte/' + v.vOrtID, query: {prev: $route.fullPath}})}}))"
       :standard="{}"
       v-model="page"
