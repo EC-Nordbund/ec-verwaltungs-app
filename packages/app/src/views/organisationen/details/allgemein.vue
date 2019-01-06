@@ -219,7 +219,7 @@ export default class orgaDetailsAllgemein extends Vue {
     this.value = <any>{
       ...this.data.orga
     }
-    this.$refs.editOrga.show()
+    (<any>this.$refs.editOrga).show()
   }
 
   mail() {
