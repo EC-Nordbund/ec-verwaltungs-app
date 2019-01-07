@@ -27,12 +27,12 @@
       </p>
       <h1 v-font>Wir benutzen hauptsächlich folgenden OpenSource Frameworks</h1>
       <v-card>
-        <v-card-texyt>
+        <v-card-text>
           <h2>Electron</h2>Version:
           <b>{{electronVersion}}</b>
           <br>Lizenz:
           <b>MIT</b>
-        </v-card-texyt>
+        </v-card-text>
       </v-card>
       <v-card>
         <v-card-text>
