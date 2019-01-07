@@ -1,6 +1,6 @@
 <template>
   <ApolloQuery
-    :query="require('@/graphql/organisationen/loadList.gql')"
+    :query="require('@/graphql/veranstaltungsOrte/loadList.gql')"
     :variables="{ authToken: $auth.instance.authToken }"
     :tag="''"
   >
@@ -11,7 +11,7 @@
         <v-toolbar color="transparent" class="elevation-0">
           <v-spacer/>
           <v-toolbar-title>
-            <h1 v-font v-primary>Organisationen</h1>
+            <h1 v-font v-primary>Veranstaltungsorte</h1>
           </v-toolbar-title>
           <v-spacer/>
         </v-toolbar>
@@ -25,7 +25,7 @@
           />
           <v-data-table
             :rows-per-page-items="[count]"
-            :items="data.orgas"
+            :items="data.vorte"
             :pagination.sync="pageI"
             :search="suchString"
             :headers="[
@@ -38,24 +38,30 @@
                 text: 'Anschrift',
                 align: 'center',
                 value: 'plz'
+              },
+              {
+                text: 'Organisationen',
+                align: 'center',
+                value: 'organisation.bezeichnung'
               }
             ]"
           >
             <template slot="items" slot-scope="{item}">
               <tr
-                @click="$router.push({ path: `/organisationen/${item.organisationsID}/allgemein`, query: {prev: $route.fullPath}})"
+                @click="$router.push({ path: `/veranstaltungsorte/${item.vOrtID}/allgemein`, query: {prev: $route.fullPath}})"
               >
-                <td>{{ item.bezeichnung }}</td>
+                <td>{{item.bezeichnung}}</td>
                 <td>{{item.plz}} {{item.ort}} ({{item.land}})</td>
+                <td>{{item.organisation.bezeichnung}}</td>
               </tr>
             </template>
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <ec-add-btn @click="$refs.addOrga.show()"/>
+          <ec-add-btn @click="$refs.addVort.show()"/>
           <ec-form
-            ref="addOrga"
-            title="Hinzufügen einer Organisation"
+            ref="addVort"
+            title="Hinzufügen eines Veranstaltungsort"
             :value="{}"
             :config="{
               form: [
@@ -68,6 +74,53 @@
                     v=>!v?'Du musst eine Bezeichnung angeben!':true,
                     v=>(v&&v.length > 50)?'Die Bezeichnung darf maximal 50 Zeichen lang sein.':true
                   ]
+                },
+                {
+                  name: 'strasse',
+                  label: 'Strasse',
+                  component: 'v-text-field',
+                  counter: 50,
+                  rules:[
+                    v=>!v?'Du musst eine Strasse angeben!':true,
+                    v=>(v&&v.length > 50)?'Die Strasse darf maximal 50 Zeichen lang sein.':true
+                  ]
+                },
+                {
+                  name: 'plz',
+                  label: 'PLZ',
+                  component: 'v-text-field',
+                  counter: 8,
+                  rules:[
+                    v=>!v?'Du musst eine PLZ angeben!':true,
+                    v=>(v&&v.length > 8)?'Die PLZ darf maximal 8 Zeichen lang sein.':true
+                  ]
+                },
+                {
+                  name: 'ort',
+                  label: 'Ort',
+                  component: 'v-text-field',
+                  counter: 50,
+                  rules:[
+                    v=>!v?'Du musst einen Ort angeben!':true,
+                    v=>(v&&v.length > 50)?'Der Ort darf maximal 50 Zeichen lang sein.':true
+                  ]
+                },
+                {
+                  name: 'land',
+                  label: 'Land',
+                  component: 'v-text-field',
+                  counter: 50,
+                  rules:[
+                    v=>!v?'Du musst ein Land angeben!':true,
+                    v=>(v&&v.length > 50)?'Das Land darf maximal 50 Zeichen lang sein.':true
+                  ]
+                },
+                {
+                  name: 'organisationsID',
+                  label: 'Organisation {comming soon...}',
+                  component:'v-text-field',
+                  value: 0,
+                  disabled: true
                 }
               ],
               buttons: [
@@ -81,7 +134,7 @@
                   label:'Speichern',
                   needValid:true,
                   color:'primary',
-                  mutation: require('@/graphql/organisationen/addOrga.gql')
+                  mutation: require('@/graphql/veranstaltungsOrte/addVort.gql')
                 }
               ]
             }"

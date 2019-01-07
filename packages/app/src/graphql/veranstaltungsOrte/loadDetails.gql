@@ -1,0 +1,38 @@
+query($authToken: String!, $vOrtID: Int!) {
+  vort(authToken: $authToken, vOrtID: $vOrtID) {
+    vOrtID
+    bezeichnung
+    strasse
+    plz
+    ort
+    land
+    anzahl_min
+    anzahl_max
+    vollverpflegung
+    selbstversorger
+    kontakte {
+      vOrtKontaktID
+      ansprechpartner
+      typ
+      email
+      telefon
+      notizen
+    }
+    organisation {
+      organisationsID
+      bezeichnung
+      ort
+      land
+    }
+    veranstaltungen {
+      veranstaltungsID
+      bezeichnung
+      begin {
+        german
+      }
+      ende {
+        german
+      }
+    }
+  }
+}

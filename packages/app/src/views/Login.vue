@@ -108,7 +108,11 @@ export default class loginForm extends Vue {
 
   logedIn(res:any) {
     new this.$auth(res.data.logIn)
-    this.$router.push('/')
+    if(this.$route.query.afterLogIn) {
+      this.$router.push(this.$route.query.afterLogIn.toString())
+    } else {
+      this.$router.push('/')
+    }
   }
   
   created() {

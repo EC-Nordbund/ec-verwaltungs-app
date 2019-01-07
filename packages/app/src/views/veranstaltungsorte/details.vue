@@ -1,7 +1,7 @@
 <template>
   <ApolloQuery
-    :query="require('@/graphql/organisationen/loadDetails.gql')"
-    :variables="{ authToken: $auth.instance.authToken, orgaID: $route.params.id }"
+    :query="require('@/graphql/veranstaltungsOrte/loadDetails.gql')"
+    :variables="{ authToken: $auth.instance.authToken, vOrtID: $route.params.id }"
     :tag="''"
   >
     <template slot-scope="{ result: { loading, error, data }}">
@@ -12,14 +12,14 @@
           <ec-x-btn/>
           <v-spacer/>
           <v-toolbar-title>
-            <h1 v-font v-primary>{{data.orga.bezeichnung}}</h1>
+            <h1 v-font v-primary>{{data.vort.bezeichnung}}</h1>
           </v-toolbar-title>
           <v-spacer/>
           <ec-lesezeichen-add
             :route="$route.fullPath"
-            :label="data.orga.bezeichnung"
+            :label="data.vort.bezeichnung"
             :elID="$route.params.id"
-            type="Organisation"
+            type="Veranstaltungsorte"
           />
         </v-toolbar>
         <router-view v-bind="{data, countPerPage: anzahlElement}"/>
@@ -28,8 +28,8 @@
             <span>Allgemein</span>
             <v-icon>history</v-icon>
           </v-btn>
-          <v-btn :to="{path: 'veranstaltungsorte', query: {prev: $route.query.prev}}" replace>
-            <span>Veranstaltungsorte</span>
+          <v-btn :to="{path: 'kontakt', query: {prev: $route.query.prev}}" replace>
+            <span>Kontakte</span>
             <v-icon>history</v-icon>
           </v-btn>
           <v-btn :to="{path: 'veranstaltungen', query: {prev: $route.query.prev}}" replace>
@@ -45,7 +45,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator";
 
 @Component({})
-export default class orgaDetails extends Vue {
+export default class vortDetails extends Vue {
   anzahlElement = Math.floor((document.body.offsetHeight - 280) / 72);
 }
 </script>

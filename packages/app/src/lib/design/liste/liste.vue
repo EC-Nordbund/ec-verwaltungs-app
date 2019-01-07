@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div>
     <template>
       <template v-for="(item, index) in splitNumbers">

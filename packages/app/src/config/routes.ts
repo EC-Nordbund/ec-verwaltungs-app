@@ -9,8 +9,14 @@ import orgaDetailsAllgemein from '@/views/organisationen/details/allgemein.vue';
 import orgaDetailsVeranstaltungen from '@/views/organisationen/details/veranstaltungen.vue';
 import orgaDetailsVeranstaltungsorte from '@/views/organisationen/details/veranstaltungsorte.vue';
 import orgaList from '@/views/organisationen/liste.vue';
+import veranstaltungsortComponent from '@/views/veranstaltungsorte/liste.vue'
 import routeComponent from '@/config/router.vue';
+import veranstaltungsortDetails from '@/views/veranstaltungsorte/details.vue'
+import veranstaltungsortAllgemeinDetails from '@/views/veranstaltungsorte/details/allgemein.vue'
+import veranstaltungsortKontaktDetails from '@/views/veranstaltungsorte/details/kontakt.vue'
+import veranstaltungsortVeranstaltungenDetails from '@/views/veranstaltungsorte/details/veranstaltungen.vue'
 import singlePage from '@/views/dashboard/singlePage.vue';
+import impressumComponent from "@/views/sonstiges/Impressum.vue";
 import { RouteConfig } from 'vue-router';
 
 const notFound:RouteConfig = {
@@ -28,6 +34,7 @@ const notFound:RouteConfig = {
 const routes: RouteConfig[] = [
   {path: "/login", component: LoginComponent},
   {path: "/", component: AppComponent, children: [
+    {path: '', redirect: 'dashboard'},
     {path: 'dashboard', component: routeComponent, children:[
       {path: '', redirect: '0'},
       {path:':id',component:dashboardComponent, children:[
@@ -37,6 +44,14 @@ const routes: RouteConfig[] = [
       ]},
       // {path: 'settings', component: dashboardSettingsComponent},
       notFound
+    ]},
+    {path: 'veranstaltungsorte', component: routeComponent, children: [
+      {path: '', component: veranstaltungsortComponent},
+      {path: ':id', component: veranstaltungsortDetails, children: [
+        {path: 'allgemein', component: veranstaltungsortAllgemeinDetails},
+        {path: 'kontakt', component:veranstaltungsortKontaktDetails},
+        {path: 'veranstaltungen', component: veranstaltungsortVeranstaltungenDetails}
+      ]}
     ]},
     {path: 'organisationen', component: routeComponent, children:[
       {path: '', component: orgaList},
@@ -49,6 +64,7 @@ const routes: RouteConfig[] = [
       ]},
       notFound
     ]},
+    {path:'impressum', component:impressumComponent},
     {path: "401", component: err401},
     {path: "404", component: err404},
     {path: "500", component: err500},

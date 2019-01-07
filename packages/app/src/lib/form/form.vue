@@ -1,5 +1,5 @@
-7<template>
-  <v-dialog persistend v-model="show_" :max-width="width">
+<template>
+  <v-dialog persistent v-model="show_" :max-width="width">
     <v-card>
       <v-card-title>
         <h1 v-primary v-font>

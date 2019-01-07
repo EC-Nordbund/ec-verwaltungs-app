@@ -19,7 +19,10 @@
           <v-btn v-if="item.clickB" @click.stop="item.clickB" icon>
             <v-icon color="indigo">{{item.iconB || standard.iconB}}</v-icon>
           </v-btn>
-          <v-icon v-if="!item.clickB" color="indigo">{{item.iconB || standard.iconB}}</v-icon>
+          <v-btn v-else-if="standard.clickB" @click.stop="standard.clickB" icon>
+            <v-icon color="indigo">{{item.iconB || standard.iconB}}</v-icon>
+          </v-btn>
+          <v-icon v-else="!item.clickB" color="indigo">{{item.iconB || standard.iconB}}</v-icon>
         </v-list-tile-action>
       </v-list-tile>
     </template>

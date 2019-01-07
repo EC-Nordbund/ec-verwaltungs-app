@@ -1,0 +1,19 @@
+mutation(
+  $authToken: String!
+  $bezeichnung: String!
+  $strasse: String!
+  $plz: String!
+  $ort: String!
+  $land: String!
+  $organisationsID: Int!
+) {
+  addVeranstaltungsort(
+    authToken: $authToken
+    bezeichnung: $bezeichnung
+    strasse: $strasse
+    plz: $plz
+    ort: $ort
+    land: $land
+    organisationsID: $organisationsID
+  )
+}

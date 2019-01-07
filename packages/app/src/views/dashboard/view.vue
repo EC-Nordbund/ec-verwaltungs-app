@@ -1,6 +1,6 @@
 <template>
   <v-card style="height: calc(100% - 20px); display:grid; grid-template-rows: auto 1fr">
-    <v-toolbar>
+    <v-toolbar color="transparent" class="elevation-0">
       <v-spacer/>
       <v-toolbar-title>
         <h1 v-font v-primary>Dashboard</h1>
@@ -12,12 +12,12 @@
         </v-icon>
       </v-btn>
     </v-toolbar>
-    <router-view class="test"/>
+    <router-view class="pageView"/>
   </v-card>  
 </template>
 
 <style scoped>
-.test{
+.pageView{
   display: grid;
   grid-template-columns: repeat(60,1fr);
   grid-template-rows: repeat(60,1fr);

@@ -3,50 +3,60 @@
     <ec-liste
       :items="[
         {
-          title: data.orga.ansprechpartner,
-          subTitle: 'Ansprechpartner',
-          iconA: 'person'
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.email,
-          subTitle: 'E-Mail',
-          iconA: 'mail',
-          click: mail
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.telefon,
-          subTitle: 'Telefon',
-          iconA: 'phone'
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.strasse,
-          subTitle: `${data.orga.plz} ${data.orga.ort} (${data.orga.land})`,
-          iconA: 'location_on',
+          title: data.vort.strasse,
+          subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
+          iconA: 'home',
+          iconB: 'edit',
           click: map
         },
         {
           divider: true
         },
         {
-          title: data.orga.notizen,
-          iconA: 'extension'
+          title: `${(data.vort.organisation||{}).bezeichnung} (${(data.vort.organisation||{}).ort} ${(data.vort.organisation||{}).land})`,
+          subTitle: 'Organisation bei der gebucht',
+          iconA: 'home',
+          click(){
+            $router.push({path: `/organisationen/${data.vort.organisation.organisationsID}`, query: {prev: $route.fullPath}})
+          }
+        },
+        {
+          divider: true
+        },
+        {
+          title: data.vort.anzahl_min,
+          subTitle: 'Mindestzahl an TN',
+          iconA: 'home'
+        },
+        {
+          title: data.vort.anzahl_max,
+          subTitle: 'Maximalzahl an TN',
+          iconA: 'home'
+        },
+        ...(data.vort.vollverpflegung?[
+          {
+            title: 'Vollverpflegung möglich',
+            iconA: 'home'
+          }
+        ]:[]),
+        ...(data.vort.selbstversorger?[
+          {
+            title: 'Selbstversorger möglich',
+            iconA: 'home'
+          }
+        ]:[]),
+        {
+          title: data.vort.notizen,
+          subTitle: 'Notizen',
+          iconA: 'home'
         }
       ]"
       v-model="page"
-      :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editOrga.show()}}"
+      :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editVortAllg.show()}}"
       :countPerPage="countPerPage"
     />
     <ec-form
-      ref="editOrga"
+      ref="editVortAllg"
       title="Editieren der Organisation"
       :value="value"
       :config="{
@@ -60,37 +70,6 @@
               v=>!v?'Du musst eine Bezeichnung angeben!':true,
               v=>(v&&v.length > 50)?'Die Bezeichnung darf maximal 50 Zeichen lang sein.':true
             ]
-          },
-          {
-            name: 'ansprechpartner',
-            label: 'Ansprechpartner',
-            component: 'v-text-field',
-            counter: 50,
-            rules:[
-              v=>!v?'Du musst einen Ansprechpartner angeben!':true,
-              v=>(v&&v.length > 50)?'Der Ansprechpartner darf maximal 50 Zeichen lang sein.':true
-            ]
-          },
-          {
-            name: 'email',
-            label: 'E-Mail',
-            component: 'v-text-field',
-            counter: 50,
-            rules:[
-              v=>!v?'Du musst eine E-Mail angeben!':true,
-              v=>(v&&v.length > 50)?'Die E-Mail Adresse darf maximal 50 Zeichen lang sein.':true
-            ]
-          },
-          {
-            name: 'telefon',
-            label: 'Telefon',
-            component: 'v-text-field',
-            counter: 20,
-            rules:[
-              v=>!v?'Du musst eine Telefonnummer angeben!':true,
-              v=>(v&&v.length > 50)?'Die Telefonnummer darf maximal 20 Zeichen lang sein.':true
-            ],
-            mask: '####################'
           },
           {
             name: 'strasse',
@@ -133,10 +112,31 @@
             ]
           },
           {
+            name: 'anzahl_min',
+            label: 'Mindest Anzahl TN',
+            component: 'v-text-field',
+            mask: '###',
+            counter: 3
+          },
+          {
+            name: 'anzahl_max',
+            label: 'Maximal Anzahl TN',
+            component: 'v-text-field',
+            mask: '###',
+            counter: 3
+          },
+          {
+            name: 'organisationsID',
+            label: 'Organisation {comming soon...}',
+            component:'v-text-field',
+            value: 0,
+            disabled: true
+          },
+          {
             name: 'notizen',
             label: 'Notizen',
             component: 'v-textarea'
-          },
+          }
         ],
         buttons: [
           {
@@ -186,6 +186,14 @@ export default class orgaDetailsAllgemein extends Vue {
   @Prop({ type: Number })
   countPerPage!: number
 
+  @Watch('data', {immediate: true})
+  onDataChange(){
+    this.value = <any>{}
+    this.value = <any>{
+      ...this.data
+    }
+  }
+
   page: any = 1
 
   created() {
@@ -202,15 +210,7 @@ export default class orgaDetailsAllgemein extends Vue {
       }
     })
   }
-
-  @Watch('data', {immediate: true})
-  onDataChange(){
-    this.value = <any>{}
-    this.value = <any>{
-      ...this.data
-    }
-  }
-
+  
   mail() {
     window.location.href = 'mailto:' + this.data.orga.email
   }

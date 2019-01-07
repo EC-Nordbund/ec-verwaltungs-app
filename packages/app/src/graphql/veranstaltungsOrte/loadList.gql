@@ -1,0 +1,12 @@
+query($authToken: String!) {
+    vorte(authToken: $authToken) {
+      vOrtID
+      bezeichnung
+      organisation {
+        bezeichnung
+      }
+      plz
+      ort
+      land
+    }
+  }

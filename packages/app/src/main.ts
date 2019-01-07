@@ -37,6 +37,20 @@ const router = new VueRouter({
   routes
 });
 
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login') {
+    if (auth.instance) {
+      // check if allowed
+      next()
+    } else {
+      next({path: '/login', query:{afterLogIn: to.fullPath}})
+    }
+  } else {
+    next()
+  }
+  
+})
+
 new Vue({
   render: (h: CreateElement) => h("router-view"),
   apolloProvider,

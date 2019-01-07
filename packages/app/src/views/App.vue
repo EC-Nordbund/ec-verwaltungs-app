@@ -163,24 +163,24 @@
       </v-list>
     </v-navigation-drawer>
     <v-content>
-      <router-view :key="$route.path" style="margin: 5px"/>
+      <router-view :key="$route.path" style="margin: 5px; width: calc(100% - 10px);"/>
     </v-content>
     <v-footer fixed app color="secondary" dark style="z-index: 9999; padding: 0 10px;">
       <span v-white>Todo</span>
       <v-spacer/>
       <span v-white>Version: {{ version }}</span>
       <v-spacer/>
-      <span v-white>
-        © 2017 - {{ (new Date()).getFullYear() }}
-        <v-icon>keyboard_arrow_right</v-icon>EC-Nordbund
-        <v-icon>keyboard_arrow_right</v-icon>T. Krause + S. Krüger
-      </span>
+      <v-breadcrumbs :items="[`© 2017 - ${ (new Date()).getFullYear() }`, 'EC-Nordbund', 'T. Krause + S. Krüger'].map(v=>({text: v, disabled: true}))">
+        <v-icon slot="divider">keyboard_arrow_right</v-icon>
+        <template slot="item" slot-scope="props">
+          <span v-white :class="[props.item.disabled && 'disabled']">{{ props.item.text }}</span>
+        </template>
+      </v-breadcrumbs>
     </v-footer>
   </v-app>
 </template>
 
 <script lang="ts">
-import nav from '@/config/nav'
 import {version} from '@/../package.json'
 import {
   Component,
@@ -193,7 +193,6 @@ import {
 @Component({})
 export default class App extends Vue {
   drawer=null
-  nav=nav
   version=version
   dark=false
 }
