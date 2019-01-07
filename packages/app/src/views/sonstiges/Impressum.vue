@@ -27,18 +27,18 @@
       </p>
       <h1 v-font>Wir benutzen hauptsächlich folgenden OpenSource Frameworks</h1>
       <v-card>
-        <v-card-text>
+        <v-card-texyt>
           <h2>Electron</h2>Version:
           <b>{{electronVersion}}</b>
-          <br>Lizent:
+          <br>Lizenz:
           <b>MIT</b>
-        </v-card-text>
+        </v-card-texyt>
       </v-card>
       <v-card>
         <v-card-text>
           <h2>Vue</h2>Version:
           <b>{{vueVersion}}</b>
-          <br>Lizent:
+          <br>Lizenz:
           <b>MIT</b>
         </v-card-text>
       </v-card>
@@ -46,7 +46,7 @@
         <v-card-text>
           <h2>Vuetify</h2>Version:
           <b>{{vuetifyVersion}}</b>
-          <br>Lizent:
+          <br>Lizenz:
           <b>MIT</b>
         </v-card-text>
       </v-card>
