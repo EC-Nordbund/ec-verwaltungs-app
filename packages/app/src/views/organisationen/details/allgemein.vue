@@ -1,50 +1,48 @@
 <template>
-  <v-card-text>
-    <ec-liste
-      :items="[
-        {
-          title: data.orga.ansprechpartner,
-          subTitle: 'Ansprechpartner',
-          iconA: 'person'
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.email,
-          subTitle: 'E-Mail',
-          iconA: 'mail',
-          click: mail
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.telefon,
-          subTitle: 'Telefon',
-          iconA: 'phone'
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.strasse,
-          subTitle: `${data.orga.plz} ${data.orga.ort} (${data.orga.land})`,
-          iconA: 'location_on',
-          click: map
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.orga.notizen,
-          iconA: 'extension'
-        }
-      ]"
-      v-model="page"
-      :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editOrga.show()}}"
-      :countPerPage="countPerPage"
-    />
+  <ec-simple-page
+    :items="[
+      {
+        title: data.orga.ansprechpartner,
+        subTitle: 'Ansprechpartner',
+        iconA: 'person'
+      },
+      {
+        divider: true
+      },
+      {
+        title: data.orga.email,
+        subTitle: 'E-Mail',
+        iconA: 'mail',
+        click: mail
+      },
+      {
+        divider: true
+      },
+      {
+        title: data.orga.telefon,
+        subTitle: 'Telefon',
+        iconA: 'phone'
+      },
+      {
+        divider: true
+      },
+      {
+        title: data.orga.strasse,
+        subTitle: `${data.orga.plz} ${data.orga.ort} (${data.orga.land})`,
+        iconA: 'location_on',
+        click: map
+      },
+      {
+        divider: true
+      },
+      {
+        title: data.orga.notizen,
+        iconA: 'extension'
+      }
+    ]"
+    :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editOrga.show()}}"
+    :countPerPage="countPerPage"
+  >
     <ec-form
       ref="editOrga"
       title="Editieren der Organisation"
@@ -154,19 +152,18 @@
         ]
       }"
     />
-  </v-card-text>
+  </ec-simple-page>
 </template>
 <script lang="ts">
-import {
-  Component,
-  Vue,
-  Watch,
-  Prop
-} from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
 
 @Component({})
-export default class orgaDetailsAllgemein extends Vue {
-  valid = false
+export default class orgaDetailsVeranstaltungsOrte extends Vue {
+  @Prop({ type: Object })
+  data!: any
+  
+  @Prop({ type: Number })
+  countPerPage!: number
 
   value = {
     bezeichnung: '',
@@ -178,29 +175,6 @@ export default class orgaDetailsAllgemein extends Vue {
     ort: '',
     land: '',
     notizen: ''
-  }
-
-  @Prop({ type: Object })
-  data!: any
-
-  @Prop({ type: Number })
-  countPerPage!: number
-
-  page: any = 1
-
-  created() {
-    this.page = this.$route.query.page || 1
-  }
-
-  @Watch('page')
-  onPageChange() {
-    this.$router.replace({
-      path: this.$route.path,
-      query: {
-        page: this.page,
-        prev: this.$route.query.prev
-      }
-    })
   }
 
   @Watch('data', {immediate: true})
@@ -216,8 +190,7 @@ export default class orgaDetailsAllgemein extends Vue {
   }
   
   map() {
-    // TODO:
-    alert('Hier folgt in Kürze eine Karte!')
+    this.$util.map(this.data.orga.strasse,this.data.orga.plz,this.data.orga.ort,this.data.orga.land)
   }
 }
 </script>

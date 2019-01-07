@@ -1,60 +1,58 @@
 <template>
-  <v-card-text>
-    <ec-liste
-      :items="[
+  <ec-simple-page
+    :items="[
+      {
+        title: data.vort.strasse,
+        subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
+        iconA: 'home',
+        iconB: 'edit',
+        click: map
+      },
+      {
+        divider: true
+      },
+      {
+        title: `${(data.vort.organisation||{}).bezeichnung} (${(data.vort.organisation||{}).ort} ${(data.vort.organisation||{}).land})`,
+        subTitle: 'Organisation bei der gebucht',
+        iconA: 'home',
+        click(){
+          $router.push({path: `/organisationen/${data.vort.organisation.organisationsID}`, query: {prev: $route.fullPath}})
+        }
+      },
+      {
+        divider: true
+      },
+      {
+        title: data.vort.anzahl_min,
+        subTitle: 'Mindestzahl an TN',
+        iconA: 'home'
+      },
+      {
+        title: data.vort.anzahl_max,
+        subTitle: 'Maximalzahl an TN',
+        iconA: 'home'
+      },
+      ...(data.vort.vollverpflegung?[
         {
-          title: data.vort.strasse,
-          subTitle:`${data.vort.plz} ${data.vort.ort} (${data.vort.land})`,
-          iconA: 'home',
-          iconB: 'edit',
-          click: map
-        },
-        {
-          divider: true
-        },
-        {
-          title: `${(data.vort.organisation||{}).bezeichnung} (${(data.vort.organisation||{}).ort} ${(data.vort.organisation||{}).land})`,
-          subTitle: 'Organisation bei der gebucht',
-          iconA: 'home',
-          click(){
-            $router.push({path: `/organisationen/${data.vort.organisation.organisationsID}`, query: {prev: $route.fullPath}})
-          }
-        },
-        {
-          divider: true
-        },
-        {
-          title: data.vort.anzahl_min,
-          subTitle: 'Mindestzahl an TN',
-          iconA: 'home'
-        },
-        {
-          title: data.vort.anzahl_max,
-          subTitle: 'Maximalzahl an TN',
-          iconA: 'home'
-        },
-        ...(data.vort.vollverpflegung?[
-          {
-            title: 'Vollverpflegung möglich',
-            iconA: 'home'
-          }
-        ]:[]),
-        ...(data.vort.selbstversorger?[
-          {
-            title: 'Selbstversorger möglich',
-            iconA: 'home'
-          }
-        ]:[]),
-        {
-          title: data.vort.notizen,
-          subTitle: 'Notizen',
+          title: 'Vollverpflegung möglich',
           iconA: 'home'
         }
-      ]"
-      v-model="page"
-      :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editVortAllg.show()}}"
-      :countPerPage="countPerPage"
-    />
+      ]:[]),
+      ...(data.vort.selbstversorger?[
+        {
+          title: 'Selbstversorger möglich',
+          iconA: 'home'
+        }
+      ]:[]),
+      {
+        title: data.vort.notizen,
+        subTitle: 'Notizen',
+        iconA: 'home'
+      }
+    ]"
+    :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editVortAllg.show()}}"
+    :countPerPage="countPerPage"
+  > 
     <ec-form
       ref="editVortAllg"
       title="Editieren der Organisation"
@@ -154,7 +152,7 @@
         ]
       }"
     />
-  </v-card-text>
+  </ec-simple-page>
 </template>
 <script lang="ts">
 import {
@@ -166,8 +164,6 @@ import {
 
 @Component({})
 export default class orgaDetailsAllgemein extends Vue {
-  valid = false
-
   value = {
     bezeichnung: '',
     ansprechpartner: '',
@@ -194,30 +190,12 @@ export default class orgaDetailsAllgemein extends Vue {
     }
   }
 
-  page: any = 1
-
-  created() {
-    this.page = this.$route.query.page || 1
-  }
-
-  @Watch('page')
-  onPageChange() {
-    this.$router.replace({
-      path: this.$route.path,
-      query: {
-        page: this.page,
-        prev: this.$route.query.prev
-      }
-    })
-  }
-  
   mail() {
     window.location.href = 'mailto:' + this.data.orga.email
   }
   
   map() {
-    // TODO:
-    alert('Hier folgt in Kürze eine Karte!')
+    this.$util.map(this.data.vort.strasse,this.data.vort.plz,this.data.vort.ort,this.data.vort.land)
   }
 }
 </script>

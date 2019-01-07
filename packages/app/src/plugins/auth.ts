@@ -18,3 +18,5 @@ export class auth {
     vue.prototype.$auth = auth
   }
 }
+
+export default auth

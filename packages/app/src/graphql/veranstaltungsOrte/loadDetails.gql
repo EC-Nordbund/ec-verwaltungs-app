@@ -1,5 +1,5 @@
-query($authToken: String!, $vOrtID: Int!) {
-  vort(authToken: $authToken, vOrtID: $vOrtID) {
+query($authToken: String!, $id: Int!) {
+  vort(authToken: $authToken, vOrtID: $id) {
     vOrtID
     bezeichnung
     strasse

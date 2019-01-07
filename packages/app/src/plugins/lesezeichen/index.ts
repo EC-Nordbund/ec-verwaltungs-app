@@ -67,3 +67,5 @@ export class LesezeichenList extends EventEmitter {
     }
   }
 }
+
+export default LesezeichenList

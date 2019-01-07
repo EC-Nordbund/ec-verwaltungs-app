@@ -5,6 +5,7 @@ import { auth } from '@/plugins/auth';
 declare module "vue/types/vue" {
   interface Vue {
     $liste: LesezeichenList,
-    $auth: typeof auth
+    $auth: typeof auth,
+    $util: any
   }
 }

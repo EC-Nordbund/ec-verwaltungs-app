@@ -1,5 +1,5 @@
-query($authToken: String!, $orgaID: Int!) {
-  orga(authToken: $authToken, organisationsID: $orgaID) {
+query($authToken: String!, $id: Int!) {
+  orga(authToken: $authToken, organisationsID: $id) {
     organisationsID
     bezeichnung
     ansprechpartner
