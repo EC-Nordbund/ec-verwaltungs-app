@@ -1,4 +1,4 @@
-import { Prop, Vue } from 'vue-property-decorator'
+import { Prop, Vue } from 'vue-property-decorator';
 
 //widgetsList
 let widgets: { [id: string]: widget } = {}
