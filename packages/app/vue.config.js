@@ -24,7 +24,7 @@ module.exports = {
         })
       },
       builderOptions: {
-        appID: 'de.ec-nordbund.app',
+        appId: 'de.ec-nordbund.app',
         productName: 'EC-Verwaltungs-App',
         copyright: "Copyright © 2019 S.Krüger + T.Krause für den EC-Nordbund",
         linux: {

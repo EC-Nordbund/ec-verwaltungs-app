@@ -5,9 +5,9 @@
     :tag="''"
   >
     <template slot-scope="{ result: { loading, error, data }}">
-      <div v-if="loading" class="loading apollo">Loading...</div>
-      <div v-else-if="error" class="error apollo">An error occured {{error}}</div>
-      <v-card v-else-if="data" class="result apollo">
+      <div v-if="loading">Loading...</div>
+      <div v-else-if="error">An error occured {{error}}</div>
+      <v-card v-else-if="data">
         <v-toolbar color="transparent" class="elevation-0">
           <v-spacer/>
           <v-toolbar-title>
@@ -141,7 +141,7 @@
           />
         </v-card-actions>
       </v-card>
-      <div v-else class="no-result apollo">No result :(</div>
+      <div v-else>No result :(</div>
     </template>
   </ApolloQuery>
 </template>
