@@ -7,8 +7,8 @@ export default {
     requireComponent.keys().map((fileName: string) => {
       const componentConfig = requireComponent(fileName);
       const component = componentConfig.default || componentConfig;
-      Vue.component(component.name, component);
-      options.util.niceLogging('Libary-Component:',(component.name.replace(/([A-Z])/g, "-$1").toLowerCase())
+      vue.component(component.name, component);
+      options.util.niceLogging('Libary-Component:',(component.name.replace(/([A-Z])/g, "-$1").toLowerCase()))
     });
   }
 }
