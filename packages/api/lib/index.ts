@@ -1,11 +1,11 @@
-import app from './app';
-import * as greenlock from 'greenlock-express';
+import app from "./app";
+import * as greenlock from "greenlock-express";
 
 greenlock
   .create({
-    email: "datenschutz@ec-nordbund.de",
     agreeTos: true,
+    app,
     configDir: "./.config/",
-    app: app
+    email: "datenschutz@ec-nordbund.de"
   })
   .listen(80, 443);

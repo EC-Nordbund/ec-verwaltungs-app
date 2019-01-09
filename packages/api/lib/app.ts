@@ -1,23 +1,28 @@
+import middleWare from "./middleware";
 import {
-  addUser,
-  authKey,
   changePWD,
   getUser,
   login,
-  logout,
-  user,
-  userGroup
-  } from './users/index';
-import { ApolloServer, AuthenticationError } from 'apollo-server-express';
-import * as bodyParser from 'body-parser';
-import * as cors from 'cors';
-import * as express from 'express';
-import * as fs from 'fs';
-import { v1 as neo4j } from 'neo4j-driver';
-import { makeAugmentedSchema } from 'neo4j-graphql-js';
+  logout
+  } from "./users/index";
+import { ApolloServer, AuthenticationError } from "apollo-server-express";
+import * as cors from "cors";
+import * as express from "express";
+import * as fs from "fs";
+import { v1 as neo4j } from "neo4j-driver";
+import { makeAugmentedSchema } from "neo4j-graphql-js";
 
 const typeDefs = fs.readFileSync("./schema.gql").toString();
-const schema = makeAugmentedSchema({typeDefs});
+const schema = makeAugmentedSchema({
+  resolvers: {
+    Query: {
+      test() {
+        return "Hallo Welt!";
+      }
+    }
+  },
+  typeDefs
+});
 
 const driver = neo4j.driver(
   "bolt://localhost",
@@ -25,7 +30,6 @@ const driver = neo4j.driver(
 );
 
 const server = new ApolloServer({
-  schema,
   context: ({req}) => {
     const authToken = req.headers.authtoken;
     if (authToken) {
@@ -37,19 +41,36 @@ const server = new ApolloServer({
       throw new AuthenticationError("Du bist nicht Angemeldet!");
     }
   },
-  schemaDirectives: {}
+  schema: middleWare(schema)
 });
 
 const app = express().use(cors());
-app.post("/login", bodyParser.json(), (req, res) => {
-  console.log(req.body);
+app.post("/login", (req, res) => {
   const authToken = login(
-    <string>req.headers.username,
-    <string>req.headers.password
+    req.headers.username as string,
+    req.headers.password as string
   );
   res.end(authToken);
 });
 
+app.post("/login", (req, res) => {
+  res.end(logout(req.headers.authToken as string));
+});
+
+app.post("/changePassword", (req, res) => {
+  res.end(
+    changePWD(
+      getUser(req.headers.authToken as string).userID,
+      req.headers.oldPwd as string,
+      req.headers.newPwd as string
+    )
+  );
+});
+
 server.applyMiddleware({app});
+
+app.all("*", function(req, res) {
+  res.redirect("https://ec-nordbund.de/?redirectFromAPI");
+});
 
 export default app;

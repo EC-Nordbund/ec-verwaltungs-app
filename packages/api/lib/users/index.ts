@@ -1,11 +1,9 @@
-import { authKey } from './authKey';
-import { user } from './user';
-import { userGroup } from './userGroup';
-import { readFileSync, writeFileSync } from 'fs';
-import { sha3_512 } from 'js-sha3';
-export {authKey} from "./authKey";
-export {user} from "./user";
-export {userGroup} from "./userGroup";
+import { AuthKey } from "./authKey";
+import { Role, User } from "./user";
+import { readFileSync, writeFileSync } from "fs";
+import { sha3_512 } from "js-sha3";
+export {AuthKey as authKey} from "./authKey";
+export {User as user} from "./user";
 
 function hash(pwd: string, salt: string): string {
   return sha3_512(salt + pwd);
@@ -21,10 +19,10 @@ export function login(username: string, password: string): string {
   if (getUsers.length !== 1) {
     throw "Username und Password passen nicht zusammen";
   } else {
-    let ckUser = getUsers[0];
-    let h = hash(password, ckUser.salt);
+    const ckUser = getUsers[0];
+    const h = hash(password, ckUser.salt);
     if (h === ckUser.pwdHash) {
-      let authToken = new authKey(ckUser);
+      const authToken = new AuthKey(ckUser);
       authKeys.push(authToken);
       return authToken.authToken;
     } else {
@@ -40,7 +38,7 @@ export function logout(authToken: string): boolean {
 
 export function extend(authToken: string): boolean {
   const tmpDate = new Date();
-  let keys = authKeys
+  const keys = authKeys
     .filter(v => v.authToken === authToken)
     .filter(v => {
       return v.ablaufTime > tmpDate;
@@ -53,7 +51,7 @@ export function extend(authToken: string): boolean {
   }
 }
 
-export function getUser(authToken: string): user {
+export function getUser(authToken: string): User {
   const tmpDate = new Date();
   const auth = authKeys
     .filter(v => v.authToken === authToken)
@@ -67,55 +65,32 @@ export function getUser(authToken: string): user {
   return auth.user;
 }
 
-export let users: Array<user> = [];
-export let userGroups: Array<userGroup> = [];
-export let authKeys: Array<authKey> = [];
+export let users: User[] = [];
+export let authKeys: AuthKey[] = [];
 
 function load() {
-  let saveObj = JSON.parse(readFileSync("./save.json").toString());
+  const saveObj = JSON.parse(readFileSync("./save.json").toString());
 
-  saveObj.userGroups.map(JSON.parse).forEach(v => {
-    userGroups.push(
-      new userGroup(
-        v.userGroupID,
-        v.bezeichnung,
-        v.mutationRechte,
-        v.fieldAccess
-      )
-    );
-  });
-
-  saveObj.users.map(JSON.parse).forEach(v => {
+  saveObj.forEach(v => {
     users.push(
-      new user(
+      new User(
         v.userID,
         v.personID,
         v.userName,
         v.pwdHash,
         v.salt,
         v.ablaufDatum,
-        v.userGroupID
+        v.role
       )
     );
   });
 }
 
 function save() {
-  const saveObj = {
-    users: users.map(user => user.toSave()),
-    userGroups: userGroups.map(group => group.toSave())
-  };
-  writeFileSync("./save.json", JSON.stringify(saveObj, null, 2));
-
-  const saveObj2 = {
-    users: users.map(user => JSON.parse(user.toSave(true))),
-    userGroups: userGroups.map(group => group.toSave())
-  };
-
-  // Logge status to DB
-  // query(
-  //   `INSERT INTO userLogging (JSON) VALUES ('${JSON.stringify(saveObj2)}');`
-  // ).catch(console.log);
+  writeFileSync(
+    "./save.json",
+    JSON.stringify(users.map(v => v.toSave()), undefined, 2)
+  );
 }
 
 load();
@@ -151,7 +126,7 @@ export function addUser(
   nID++;
 
   users.push(
-    new user(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID)
+    new User(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID)
   );
 
   save();
@@ -177,14 +152,10 @@ Thomas Seeger sowie Tobias Krause und Sebastian Krüger
 
   // return sendMail("app@ec-nordbund.de", {to}, subject, body, false);
 }
-export function updateUser(
-  userID: number,
-  gueltigBis: string,
-  userGroupID: number
-) {
-  let u = users.filter(v => v.userID === userID)[0];
+export function updateUser(userID: number, gueltigBis: string, role: Role) {
+  const u = users.filter(v => v.userID === userID)[0];
   u.ablaufDatum = gueltigBis;
-  u.userGroupID = userGroupID;
+  u.role = role;
   save();
 }
 
@@ -193,8 +164,8 @@ export function changePWD(
   oldPWD: string,
   newPWD: string
 ): boolean {
-  let u = users.filter(v => v.userID === userID)[0];
-  let oldHash = hash(oldPWD, u.salt);
+  const u = users.filter(v => v.userID === userID)[0];
+  const oldHash = hash(oldPWD, u.salt);
   if (oldHash === u.pwdHash) {
     const nSalt = sha3_512(
       `${

@@ -14,7 +14,7 @@ type Person {
   emails: [PersonEmails]
   telefon: [PersonTelefon]
   fzs: [FZ] @relation(name: "HAT_VORGEZEIGT", direction: OUT)
-  fzAntraege: [FZAntrag] @relation(name: "WURDEN_GESENDET", direction: OUT)
+  letzterFzAntrag: FZAntrag @relation(name: "WURDE_GESENDET", direction: OUT)
   currentVGState: VGMitglied!
   aks: [PersonAK]
   status: PersonStatus
@@ -29,7 +29,7 @@ type PersonAK @relation(name: "MITGLIED_IN_UPDATE") {
   status: AKStatus!
 }
 
-type PersonAdresse @relation(name: "WOHNT_IN") {
+type PersonAdresse {
   from: Person
   to: Adresse
   erstellt: DateTime!
@@ -45,7 +45,7 @@ type PersonEmails @relation(name: "HAS_EMAIL") {
 
 type PersonTelefon @relation(name: "HAS_TELEFON") {
   from: Person
-  to: Email
+  to: Telefon
   erstellt: DateTime!
   lastUsed: DateTime!
 }
@@ -250,4 +250,8 @@ enum DSGVOStatus {
   normal
   gesperrt
   pseudonymisiert
+}
+
+type Query {
+  test: String!
 }

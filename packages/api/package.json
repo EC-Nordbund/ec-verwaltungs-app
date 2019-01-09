@@ -5,7 +5,7 @@
   "author": "Sebastian Krüger <2pi_r2@gmx.de>",
   "homepage": "https://ec-nordbund.de/packages/api",
   "license": "GPL-3.0-or-later",
-  "main": "lib/api_master.ts",
+  "main": "dist/index.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"
@@ -21,10 +21,10 @@
     "url": "git+https://github.com/EC-Nordbund/ec-verwaltungs-app.git"
   },
   "scripts": {
-    "build:dev": "webpack --config webpack.dev.build.config.js --resolveJsonModule",
-    "build:prod": "webpack --config webpack.prod.config.js --resolveJsonModule",
-    "dev": "webpack --config webpack.dev.watch.config.js --resolveJsonModule",
-    "dev:start": "node ./dist-live/server.js",
+    "build": "tsc -p tsconfig.json --pretty",
+    "serve": "tsc -w -p tsconfig.json --pretty",
+    "start": "node .",
+    "dev": "node ./dist/index_dev.js",
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint -p tsconfig.json --fix"
   },
@@ -41,18 +41,17 @@
   },
   "dependencies": {
     "apollo-server-express": "^2.3.1",
-    "body-parser": "^1.18.3",
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "graphql": "^14.0.2",
+    "graphql-middleware": "^3.0.0",
+    "graphql-shield": "^5.1.0",
     "graphql-subscriptions": "^1.0.0",
     "graphql-tools": "^4.0.3",
     "greenlock-express": "^2.6.7",
     "js-sha3": "^0.8.0",
     "neo4j-driver": "^1.7.2",
-    "neo4j-graphql-js": "^2.1.1",
-    "node-latex": "^2.4.4",
-    "nodemailer": "^5.0.0"
+    "neo4j-graphql-js": "^2.2.0"
   },
   "gitHead": "d3c023cb53fcd90861d042d106a9456c1d75cbf4"
 }
