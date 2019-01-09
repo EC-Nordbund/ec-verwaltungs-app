@@ -30,19 +30,3 @@ const app = express().use(cors());
 server.applyMiddleware({app});
 
 export default app;
-// http
-//   .createServer(app)
-//   .listen(31415, () =>
-//     console.log(
-//       `🚀 Server ready at http://localhost:31415${server.graphqlPath}`
-//     )
-//   );
-
-greenlock
-  .create({
-    email: "datenschutz@ec-nordbund.de",
-    agreeTos: true,
-    configDir: "./.config/",
-    app: app
-  })
-  .listen(80, 443);
