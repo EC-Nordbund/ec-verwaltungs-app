@@ -325,7 +325,6 @@
   </ec-wrapper>
 </template>
 <script lang="ts">
-import electron, { isElectron } from '@/plugins/electron'
 import { Component } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 
@@ -350,9 +349,8 @@ import {
   personConfig,
   notizConfig,
   ecKreisConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
-import { getClient } from '@/plugins/apollo'
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'
@@ -470,7 +468,7 @@ const loadGQL = gql`
     }
   }
 `
-
+import {getClient} from '@/realPlugins/apollo'
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
@@ -651,7 +649,6 @@ export default class PersonenDetails extends reloaderBase {
     notizConfig
   ]
 
-  isElectron: boolean = isElectron
   data: any = { person: {} }
   editPersonStamm_show = false
   editPersonStamm_open() {
@@ -1056,7 +1053,7 @@ export default class PersonenDetails extends reloaderBase {
   }
   fzAntrag() {
     // Confirm.
-    electron.remote.dialog.showMessageBox(
+    this.$require.electron.remote.dialog.showMessageBox(
       {
         type: 'question',
         buttons: ['Yes', 'No'],
@@ -1091,7 +1088,7 @@ export default class PersonenDetails extends reloaderBase {
   }
 
   createLetter() {
-    const filenames = electron.remote.dialog.showOpenDialog(
+    const filenames = this.$require.electron.remote.dialog.showOpenDialog(
       {
         title: 'Word Datei des Briefes auswählen',
         filters: [{ name: 'Word', extensions: ['docx'] }],
@@ -1099,7 +1096,7 @@ export default class PersonenDetails extends reloaderBase {
       }
     )
     if (filenames) {
-      const fs = eval('require("fs")')
+      const fs = this.$require.fs
       const file = filenames[0]
       const fileContent = fs.readFileSync(file, 'binary')
       const zipData = new jsZip(fileContent)
@@ -1118,7 +1115,7 @@ export default class PersonenDetails extends reloaderBase {
         .getZip()
         .generate({ type: 'nodebuffer' })
 
-      const tmpPath = electron.remote.app
+      const tmpPath = this.$require.electron.remote.app
         .getPath('temp')
         .split('\\')
         .join('/')

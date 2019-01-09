@@ -1,10 +1,9 @@
-import gql from 'graphql-tag'
-import { getClient } from '@/plugins/apollo'
-import version from './version/version'
-import router from './router/router'
-import eventbus from '@/plugins/eventbus'
+import eventbus from '@/plugins/eventbus';
+import { getClient } from '@/realPlugins/apollo';
+import { data } from '@/realPlugins/electron';
+import gql from 'graphql-tag';
 
-import electron from '@/plugins/electron'
+const { electron, version } = data
 
 /**
  * Class with handels the authentication.

@@ -1,6 +1,6 @@
 {
   "name": "ec-verwaltungs-app",
-  "version": "1.2.1",
+  "version": "2.0.0",
   "description": "EC-Verwaltungs Application",
   "keywords": [],
   "homepage": "https://ec-nordbund.de",
@@ -94,8 +94,8 @@
   "dependencies": {
     "electron-settings": "^3.2.0",
     "electron-squirrel-startup": "^1.0.0",
-    "node-fetch": "^2.1.2",
-    "electron-unhandled": "^1.1.0"
+    "electron-unhandled": "^1.1.0",
+    "node-fetch": "^2.1.2"
   },
   "devDependencies": {
     "@electron-forge/cli": "^6.0.0-beta.17",
@@ -103,7 +103,7 @@
     "@electron-forge/maker-dmg": "^6.0.0-beta.17",
     "@electron-forge/maker-squirrel": "^6.0.0-beta.17",
     "@electron-forge/publisher-github": "^6.0.0-beta.17",
-    "electron": "3.0.4",
+    "electron": "4.0.0",
     "electron-debug": "^2.0.0",
     "electron-devtools-installer": "^2.2.4"
   }

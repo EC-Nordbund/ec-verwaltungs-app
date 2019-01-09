@@ -13,7 +13,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
-
+import {getClient} from '@/realPlugins/apollo'
 import auth from '@/plugins/auth'
 
 import {
@@ -23,11 +23,11 @@ import {
   vOrtConfig,
   minTNConfig,
   maxTNConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
-import xButtonLogik from '@/plugins/xButton/logic'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 
 const loadGQL = gql`
   query($authToken: String!) {
@@ -138,7 +138,7 @@ export default class VeranstaltungsListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.suchstring = this.$route.query.suche || ''
+    this.suchstring = (typeof this.$route.query.suche === 'string') ? this.$route.query.suche : ''
     super.created()
   }
 

@@ -1,18 +1,5 @@
 <template>
   <ec-wrapper title="Profil" mini @share="share">
-    <template>
-      <v-card-text v-if="false">
-        <v-switch label="Dark-Theme"/>          
-        <v-text-field label="E-Mail"/>
-        <v-text-field label="Benutzername"/>
-        <v-text-field label="SMTP-Server"/>
-        <v-text-field label="SMTP-Port"/>
-        <v-text-field label="IMAP-Server"/>
-        <v-text-field label="IMAP-Port"/>
-        <v-text-field label="E-Mail Passwort"/>
-      </v-card-text>
-    </template>
-
     <template slot="forms">
       <v-dialog v-model="editPWD_show" width="500px" persistent>
         <v-card>

@@ -69,7 +69,10 @@ const mainWindowOptions = {
   useContentSize: true,
   width: 1000,
   show: false,
-  icon: logoURL
+  icon: logoURL,
+  webPreferences: {
+    nodeIntegration: true
+  }
 }
 
 const loadingWindowOptions = {

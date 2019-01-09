@@ -1,58 +1,46 @@
-import apolloProvider from '@/plugins/apollo'
-import auth from '@/plugins/auth'
-import DSGVO from './views/DSGVO.vue'
-import electron, {
-  isElectron,
-  isProduction
-} from '@/plugins/electron'
-import lesezeichenShow from '@/plugins/lesezeichen/showLesezeichen.vue'
-import lesezeichenToggele from '@/plugins/lesezeichen/addLesezeichen.vue'
-import router from '@/plugins/router/router'
-import Vue from 'vue'
-import wrapper from '@/plugins/wrapper.vue'
-import xButton from '@/plugins/xButton/btn.vue'
-import '@/plugins/updateChecker'
-import '@/plugins/design/vuetify'
-import '@/plugins/lib_extension/componentLib_extension'
-import '@/plugins/lib/componentLib'
-import '@/plugins/qrCode'
-import '@/plugins/router/routeHandler'
-import '@/plugins/design/theme-directives'
-import '@/plugins/auth'
-import '@/plugins/widgets'
+import extra from '@/plugins';
+import auth from '@/plugins/auth';
+import '@/plugins/widgets';
+import { data } from '@/realPlugins/electron';
+import Vue from 'vue';
 
-Vue.component('ec-lesezeichen-add', lesezeichenToggele)
-Vue.component('ec-lesezeichen-show', lesezeichenShow)
-Vue.component('ec-x-btn', xButton)
-Vue.component('ec-wrapper', wrapper)
-Vue.component('ec-dsgvo', DSGVO)
-
-if (isElectron) {
+if (data.isElectron) {
   eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';")
   eval("window.fetch = require('node-fetch')")
-  electron.ipcRenderer.on(
-    'proto-set-route',
-    (e: any, url: string) => {
-      if (auth.isLogedIn()) {
-        router.push(url)
-      } else {
-        auth.protoUrl(url)
-      }
-    }
-  )
 
   //Auto LogOut
-  electron.remote.powerMonitor.on('suspend', () => {
+  data.electron.remote.powerMonitor.on('suspend', () => {
     auth.logOut(true)
   })
+
+  Vue.config.errorHandler = (
+    err: Error,
+    vm: Vue,
+    info: string
+  ) => {
+    data.electron.remote.dialog.showErrorBox(
+      `Vue-Error - ${err.name}`,
+      err.message + '\n' + info
+    )
+  }
+
+  Vue.config.warnHandler = function(
+    msg: string,
+    vm,
+    trace
+  ) {
+    data.electron.remote.dialog.showErrorBox(
+      'Vue-Warn',
+      msg
+    )
+  }
 }
 
 // set Config
-Vue.config.productionTip = isProduction
+Vue.config.productionTip = data.isProduction
 
 // create Vue Instance
 new Vue({
-  apolloProvider: apolloProvider(),
   render: h => h('router-view'),
-  router
+  ...extra()
 }).$mount('#app')

@@ -45,7 +45,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
-
+import {getClient} from '@/realPlugins/apollo'
 import gql from 'graphql-tag'
 
 import {
@@ -53,13 +53,13 @@ import {
   nachnameConfig,
   gebDatConfig,
   geschlechtConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 import auth from '@/plugins/auth'
 
-import xButtonLogik from '@/plugins/xButton/logic'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 
 const loadGQL = gql`
   query($authToken: String!) {
@@ -172,7 +172,7 @@ export default class PersonenListe extends reloaderBase {
       authToken: auth.authToken
     }
     this.query = loadGQL
-    this.suchstring = this.$route.query.suche || ''
+    this.suchstring = (typeof this.$route.query.suche === 'string') ? this.$route.query.suche : ''
     super.created()
   }
 }

@@ -106,9 +106,9 @@ import {
   bezeichnungConfig,
   statusUpdateDate,
   akStatusConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 import auth from '@/plugins/auth'
-import { getClient } from '@/plugins/apollo'
+
 import event from '@/plugins/eventbus'
 
 import gql from 'graphql-tag'
@@ -139,6 +139,8 @@ const loadGQL = gql`
     }
   }
 `
+
+import {getClient} from '@/realPlugins/apollo'
 
 @Component({
   beforeRouteEnter(to, from, next) {

@@ -14,7 +14,7 @@ import { Component, Vue } from 'vue-property-decorator'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 import auth from '@/plugins/auth'
-
+import {getClient} from '@/realPlugins/apollo'
 import {
   bezeichnungConfig,
   orgaConfig,
@@ -22,13 +22,13 @@ import {
   plzConfig,
   ortConfig,
   landConfig
-} from '@/plugins/formConfig/index'
+} from '@/realPlugins/formConfig'
 
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
 
-import { required, maxLength } from '@/plugins/rules'
-import xButtonLogik from '@/plugins/xButton/logic'
+
+import { required, maxLength } from '@/config/rules'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 
 const loadGQL = gql`
   query($authToken: String!) {

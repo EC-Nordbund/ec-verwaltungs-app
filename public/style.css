@@ -62,3 +62,15 @@ html {
   font-weight: 400;
   src: url('./material.woff2') format('woff2');
 }
+
+@keyframes rotate {
+  0% {
+    transfrom: rotate(0deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+.ec-rotate {
+  animation: rotate 0.5s infinite;
+}

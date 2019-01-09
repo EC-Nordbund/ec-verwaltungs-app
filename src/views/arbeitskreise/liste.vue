@@ -1,18 +1,32 @@
 <template>
-  <ec-table title="Arbeitskreise" itemName="Arbeitskreise" :items="data.aks" :config="tableConfig" suche @open="open" :sucheVal="suchstring">
+  <ec-table
+    title="Arbeitskreise"
+    itemName="Arbeitskreise"
+    :items="data.aks"
+    :config="tableConfig"
+    suche
+    @open="open"
+    :sucheVal="suchstring"
+  >
     <ec-button-add @click="showAddAk = true" v-if="auth.isMutationAllowed('addAK')"/>
-    <ec-form v-model="showAddAk" title="Arbeitskreis hinzufügen" :fieldConfig="fieldConfig" @save="save"/>
+    <ec-form
+      v-model="showAddAk"
+      title="Arbeitskreis hinzufügen"
+      :fieldConfig="fieldConfig"
+      @save="save"
+    />
   </ec-table>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
+import {getClient} from '@/realPlugins/apollo'
 import reloaderBase from '@/baseComponents/reloader'
 import gql from 'graphql-tag'
 
-import { bezeichnungConfig } from '@/plugins/formConfig/index'
-import xButtonLogik from '@/plugins/xButton/logic'
+import { bezeichnungConfig } from '@/realPlugins/formConfig'
+import xButtonLogik from '@/realPlugins/xButton/logic'
 import event from '@/plugins/eventbus'
-import { getClient } from '@/plugins/apollo'
+
 import auth from '@/plugins/auth'
 
 const loadGQL = gql`
@@ -29,7 +43,6 @@ const addAKGQL = gql`
     addAK(bezeichnung: $bezeichnung, authToken: $authToken)
   }
 `
-
 @Component({
   beforeRouteEnter(to, from, next) {
     event.emit('showLoading')
@@ -90,7 +103,10 @@ export default class AKListe extends reloaderBase {
     this.variabels = {
       authToken: auth.authToken
     }
-    this.suchstring = this.$route.query.suche || ''
+    this.suchstring =
+      typeof this.$route.query.suche === 'string'
+        ? this.$route.query.suche
+        : ''
     this.query = loadGQL
     super.created()
   }
