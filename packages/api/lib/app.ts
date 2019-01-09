@@ -1,9 +1,18 @@
-import { ApolloServer } from 'apollo-server-express';
+import {
+  addUser,
+  authKey,
+  changePWD,
+  getUser,
+  login,
+  logout,
+  user,
+  userGroup
+  } from './users/index';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
+import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as fs from 'fs';
-import * as greenlock from 'greenlock-express';
-import * as http from 'http';
 import { v1 as neo4j } from 'neo4j-driver';
 import { makeAugmentedSchema } from 'neo4j-graphql-js';
 
@@ -18,14 +27,28 @@ const driver = neo4j.driver(
 const server = new ApolloServer({
   schema,
   context: ({req}) => {
-    return {
-      driver
-    };
+    const authToken = req.headers.authtoken;
+    if (authToken) {
+      return {
+        driver,
+        user: getUser(authToken)
+      };
+    } else {
+      throw new AuthenticationError("Du bist nicht Angemeldet!");
+    }
   },
   schemaDirectives: {}
 });
 
 const app = express().use(cors());
+app.post("/login", bodyParser.json(), (req, res) => {
+  console.log(req.body);
+  const authToken = login(
+    <string>req.headers.username,
+    <string>req.headers.password
+  );
+  res.end(authToken);
+});
 
 server.applyMiddleware({app});
 
