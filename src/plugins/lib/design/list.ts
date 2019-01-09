@@ -70,6 +70,18 @@ export default class Liste extends Vue {
           ]),
           ...(mapItem.map.edit || this.edit
             ? [
+                mapItem.map.isDeprecated ? h(
+                  'v-btn',
+                  {
+                    props: {
+                      disabled: true,
+                      outline: true,
+                      flat: true,
+                      small: true
+                    }
+                  },
+                  'veraltet'
+                ) : h(),
                 h('v-list-tile-action', {}, [
                   h('ec-button-icon', {
                     on: {
