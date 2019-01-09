@@ -1,0 +1,253 @@
+type Person {
+  personID: ID!
+  vorname: String!
+  nachname: String!
+  gebDat: Date!
+  geschlecht: Geschlecht!
+  currentECState: ECMitglied!
+  juLeiCaNr: String
+  fuehrerschein: Boolean
+  rettungsschwimmer: Boolean
+  ersteHilfe: Boolean
+  notizen: String
+  adressen: [PersonAdresse]
+  emails: [PersonEmails]
+  telefon: [PersonTelefon]
+  fzs: [FZ] @relation(name: "HAT_VORGEZEIGT", direction: OUT)
+  fzAntraege: [FZAntrag] @relation(name: "WURDEN_GESENDET", direction: OUT)
+  currentVGState: VGMitglied!
+  aks: [PersonAK]
+  status: PersonStatus
+  dsgvo: DSGVOStatus
+  letzterDSGVOAuskunft: Int
+}
+
+type PersonAK @relation(name: "MITGLIED_IN_UPDATE") {
+  from: Person
+  to: AK
+  date: Date!
+  status: AKStatus!
+}
+
+type PersonAdresse @relation(name: "WOHNT_IN") {
+  from: Person
+  to: Adresse
+  erstellt: DateTime!
+  lastUsed: DateTime!
+}
+
+type PersonEmails @relation(name: "HAS_EMAIL") {
+  from: Person
+  to: Email
+  erstellt: DateTime!
+  lastUsed: DateTime!
+}
+
+type PersonTelefon @relation(name: "HAS_TELEFON") {
+  from: Person
+  to: Email
+  erstellt: DateTime!
+  lastUsed: DateTime!
+}
+
+type Anmeldung @relation(name: "IST_ANGEMELDET_FUER") {
+  from: Person
+  to: Veranstaltung
+  anmeldeID: ID!
+  position: Position!
+  adresse: Adresse! @relation(name: "WOHNT_IN", direction: OUT)
+  email: Email! @relation(name: "EMAIL_ZU", direction: OUT)
+  telefon: Telefon! @relation(name: "TELEFON_ZU", direction: OUT)
+
+  wartelistenPlatz: Int!
+
+  anmeldeZeitpunkt: DateTime!
+  DSGVO_einverstaendnis: DateTime!
+
+  vegetarisch: Boolean!
+  lebensmittelAllergien: String!
+  gesundheitsinformationen: String!
+  bemerkungen: String!
+  radfahren: Boolean!
+  fahrgemeinschaften: Boolean!
+  klettern: Boolean!
+  sichEntfernen: Boolean!
+  bootFahren: Boolean!
+  schwimmen: Schwimmen
+
+  infoBrief: DateTime
+  bestaetigungsBrief: DateTime
+  extra_json: String!
+}
+
+type Veranstaltung {
+  VeranstaltungID: ID!
+  bezeichnung: String!
+  kurzBezeichnung: String!
+  anmeldungen: [Anmeldung]
+  veranstaltungsort: VeranstaltungsOrt!
+    @relation(name: "WIRD_VERANSTALTET_BEI", direction: OUT)
+  begin: Date!
+  ende: Date
+  minTNAlter: Int!
+  maxTNAlter: Int!
+  anzahlPlaetze: Int!
+  anzahlPlaetzeW: Int!
+  anzahlPlaetzeM: Int!
+  preisFruehbucher: Int!
+  preisNormal: Int!
+  preisLastMinute: Int!
+  preisAnzahlungNormal: Int!
+  preisAnzahlungFruehbucher: Int!
+  preisAnzahlungLastMinute: Int!
+  fruehbucherBis: Int
+  lastMinuteAb: Int
+  kannVorortBezahltWerden: Boolean!
+  hatGWarteliste: Boolean!
+}
+
+type VeranstaltungsOrt {
+  VeranstaltungsOrtID: ID!
+  organisation: Organisation!
+    @relation(name: "WIRD_VERWALTET_VON", direction: OUT)
+  bezeichnung: String!
+  adresse: Adresse! @relation(name: "ANSCHRIFT", direction: OUT)
+  notizen: String
+  anzahl_max: Int
+  anzahl_min: Int
+  vollverpflegung: Boolean
+  selbstversorger: Boolean
+  kontakte: [VeranstaltungsOrtKontakt]
+    @relation(name: "ANPRECHPARTNER", direction: OUT)
+}
+
+type VeranstaltungsOrtKontakt {
+  VeranstaltungsOrtKontaktID: ID!
+  ansprechpartner: String!
+  typ: String
+  adresse: Adresse! @relation(name: "ANSCHRIFT", direction: OUT)
+  telefon: Telefon! @relation(name: "TELEFON", direction: OUT)
+  email: Email! @relation(name: "EMAIL", direction: OUT)
+  notizen: String
+}
+
+type Organisation {
+  organisationsID: Int!
+  bezeichnung: String!
+  ansprechpartner: String
+  adresse: Adresse! @relation(name: "ANSCHRIFT", direction: OUT)
+  telefon: Telefon! @relation(name: "TELEFON", direction: OUT)
+  email: Email! @relation(name: "EMAIL", direction: OUT)
+  notizen: String
+}
+
+type AK {
+  AKID: ID!
+  bezeichnung: String!
+  gehoertZu: vgORec!
+  personen: [PersonAK]
+}
+
+type EcKreis {
+  EcKreisID: ID!
+  bezeichnung: String!
+  website: String!
+  vgGemeinde: VGGemeinde! @relation(name: "GEHOERT_ZU", direction: OUT)
+  personen: [Person] @relation(name: "MEMBER_OF", direction: IN)
+}
+
+type VGGemeinde {
+  VGGemeindeID: ID!
+  bezeichnung: String!
+  website: String!
+  adresse: Adresse! @relation(name: "IST_IN", direction: IN)
+  personen: [Person] @relation(name: "MEMBER_OF", direction: IN)
+}
+
+type FZ {
+  fzID: ID!
+  person: Person! @relation(name: "HAT_VORGEZEIGT", direction: OUT)
+  seenBy: Person! @relation(name: "GESEHEN_VON", direction: IN)
+  seenOn: Int!
+  kommentar: String!
+}
+
+type FZAntrag {
+  FZAntragID: ID!
+  erstellt: String!
+}
+
+type Adresse {
+  adressID: ID!
+  strasse: String!
+  plz: String!
+  ort: String!
+  land: String
+}
+
+type Email {
+  emailID: ID!
+  email: String!
+}
+
+type Telefon {
+  telefonID: ID!
+  telefon: String!
+}
+
+enum ECMitglied {
+  KeinMitglied
+  Mitglied
+  Foerderer
+}
+
+enum Geschlecht {
+  weiblich
+  maenlich
+}
+
+enum VGMitglied {
+  KeinMitglied
+  Mitglied
+  Ausgetreten
+}
+
+enum AKStatus {
+  Ausgetreten
+  Mitglied
+  Vertreter
+  Leiter
+}
+
+enum vgORec {
+  VG
+  EC
+  VGundEC
+}
+
+enum Schwimmen {
+  NichtErlaubt
+  NichtSchwimmer
+  MittelmaessigerSchwimmer
+  GuterSchwimmer
+}
+
+enum Position {
+  Teilnehmer
+  Mitarbeiter
+  Kuechenmitarbeiter
+  Kuechenleitung
+  Leiter
+  Hauptleiter
+}
+
+enum PersonStatus {
+  lebend
+  tot
+}
+
+enum DSGVOStatus {
+  normal
+  gesperrt
+  pseudonymisiert
+}
