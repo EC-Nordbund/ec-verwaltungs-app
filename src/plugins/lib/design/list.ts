@@ -48,7 +48,9 @@ export default class Liste extends Vue {
                     'v-icon',
                     {
                       props: {
-                        color: 'indigo'
+                        color: mapItem.map.isDeprecated
+                          ? 'grey'
+                          : 'secondary'
                       }
                     },
                     [mapItem.map.icon || this.icon]
@@ -158,6 +160,7 @@ export default class Liste extends Vue {
     subTitle?: string
     edit?: boolean
     marked?: boolean
+    isDeprecated?: boolean
     toolTip?: string
   }
 

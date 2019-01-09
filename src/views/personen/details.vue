@@ -36,7 +36,7 @@
             <!-- Adressen -->
             <ec-list
               :items="data.person.adressen || []"
-              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
+              :mapper="item=>({title: item.strasse, subTitle: item.plz + ' ' + item.ort, marked:item.isOld, isDeprecated: item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="location_on"
               @edit="editAdresse_open"
               @click="showMap"
@@ -47,7 +47,7 @@
             <!-- Email -->
             <ec-list
               :items="data.person.emails || []"
-              :mapper="item=>({title: item.eMail, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
+              :mapper="item=>({title: item.eMail, marked:item.isOld, isDeprecated: item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="mail"
               :edit="auth.isMutationAllowed('editKontakt')"
               @edit="editEmail_open"
@@ -58,7 +58,7 @@
             <!-- Telefone -->
             <ec-list
               :items="data.person.telefone || []"
-              :mapper="item=>({title: item.telefon, marked:item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
+              :mapper="item=>({title: item.telefon, marked:item.isOld, isDeprecated: item.isOld, toolTip: `Letzte Nutzung: ${item.lastUsed.german}`})"
               icon="local_phone"
               :edit="auth.isMutationAllowed('editKontakt')"
               @edit="editTelefon_open"
@@ -551,8 +551,11 @@ export default class PersonenDetails extends reloaderBase {
           authToken: this.auth.authToken,
           personID: this.$route.params.id,
           ...value,
-          ecKreis: typeof value.ecKreis === 'string'?null:value.ecKreis,
-          ecMitglied: value.ecMitglied -1
+          ecKreis:
+            typeof value.ecKreis === 'string'
+              ? null
+              : value.ecKreis,
+          ecMitglied: value.ecMitglied - 1
         }
       })
       .then(this.refetch)
@@ -561,7 +564,7 @@ export default class PersonenDetails extends reloaderBase {
     this.editSonstiges_value = {}
     this.editSonstiges_value = {
       juLeiCaNr: this.data.person.juLeiCaNr,
-      ecMitglied: this.data.person.ecMitglied +1,
+      ecMitglied: this.data.person.ecMitglied + 1,
       ecKreis: (
         this.data.person.ecKreis || { ecKreisID: null }
       ).ecKreisID,
@@ -1165,6 +1168,6 @@ export default class PersonenDetails extends reloaderBase {
 </script>
 <style>
 .isOld {
-  background-color: red;
+  /* background-color: red; */
 }
 </style>
