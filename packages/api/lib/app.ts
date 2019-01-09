@@ -1,23 +1,26 @@
-import middleWare from "./middleware";
+import middleWare from './middleware';
 import {
   changePWD,
   getUser,
   login,
   logout
-  } from "./users/index";
-import { ApolloServer, AuthenticationError } from "apollo-server-express";
-import * as cors from "cors";
-import * as express from "express";
-import * as fs from "fs";
-import { v1 as neo4j } from "neo4j-driver";
-import { makeAugmentedSchema } from "neo4j-graphql-js";
+  } from './users/index';
+import { ApolloServer, AuthenticationError } from 'apollo-server-express';
+import * as cors from 'cors';
+import * as express from 'express';
+import * as fs from 'fs';
+import { v1 as neo4j } from 'neo4j-driver';
+import { makeAugmentedSchema } from 'neo4j-graphql-js';
+import { join } from 'path';
 
-const typeDefs = fs.readFileSync("./schema.gql").toString();
+const typeDefs = fs.readFileSync(join(__dirname, "../schema.gql")).toString();
 const schema = makeAugmentedSchema({
   resolvers: {
     Query: {
-      test() {
-        return "Hallo Welt!";
+      getAnmeldung(parent, args) {
+        // TODO
+        // args.anmeldeID
+        return null;
       }
     }
   },
@@ -45,6 +48,9 @@ const server = new ApolloServer({
 });
 
 const app = express().use(cors());
+
+server.applyMiddleware({app});
+
 app.post("/login", (req, res) => {
   const authToken = login(
     req.headers.username as string,
@@ -67,7 +73,9 @@ app.post("/changePassword", (req, res) => {
   );
 });
 
-server.applyMiddleware({app});
+app.all("/", function(req, res) {
+  res.redirect("/graphql");
+});
 
 app.all("*", function(req, res) {
   res.redirect("https://ec-nordbund.de/?redirectFromAPI");

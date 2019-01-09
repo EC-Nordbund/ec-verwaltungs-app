@@ -1,6 +1,9 @@
+import * as Sentry from '@sentry/electron';
 import { app, BrowserWindow, protocol } from 'electron';
-import { createProtocol, installVueDevtools } from 'vue-cli-plugin-electron-builder/lib';
-"use strict";
+
+Sentry.init({
+  dsn: "https://b3b34064975846faa3a6757b52ea2168@sentry.io/1367817"
+});
 
 require("electron-unhandled")();
 
@@ -11,10 +14,10 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 let win: BrowserWindow | null;
 
 // Standard scheme must be registered before the app is ready
-protocol.registerStandardSchemes(["app"], { secure: true });
+protocol.registerStandardSchemes(["app"], {secure: true});
 function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600 });
+  win = new BrowserWindow({width: 800, height: 600});
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode

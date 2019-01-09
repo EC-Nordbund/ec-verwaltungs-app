@@ -24,9 +24,11 @@
     "build": "tsc -p tsconfig.json --pretty",
     "serve": "tsc -w -p tsconfig.json --pretty",
     "start": "node .",
+    "test": "echo \"No Testing...\"",
     "dev": "node ./dist/index_dev.js",
     "lint": "tslint -p tsconfig.json",
-    "lint:fix": "tslint -p tsconfig.json --fix"
+    "lint:fix": "tslint -p tsconfig.json --fix",
+    "codeCov": "yarn test"
   },
   "bugs": {
     "url": "https://github.com/EC-Nordbund/ec-verwaltungs-app/issues"
@@ -45,6 +47,7 @@
     "express": "^4.16.4",
     "graphql": "^14.0.2",
     "graphql-middleware": "^3.0.0",
+    "graphql-middleware-sentry": "^3.0.1",
     "graphql-shield": "^5.1.0",
     "graphql-subscriptions": "^1.0.0",
     "graphql-tools": "^4.0.3",

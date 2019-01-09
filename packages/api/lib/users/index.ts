@@ -1,7 +1,8 @@
-import { AuthKey } from "./authKey";
-import { Role, User } from "./user";
-import { readFileSync, writeFileSync } from "fs";
-import { sha3_512 } from "js-sha3";
+import { AuthKey } from './authKey';
+import { Role, User } from './user';
+import { readFileSync, writeFileSync } from 'fs';
+import { sha3_512 } from 'js-sha3';
+import { join } from 'path';
 export {AuthKey as authKey} from "./authKey";
 export {User as user} from "./user";
 
@@ -69,7 +70,11 @@ export let users: User[] = [];
 export let authKeys: AuthKey[] = [];
 
 function load() {
-  const saveObj = JSON.parse(readFileSync("./save.json").toString());
+  console.log(join(__dirname, "../../save.json"));
+
+  const saveObj = JSON.parse(
+    readFileSync(join(__dirname, "../../save.json")).toString()
+  );
 
   saveObj.forEach(v => {
     users.push(
@@ -88,7 +93,7 @@ function load() {
 
 function save() {
   writeFileSync(
-    "./save.json",
+    join(__dirname, "../../save.json"),
     JSON.stringify(users.map(v => v.toSave()), undefined, 2)
   );
 }

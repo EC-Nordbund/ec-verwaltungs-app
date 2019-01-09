@@ -17,6 +17,7 @@ type Person {
   letzterFzAntrag: FZAntrag @relation(name: "WURDE_GESENDET", direction: OUT)
   currentVGState: VGMitglied!
   aks: [PersonAK]
+  anmeldungen: [Anmeldung]
   status: PersonStatus
   dsgvo: DSGVOStatus
   letzterDSGVOAuskunft: Int
@@ -253,5 +254,5 @@ enum DSGVOStatus {
 }
 
 type Query {
-  test: String!
+  getAnmeldung(anmeldeID: ID): Anmeldung
 }
