@@ -1,16 +1,13 @@
 module.exports = {
-  baseUrl:
-    process.env.NODE_ENV === 'development'
-      ? undefined
-      : './',
-  outputDir: 'dist',
+  baseUrl: process.env.NODE_ENV === "development" ? undefined : "./",
+  outputDir: "dist",
   runtimeCompiler: false,
   productionSourceMap: false,
   devServer: {
     port: 8080
   },
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: "source-map"
   },
   pluginOptions: {
     electronBuilder: {
@@ -18,19 +15,18 @@ module.exports = {
         // Chain webpack config for electron main process only
       },
       chainWebpackRendererProcess: config => {
-        config.plugin('define').tap(args => {
-          args[0]['IS_ELECTRON'] = true
-          return args
-        })
+        config.plugin("define").tap(args => {
+          args[0]["IS_ELECTRON"] = true;
+          return args;
+        });
       },
       builderOptions: {
-        appId: 'de.ec-nordbund.app',
-        productName: 'EC-Verwaltungs-App',
+        appId: "de.ec-nordbund.app",
+        productName: "EC-Verwaltungs-App",
         copyright: "Copyright © 2019 S.Krüger + T.Krause für den EC-Nordbund",
         linux: {
           // icon: '',
           // synopsis : 'kurzbeschreibung',
-
         },
         appImage: {},
         win: {},
@@ -40,4 +36,4 @@ module.exports = {
       }
     }
   }
-}
+};

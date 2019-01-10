@@ -4,16 +4,16 @@
     :variables="{ authToken: $auth.instance.authToken }"
     :tag="''"
   >
-    <template slot-scope="{ result: { loading, error, data }}">
+    <template slot-scope="{ result: { loading, error, data } }">
       <div v-if="loading">Loading...</div>
-      <div v-else-if="error">An error occured {{error}}</div>
+      <div v-else-if="error">An error occured {{ error }}</div>
       <v-card v-else-if="data">
         <v-toolbar color="transparent" class="elevation-0">
-          <v-spacer/>
+          <v-spacer />
           <v-toolbar-title>
-            <h1 v-font v-primary>{{title}}</h1>
+            <h1 v-font v-primary>{{ title }}</h1>
           </v-toolbar-title>
-          <v-spacer/>
+          <v-spacer />
         </v-toolbar>
         <v-card-text>
           <v-text-field
@@ -21,7 +21,11 @@
             prepend-icon="search"
             :append-icon="suchString.length > 0 ? 'close' : undefined"
             v-model="suchString"
-            @click:append="()=>{suchString = ''}"
+            @click:append="
+              () => {
+                suchString = '';
+              }
+            "
           />
           <v-data-table
             :rows-per-page-items="[count]"
@@ -31,16 +35,13 @@
             :headers="headers"
           >
             <template slot="items" slot-scope="rowData">
-              <slot name="row" v-bind="rowData"/>
+              <slot name="row" v-bind="rowData" />
             </template>
           </v-data-table>
         </v-card-text>
         <v-card-actions>
-          <ec-add-btn @click="$refs.addForm.show()"/>
-          <ec-form
-            ref="addForm"
-            v-bind="addFormConfig"
-          />
+          <ec-add-btn @click="$refs.addForm.show()" />
+          <ec-form ref="addForm" v-bind="addFormConfig" />
         </v-card-actions>
       </v-card>
       <div v-else>No result :(</div>
@@ -48,7 +49,7 @@
   </ApolloQuery>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch,Prop } from "vue-property-decorator";
+import { Component, Vue, Watch, Prop } from "vue-property-decorator";
 
 @Component({})
 export default class ecListView extends Vue {
@@ -84,15 +85,15 @@ export default class ecListView extends Vue {
     });
   }
 
-  @Prop({required: true, type:Array})
-  headers!:Array<any>
-  @Prop({required: true, type:Object})
-  query!:any
-  @Prop({required: true, type:String})
-  title!:string
-  @Prop({required: true, type:Function})
-  getItems!:Function
-  @Prop({required: true, type:Object})
-  addFormConfig!:any
+  @Prop({ required: true, type: Array })
+  headers!: Array<any>;
+  @Prop({ required: true, type: Object })
+  query!: any;
+  @Prop({ required: true, type: String })
+  title!: string;
+  @Prop({ required: true, type: Function })
+  getItems!: Function;
+  @Prop({ required: true, type: Object })
+  addFormConfig!: any;
 }
 </script>

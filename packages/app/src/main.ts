@@ -1,10 +1,10 @@
-import plugins from '@/plugins';
-import * as Sentry from '@sentry/browser';
-import Vue, { CreateElement } from 'vue';
+import plugins from "@/plugins";
+import * as Sentry from "@sentry/browser";
+import Vue, { CreateElement } from "vue";
 
 Sentry.init({
   dsn: "https://b3b34064975846faa3a6757b52ea2168@sentry.io/1367817",
-  integrations: [new Sentry.Integrations.Vue({Vue})]
+  integrations: [new Sentry.Integrations.Vue({ Vue })]
 });
 
 if (require) {

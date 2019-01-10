@@ -15,12 +15,7 @@
   "scripts": {
     "build": "vuepress build",
     "serve": "vuepress dev",
-    "start": "node ./index.js",
-    "dev": "echo \"Öffne deinen Browser auf der entsprechenden Seite\"",
-    "lint": "echo \"Kein Linter notwendig\"",
-    "lint:fix": "echo \"Kein Linter notwendig\"",
-    "test": "echo \"No Testing...\"",
-    "codeCov": "yarn test"
+    "start": "node ./index.js"
   },
   "bugs": {
     "url": "https://github.com/EC-Nordbund/ec-verwaltungs-app/issues"

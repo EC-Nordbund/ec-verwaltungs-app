@@ -1,10 +1,10 @@
 import Vue from "vue";
-import ApolloClient from 'apollo-boost';
-import VueApollo from 'vue-apollo';
+import ApolloClient from "apollo-boost";
+import VueApollo from "vue-apollo";
 
-export const name = "apollo"
+export const name = "apollo";
 
-export default (vue:typeof Vue)=>{
+export default (vue: typeof Vue) => {
   vue.use(VueApollo);
   const apolloClient = new ApolloClient({
     // You should use an absolute URL here
@@ -18,5 +18,5 @@ export default (vue:typeof Vue)=>{
   return {
     apolloClient,
     apolloProvider
-  }
-}
+  };
+};

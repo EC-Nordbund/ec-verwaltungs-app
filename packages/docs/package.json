@@ -18,11 +18,7 @@
     "start": "node ./index.js",
     "dev": "echo \"Öffne deinen Browser auf der entsprechenden Seite\"",
     "api:init": "echo ---  > ./api/README.md && echo sidebar: auto  >> ./api/README.md && echo ---  >> ./api/README.md",
-    "api": "yarn api:init && graphql-markdown http://localhost:31415/graphql >> ./api/README.md",
-    "lint": "echo \"Kein Linter notwendig\"",
-    "lint:fix": "echo \"Kein Linter notwendig\"",
-    "test": "echo \"No Testing...\"",
-    "codeCov": "yarn test"
+    "api": "yarn api:init && graphql-markdown http://localhost:31415/graphql >> ./api/README.md"
   },
   "bugs": {
     "url": "https://github.com/EC-Nordbund/ec-verwaltungs-app/issues"

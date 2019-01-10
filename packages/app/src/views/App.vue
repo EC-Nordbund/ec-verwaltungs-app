@@ -23,7 +23,7 @@
       <v-btn icon v-white @click="dark = !dark">
         <v-icon>invert_colors</v-icon>
       </v-btn>
-      <v-btn icon v-white @click="">
+      <v-btn icon v-white>
         <v-icon>exit_to_app</v-icon>
       </v-btn>
     </v-toolbar>
@@ -170,7 +170,15 @@
       <v-spacer/>
       <span v-white>Version: {{ version }}</span>
       <v-spacer/>
-      <v-breadcrumbs :items="[`© 2017 - ${ (new Date()).getFullYear() }`, 'EC-Nordbund', 'T. Krause + S. Krüger'].map(v=>({text: v, disabled: true}))">
+      <v-breadcrumbs
+        :items="
+          [
+            `© 2017 - ${new Date().getFullYear()}`,
+            'EC-Nordbund',
+            'T. Krause + S. Krüger'
+          ].map(v => ({ text: v, disabled: true }))
+        "
+      >
         <v-icon slot="divider">keyboard_arrow_right</v-icon>
         <template slot="item" slot-scope="props">
           <span v-white :class="[props.item.disabled && 'disabled']">{{ props.item.text }}</span>
@@ -181,19 +189,13 @@
 </template>
 
 <script lang="ts">
-import {version} from '@/../package.json'
-import {
-  Component,
-  Vue,
-  Prop,
-  Watch,
-  Emit
-} from 'vue-property-decorator'
+import { version } from "@/../package.json";
+import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator";
 
 @Component({})
 export default class App extends Vue {
-  drawer=null
-  version=version
-  dark=false
+  drawer = null;
+  version = version;
+  dark = false;
 }
 </script>

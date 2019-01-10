@@ -1,7 +1,7 @@
-import lesezeichenToggele from '@/plugins/lesezeichen/addLesezeichen.vue';
-import lesezeichenShow from '@/plugins/lesezeichen/showLesezeichen.vue';
-import { EventEmitter } from 'events';
-import Vue, { CreateElement } from 'vue';
+import lesezeichenToggele from "@/plugins/lesezeichen/addLesezeichen.vue";
+import lesezeichenShow from "@/plugins/lesezeichen/showLesezeichen.vue";
+import { EventEmitter } from "events";
+import Vue, { CreateElement } from "vue";
 
 export interface Lesezeichen {
   route: string;
@@ -68,4 +68,4 @@ export class LesezeichenList extends EventEmitter {
   }
 }
 
-export default LesezeichenList
+export default LesezeichenList;

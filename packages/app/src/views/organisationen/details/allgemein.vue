@@ -40,7 +40,13 @@
         iconA: 'extension'
       }
     ]"
-    :standard="{title: 'N/A', iconB: 'edit', clickB(){$refs.editOrga.show()}}"
+    :standard="{
+      title: 'N/A',
+      iconB: 'edit',
+      clickB() {
+        $refs.editOrga.show();
+      }
+    }"
     :countPerPage="countPerPage"
   >
     <ec-form
@@ -53,10 +59,13 @@
             name: 'bezeichnung',
             label: 'Bezeichnungen',
             component: 'v-text-field',
-            counter:50,
-            rules:[
-              v=>!v?'Du musst eine Bezeichnung angeben!':true,
-              v=>(v&&v.length > 50)?'Die Bezeichnung darf maximal 50 Zeichen lang sein.':true
+            counter: 50,
+            rules: [
+              v => (!v ? 'Du musst eine Bezeichnung angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Die Bezeichnung darf maximal 50 Zeichen lang sein.'
+                  : true
             ]
           },
           {
@@ -64,9 +73,12 @@
             label: 'Ansprechpartner',
             component: 'v-text-field',
             counter: 50,
-            rules:[
-              v=>!v?'Du musst einen Ansprechpartner angeben!':true,
-              v=>(v&&v.length > 50)?'Der Ansprechpartner darf maximal 50 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst einen Ansprechpartner angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Der Ansprechpartner darf maximal 50 Zeichen lang sein.'
+                  : true
             ]
           },
           {
@@ -74,9 +86,12 @@
             label: 'E-Mail',
             component: 'v-text-field',
             counter: 50,
-            rules:[
-              v=>!v?'Du musst eine E-Mail angeben!':true,
-              v=>(v&&v.length > 50)?'Die E-Mail Adresse darf maximal 50 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst eine E-Mail angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Die E-Mail Adresse darf maximal 50 Zeichen lang sein.'
+                  : true
             ]
           },
           {
@@ -84,9 +99,12 @@
             label: 'Telefon',
             component: 'v-text-field',
             counter: 20,
-            rules:[
-              v=>!v?'Du musst eine Telefonnummer angeben!':true,
-              v=>(v&&v.length > 50)?'Die Telefonnummer darf maximal 20 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst eine Telefonnummer angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Die Telefonnummer darf maximal 20 Zeichen lang sein.'
+                  : true
             ],
             mask: '####################'
           },
@@ -95,9 +113,12 @@
             label: 'Strasse',
             component: 'v-text-field',
             counter: 50,
-            rules:[
-              v=>!v?'Du musst eine Strasse angeben!':true,
-              v=>(v&&v.length > 50)?'Die Strasse darf maximal 50 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst eine Strasse angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Die Strasse darf maximal 50 Zeichen lang sein.'
+                  : true
             ]
           },
           {
@@ -105,9 +126,12 @@
             label: 'PLZ',
             component: 'v-text-field',
             counter: 8,
-            rules:[
-              v=>!v?'Du musst eine PLZ angeben!':true,
-              v=>(v&&v.length > 8)?'Die PLZ darf maximal 8 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst eine PLZ angeben!' : true),
+              v =>
+                v && v.length > 8
+                  ? 'Die PLZ darf maximal 8 Zeichen lang sein.'
+                  : true
             ]
           },
           {
@@ -115,9 +139,12 @@
             label: 'Ort',
             component: 'v-text-field',
             counter: 50,
-            rules:[
-              v=>!v?'Du musst einen Ort angeben!':true,
-              v=>(v&&v.length > 50)?'Der Ort darf maximal 50 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst einen Ort angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Der Ort darf maximal 50 Zeichen lang sein.'
+                  : true
             ]
           },
           {
@@ -125,28 +152,31 @@
             label: 'Land',
             component: 'v-text-field',
             counter: 50,
-            rules:[
-              v=>!v?'Du musst ein Land angeben!':true,
-              v=>(v&&v.length > 50)?'Das Land darf maximal 50 Zeichen lang sein.':true
+            rules: [
+              v => (!v ? 'Du musst ein Land angeben!' : true),
+              v =>
+                v && v.length > 50
+                  ? 'Das Land darf maximal 50 Zeichen lang sein.'
+                  : true
             ]
           },
           {
             name: 'notizen',
             label: 'Notizen',
             component: 'v-textarea'
-          },
+          }
         ],
         buttons: [
           {
-            onDone(){},
-            label:'Abbrechen',
-            needValid:false
+            onDone() {},
+            label: 'Abbrechen',
+            needValid: false
           },
           {
-            onDone(){},
-            label:'Speichern',
-            needValid:true,
-            color:'primary',
+            onDone() {},
+            label: 'Speichern',
+            needValid: true,
+            color: 'primary',
             mutation: require('@/graphql/organisationen/editOrga.gql')
           }
         ]
@@ -155,42 +185,47 @@
   </ec-simple-page>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 
 @Component({})
 export default class orgaDetailsVeranstaltungsOrte extends Vue {
   @Prop({ type: Object })
-  data!: any
-  
+  data!: any;
+
   @Prop({ type: Number })
-  countPerPage!: number
+  countPerPage!: number;
 
   value = {
-    bezeichnung: '',
-    ansprechpartner: '',
-    email: '',
-    telefon: '',
-    strasse: '',
-    plz: '',
-    ort: '',
-    land: '',
-    notizen: ''
-  }
+    bezeichnung: "",
+    ansprechpartner: "",
+    email: "",
+    telefon: "",
+    strasse: "",
+    plz: "",
+    ort: "",
+    land: "",
+    notizen: ""
+  };
 
-  @Watch('data', {immediate: true})
-  onDataChange(){
-    this.value = <any>{}
+  @Watch("data", { immediate: true })
+  onDataChange() {
+    this.value = <any>{};
     this.value = <any>{
       ...this.data
-    }
+    };
   }
 
   mail() {
-    window.location.href = 'mailto:' + this.data.orga.email
+    window.location.href = "mailto:" + this.data.orga.email;
   }
-  
+
   map() {
-    this.$util.map(this.data.orga.strasse,this.data.orga.plz,this.data.orga.ort,this.data.orga.land)
+    this.$util.map(
+      this.data.orga.strasse,
+      this.data.orga.plz,
+      this.data.orga.ort,
+      this.data.orga.land
+    );
   }
 }
 </script>

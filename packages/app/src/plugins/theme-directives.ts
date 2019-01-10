@@ -1,36 +1,34 @@
-import { theme } from '@/config/theme';
-import Vue from 'vue';
+import { theme } from "@/config/theme";
+import Vue from "vue";
 
 export default {
   install(vue: typeof Vue) {
     // v-font directive
-    vue.directive('font', {
+    vue.directive("font", {
       bind: (el: HTMLElement) => {
-        el.style.fontFamily = 'ec-font'
+        el.style.fontFamily = "ec-font";
       }
-    })
+    });
 
     for (const key in theme) {
       if (theme.hasOwnProperty(key)) {
         //get Element
-        const element: string = (<
-          { [name: string]: string }
-        >theme)[key]
+        const element: string = (<{ [name: string]: string }>theme)[key];
 
         //Color
         vue.directive(key, {
           bind: (el: HTMLElement) => {
-            el.style.color = element
+            el.style.color = element;
           }
-        })
+        });
 
         //BackgroundColor
         vue.directive(`${key}-bg`, {
           bind: (el: HTMLElement) => {
-            el.style.backgroundColor = element
+            el.style.backgroundColor = element;
           }
-        })
+        });
       }
     }
   }
-}
+};

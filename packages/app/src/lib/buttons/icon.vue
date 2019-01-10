@@ -1,16 +1,10 @@
 <template>
   <v-btn icon v-bind="$attrs" v-on="$listeners">
-    <v-icon color="secondary">
-      {{icon}}
-    </v-icon>
+    <v-icon color="secondary"> {{ icon }} </v-icon>
   </v-btn>
 </template>
 <script lang="ts">
-import {
-  Component,
-  Prop,
-  Vue
-} from 'vue-property-decorator'
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 /**
  * Einfacher Button mit Icon
@@ -30,8 +24,8 @@ export default class ecIconBtn extends Vue {
   @Prop({
     type: String,
     required: false,
-    default: 'edit'
+    default: "edit"
   })
-  icon!: string
+  icon!: string;
 }
 </script>
