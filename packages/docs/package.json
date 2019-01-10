@@ -15,8 +15,14 @@
   "scripts": {
     "build": "yarn api && vuepress build",
     "serve": "yarn api && vuepress dev",
-    "api:init": "echo ---  > ./docs/api/README.md && echo sidebar: auto  >> ./docs/api/README.md && echo ---  >> ./docs/api/README.md",
-    "api": "yarn api:init && graphql-markdown http://ec-api.de:4000/graphql >> ./docs/api/README.md"
+    "start": "node ./index.js",
+    "dev": "echo \"Öffne deinen Browser auf der entsprechenden Seite\"",
+    "api:init": "echo ---  > ./api/README.md && echo sidebar: auto  >> ./api/README.md && echo ---  >> ./api/README.md",
+    "api": "yarn api:init && graphql-markdown http://localhost:31415/graphql >> ./api/README.md",
+    "lint": "echo \"Kein Linter notwendig\"",
+    "lint:fix": "echo \"Kein Linter notwendig\"",
+    "test": "echo \"No Testing...\"",
+    "codeCov": "yarn test"
   },
   "bugs": {
     "url": "https://github.com/EC-Nordbund/ec-verwaltungs-app/issues"
@@ -26,5 +32,8 @@
     "typescript": "^3.2.2",
     "vuepress": "^0.14.8"
   },
-  "gitHead": "d3c023cb53fcd90861d042d106a9456c1d75cbf4"
+  "gitHead": "d3c023cb53fcd90861d042d106a9456c1d75cbf4",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }

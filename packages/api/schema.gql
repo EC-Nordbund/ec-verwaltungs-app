@@ -20,7 +20,7 @@ type Person {
   anmeldungen: [Anmeldung]
   status: PersonStatus
   dsgvo: DSGVOStatus
-  letzterDSGVOAuskunft: Int
+  letzteDSGVOAuskunft: Date
 }
 
 type PersonAK @relation(name: "MITGLIED_IN_UPDATE") {
@@ -30,7 +30,7 @@ type PersonAK @relation(name: "MITGLIED_IN_UPDATE") {
   status: AKStatus!
 }
 
-type PersonAdresse {
+type PersonAdresse @relation(name: "WOHNT_IN") {
   from: Person
   to: Adresse
   erstellt: DateTime!
@@ -255,4 +255,26 @@ enum DSGVOStatus {
 
 type Query {
   getAnmeldung(anmeldeID: ID): Anmeldung
+}
+
+type Mutation {
+  login(username: String!, password: String!): String!
+  logout(authToken: String!): Boolean!
+  changePassword(authToken: String!, oldPWD: String!, newPWD: String!): Boolean
+  CreateUser(username: String!, personID: ID!, email: String!): Boolean
+}
+
+type User {
+  userID: ID
+  personID: ID
+  userName: String
+  pwdHash: String
+  salt: String
+  ablaufDatum: String
+  role: Role
+}
+
+enum Role {
+  none
+  admin
 }
