@@ -4,8 +4,7 @@
       :mutation="require('@/graphql/authentication/login.gql')"
       :variables="{
         username,
-        password,
-        version
+        password
       }"
       tag="div"
       class="ec_content"
@@ -15,16 +14,14 @@
         <v-card class="ec_card" width="500px">
           <v-card-title class="justify-space-between">
             <h1 v-font v-primary>Login</h1>
-            <img
-              width="80px"
-              src="../../public/ec-logo-512.png"
-              style="margin-right: 15px"
-            />
+            <img width="80px" src="../../public/ec-logo-512.png" style="margin-right: 15px">
           </v-card-title>
           <v-card-text>
-            <v-alert type="error" :value="error" v-if="error">
-              {{ error.graphQLErrors.map(v => v.message).join() }}
-            </v-alert>
+            <v-alert
+              type="error"
+              :value="error"
+              v-if="error"
+            >{{ error.graphQLErrors.map(v => v.message).join() }}</v-alert>
             <v-form v-model="valid">
               <v-text-field
                 label="Username"
@@ -55,15 +52,8 @@
             </v-form>
           </v-card-text>
           <v-card-actions>
-            <v-spacer />
-            <v-btn
-              v-accent-bg
-              v-white
-              :disabled="!valid || loading"
-              @click="mutate"
-            >
-              LogIn
-            </v-btn>
+            <v-spacer/>
+            <v-btn v-accent-bg v-white :disabled="!valid || loading" @click="mutate">LogIn</v-btn>
           </v-card-actions>
         </v-card>
       </template>
@@ -71,12 +61,10 @@
   </v-app>
 </template>
 <script lang="ts">
-import { version } from "@/../package.json";
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator";
 
 @Component({})
 export default class loginForm extends Vue {
-  version = version;
   username: string = "";
   password: string = "";
   caps: boolean = false;
@@ -104,7 +92,7 @@ export default class loginForm extends Vue {
   }
 
   logedIn(res: any) {
-    new this.$auth(res.data.logIn);
+    new this.$auth(res.data.login);
     if (this.$route.query.afterLogIn) {
       this.$router.push(this.$route.query.afterLogIn.toString());
     } else {

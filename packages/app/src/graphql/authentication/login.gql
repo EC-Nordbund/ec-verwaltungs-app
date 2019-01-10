@@ -1,3 +1,3 @@
-mutation($username:String!, $password: String!, $version: String!) {
-  logIn(username: $username, password: $password, version: $version)
+mutation($username:String!, $password: String!) {
+  login(username: $username, password: $password)
 }

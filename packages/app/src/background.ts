@@ -1,11 +1,9 @@
-import * as Sentry from "@sentry/electron";
 import { app, BrowserWindow, protocol } from "electron";
+import {
+  createProtocol,
+  installVueDevtools
+} from 'vue-cli-plugin-electron-builder/lib'
 
-Sentry.init({
-  dsn: "https://b3b34064975846faa3a6757b52ea2168@sentry.io/1367817"
-});
-
-require("electron-unhandled")();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
