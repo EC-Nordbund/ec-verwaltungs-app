@@ -4,4 +4,4 @@ express()
   .all("*", function(req, res) {
     res.redirect("https://ec-nordbund.de/");
   })
-  .listen(1000);
+  .listen(2000);
