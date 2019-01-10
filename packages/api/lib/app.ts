@@ -1,17 +1,17 @@
-import middleWare from './middleware';
+import middleWare from "./middleware";
 import {
   changePWD,
   getUser,
   login,
   logout
-  } from './users/index';
-import { ApolloServer, AuthenticationError } from 'apollo-server-express';
-import * as cors from 'cors';
-import * as express from 'express';
-import * as fs from 'fs';
-import { v1 as neo4j } from 'neo4j-driver';
-import { makeAugmentedSchema } from 'neo4j-graphql-js';
-import { join } from 'path';
+  } from "./users/index";
+import { ApolloServer } from "apollo-server-express";
+import * as cors from "cors";
+import * as express from "express";
+import * as fs from "fs";
+import { v1 as neo4j } from "neo4j-driver";
+import { makeAugmentedSchema } from "neo4j-graphql-js";
+import { join } from "path";
 
 const typeDefs = fs.readFileSync(join(__dirname, "../schema.gql")).toString();
 const schema = makeAugmentedSchema(
@@ -19,7 +19,7 @@ const schema = makeAugmentedSchema(
     resolvers: {
       Query: {
         getAnmeldung(parent, args) {
-          return null;
+          return;
         }
       },
       Mutation: {
@@ -37,6 +37,8 @@ const schema = makeAugmentedSchema(
           );
         }
         // CreateUser
+        // DeleteUser
+        // UpdateUser
       }
     },
     typeDefs

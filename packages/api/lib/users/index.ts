@@ -1,8 +1,8 @@
-import { AuthKey } from './authKey';
-import { Role, User } from './user';
-import { readFileSync, writeFileSync } from 'fs';
-import { sha3_512 } from 'js-sha3';
-import { join } from 'path';
+import { AuthKey } from "./authKey";
+import { Role, User } from "./user";
+import { readFileSync, writeFileSync } from "fs";
+import { sha3_512 } from "js-sha3";
+import { join } from "path";
 export {AuthKey as authKey} from "./authKey";
 export {User as user} from "./user";
 
