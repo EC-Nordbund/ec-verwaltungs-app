@@ -101,11 +101,18 @@ export default class loginForm extends Vue {
   }
 
   created() {
-    // todo: handle Dark, handle Username
     window.addEventListener("keyup", this.checkCaps);
+    if((<any>window).require){
+      this.dark = require('electron-settings').get('dark', false)
+      this.username = require('electron-settings').get('username', '')
+    }
   }
   destroyed() {
     window.removeEventListener("keyup", this.checkCaps);
+    if((<any>window).require) {
+      console.log(this.username)
+      require('electron-settings').set('username', this.username)
+    }
   }
 }
 </script>
