@@ -1,5 +1,5 @@
 <template>
-  <ec-list-view
+  <!-- <ec-list-view
     :query="require('@/graphql/veranstaltungsOrte/loadList.gql')"
     :headers="[
       {
@@ -129,5 +129,12 @@
         <td>{{ item.organisation.bezeichnung }}</td>
       </tr>
     </template>
-  </ec-list-view>
+  </ec-list-view> -->
+  <div>
+    <ec-require>
+      <div slot-scope="{electron, fs, path}">
+        <!-- {{electron}} -->
+      </div>
+    </ec-require>
+  </div>
 </template>
