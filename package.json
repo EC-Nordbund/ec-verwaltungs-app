@@ -31,9 +31,7 @@
     "win32"
   ],
   "scripts": {
-    "publish": "",
-    "start": "",
-    "build": ""
+    ":init": "lerna bootstrap"
   },
   "dependencies": {},
   "devDependencies": {

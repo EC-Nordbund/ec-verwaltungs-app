@@ -1,26 +1,26 @@
 module.exports = {
-  title: 'EC-Nordbund',
-  description: 'Dokumentation',
+  title: "EC-Nordbund",
+  description: "Dokumentation",
   themeConfig: {
     locales: {
-      '/': {
-        label: 'Deutsch',
+      "/": {
+        label: "Deutsch",
         nav: [
           {
-            text: 'API',
-            link: '/api/'
+            text: "API",
+            link: "/api/"
           },
           {
-            text: 'APP',
-            link: '/app/'
+            text: "APP",
+            link: "/app/"
           }
         ]
       }
     }
   },
-  dest: './dist',
+  dest: "./dist",
   markdown: {
     lineNumbers: true
   },
   port: 8081
-}
+};
