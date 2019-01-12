@@ -6,10 +6,8 @@ import {
   getUser,
   login,
   logout,
-  updateUser,
-  users
+  updateUser
   } from './users/index';
-import { User } from './users/user';
 import { ApolloServer } from 'apollo-server-express';
 import * as cors from 'cors';
 import * as express from 'express';
