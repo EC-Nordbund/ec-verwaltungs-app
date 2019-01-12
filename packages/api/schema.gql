@@ -261,7 +261,15 @@ type Mutation {
   login(username: String!, password: String!): String!
   logout(authToken: String!): Boolean!
   changePassword(authToken: String!, oldPWD: String!, newPWD: String!): Boolean
-  CreateUser(username: String!, personID: ID!, email: String!): Boolean
+  CreateUser(
+    username: String!
+    personID: ID!
+    email: String!
+    gueltigBis: Date!
+    role: Role!
+  ): ID!
+  DeleteUser(userID: ID!): ID!
+  UpdateUser(userID: ID!, gueltigBis: Date!, role: Role!): ID!
 }
 
 type User {

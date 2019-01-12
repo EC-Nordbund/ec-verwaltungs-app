@@ -1,27 +1,28 @@
-import middleWare from "./middleware";
+import middleWare from './middleware';
 import {
+  addUser,
   changePWD,
+  deleteUser,
   getUser,
   login,
-  logout
-  } from "./users/index";
-import { ApolloServer } from "apollo-server-express";
-import * as cors from "cors";
-import * as express from "express";
-import * as fs from "fs";
-import { v1 as neo4j } from "neo4j-driver";
-import { makeAugmentedSchema } from "neo4j-graphql-js";
-import { join } from "path";
+  logout,
+  updateUser,
+  users
+  } from './users/index';
+import { User } from './users/user';
+import { ApolloServer } from 'apollo-server-express';
+import * as cors from 'cors';
+import * as express from 'express';
+import * as fs from 'fs';
+import { v1 as neo4j } from 'neo4j-driver';
+import { makeAugmentedSchema } from 'neo4j-graphql-js';
+import { join } from 'path';
 
 const typeDefs = fs.readFileSync(join(__dirname, "../schema.gql")).toString();
 const schema = makeAugmentedSchema(
   {
     resolvers: {
-      Query: {
-        getAnmeldung(parent, args) {
-          return;
-        }
-      },
+      Query: {},
       Mutation: {
         login(parent, args) {
           return login(args.username, args.password);
@@ -35,10 +36,22 @@ const schema = makeAugmentedSchema(
             args.oldPWD,
             args.newPWD
           );
+        },
+        CreateUser(parent, args) {
+          return addUser(
+            args.personID,
+            args.username,
+            args.email,
+            args.gueltigBis,
+            args.role
+          );
+        },
+        DeleteUser(parent, args) {
+          return deleteUser(args.userID);
+        },
+        UpdateUser(parent, args) {
+          return updateUser(args.userID, args.gueltigBis, args.role);
         }
-        // CreateUser
-        // DeleteUser
-        // UpdateUser
       }
     },
     typeDefs

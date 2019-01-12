@@ -1,8 +1,8 @@
-import { AuthKey } from "./authKey";
-import { Role, User } from "./user";
-import { readFileSync, writeFileSync } from "fs";
-import { sha3_512 } from "js-sha3";
-import { join } from "path";
+import { AuthKey } from './authKey';
+import { Role, User } from './user';
+import { readFileSync, writeFileSync } from 'fs';
+import { sha3_512 } from 'js-sha3';
+import { join } from 'path';
 export {AuthKey as authKey} from "./authKey";
 export {User as user} from "./user";
 
@@ -112,7 +112,7 @@ export function addUser(
   username: string,
   email: string,
   gueltigBis: string,
-  userGroupID: number
+  role: Role
 ) {
   const pwd = sha3_512(
     `${username}jkfhhksjdfhjkdfjk${Math.random()}${new Date().toISOString()}`
@@ -131,7 +131,7 @@ export function addUser(
   nID++;
 
   users.push(
-    new User(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID)
+    new User(nID, personID, username, pwdHash, salt, gueltigBis, role)
   );
 
   save();
