@@ -1,33 +1,38 @@
 {
-  "name": "@ec-nordbund/anmeldung",
-  "version": "2.0.0-pre.0",
-  "description": "> TODO: description",
-  "author": "Sebastian Krüger <2pi_r2@gmx.de>",
-  "homepage": "https://ec-nordbund.de/packages/anmeldung",
-  "license": "GPL-3.0-or-later",
-  "main": "lib/anmeldung.js",
-  "directories": {
-    "lib": "lib",
-    "test": "__tests__"
-  },
-  "files": [
-    "lib"
-  ],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/EC-Nordbund/ec-verwaltungs-app.git"
-  },
+  "name": "test_anmel_",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "build:wc": "vue-cli-service build --target wc --name ec-anmeldung ./src/Anmeldung.vue",
+    "build:lib": "vue-cli-service build --target lib --name ec-anmeldung-lib ./src/main.ts",
+    "lint": "vue-cli-service lint"
   },
-  "bugs": {
-    "url": "https://github.com/EC-Nordbund/ec-verwaltungs-app/issues"
+  "dependencies": {
+    "vue": "^2.5.21",
+    "vue-class-component": "^6.0.0",
+    "vue-property-decorator": "^7.0.0"
   },
   "devDependencies": {
-    "typescript": "^3.2.2"
+    "@vue/cli-plugin-babel": "^3.3.0",
+    "@vue/cli-plugin-typescript": "^3.3.0",
+    "@vue/cli-service": "^3.3.0",
+    "lint-staged": "^8.1.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "typescript": "^3.0.0",
+    "vue-template-compiler": "^2.5.21"
   },
-  "gitHead": "d3c023cb53fcd90861d042d106a9456c1d75cbf4"
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "vue-cli-service lint",
+      "git add"
+    ],
+    "*.vue": [
+      "vue-cli-service lint",
+      "git add"
+    ]
+  }
 }
