@@ -1,11 +1,11 @@
-import { Role } from "./users/user";
+import { Role } from '../users/user';
 import {
   and,
   not,
   or,
   rule,
   shield
-  } from "graphql-shield";
+  } from 'graphql-shield';
 
 const isRole = (role: Role) =>
   rule({cache: "contextual"})(async (parent, args, ctx, info) =>

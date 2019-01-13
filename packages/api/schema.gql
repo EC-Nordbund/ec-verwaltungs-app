@@ -265,11 +265,11 @@ type Mutation {
     username: String!
     personID: ID!
     email: String!
-    gueltigBis: Date!
+    gueltigBis: String!
     role: Role!
   ): ID!
   DeleteUser(userID: ID!): ID!
-  UpdateUser(userID: ID!, gueltigBis: Date!, role: Role!): ID!
+  UpdateUser(userID: ID!, gueltigBis: String!, role: Role!): ID!
 }
 
 type User {
