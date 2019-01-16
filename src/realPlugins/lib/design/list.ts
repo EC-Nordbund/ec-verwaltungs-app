@@ -48,7 +48,9 @@ export default class Liste extends Vue {
                     'v-icon',
                     {
                       props: {
-                        color: 'indigo'
+                        color: mapItem.map.isDeprecated
+                          ? 'grey'
+                          : 'secondary'
                       }
                     },
                     [mapItem.map.icon || this.icon]
@@ -68,6 +70,18 @@ export default class Liste extends Vue {
           ]),
           ...(mapItem.map.edit || this.edit
             ? [
+                mapItem.map.isDeprecated ? h(
+                  'v-btn',
+                  {
+                    props: {
+                      disabled: true,
+                      outline: true,
+                      flat: true,
+                      small: true
+                    }
+                  },
+                  'veraltet'
+                ) : h(),
                 h('v-list-tile-action', {}, [
                   h('ec-button-icon', {
                     on: {
@@ -158,6 +172,7 @@ export default class Liste extends Vue {
     subTitle?: string
     edit?: boolean
     marked?: boolean
+    isDeprecated?: boolean
     toolTip?: string
   }
 
