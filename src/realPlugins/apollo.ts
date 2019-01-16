@@ -19,7 +19,7 @@ export function getClient() {
           })
         }
       },
-      uri: 'https://ec-api.de/graphql' //Direkter API-Request
+      uri: 'https://www.ec-api.de/graphql' //Direkter API-Request
       // uri: 'http://ec-api.de:4000/graphql' //Dev API
       // uri: 'https://localhost/graphql'//Locale API
     })
