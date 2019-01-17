@@ -1,74 +1,44 @@
-import middleWare from './middleware';
-import {
-  addUser,
-  changePWD,
-  deleteUser,
-  getUser,
-  login,
-  logout,
-  updateUser
-  } from './users/index';
+import { handleMiddleware, resolvers } from './sonstiges';
+import { getUser } from './users';
 import { ApolloServer } from 'apollo-server-express';
 import * as cors from 'cors';
 import * as express from 'express';
 import * as fs from 'fs';
 import { v1 as neo4j } from 'neo4j-driver';
 import { makeAugmentedSchema } from 'neo4j-graphql-js';
-import { join } from 'path';
+import * as path from 'path';
 
-const typeDefs = fs.readFileSync(join(__dirname, "../schema.gql")).toString();
+// GET Type-Definiton
+const typeDefs = fs
+  .readFileSync(path.join(__dirname, "../schema.gql"))
+  .toString();
+
+// Type Generierung soll folgende Typen unangetastet lassen
+const excludeAll = ["User"];
+
+// Creatte Schema
 const schema = makeAugmentedSchema(
   {
-    resolvers: {
-      Query: {},
-      Mutation: {
-        login(parent, args) {
-          return login(args.username, args.password);
-        },
-        logout(parent, args) {
-          return logout(args.authToken);
-        },
-        changePassword(parent, args) {
-          return changePWD(
-            getUser(args.authToken).userID,
-            args.oldPWD,
-            args.newPWD
-          );
-        },
-        CreateUser(parent, args) {
-          return addUser(
-            args.personID,
-            args.username,
-            args.email,
-            args.gueltigBis,
-            args.role
-          );
-        },
-        DeleteUser(parent, args) {
-          return deleteUser(args.userID);
-        },
-        UpdateUser(parent, args) {
-          return updateUser(args.userID, args.gueltigBis, args.role);
-        }
-      }
-    },
+    resolvers,
     typeDefs
   },
   {
     query: {
-      exclude: ["User"]
+      exclude: [...excludeAll]
     },
     mutation: {
-      exclude: ["User"]
+      exclude: [...excludeAll]
     }
   }
 );
 
+// Create Driver
 const driver = neo4j.driver(
   "bolt://localhost",
   neo4j.auth.basic("neo4j", "pwd")
 );
 
+// Create Apollo Server
 const server = new ApolloServer({
   context: ({req}) => {
     const authToken = req.headers.authtoken;
@@ -81,19 +51,19 @@ const server = new ApolloServer({
       return {driver};
     }
   },
-  schema: middleWare(schema)
+  schema: handleMiddleware(schema)
 });
 
+// Create Express, use CORS
 const app = express().use(cors());
 
+// Apply Server
 server.applyMiddleware({app});
 
-app.all("/", function(req, res) {
-  res.redirect("/graphql");
-});
+// Redirect Pathes
+app
+  .all("/", (req, res) => res.redirect("/graphql"))
+  .all("*", (req, res) => res.redirect("https://ec-nordbund.de/"));
 
-app.all("*", function(req, res) {
-  res.redirect("https://ec-nordbund.de/?redirectFromAPI");
-});
-
+// Export app
 export default app;

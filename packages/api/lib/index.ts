@@ -1,5 +1,5 @@
-import app from './app';
-import * as greenlock from 'greenlock-express';
+import app from "./app";
+import * as greenlock from "greenlock-express";
 
 // Create Server with SSL Zerifikat generator.
 greenlock
