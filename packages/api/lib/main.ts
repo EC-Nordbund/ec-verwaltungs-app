@@ -1,28 +1,19 @@
-import { Waiter } from './Waiter';
+import { reRequire, Waiter } from './exports';
 import * as chokidar from 'chokidar';
-import decache from 'decache';
 
-//some inital Vars
-let _server = {
+let server = {
   stopServer() {},
   createServer() {}
 };
-let _waiter: Waiter;
+let waiter: Waiter;
 
 restartServer();
 
-// Create Watcher
-chokidar.watch(__dirname).on("all", () => _waiter.delay());
+chokidar.watch(__dirname).on("all", () => waiter.trigger());
 
 async function restartServer() {
-  // Restart server
-  await _server.stopServer();
-  _server = reRequire("./server");
-  await _server.createServer();
-  _waiter = new Waiter(5000, restartServer);
-}
-
-function reRequire(path: string) {
-  decache(path);
-  return require(path);
+  await server.stopServer();
+  server = reRequire("./server");
+  await server.createServer();
+  waiter = new Waiter(5000, restartServer);
 }

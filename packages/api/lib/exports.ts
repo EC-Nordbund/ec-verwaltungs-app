@@ -1,3 +1,4 @@
+import decache from 'decache';
 export class Waiter {
   block: boolean = false;
   to!: NodeJS.Timer;
@@ -7,10 +8,10 @@ export class Waiter {
     private cb: () => void,
     start: boolean = false
   ) {
-    if (start) this.delay();
+    if (start) this.trigger();
   }
 
-  delay() {
+  trigger() {
     if (!this.block) {
       clearTimeout(this.to);
 
@@ -22,4 +23,9 @@ export class Waiter {
 
     return this.block;
   }
+}
+
+export function reRequire(modulename: string) {
+  decache(modulename);
+  return require(modulename);
 }
