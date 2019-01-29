@@ -11,6 +11,6 @@ require('inquirer').prompt([{
 }, {
   name: "nachricht",
   type: "input"
-}]).then(a => {
-  require('child_process').exec(`git commit -m (${a.typ}) ${a.nachricht} [${a.was}]`)
-})
+}]).then(a => 
+  require('fs').writeFileSync('./git-commit.bat',  "git commit -m \"(" + a.typ + ") " + a.nachricht + "[" + a.was + "]\"")
+)
