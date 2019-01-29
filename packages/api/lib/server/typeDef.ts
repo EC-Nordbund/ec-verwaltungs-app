@@ -104,6 +104,10 @@ const types: Array<{
         type: "FZ"
       },
       {
+        name:"anmeldungen",
+        type: "[Anmeldung]"
+      },
+      {
         name: "letzterFZAntrag",
         type: "_date",
         edit: true,
@@ -540,7 +544,7 @@ const types: Array<{
         add: true
       },
       {
-        name: "eingangAn",
+        name: "entryAt",
         type: "_date",
         required: true,
         sort: true,
