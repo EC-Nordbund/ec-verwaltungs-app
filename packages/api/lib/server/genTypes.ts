@@ -1,4 +1,3 @@
-
 export default (
   name: string,
   fields: Array<IField>,
@@ -62,6 +61,10 @@ export default (
     type ${name} {
       _nodeID: ID
       ${TYPE_MAIN_FILELDS}
+      createdAt: _time!
+      updatedAt: _time!
+      createdBy: User!
+      updatedBy: User!
     }
   `;
 
@@ -78,7 +81,12 @@ export default (
 
   const INPUT_FILTER = `
     input _${name}_filter {
+      _filter: [String]
       ${INTPUT_FILTER_FIELDS}
+      createdAt: [String]
+      updatedAt: [String]
+      createdBy: [String]
+      updatedBy: [String]
     }
   `;
 

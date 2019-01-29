@@ -9,17 +9,10 @@ const types: Array<{
   hasQuery: boolean;
 }> = [
   {
-    hasQuery: true,
     name: "AK",
+    hasQuery: true,
+    firstIsID: false,
     fields: [
-      {
-        name: "akID",
-        type: "ID",
-        required: true,
-        sort: true,
-        filter: true,
-        add: true
-      },
       {
         name: "bezeichnung",
         type: "String",
@@ -33,21 +26,13 @@ const types: Array<{
         name: "personen",
         type: "[PersonAK]"
       }
-    ],
-    firstIsID: true
+    ]
   },
   {
-    hasQuery: true,
     name: "Person",
+    hasQuery: true,
+    firstIsID: false,
     fields: [
-      {
-        name: "personID",
-        type: "ID",
-        filter: true,
-        sort: true,
-        required: true,
-        add: true
-      },
       {
         name: "vorname",
         type: "String",
@@ -134,9 +119,29 @@ const types: Array<{
         name: "ECMitgliedsStatus",
         type: "ecStatus",
         edit: true
+      },
+      {
+        name: "kategorien",
+        type: "[Kategorie]"
       }
-    ],
-    firstIsID: true
+    ]
+  },
+  {
+    hasQuery: false,
+    name: "Kategorie",
+    firstIsID: true,
+    fields: [
+      {
+        name: "label",
+        type: "String",
+        required: true,
+        add: true
+      },
+      {
+        name: "personen",
+        type: "[Person]"
+      }
+    ]
   },
   {
     hasQuery: false,
@@ -170,7 +175,6 @@ const types: Array<{
   {
     name: "AKUpdate",
     hasQuery: false,
-
     firstIsID: false,
     fields: [
       {
@@ -187,18 +191,9 @@ const types: Array<{
   },
   {
     name: "Adresse",
-    firstIsID: true,
-
+    firstIsID: false,
     hasQuery: true,
     fields: [
-      {
-        name: "adresseID",
-        type: "ID",
-        required: true,
-        filter: true,
-        sort: true,
-        add: true
-      },
       {
         name: "strasse",
         type: "String",
@@ -229,7 +224,7 @@ const types: Array<{
       {
         name: "land",
         type: "String",
-        required: true,
+        required: false,
         filter: true,
         sort: true,
         edit: true,
@@ -241,7 +236,6 @@ const types: Array<{
     name: "PersonAdresse",
     firstIsID: false,
     hasQuery: false,
-
     fields: [
       {
         name: "adresse",
@@ -266,17 +260,8 @@ const types: Array<{
   {
     name: "Email",
     firstIsID: true,
-    hasQuery: true,
-
+    hasQuery: false,
     fields: [
-      {
-        name: "emailID",
-        type: "ID",
-        required: true,
-        filter: true,
-        sort: true,
-        add: true
-      },
       {
         name: "email",
         type: "String",
@@ -291,7 +276,6 @@ const types: Array<{
     name: "PersonEmail",
     firstIsID: false,
     hasQuery: false,
-
     fields: [
       {
         name: "email",
@@ -315,18 +299,9 @@ const types: Array<{
   },
   {
     name: "Telefon",
-    firstIsID: true,
+    firstIsID: false,
     hasQuery: true,
-
     fields: [
-      {
-        name: "telefonID",
-        type: "ID",
-        required: true,
-        filter: true,
-        sort: true,
-        add: true
-      },
       {
         name: "telefon",
         type: "String",
@@ -341,7 +316,6 @@ const types: Array<{
     name: "PersonTelefon",
     firstIsID: false,
     hasQuery: false,
-
     fields: [
       {
         name: "telefon",
@@ -366,17 +340,8 @@ const types: Array<{
   {
     name: "ECKreis",
     hasQuery: true,
-    firstIsID: true,
-
+    firstIsID: false,
     fields: [
-      {
-        name: "ecKreis",
-        type: "ID",
-        required: true,
-        sort: true,
-        filter: true,
-        add: true
-      },
       {
         name: "bezeichnung",
         type: "String",
@@ -409,17 +374,9 @@ const types: Array<{
   },
   {
     name: "FZ",
-    firstIsID: true,
+    firstIsID: false,
     hasQuery: false,
-
     fields: [
-      {
-        name: "fzID",
-        type: "ID",
-        required: true,
-        sort: true,
-        filter: true
-      },
       {
         name: "gesehenAm",
         type: "_date",
@@ -436,17 +393,9 @@ const types: Array<{
   },
   {
     name: "Organisation",
-    firstIsID: true,
+    firstIsID: false,
     hasQuery: true,
     fields: [
-      {
-        name: "organisationsID",
-        type: "ID",
-        required: true,
-        sort: true,
-        filter: true,
-        add: true
-      },
       {
         name: "bezeichnung",
         type: "String",
@@ -486,17 +435,8 @@ const types: Array<{
   {
     name: "Veranstaltungsort",
     hasQuery: true,
-    firstIsID: true,
+    firstIsID: false,
     fields: [
-      {
-        name: "VeranstaltungsortID",
-        type: "ID",
-        required: true,
-        sort: true,
-        filter: true,
-        add: true,
-        edit: true
-      },
       {
         name: "bezeichnung",
         type: "String",
@@ -539,17 +479,92 @@ const types: Array<{
   },
   {
     name: "Veranstaltung",
-    firstIsID: true,
+    firstIsID: false,
     hasQuery: true,
     fields: [
       {
-        name: "veranstaltungsID",
-        type: "ID",
+        name: "bezeichnung",
+        type: "String",
         required: true,
         sort: true,
         filter: true,
         edit: true,
         add: true
+      }
+    ]
+  },
+  {
+    name: "Anmeldung",
+    firstIsID: true,
+    hasQuery: true,
+    fields: [
+      {
+        name: "anmeldeID",
+        type: "ID",
+        required: true,
+        sort: true,
+        filter: true,
+        edit: true
+      },
+      {
+        name: "veranstaltung",
+        type: "Veranstaltung",
+        object: true,
+        add: true,
+        edit: true
+      },
+      {
+        name: "person",
+        type: "Person",
+        object: true,
+        add: true
+      },
+      {
+        name: "role",
+        type: "Role",
+        object: true,
+        add: true
+      }
+    ]
+  },
+  {
+    name: "FinanzTransaktion",
+    hasQuery: false,
+    firstIsID: false,
+    fields: [
+      {
+        name: "betrag",
+        type: "Int",
+        required: true,
+        sort: true,
+        add: true
+      },
+      {
+        name: "eingangAn",
+        type: "_date",
+        required: true,
+        sort: true,
+        add: true
+      }
+    ]
+  },
+  {
+    name: "Role",
+    firstIsID: false,
+    hasQuery: true,
+    fields: [
+      {
+        name: "bezeichnung",
+        type: "String",
+        required: true,
+        sort: true,
+        filter: true,
+        edit: true,
+        add: true
+      },
+      {
+        name: "anmeldungen",
+        type: "[Anmeldung]"
       }
     ]
   }
@@ -567,6 +582,16 @@ const type = `
   input _pageInation {
     numberPerPage: Int!
     pageNumber: Int!
+  }
+  type _time {
+    tag: Int!
+    monat: Int!
+    jahr: Int!
+    h: Int!
+    min: Int!
+    s: Int!
+    german: String!
+    input: String!
   }
   type _date {
     tag: Int!

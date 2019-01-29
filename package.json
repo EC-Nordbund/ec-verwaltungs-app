@@ -33,7 +33,10 @@
   "scripts": {
     ":init": "lerna bootstrap"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@types/inquirer": "^0.0.43",
+    "inquirer": "^6.2.1"
+  },
   "devDependencies": {
     "lerna": "^3.8.1"
   }
