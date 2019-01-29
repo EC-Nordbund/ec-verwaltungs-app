@@ -528,6 +528,17 @@ const types: Array<{
         type: "Role",
         object: true,
         add: true
+      },
+      {
+        name: "finanzTrasaktionen",
+        type: "[FinanzTransaktion]"
+      },
+      {
+        name: "anmeldeStatus",
+        type: "Int",
+        required: true,
+        add: true,
+        edit: true
       }
     ]
   },
