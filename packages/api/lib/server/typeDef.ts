@@ -494,6 +494,26 @@ const types: Array<{
         filter: true,
         edit: true,
         add: true
+      },
+      {
+        name:"begin",
+        type:"_date",
+        object:true,
+        required:true,
+        sort: true,
+        filter: true,
+        edit:true,
+        add:true
+      },
+      {
+        name:"ende",
+        type:"_date",
+        object:true,
+        required:true,
+        sort: true,
+        filter: true,
+        edit:true,
+        add:true
       }
     ]
   },
@@ -557,6 +577,7 @@ const types: Array<{
       {
         name: "entryAt",
         type: "_date",
+        object: true,
         required: true,
         sort: true,
         add: true
