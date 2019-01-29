@@ -31,7 +31,8 @@
     "win32"
   ],
   "scripts": {
-    ":init": "lerna bootstrap"
+    ":init": "lerna bootstrap",
+    "commit": "node compile.js && git-commit.bat"
   },
   "dependencies": {
     "@types/inquirer": "^0.0.43",
