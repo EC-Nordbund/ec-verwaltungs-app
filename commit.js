@@ -1,4 +1,5 @@
-require('inquirer').prompt([{
+let _=require;
+_('inquirer').prompt([{
   name: "typ",
   type: "list",
   choices: ["fix", "feat", "docs"]
@@ -12,5 +13,5 @@ require('inquirer').prompt([{
   name: "nachricht",
   type: "input"
 }]).then(a => 
-  require('fs').writeFileSync('./git-commit.bat',  "git commit -m \"(" + a.typ + ") " + a.nachricht + "[" + a.was + "]\"")
+  _('fs').writeFileSync('./git-commit.bat',  "git commit -m \"(" + a.typ + ") " + a.nachricht + " [" + a.was + "]\"")
 )
