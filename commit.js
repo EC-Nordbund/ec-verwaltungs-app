@@ -12,6 +12,4 @@ _('inquirer').prompt([{
 }, {
   name: "nachricht",
   type: "input"
-}]).then(a => 
-  _('fs').writeFileSync('./git-commit.bat',  "git commit -m \"(" + a.typ + ") " + a.nachricht + " [" + a.was + "]\"")
-)
+}]).then(a=>_('fs').writeFileSync('./git-commit.bat', `git commit -m "(${a.typ}) ${a.nachricht} [${a.was}]"`))
