@@ -1,17 +1,28 @@
-import plugins from "@/plugins";
-import Vue, { CreateElement } from "vue";
+import '@babel/polyfill';
+import Vue from 'vue';
+import { Component } from 'vue-property-decorator';
 
-if (require) {
-  eval("process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'");
-  eval("window.fetch = require('node-fetch')");
-}
+import 'roboto-fontface/css/roboto/roboto-fontface.css';
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 
-Vue.use(plugins);
+import router from '@/router';
+import { Auth } from '@/plugins/auth';
+
+import '@/form';
+import '@/plugins/vuetify';
+import '@/import';
+
+Component.registerHooks([
+  'beforeRouteEnter',
+  'beforeRouteLeave',
+  'beforeRouteUpdate'
+]);
+
+Vue.use(Auth);
 
 Vue.config.productionTip = false;
 
 new Vue({
-  render: (h: CreateElement) => h("router-view"),
-  ...plugins.getOptions(),
-  el: "#app"
-});
+  router,
+  render: (h) => h('router-view')
+}).$mount('#app');

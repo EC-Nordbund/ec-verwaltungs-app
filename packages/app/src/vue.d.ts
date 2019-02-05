@@ -1,11 +1,11 @@
-import { LesezeichenList } from "@/plugins/lesezeichen";
-import Vue from "vue";
-import { auth } from "@/plugins/auth";
+import Vue from 'vue';
+import { Auth } from '@/plugins/auth';
 
-declare module "vue/types/vue" {
+declare module 'vue/types/vue' {
   interface Vue {
-    $liste: LesezeichenList;
-    $auth: typeof auth;
+    $auth: () => Auth;
+    $login: (username: string, password: string) => Promise<never>;
+    $logout: () => void;
     $util: any;
   }
 }

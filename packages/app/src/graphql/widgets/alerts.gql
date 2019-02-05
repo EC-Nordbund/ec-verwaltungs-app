@@ -1,7 +1,0 @@
-query {
-  alerts {
-    alertID
-    content
-    von
-  }
-}

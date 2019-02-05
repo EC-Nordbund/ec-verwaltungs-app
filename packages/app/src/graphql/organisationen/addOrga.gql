@@ -1,3 +1,0 @@
-mutation ($authToken: String!, $bezeichnung: String!) {  
-  addOrganisation(authToken: $authToken, bezeichnung: $bezeichnung)
-}
