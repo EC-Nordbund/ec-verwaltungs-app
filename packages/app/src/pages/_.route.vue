@@ -9,14 +9,15 @@
       v-spacer
       v-avatar(size="60px" style="margin-right: 10px")
         img(src="../../public/ec-logo-without-bg-64.png")
-      span.ec_title_text(v-white v-font) Nordbund – Verwaltung
+      span(v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px;") Nordbund – Verwaltung
       v-spacer
       ec-lesezeichen-show
-      div.ecPaddingRight
+      div(style="padding-right: 20px") 
       v-btn(icon v-white @click="dark=!dark")
         v-icon invert_colors
       v-btn(icon v-white @click="logout")
         v-icon exit_to_app
+    
     v-navigation-drawer(clipped app v-model="drawer")
       v-toolbar(flat class="transparent")
         v-list
@@ -82,9 +83,11 @@
           v-list-tile-action
             v-icon menu
           v-list-tile-title Impressum
+    
     v-content
-      router-view.ec_content(:key="$route.path")
-    v-footer.ec_footer(app fixed color="secondary")
+      router-view(:key="$route.path" style="margin: 5px; width: calc(100% - 10px);")
+    
+    v-footer(app style="padding: 0 10px;" fixed color="secondary")
       v-breadcrumbs.content(:items="breadcrumbsRouter")
         v-icon(slot="divider" v-white) keyboard_arrow_right
         template(slot="item" slot-scope="props")
@@ -97,58 +100,44 @@
         template(slot="item" slot-scope="props")
           span.disabled(v-white) {{props.item.text}}
 </template>
-
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { version } from '../../package.json';
+import pack from '@/plugins/package';
 // ()
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  public dark = false;
-  public drawer = null;
-  public version = version;
-  public breadcrumbs = [
+  private dark = false;
+  private drawer = null;
+  private version = pack.version;
+  private breadcrumbs = this.breadMap([
     `© 2017 - ${new Date().getFullYear()}`,
     'EC-Nordbund',
     'T. Krause + S. Krüger'
-  ].map((v) => ({ text: v, disabled: true }));
+  ]);
 
-  get breadcrumbsRouter():Array<any>{
-    return this.$route.path.split('/').slice(1).map(v=>v[0].toUpperCase() + v.slice(1)).map((v) => ({ text: v, disabled: true }));
+  private get breadcrumbsRouter():Array<any>{
+    return this.breadMap(
+      this.$route.path
+        .split('/')
+        .slice(1)
+        .map(v=>v[0].toUpperCase() + v.slice(1))
+    );
   }
 
-  public logout() {
+  private breadMap(v:Array<string>) {
+    return v.map(v=>({ text: v, disabled: true }));
+  }
+
+  private logout() {
     this.$auth().logout();
-  }
-
-  
-  public get footerInfo() : string {
-    return (this.$auth() || {}).footerInfo;
   }
 }
 </script>
-
 <style lang="scss" scoped>
-.ec_title_text {
-  font-size: 26px; 
-  padding-top: 5px; 
-  margin-right: 8px;
-}
-.ecPaddingRight {
-  padding-right: 20px
-}
-.ec_content {
-  margin: 5px; 
-  width: calc(100% - 10px);
-}
-.ec_footer {
-  z-index: 9999; 
-  padding: 0 10px;
-  > .content {
-    width: 30%;
-    text-align: center;
-  }
+.content {
+  width: 30%;
+  text-align: center;
 }
 </style>

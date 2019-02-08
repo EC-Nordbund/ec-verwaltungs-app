@@ -11,7 +11,7 @@
           v-alert(type="info" :value="true" v-if="$route.query.info") {{$route.query.info}}
           v-form(v-model="valid")
             v-text-field(
-              v-validate="required"
+              v-validate="'required'"
               data-vv-as="Benutzername"
               :error-messages="errors.collect(schema.name)"
 

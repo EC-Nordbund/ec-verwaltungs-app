@@ -1,6 +1,6 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial v-bind="config")
-    | Content
+    v-textfield(label="AK suchen")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -30,8 +30,8 @@ export default class EcRootIndex extends Vue {
         click: this.sheetClick
       }
     ],
-    title: 'AK-Liste'
-  }
+    title: 'AK'
+  };
 
   private sheetClick(item: {label: string}) {}
 }
