@@ -6,7 +6,7 @@
   src: url('./EC-Nordbund.otf') format('opentype');
 }
 
-* {
+:not(input) {
   user-select: none;
   -moz-user-select: none;
 }

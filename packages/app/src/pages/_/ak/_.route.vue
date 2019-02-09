@@ -1,13 +1,15 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial v-bind="config")
-    v-textfield(label="AK suchen")
+    ec-search(label="AK suchen" queryParam="suche" @suche="suche = $event")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class EcRootIndex extends Vue {
+export default class EcRootAKRoot extends Vue {
   public static meta = {};
+
+  suche=""
   
   private config = {
     sheet: [
@@ -33,6 +35,6 @@ export default class EcRootIndex extends Vue {
     title: 'AK'
   };
 
-  private sheetClick(item: {label: string}) {}
+  private sheetClick(item: {id: string}) {alert(item.id); }
 }
 </script>

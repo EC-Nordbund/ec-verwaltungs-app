@@ -15,11 +15,17 @@ export default class EcRootIndex extends Vue {
         icon: 'menu',
         label: 'Person hinzufügen',
         click: this.sheetClick
+      },
+      {
+        icon: 'menu',
+        id: 'pers_report',
+        label: 'Report erzeugen',
+        click: this.sheetClick
       }
     ],
     title: 'Personen'
   }
 
-  private sheetClick(item: {label: string}) {}
+  private sheetClick(item: {id: string}) {alert(item.id); }
 }
 </script>

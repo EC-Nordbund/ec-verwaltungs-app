@@ -33,6 +33,6 @@ export default class EcRootIndex extends Vue {
     subTitle: 'Organisation'
   }
 
-  private sheetClick(item: {label: string}) {}
+  private sheetClick(item: {id: string}) {alert(item.id); }
 }
 </script>

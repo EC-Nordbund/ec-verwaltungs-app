@@ -57,6 +57,6 @@ export default class EcRootIndex extends Vue {
     subTitle: 'Anmeldung'
   }
 
-  private sheetClick(item: {label: string}) {}
+  private sheetClick(item: {id: string}) {alert(item.id); }
 }
 </script>
