@@ -80,6 +80,7 @@ export default class EcRootLogin extends Vue {
   }
 
   public logIn() {
+    // TODO
   }
 
   public created() {
