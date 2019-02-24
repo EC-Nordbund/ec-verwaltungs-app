@@ -126,8 +126,8 @@ export default class EcRootIndex extends Vue {
     );
   }
 
-  private breadMap(v: string[]) {
-    return v.map((v) => ({ text: v, disabled: true }));
+  private breadMap(arr: string[]) {
+    return arr.map((el) => ({ text: el, disabled: true }));
   }
 
   private logout() {

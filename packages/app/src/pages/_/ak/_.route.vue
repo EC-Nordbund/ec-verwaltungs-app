@@ -88,7 +88,9 @@ export default class EcRootAKRoot extends Vue {
   private loadData() {
     this.data = '........................................'.split('.').map((a, b) => ({
       id: b,
-      bezeichnung: Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) + ' ' + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5)// 'Jungschar'
+      bezeichnung: Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) +  ' '
+        + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5)
+      // 'Jungschar'
     }));
     this.$dialog.error({
       text: 'Aktuell werden keine tasächlichen Daten benutzt!',

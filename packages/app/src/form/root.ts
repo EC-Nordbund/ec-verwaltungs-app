@@ -14,6 +14,7 @@ export default class FormRoot extends Vue {
       'form_' + field.type,
       {
         props: {
+          /* tslint:disable */
           schema: {
             clickPrependInner: () => {},
             clickPrependOuter: () => {},
@@ -23,6 +24,7 @@ export default class FormRoot extends Vue {
             clickAppendOuter: () => {},
             ...field
           },
+          /* tslint:enable */
           value: this.value[field.name]
         },
         on: {

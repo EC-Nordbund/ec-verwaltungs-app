@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({})
-export default class abstractField extends Vue {
+export default class AbstractField extends Vue {
   @Prop({
     required: true
   })

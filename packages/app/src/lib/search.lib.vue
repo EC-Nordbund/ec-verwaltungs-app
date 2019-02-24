@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-text-field(v-bind="$attrs", v-on="$listeners", v-model="value", prepend-icon="search", :append-icon="value?'close':undefined", @click:append="value=''")
+  v-text-field(:append-outer-icon="filter?'more_vert':''" @click:append-outer="$emit('filter')", v-model="value", prepend-icon="search", :append-icon="value?'close':undefined", @click:append="value=''")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -10,6 +10,9 @@ export default class EcSearch extends Vue {
 
   @Prop({default: 'suche'})
   public queryParam!: string;
+
+  @Prop({default: false})
+  public filter!: boolean;
 
   @Watch('value')
   public onValueUpdate() {
@@ -24,8 +27,8 @@ export default class EcSearch extends Vue {
   }
 
   public mounted() {
-    this.value = <string>this.$route.query[this.queryParam] || ''
+    this.value = (this.$route.query[this.queryParam] as string) || '';
   }
+  // 
 }
-;
 </script>
