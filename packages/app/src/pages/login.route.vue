@@ -5,7 +5,7 @@
         v-card-title.justify-space.between
           h1(v-font v-primary) Login
           v-spacer
-          img(width="80px" src="../../public/ec-logo-512.png")
+          img(width="80px" src="@/assets/ec-logo-512.png")
         v-card-text
           v-alert(type="error" :value="true" v-if="$route.query.error") {{$route.query.error}}
           v-alert(type="info" :value="true" v-if="$route.query.info") {{$route.query.info}}

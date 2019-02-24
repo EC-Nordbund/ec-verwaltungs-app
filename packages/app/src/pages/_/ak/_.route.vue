@@ -62,17 +62,23 @@ export default class EcRootAKRoot extends Vue {
   private config = {
     sheet: [
       {
-        icon: 'menu',
+        icon: this.$util.icon.report,
         label: 'Aktuelle AK Mitglieder Report',
         click: () => {
-          alert("TODO: GENERATE CURRENT AK REPORT")
+          this.$dialog.warning({
+            text: 'GENERATE CURRENT AK REPORT',
+            title: 'TODO'
+          })
         }
       },
       {
-        icon: 'menu',
+        icon: this.$util.icon.report,
         label: 'Alle AK Mitglieder Report',
         click: () => {
-          alert("TODO: GENERATE FULL AK REPORT")
+          this.$dialog.warning({
+            text: 'GENERATE FULL AK REPORT',
+            title: 'TODO'
+          })
         }
       }
     ],
@@ -84,6 +90,10 @@ export default class EcRootAKRoot extends Vue {
       id: b,
       bezeichnung: Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5) + ' ' + Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5)//'Jungschar'
     }))
+    this.$dialog.error({
+      text: 'Aktuell werden keine tasächlichen Daten benutzt!',
+      title: 'Keine Daten'
+    })
   }
 
   private filterData(item:any):boolean {
@@ -107,22 +117,6 @@ export default class EcRootAKRoot extends Vue {
   
   private async created() {
     this.loadData()
-    const res1 = await this.$dialog.confirm({
-      text: 'Do you really want to exit?',
-      title: 'Warning'
-    })
-    const res2 = await this.$dialog.warning({
-      text: 'Do you really want to exit?',
-      title: 'Warning'
-    })
-    this.$dialog.error({
-      text: 'Cannot delete this item',
-      title: 'Error'
-    })
-    let res3 = await this.$dialog.prompt({
-      text: 'Your name',
-      title: 'Please input your name'
-    })
   }
 }
 </script>

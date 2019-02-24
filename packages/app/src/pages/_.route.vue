@@ -8,7 +8,7 @@
         v-icon navigate_next
       v-spacer
       v-avatar(size="60px" style="margin-right: 10px")
-        img(src="../../public/ec-logo-without-bg-64.png")
+        img(src="@/assets/ec-logo-without-bg-64.png")
       span(v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px;") Nordbund – Verwaltung
       v-spacer
       ec-lesezeichen-show
