@@ -6,25 +6,26 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 @Component({})
 export default class EcSearch extends Vue {
-  value=''
+  public value = '';
 
   @Prop({default: 'suche'})
-  queryParam!: string
+  public queryParam!: string;
 
   @Watch('value')
-  onValueUpdate(){
-    this.$emit('suche', this.value)
+  public onValueUpdate() {
+    this.$emit('suche', this.value);
     this.$router.replace({
-      path: this.$route.path, 
+      path: this.$route.path,
       query: {
-        ...this.$route.query, 
+        ...this.$route.query,
         [this.queryParam]: this.value
       }
-    })
+    });
   }
 
-  mounted() {
+  public mounted() {
     this.value = <string>this.$route.query[this.queryParam] || ''
   }
 }
+;
 </script>

@@ -1,4 +1,4 @@
-export const name = 'settings'
+export const name = 'settings';
 
 export default {
   set(valueName: string, value: string) {
@@ -7,4 +7,4 @@ export default {
   get(valueName: string, defaultValue: string) {
     // TODO
   }
-}
+};

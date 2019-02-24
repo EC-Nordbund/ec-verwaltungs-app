@@ -18,7 +18,7 @@ export default class EcRootIndex extends Vue {
       }
     ],
     title: 'Admin'
-  }
+  };
 
   private sheetClick(item: {id: string}) {alert(item.id); }
 }

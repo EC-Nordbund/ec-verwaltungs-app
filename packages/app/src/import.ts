@@ -15,13 +15,11 @@ contextLib2.keys().forEach((key) => {
 
 const contextUtil = require.context('@/util', true, /\w+\.util.ts/);
 
-let tmpUtil:any = {}
+const tmpUtil: any = {};
 
 contextUtil.keys().forEach((key) => {
   const util = contextUtil(key);
   tmpUtil[util.name || util.default.name] = util.default || {};
 });
- 
-console.log(tmpUtil)
 
-Vue.prototype.$util = tmpUtil
+Vue.prototype.$util = tmpUtil;

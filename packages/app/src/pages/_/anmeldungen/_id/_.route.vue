@@ -8,12 +8,8 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
-  
-  private data:any = {}
 
-  private getData() {
-    // TODO: GET DATA FROM API
-  }
+  private data: any = {};
 
   private config = {
     sheet: [
@@ -40,7 +36,7 @@ export default class EcRootIndex extends Vue {
         icon: 'menu',
         label: 'Nachrücken lassen',
         click: this.sheetClick
-      },
+      }
     ],
     nav: [
       {
@@ -61,6 +57,10 @@ export default class EcRootIndex extends Vue {
     ],
     title: 'ANMELDUNGNAME',
     subTitle: 'Anmeldung'
+  };
+
+  private getData() {
+    // TODO: GET DATA FROM API
   }
 
   private sheetClick(item: {id: string}) {alert(item.id); }

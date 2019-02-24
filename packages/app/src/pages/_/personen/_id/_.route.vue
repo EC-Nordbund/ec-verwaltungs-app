@@ -86,7 +86,7 @@ export default class EcRootIndex extends Vue {
         id: 'pers_report',
         label: 'Report erzeugen'
       }
-    ].map(v=>({click: this.sheetClick, ...v})),
+    ].map((v) => ({click: this.sheetClick, ...v})),
     nav: [
       {
         icon: 'menu',
@@ -106,7 +106,7 @@ export default class EcRootIndex extends Vue {
     ],
     title: 'PERSONENNAME',
     subTitle: 'Person'
-  }
+  };
 
   private sheetClick(item: {id: string}) {
     alert(item.id);

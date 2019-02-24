@@ -42,60 +42,60 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
 export default class EcWrapper extends Vue {
-  h = window.innerHeight - 110 + 'px'
-  showNav = false
-  sheetOpen = false
-  timer:any
-  timer2:any
+  public h = window.innerHeight - 110 + 'px';
+  public showNav = false;
+  public sheetOpen = false;
+  public timer: any;
+  public timer2: any;
 
   @Prop({type: Boolean, default: false})
-  hasXBtn!: boolean
+  public hasXBtn!: boolean;
 
   @Prop({type: Boolean, default: false})
-  hasDial!: boolean
+  public hasDial!: boolean;
 
   @Prop({type: Boolean, default: false})
-  hasSheet!: boolean
+  public hasSheet!: boolean;
 
   @Prop({type: Boolean, default: false})
-  hasNav!: boolean
+  public hasNav!: boolean;
 
   @Prop({type: Boolean, default: false})
-  hasRouterView!: boolean
+  public hasRouterView!: boolean;
 
   @Prop({type: String, required: true})
-  title!: string
+  public title!: string;
 
   @Prop({type: String, required: false})
-  subTitle!: string
+  public subTitle!: string;
 
   @Prop({type: Array, required: false})
-  sheet!: Array<any>
+  public sheet!: any[];
 
   @Prop({type: Array, required: false})
-  nav!: Array<any>
+  public nav!: any[];
 
-  openNav() {
+  public openNav() {
     this.showNav = true;
     clearTimeout(this.timer);
-    this.timer = setTimeout(()=>{
+    this.timer = setTimeout(() => {
       this.showNav = false;
     }, 2000);
   }
 
-  created() {
-    this.openNav()
-    this.updateData()
+  public created() {
+    this.openNav();
+    this.updateData();
 
-    this.timer2 = setInterval(this.updateData, 60000)
+    this.timer2 = setInterval(this.updateData, 60000);
   }
 
-  updateData() {
-    this.$emit('getData')
+  public updateData() {
+    this.$emit('getData');
   }
 
-  beforeDestroy() {
-    clearInterval(this.timer2)
+  public beforeDestroy() {
+    clearInterval(this.timer2);
   }
 }
 </script>

@@ -22,7 +22,7 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '@/form/abstract';
-// import 
+// import
 
 @Component({})
 export default class FormPwd extends Mixins(abstractField) {}

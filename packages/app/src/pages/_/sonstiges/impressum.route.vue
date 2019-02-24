@@ -50,6 +50,6 @@ export default class EcRootIndex extends Vue {
   };
   private config = {
     title: 'Impressum'
-  };  
+  };
 }
 </script>

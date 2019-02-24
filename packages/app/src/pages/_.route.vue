@@ -117,17 +117,17 @@ export default class EcRootIndex extends Vue {
     'T. Krause + S. Krüger'
   ]);
 
-  private get breadcrumbsRouter():Array<any>{
+  private get breadcrumbsRouter(): any[] {
     return this.breadMap(
       this.$route.path
         .split('/')
         .slice(1)
-        .map(v=>v[0].toUpperCase() + v.slice(1))
+        .map((v) => v[0].toUpperCase() + v.slice(1))
     );
   }
 
-  private breadMap(v:Array<string>) {
-    return v.map(v=>({ text: v, disabled: true }));
+  private breadMap(v: string[]) {
+    return v.map((v) => ({ text: v, disabled: true }));
   }
 
   private logout() {

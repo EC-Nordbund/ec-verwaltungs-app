@@ -1,3 +1,3 @@
-declare const _:any
+declare const _: any;
 
-export default _
+export default _;

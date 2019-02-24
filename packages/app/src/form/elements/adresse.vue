@@ -42,14 +42,14 @@ import plzs from '@/form/plzs';
 
 @Component({})
 export default class FormInput extends Mixins(abstractField) {
-  public map:any = plzs;
-  public plz = Object.keys(plzs)
+  public map: any = plzs;
+  public plz = Object.keys(plzs);
 
-  plzChange($event:string){
-    if(this.map[$event].length === 1){
-      this.changeValue({ort: this.map[$event][0], plz: $event, strasse: this.value.strasse})
+  public plzChange($event: string) {
+    if (this.map[$event].length === 1) {
+      this.changeValue({ort: this.map[$event][0], plz: $event, strasse: this.value.strasse});
     } else {
-      this.changeValue({ort: undefined, plz: $event, strasse: this.value.strasse})
+      this.changeValue({ort: undefined, plz: $event, strasse: this.value.strasse});
     }
   }
 }

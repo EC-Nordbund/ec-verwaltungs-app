@@ -1,11 +1,11 @@
 import '@babel/polyfill';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
-import VuetifyDialog from 'vuetify-dialog'
+import VuetifyDialog from 'vuetify-dialog';
 
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
-import '@/assets/style.css'
+import '@/assets/style.css';
 
 import router from '@/router';
 import { Auth } from '@/plugins/auth';

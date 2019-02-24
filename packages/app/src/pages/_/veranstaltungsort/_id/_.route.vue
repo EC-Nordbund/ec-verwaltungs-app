@@ -8,7 +8,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
-  
+
   private config = {
     sheet: [
     ],
@@ -26,7 +26,7 @@ export default class EcRootIndex extends Vue {
     ],
     title: 'VERANSTALTUNGSORTNAME',
     subTitle: 'Veranstaltungsort'
-  }
+  };
 
   private sheetClick(item: {id: string}) {alert(item.id); }
 }

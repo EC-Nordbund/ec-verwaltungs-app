@@ -9,11 +9,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  private data:any = {}
-
-  private getData() {
-    // TODO: GET DATA FROM API
-  }
+  private data: any = {};
 
   private config = {
     sheet: [
@@ -25,6 +21,10 @@ export default class EcRootIndex extends Vue {
       }
     ],
     title: 'Anmeldungen'
+  };
+
+  private getData() {
+    // TODO: GET DATA FROM API
   }
 
   private sheetClick(item: {id: string}) {alert(item.id); }

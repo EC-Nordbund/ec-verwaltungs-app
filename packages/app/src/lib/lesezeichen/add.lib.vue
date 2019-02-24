@@ -9,24 +9,24 @@ import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 @Component({})
 export default class EcLesezeichenAdd extends Vue {
   @Prop({type: String, required: true})
-  title!: string
+  public title!: string;
 
   @Prop({type: String, required: false})
-  subTitle!: string
+  public subTitle!: string;
 
-  toggleLesezeichen() {
-    if(this.isLesezeichen){
-      this.$util.lesezeichen.remove(this.$route.path)
+  public isLesezeichen: boolean = false;
+
+  public toggleLesezeichen() {
+    if (this.isLesezeichen) {
+      this.$util.lesezeichen.remove(this.$route.path);
     } else {
-      this.$util.lesezeichen.add(this.title,this.subTitle,this.$route.fullPath,this.$route.path)
+      this.$util.lesezeichen.add(this.title, this.subTitle, this.$route.fullPath, this.$route.path);
     }
-    this.isLesezeichen = !this.isLesezeichen
+    this.isLesezeichen = !this.isLesezeichen;
   }
 
-  isLesezeichen: boolean = false
-
-  created() {
-    this.isLesezeichen = this.$util.lesezeichen.check(this.$route.path)
+  public created() {
+    this.isLesezeichen = this.$util.lesezeichen.check(this.$route.path);
   }
 }
 </script>

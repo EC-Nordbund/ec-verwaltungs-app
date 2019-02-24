@@ -9,11 +9,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  suche='';
-
-  moreFilter() {
-    
-  }
+  public suche = '';
 
   private config = {
     sheet: [
@@ -31,6 +27,10 @@ export default class EcRootIndex extends Vue {
       }
     ],
     title: 'Personen'
+  };
+
+  public moreFilter() {
+
   }
 
   private sheetClick(item: {id: string}) {alert(item.id); }

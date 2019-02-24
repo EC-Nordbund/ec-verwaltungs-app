@@ -62,6 +62,6 @@ export default class EcRootIndex extends Vue {
   public static meta = {};
   private config = {
     title: 'Datenschutzerklärung'
-  }
+  };
 }
 </script>

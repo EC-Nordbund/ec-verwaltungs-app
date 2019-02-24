@@ -13,7 +13,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
 export default class EcRootIndex extends Vue {
-  
+
   private config = {
     sheet: [
       {
@@ -30,7 +30,7 @@ export default class EcRootIndex extends Vue {
       }
     ],
     title: 'Home'
-  }
+  };
 
   private sheetClick(item: {id: string}) {alert(item.id); }
 }

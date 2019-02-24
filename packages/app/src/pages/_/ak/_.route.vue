@@ -43,22 +43,14 @@ import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 export default class EcRootAKRoot extends Vue {
   public static meta = {};
 
-  private suche:string=""
+  private suche: string = '';
 
-  private addAKValid = false
-  private addAKShow=false
-  private addAKValue:{bezeichnung: string}={bezeichnung:""}
-  private addAKSave() {
-    this.addAKShow = false
-    this.addAKValue={bezeichnung:""}
-    alert(`
-      TODO: Abspeichern
-      ${JSON.stringify(this.addAKValue)}
-    `)
-  }
+  private addAKValid = false;
+  private addAKShow = false;
+  private addAKValue: {bezeichnung: string} = {bezeichnung: ''};
 
-  private data:any = []
-  
+  private data: any = [];
+
   private config = {
     sheet: [
       {
@@ -68,7 +60,7 @@ export default class EcRootAKRoot extends Vue {
           this.$dialog.warning({
             text: 'GENERATE CURRENT AK REPORT',
             title: 'TODO'
-          })
+          });
         }
       },
       {
@@ -78,45 +70,53 @@ export default class EcRootAKRoot extends Vue {
           this.$dialog.warning({
             text: 'GENERATE FULL AK REPORT',
             title: 'TODO'
-          })
+          });
         }
       }
     ],
     title: 'Arbeitskreise'
   };
+  private addAKSave() {
+    this.addAKShow = false;
+    this.addAKValue = {bezeichnung: ''};
+    alert(`
+      TODO: Abspeichern
+      ${JSON.stringify(this.addAKValue)}
+    `);
+  }
 
   private loadData() {
-    this.data = "........................................".split('.').map((a,b)=>({
+    this.data = '........................................'.split('.').map((a, b) => ({
       id: b,
-      bezeichnung: Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5) + ' ' + Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5)+Math.random().toString(36).substr(2, 5)//'Jungschar'
-    }))
+      bezeichnung: Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) + ' ' + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5)// 'Jungschar'
+    }));
     this.$dialog.error({
       text: 'Aktuell werden keine tasächlichen Daten benutzt!',
       title: 'Keine Daten'
-    })
+    });
   }
 
-  private filterData(item:any):boolean {
-    return this.suche.split(' ').map((suche:string)=>this.filterPart(item,suche)).reduce((a,b)=>a&&b,true)
+  private filterData(item: any): boolean {
+    return this.suche.split(' ').map((suche: string) => this.filterPart(item, suche)).reduce((a, b) => a && b, true);
   }
 
-  private filterPart(item:any, suche:string):boolean {
-    if(!suche){
-      return true
+  private filterPart(item: any, suche: string): boolean {
+    if (!suche) {
+      return true;
     }
-    if(typeof item === 'string') {
-      return item.includes(suche)
-    } else if(typeof item === 'number' || typeof item === 'boolean') {
-      return item.toString().includes(suche)
-    } else if(item){
-      return Object.keys(item).map(key=>this.filterPart(item[key], suche)).reduce((a,b)=>a||b,false)
+    if (typeof item === 'string') {
+      return item.includes(suche);
+    } else if (typeof item === 'number' || typeof item === 'boolean') {
+      return item.toString().includes(suche);
+    } else if (item) {
+      return Object.keys(item).map((key) => this.filterPart(item[key], suche)).reduce((a, b) => a || b, false);
     } else {
-      return false
+      return false;
     }
   }
-  
+
   private async created() {
-    this.loadData()
+    this.loadData();
   }
 }
 </script>
