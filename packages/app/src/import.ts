@@ -13,10 +13,15 @@ contextLib2.keys().forEach((key) => {
   Vue.component(comp.name, comp);
 });
 
-const contextUtil = require.context('@/util', true, /\w+\.lib.ts/);
+const contextUtil = require.context('@/util', true, /\w+\.util.ts/);
+
+let tmpUtil:any = {}
 
 contextUtil.keys().forEach((key) => {
   const util = contextUtil(key);
-  Vue.prototype.$util[util.name || util.default.name] = util.default || {};
+  tmpUtil[util.name || util.default.name] = util.default || {};
 });
  
+console.log(tmpUtil)
+
+Vue.prototype.$util = tmpUtil

@@ -1,6 +1,6 @@
 <template lang="pug">
-  ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config")
-    router-view
+  ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config" @getData="getData")
+    router-view(:data="data")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -9,6 +9,12 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class EcRootIndex extends Vue {
   public static meta = {};
   
+  private data:any = {}
+
+  private getData() {
+    // TODO: GET DATA FROM API
+  }
+
   private config = {
     sheet: [
       {

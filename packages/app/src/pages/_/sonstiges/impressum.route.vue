@@ -1,7 +1,7 @@
 <template lang="pug">
   ec-wrapper(v-bind="config")
     h2(v-font v-primary) Versionen
-    p Wir benutzen verschiedene Packete die alle unter OpenSource Lizenzen verfügbar sind.
+    p Wir benutzen verschiedene Packete die alle unter OpenSource Lizenzen verfügbar sind. Dabei bilden folgende Packete unser Haupt-Framework:
     table
       tr
         th Packet
@@ -15,22 +15,13 @@
       tr
         td Electron
         td {{version.electron}}
-    p Lizenzen die die Packete haben:
-      ul
-        li Apache-2.0
-        li BSD
-        li BSD-2-Clause
-        li BSD-3-Clause
-        li CC-BY-3.0
-        li CC-BY-4.0
-        li CC0-1.0
-        li DBAD
-        li ISC
-        li MIT
-        li MPL-2.0
-        li Public Domain
-        li WTFPL
     h2(v-font v-primary) Lizenz
+    ol
+      // li Die Software darf innerhalb des EC-Nordbundes benutzt werden.
+      // li Dritte können den Quellcode der Software einsehen und als basis für eigene Applikationen nutzen. Es muss aber angegeben werden, dass unsere Software als basis genutzt wurde.
+      // li 
+      // li Wir übernehmen keinerlei Haftung für den Quellcode. - Und es gibt daher außerhalb des EC-Nordbundes keinerlei Support.
+      // li 
     h2(v-font v-primary) Lizenz-Losungen
     ol
       li Die Losungen dürfen ausschließlich unter dem Namen »Die Losungen« auf Internet-Seiten sowie in Freeware-Programmen für PCs/Desktops genutzt werden. Die Bereitstellung von Freeware-Programmen für mobile Endgeräte (Apps für Smartphone, Tablet, Handy) ist nicht gestattet. Alle Veröffentlichungen der Losungen erfolgen für den Nutzer kostenlos. Sogenannte InApp-Käufe sind nicht erlaubt. Diese Gestattung gewährt ein nicht ausschließliches Recht, welches jederzeit widerrufen werden kann.
@@ -46,17 +37,19 @@
 
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'; 
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import Vuetify from 'vuetify';
 
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
-  private version = {vue: Vue.version, vuetify: Vuetify.version, electron: '4.0.x'};
+  private version = {
+    vue: Vue.version,
+    vuetify: Vuetify.version,
+    electron: '4.0.x'
+  };
   private config = {
     title: 'Impressum'
-  }
-
-  private sheetClick(item: {id: string}) {alert(item.id); }
+  };  
 }
 </script>

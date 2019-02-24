@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-text-field(v-model="value", prepend-icon="search", label="Suchen", :append-icon="value?'close':undefined", @click:append="value=''")
+  v-text-field(v-bind="$attrs", v-on="$listeners", v-model="value", prepend-icon="search", :append-icon="value?'close':undefined", @click:append="value=''")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -24,7 +24,7 @@ export default class EcSearch extends Vue {
   }
 
   mounted() {
-    this.value = this.$route.query[this.queryParam].toString() || ''
+    this.value = this.$route.query[this.queryParam] || ''
   }
 }
 </script>

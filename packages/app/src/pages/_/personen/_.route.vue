@@ -1,6 +1,6 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial v-bind="config")
-    | Content
+    ec-search(label="Person suchen" @suche="suche = $event" append-outer-icon="more_vert" @click:append-outer="moreFilter")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -8,6 +8,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
+
+  suche='';
+
+  moreFilter() {
+    
+  }
+
   private config = {
     sheet: [
       {

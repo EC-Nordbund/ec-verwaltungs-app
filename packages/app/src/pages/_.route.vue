@@ -39,7 +39,7 @@
           v-list-tile-title Personen
         v-list-tile(to="/ak")
           v-list-tile-action
-            v-icon menu
+            v-icon group
           v-list-tile-title Arbeitskreise
         v-divider
         v-subheader Veranstaltungen
@@ -110,7 +110,7 @@ export default class EcRootIndex extends Vue {
 
   private dark = false;
   private drawer = null;
-  private version = pack.version;
+  private version = pack.version || 'Fehler';
   private breadcrumbs = this.breadMap([
     `© 2017 - ${new Date().getFullYear()}`,
     'EC-Nordbund',

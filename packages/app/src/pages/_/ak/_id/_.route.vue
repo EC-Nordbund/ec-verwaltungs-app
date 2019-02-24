@@ -1,5 +1,5 @@
 <template lang="pug">
-  ec-wrapper(hasSheet hasDial v-bind="config")
+  ec-wrapper(hasXBtn hasSheet hasDial v-bind="config")
     | Content
 </template>
 <script lang="ts">

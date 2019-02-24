@@ -15,8 +15,18 @@ export default class EcLesezeichenAdd extends Vue {
   subTitle!: string
 
   toggleLesezeichen() {
-    // TODO: Soon
-    alert("Cooming Soon")
+    if(this.isLesezeichen){
+      this.$util.lesezeichen.remove(this.$route.path)
+    } else {
+      this.$util.lesezeichen.add(this.title,this.subTitle,this.$route.fullPath,this.$route.path)
+    }
+    this.isLesezeichen = !this.isLesezeichen
+  }
+
+  isLesezeichen: boolean = false
+
+  created() {
+    this.isLesezeichen = this.$util.lesezeichen.check(this.$route.path)
   }
 }
 </script>

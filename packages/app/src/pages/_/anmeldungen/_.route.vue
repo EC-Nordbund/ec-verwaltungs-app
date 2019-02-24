@@ -1,5 +1,5 @@
 <template lang="pug">
-  ec-wrapper(hasSheet hasDial v-bind="config")
+  ec-wrapper(hasSheet hasDial v-bind="config" @getData="getData")
     | Content
 </template>
 <script lang="ts">
@@ -8,6 +8,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
+
+  private data:any = {}
+
+  private getData() {
+    // TODO: GET DATA FROM API
+  }
+
   private config = {
     sheet: [
       {

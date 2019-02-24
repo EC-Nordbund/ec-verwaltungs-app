@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card(:style="{height: h, display: 'grid', gridTemplateRows: 'auto 1fr ' + (hasNav?(showNav ? 'auto' : '20px'):'') }")
+  v-card(:style="{height: h, display: 'grid', gridTemplateRows: 'auto auto 1fr ' + (hasNav?(showNav ? 'auto' : '20px'):'') }")
     v-card-title
       v-btn(
         icon 
@@ -14,16 +14,19 @@
       v-speed-dial(direction="left" v-if="hasDial")
         v-btn(slot="activator" icon)
           v-icon more_vert
-        v-bottom-sheet(v-if="hasSheet")
+        v-bottom-sheet(v-if="hasSheet" v-model="sheetOpen")
           v-btn(icon slot="activator")
             v-icon edit
           v-list
-            v-list-tile(v-for="item in sheet" :key="item.label" @click="item.click(item)")
+            slot(name="sheet")
+            v-list-tile(v-for="item in sheet" :key="item.label" @click="sheetOpen = false;item.click(item)")
               v-list-tile-action
                 v-icon {{item.icon}}
               v-list-tile-title {{item.label}}
         ec-lesezeichen-add(:title="title" :subTitle="subTitle")
         slot(name="menu")
+    .div
+      slot(name="header")
     v-card-text(style="overflow-y: auto" v-if="!hasRouterView")
       slot
     slot(style="overflow-y: auto" v-if="hasRouterView")
@@ -41,7 +44,9 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class EcWrapper extends Vue {
   h = window.innerHeight - 110 + 'px'
   showNav = false
+  sheetOpen = false
   timer:any
+  timer2:any
 
   @Prop({type: Boolean, default: false})
   hasXBtn!: boolean
@@ -80,6 +85,17 @@ export default class EcWrapper extends Vue {
 
   created() {
     this.openNav()
+    this.updateData()
+
+    this.timer2 = setInterval(this.updateData, 60000)
+  }
+
+  updateData() {
+    this.$emit('getData')
+  }
+
+  beforeDestroy() {
+    clearInterval(this.timer2)
   }
 }
 </script>
