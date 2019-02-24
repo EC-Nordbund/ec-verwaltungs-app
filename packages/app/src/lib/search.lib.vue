@@ -29,6 +29,5 @@ export default class EcSearch extends Vue {
   public mounted() {
     this.value = (this.$route.query[this.queryParam] as string) || '';
   }
-  // 
 }
 </script>

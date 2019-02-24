@@ -31,7 +31,7 @@ export default class EcRootIndex extends Vue {
 
   public moreFilter() {
     // TODO
-    alert('test')
+    alert('test');
   }
 
   private sheetClick(item: {id: string}) {alert(item.id); }
