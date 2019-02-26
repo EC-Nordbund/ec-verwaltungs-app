@@ -4,14 +4,7 @@ import 'vuetify/dist/vuetify.min.css';
 import de from 'vuetify/src/locale/de';
 import {theme} from '@/config/theme';
 
-Vue.use(Vuetify, {
-  theme,
-  iconfont: 'md',
-  lang: {
-    locales: { de },
-    current: 'de'
-  }
-});
+Vue.use(Vuetify);
 
 
 // v-font directive
@@ -41,3 +34,20 @@ for (const key in theme) {
     });
   }
 }
+
+
+export default {
+  theme: {
+    themes: {
+      light: theme,
+      dark: theme
+    }
+  },
+  icons: {
+    iconfont: 'md'
+  },
+  lang: {
+    locales: { de },
+    current: 'de'
+  }
+};

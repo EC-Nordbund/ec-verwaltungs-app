@@ -8486,9 +8486,9 @@ vuetify-loader@^1.2.1:
   dependencies:
     loader-utils "^1.1.0"
 
-vuetify@^1.5.2:
-  version "1.5.2"
-  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-1.5.2.tgz#7563b3ff4b7305f2dff724873f70b024f3672d96"
+vuetify@^2.0.0-alpha.6:
+  version "2.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/vuetify/-/vuetify-2.0.0-alpha.6.tgz#550aa00c1160191083b864a3120382d6cad80d77"
 
 watchpack@^0.2.1:
   version "0.2.9"
