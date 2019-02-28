@@ -1,10 +1,10 @@
 <template lang="pug">
-  ec-wrapper(hasSheet hasDial v-bind="config")
+  ec-wrapper(hasSheet hasDial v-bind="config" @reload="loadData")
     template(#header)
       div(style="padding: 2px 10px")
         ec-search(label="AK suchen" @suche="suche = $event")
     v-list(two-line)
-      v-list-tile(v-for="item in data.filter(filterData)" @click="$router.push({path: `/ak/${item.id}`, query: {prev: $route.fullPath}})")
+      v-list-tile(v-for="item in data.filter(filterData)" :key="item.id" @click="$router.push({path: `/ak/${item.id}`, query: {prev: $route.fullPath}})")
         v-list-tile-action
           v-icon group
         v-list-tile-content
@@ -117,7 +117,7 @@ export default class EcRootAKRoot extends Vue {
     }
   }
 
-  private async created() {
+  private created() {
     this.loadData();
   }
 }

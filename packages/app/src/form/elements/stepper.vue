@@ -1,13 +1,12 @@
 <template lang="pug">
   v-stepper(v-bind="schema" v-model="currStep")
     template(v-for="(step, stepID) in schema.steps")
-      v-stepper-step(:step="stepID+1" :complete="stepID+1 < currStep") {{step.label}}
+      v-stepper-step(:step="stepID+1" :complete="stepID+1 < currStep" :key="stepID+'step'") {{step.label}}
         small(v-if="step.summerize") {{step.summerize}}
-      v-stepper-content(:step="stepID+1")
-        //- v-card
+      v-stepper-content(:step="stepID+1" :key="stepID+'content'")
         v-form(v-model="valid[stepID]")
           Formular(:value="value[ step.name]" @input="onValueChange({...value, [step.name]: $event})" :schema="step.schema")
-          v-btn(v-for="btn in step.btns" v-html="btn.content" @click="clickBtn(btn.click)")
+          v-btn(v-for="(btn, btnID) in step.btns" :key="stepID+'_'+btnID" v-html="btn.content" @click="clickBtn(btn.click)")
 </template>
 
 <script lang="ts">
