@@ -656,8 +656,8 @@
     string-width "^2.0.0"
 
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
-  version "7.0.5"
-  resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.5.tgz#26f5bba8c58acd9b84d1a9135fb2789a1c191bc1"
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/@types/babel-types/-/babel-types-7.0.6.tgz#a7cfaaeee96e90c4c54da0e580aaff3f4cffacac"
 
 "@types/babylon@^6.16.2":
   version "6.16.5"
@@ -1191,8 +1191,8 @@ acorn@^5.0.0, acorn@^5.6.2, acorn@^5.7.3:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
 
 acorn@^6.0.5, acorn@^6.1.0:
-  version "6.1.0"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.0.tgz#b0a3be31752c97a0f7013c5f4903b71a05db6818"
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-6.1.1.tgz#7d25ae05bb8ad1f9b699108e1094ecd7884adc1f"
 
 address@^1.0.3:
   version "1.0.3"
