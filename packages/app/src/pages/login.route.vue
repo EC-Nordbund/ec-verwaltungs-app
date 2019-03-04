@@ -13,7 +13,6 @@
             v-text-field(
               v-validate="'required'"
               data-vv-as="Benutzername"
-              :error-messages="errors.collect(schema.name)"
 
               label="Username" 
               v-model="data.username" 

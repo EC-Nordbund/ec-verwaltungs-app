@@ -88,14 +88,14 @@
       router-view(:key="$route.path" style="margin: 5px; width: calc(100% - 10px);")
     
     v-footer(app style="padding: 0 10px;" fixed color="secondary")
-      v-breadcrumbs.content(:items="breadcrumbsRouter")
+      v-breadcrumbs(:items="breadcrumbsRouter")
         v-icon(slot="divider" v-white) keyboard_arrow_right
         template(slot="item" slot-scope="props")
           span.disabled(v-white) {{props.item.text}}
       v-spacer
-      span.content(v-white) Version: {{version}}
+      span(v-white) Version: {{version}}
       v-spacer
-      v-breadcrumbs.content(:items="breadcrumbs")
+      v-breadcrumbs(:items="breadcrumbs")
         v-icon(slot="divider" v-white) keyboard_arrow_right
         template(slot="item" slot-scope="props")
           span.disabled(v-white) {{props.item.text}}
@@ -135,9 +135,3 @@ export default class EcRootIndex extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.content {
-  width: 30%;
-  text-align: center;
-}
-</style>

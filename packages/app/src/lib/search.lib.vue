@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-text-field(:append-outer-icon="filter?'more_vert':''" @click:append-outer="$emit('filter')", v-model="value", prepend-icon="search", :append-icon="value?'close':undefined", @click:append="value=''")
+  v-text-field(:append-outer-icon="filter?'more_vert':''" @click:append-outer="$emit('filter')", v-model="value", prepend-icon="search", :append-icon="value?'close':undefined", @click:append="value=''" v-bind="$attrs")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
