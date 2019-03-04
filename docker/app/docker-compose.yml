@@ -8,4 +8,4 @@ services:
          - https_net
 networks:
   https_net:
-    driver: external
+    external: true
