@@ -2,13 +2,14 @@ import '@babel/polyfill';
 import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import VuetifyDialog from 'vuetify-dialog';
+import ApolloClient from 'apollo-boost';
 
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@/assets/style.css';
 
 import router from '@/router';
-import { Auth } from '@/plugins/auth';
+// import { Auth } from '@/plugins/auth';
 
 import '@/form';
 import '@/plugins/vuetify';
@@ -20,10 +21,17 @@ Component.registerHooks([
   'beforeRouteUpdate'
 ]);
 
-Vue.use(Auth);
+// Vue.use(Auth);
 Vue.use(VuetifyDialog);
 
 Vue.config.productionTip = false;
+
+Vue.prototype.$authToken = '';
+
+Vue.prototype.$apolloClient = new ApolloClient({
+  uri: 'https://api.ec-api.de/graphql'
+});
+
 
 new Vue({
   router,

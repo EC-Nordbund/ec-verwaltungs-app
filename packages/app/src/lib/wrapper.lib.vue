@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card(:style="{height: h, display: 'grid', gridTemplateRows: 'auto auto 1fr ' + (hasNav?(showNav ? 'auto' : '20px'):'') }")
+  v-card(:style="{height: h, display: 'grid', gridTemplateRows: 'auto ' + (hasHeader?'auto':'') + '1fr ' + (hasNav?(showNav ? 'auto' : '20px'):'') }")
     v-card-title
       v-btn(
         icon 
@@ -16,7 +16,7 @@
           v-icon more_vert
         v-bottom-sheet(v-if="hasSheet" v-model="sheetOpen")
           v-btn(icon slot="activator")
-            v-icon edit
+            v-icon apps
           v-list
             slot(name="sheet")
             v-list-tile(v-for="item in sheet" :key="item.label" @click="sheetOpen = false;item.click(item)")
@@ -27,7 +27,7 @@
         v-btn(icon v-if="hasReload" @click="$emit('reload')")
           v-icon replay
         slot(name="menu")
-    .div
+    .div(v-if="hasHeader")
       slot(name="header")
     v-card-text(style="overflow-y: auto" v-if="!hasRouterView")
       slot
@@ -64,6 +64,9 @@ export default class EcWrapper extends Vue {
 
   @Prop({type: Boolean, default: false})
   public hasNav!: boolean;
+
+  @Prop({type: Boolean, default: false})
+  public hasHeader!: boolean;
 
   @Prop({type: Boolean, default: false})
   public hasRouterView!: boolean;

@@ -7,7 +7,10 @@ services:
          - 443:443
       restart: always
       environment:
-         DOMAINS: 'app.ec-api.de -> http://app_master:80'
+         DOMAINS: '
+            app.ec-api.de -> http://app_master:80,
+            api.ec-api.de -> http://api_master:80
+         '
          STAGE: 'production'
       networks:
          - net

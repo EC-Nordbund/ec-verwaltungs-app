@@ -131,7 +131,7 @@ export default class EcRootIndex extends Vue {
   }
 
   private logout() {
-    this.$auth().logout();
+    // this.$auth().logout();
   }
 }
 </script>
