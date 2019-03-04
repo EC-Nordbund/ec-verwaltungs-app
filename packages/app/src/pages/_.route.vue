@@ -3,9 +3,9 @@
     v-toolbar(fixed app clipped-left color="primary")
       v-toolbar-side-icon(v-white @click="drawer=!drawer")
       v-btn(v-white icon @click="$router.back()")
-        v-icon navigate_before
+        v-icon undo
       v-btn(v-white icon @click="$router.forward()")
-        v-icon navigate_next
+        v-icon redo
       v-spacer
       v-avatar(size="60px" style="margin-right: 10px")
         img(src="@/assets/ec-logo-without-bg-64.png")

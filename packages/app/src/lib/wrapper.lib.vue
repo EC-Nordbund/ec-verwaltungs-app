@@ -24,6 +24,8 @@
                 v-icon {{item.icon}}
               v-list-tile-title {{item.label}}
         ec-lesezeichen-add(:title="title" :subTitle="subTitle")
+        v-btn(icon v-if="hasReload" @click="$emit('reload')")
+          v-icon replay
         slot(name="menu")
     .div
       slot(name="header")
@@ -53,6 +55,9 @@ export default class EcWrapper extends Vue {
 
   @Prop({type: Boolean, default: false})
   public hasDial!: boolean;
+
+  @Prop({type: Boolean, default: false})
+  public hasReload!: boolean;
 
   @Prop({type: Boolean, default: false})
   public hasSheet!: boolean;
