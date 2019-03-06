@@ -9,14 +9,14 @@
           v-list-tile-action
             v-icon person
           v-list-tile-content
-            v-list-tile-title {{person.currentStatus}}
+            v-list-tile-title {{stadien[person.currentStatus]}}
             v-list-tile-sub-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
 
         v-list-tile(v-for="state in person.allUpdates" v-if="showAll" :key="state.akPersonID + '_s'" @click="$router.push({path: `/personen/${person.person.personID}`, query: {prev: $route.fullPath}})")
           v-list-tile-action
             v-icon person
           v-list-tile-content
-            v-list-tile-title {{state.neuerStatus}} {{state.date.german}}
+            v-list-tile-title {{stadien[state.neuerStatus]}} ({{state.date.german}}) 
             v-list-tile-sub-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
 </template>
 <script lang="ts">
@@ -28,6 +28,13 @@ export default class EcRootIndex extends Vue {
   public static meta = {};
   
   private showAll = false;
+
+  private stadien = [
+    'Ausgetreten',
+    'Mitglied',
+    'Vertreter',
+    'Leiter'
+  ]
 
   private get config() {
     return  {
