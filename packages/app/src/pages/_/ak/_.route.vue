@@ -79,11 +79,19 @@ export default class EcRootAKRoot extends Vue {
   };
   private addAKSave() {
     this.addAKShow = false;
+    this.$apolloClient.mutate({
+      mutation: gql`
+        mutation($authToken: String!, $bezeichnung: String!) {
+          addAK(bezeichnung: $bezeichnung, authToken: $authToken)
+        }
+      `,
+      variables: {
+        ...this.addAKValue,
+        authToken: this.$authToken
+      }
+    }).then(console.log)
+
     this.addAKValue = {bezeichnung: ''};
-    alert(`
-      TODO: Abspeichern
-      ${JSON.stringify(this.addAKValue)}
-    `);
   }
 
   private loadData() {
