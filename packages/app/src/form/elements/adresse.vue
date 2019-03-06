@@ -38,12 +38,11 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '@/form/abstract';
-import plzs from '@/form/plzs';
 
 @Component({})
 export default class FormInput extends Mixins(abstractField) {
-  public map: any = plzs;
-  public plz = Object.keys(plzs);
+  public map: any = (window as any).$plz;
+  public plz = Object.keys((window as any).$plz);
 
   public plzChange($event: string) {
     if (this.map[$event].length === 1) {

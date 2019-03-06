@@ -28,7 +28,7 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$authToken = '';
 
-Vue.prototype.$setAuthToken = (authToken: string)=>{
+Vue.prototype.$setAuthToken = (authToken: string) => {
   Vue.prototype.$authToken = authToken;
 };
 

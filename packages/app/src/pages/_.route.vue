@@ -103,6 +103,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import pack from '@/plugins/package';
+import gql from 'graphql-tag';
 // ()
 @Component({})
 export default class EcRootIndex extends Vue {
@@ -131,7 +132,18 @@ export default class EcRootIndex extends Vue {
   }
 
   private logout() {
-    // this.$auth().logout();
+    this.$apolloClient.mutate({
+      mutation: gql`
+        mutation($authToken: String!) {
+          logOut(authToken: $authToken)
+        }
+      `,
+      variables: {
+        this.$authToken
+      }
+    }).then(()=>{
+      this.$setAuthToken('');
+    });
   }
 }
 </script>
