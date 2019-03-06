@@ -52,15 +52,25 @@ export default class EcRootIndex extends Vue {
         },
         {
           id: 'ak_rep_current',
-          icon: 'menu',
+          icon: this.$util.icon.report,
           label: 'Aktuelle AK Mitglieder Report',
-          click: this.sheetClick
+          click: () => {
+            this.$dialog.warning({
+              text: 'GENERATE CURRENT AK REPORT',
+              title: 'TODO'
+            });
+          }
         },
         {
           id: 'ak_rep_all',
-          icon: 'menu',
+          icon: this.$util.icon.report,
           label: 'Alle AK Mitglieder Report',
-          click: this.sheetClick
+          click: () => {
+            this.$dialog.warning({
+              text: 'GENERATE FULL AK REPORT',
+              title: 'TODO'
+            });
+          }
         }
       ],
       title: this.data.bezeichnung,

@@ -89,8 +89,14 @@ export default class EcRootAKRoot extends Vue {
         ...this.addAKValue,
         authToken: this.$authToken
       }
-    }).then(console.log)
-
+    }).then((res: any)=>{
+      this.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}})
+    }).catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Speichern fehlgeschlagen!'
+      });
+    });
     this.addAKValue = {bezeichnung: ''};
   }
 

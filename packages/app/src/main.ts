@@ -33,7 +33,7 @@ Vue.prototype.$setAuthToken = (authToken: string) => {
 };
 
 Vue.prototype.$apolloClient = new ApolloClient({
-  uri: 'https://ec-api.de/graphql'
+  uri: 'https://www.ec-api.de/graphql'
 });
 
 
