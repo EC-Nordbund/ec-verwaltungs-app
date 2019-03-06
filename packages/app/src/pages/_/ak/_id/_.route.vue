@@ -132,7 +132,7 @@ export default class EcRootIndex extends Vue {
     });
   }
 
-  private sheetClick(item: {id: string}) {alert(item.id); }
+  private sheetClick(item: {id: string}) {alert(item.id + '\nComming Soon...'); }
 
   private created() {
     this.loadData();
