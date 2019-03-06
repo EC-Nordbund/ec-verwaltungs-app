@@ -14,12 +14,14 @@
             v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
             v-list-tile-sub-title {{stadien[person.currentStatus]}}
 
-        v-list-tile(v-for="state in person.allUpdates" v-if="showAll" :key="state.akPersonID + '_s'" @click="$router.push({path: `/personen/${person.person.personID}`, query: {prev: $route.fullPath}})")
-          v-list-tile-action
-            v-icon person
-          v-list-tile-content
-            v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
-            v-list-tile-sub-title {{stadien[state.neuerStatus]}} (geändert am {{state.date.german}})
+        template(v-for="(state, stateIndex) in person.allUpdates.reverse()" v-if="showAll")
+          v-divider(:key="state.akPersonID + '_d'" v-if="stateIndex!==0")
+          v-list-tile(:key="state.akPersonID + '_s'" @click="$router.push({path: `/personen/${person.person.personID}`, query: {prev: $route.fullPath}})")
+            v-list-tile-action
+              v-icon person
+            v-list-tile-content
+              v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+              v-list-tile-sub-title {{stadien[state.neuerStatus]}} (geändert am {{state.date.german}})
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
