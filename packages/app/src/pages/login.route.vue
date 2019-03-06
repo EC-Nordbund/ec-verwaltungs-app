@@ -1,8 +1,8 @@
 <template lang="pug">
   v-app(app :dark="dark")
     v-content
-      div.align
-        v-card()
+      .ec-alignCenter
+        v-card(min-width="300px")
           v-card-title
             h1(v-font v-primary) Login
             v-spacer
@@ -98,18 +98,3 @@ export default class EcRootLogin extends Vue {
 
 }
 </script>
-
-<style scoped lang="scss">
-.align {
-  display: grid;
-  grid-template-rows: 1fr auto 1fr;
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-areas: ". . ." ". c ." ". . .";
-
-  height: 100%;
-
-  > div {
-    grid-area: c;
-  }
-}
-</style>

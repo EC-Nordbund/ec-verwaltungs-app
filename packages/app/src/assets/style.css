@@ -66,3 +66,14 @@ html {
 .ec-rotate {
   animation: rotate 0.5s infinite;
 }
+.ec-alignCenter {
+  display: grid;
+  grid-template-rows: 1fr auto 1fr;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: ". . ." ". c ." ". . .";
+
+  height: 100%;
+}
+.ec-alignCenter > * {
+  grid-area: c;
+}
