@@ -124,7 +124,7 @@ export default class EcRootAKRoot extends Vue {
   }
 
   private filterData(item: any): boolean {
-    return this.suche.split(' ').map((suche: string) => this.filterPart(item, suche)).reduce((a, b) => a && b, true);
+    return this.suche.toLowerCase().split(' ').map((suche: string) => this.filterPart(item, suche)).reduce((a, b) => a && b, true);
   }
 
   private filterPart(item: any, suche: string): boolean {
@@ -132,9 +132,9 @@ export default class EcRootAKRoot extends Vue {
       return true;
     }
     if (typeof item === 'string') {
-      return item.includes(suche);
+      return item.toLowerCase().includes(suche);
     } else if (typeof item === 'number' || typeof item === 'boolean') {
-      return item.toString().includes(suche);
+      return item.toString().toLowerCase().includes(suche);
     } else if (item) {
       return Object.keys(item).map((key) => this.filterPart(item[key], suche)).reduce((a, b) => a || b, false);
     } else {
