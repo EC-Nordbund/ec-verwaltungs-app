@@ -9,15 +9,15 @@
           v-list-tile-action
             v-icon person
           v-list-tile-content
-            v-list-tile-title {{stadien[person.currentStatus]}}
-            v-list-tile-sub-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+            v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+            v-list-tile-sub-title {{stadien[person.currentStatus]}}
 
         v-list-tile(v-for="state in person.allUpdates" v-if="showAll" :key="state.akPersonID + '_s'" @click="$router.push({path: `/personen/${person.person.personID}`, query: {prev: $route.fullPath}})")
           v-list-tile-action
             v-icon person
           v-list-tile-content
-            v-list-tile-title {{stadien[state.neuerStatus]}} ({{state.date.german}}) 
-            v-list-tile-sub-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+            v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+            v-list-tile-sub-title {{stadien[state.neuerStatus]}} ({{state.date.german}})
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
