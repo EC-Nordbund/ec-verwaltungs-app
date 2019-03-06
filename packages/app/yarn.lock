@@ -671,6 +671,10 @@
   dependencies:
     "@types/node" "*"
 
+"@types/graphql@^14.0.7":
+  version "14.0.7"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.0.7.tgz#daa09397220a68ce1cbb3f76a315ff3cd92312f6"
+
 "@types/node@*":
   version "11.9.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-11.9.5.tgz#011eece9d3f839a806b63973e228f85967b79ed3"

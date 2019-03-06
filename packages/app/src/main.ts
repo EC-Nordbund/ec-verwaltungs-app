@@ -28,8 +28,12 @@ Vue.config.productionTip = false;
 
 Vue.prototype.$authToken = '';
 
+Vue.prototype.$setAuthToken = (authToken: string)=>{
+  Vue.prototype.$authToken = authToken;
+};
+
 Vue.prototype.$apolloClient = new ApolloClient({
-  uri: 'https://api.ec-api.de/graphql'
+  uri: 'https://ec-api.de/graphql'
 });
 
 

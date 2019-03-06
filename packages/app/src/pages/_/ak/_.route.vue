@@ -4,12 +4,12 @@
       div(style="padding: 2px 10px")
         ec-search(label="AK suchen" @suche="suche = $event")
     v-list(two-line)
-      v-list-tile(v-for="item in data.filter(filterData)" :key="item.id" @click="$router.push({path: `/ak/${item.id}`, query: {prev: $route.fullPath}})")
+      v-list-tile(v-for="item in data.filter(filterData)" :key="item.id" @click="$router.push({path: `/ak/${item.akID}`, query: {prev: $route.fullPath}})")
         v-list-tile-action
           v-icon group
         v-list-tile-content
           v-list-tile-title {{item.bezeichnung}}
-          v-list-tile-sub-title ID: {{item.id}}
+          v-list-tile-sub-title ID: {{item.akID}}
     template(#sheet)
       v-list-tile(@click="addAKShow=true")
         v-list-tile-action
@@ -38,6 +38,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
+import gql from 'graphql-tag';
 
 @Component({})
 export default class EcRootAKRoot extends Vue {
@@ -86,15 +87,26 @@ export default class EcRootAKRoot extends Vue {
   }
 
   private loadData() {
-    this.data = '........................................'.split('.').map((a, b) => ({
-      id: b,
-      bezeichnung: Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5) +  ' '
-        + Math.random().toString(36).substr(2, 5) + Math.random().toString(36).substr(2, 5)
-      // 'Jungschar'
-    }));
-    this.$dialog.error({
-      text: 'Aktuell werden keine tasächlichen Daten benutzt!',
-      title: 'Keine Daten'
+    this.$apolloClient.query({
+      query: gql`
+        query($authToken:String!) {
+          aks(authToken:$authToken) {
+            akID
+            bezeichnung
+          }
+        }
+      `,
+      variables: {
+        authToken: this.$authToken
+      }
+    }).then((res: {data: {aks: Array<{akID: number, bezeichnung: string}>}}) => {
+      this.data = res.data.aks;
+      console.log(this.data);
+    }).catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Laden fehlgeschlagen!'
+      });
     });
   }
 
