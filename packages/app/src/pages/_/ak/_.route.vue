@@ -115,7 +115,6 @@ export default class EcRootAKRoot extends Vue {
       }
     }).then((res: {data: {aks: Array<{akID: number, bezeichnung: string}>}}) => {
       this.data = res.data.aks;
-      console.log(this.data);
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

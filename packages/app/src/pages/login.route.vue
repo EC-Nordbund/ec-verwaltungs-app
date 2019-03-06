@@ -79,7 +79,7 @@ export default class EcRootLogin extends Vue {
     }).then((res: any) => {
       let path = this.$route.query.next || '/home';
       this.$setAuthToken(res.data.logIn);
-      this.$router.push(path);
+      this.$router.push(<string>path);
       this.loading = false;
     }).catch((err: any) => {
       this.$dialog.error({

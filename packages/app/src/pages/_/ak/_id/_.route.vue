@@ -121,7 +121,6 @@ export default class EcRootIndex extends Vue {
       }
     }).then((res: any) => {
       this.data = res.data.ak;
-      console.log(this.data);
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
