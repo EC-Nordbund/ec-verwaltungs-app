@@ -3,9 +3,11 @@
     template(#header)
       .head(style="padding: 2px 10px")
         v-switch(label="Alle Statusupdates anzeigen?" v-model="showAll")
+        <h2 v-font v-primary v-if="showAll">Alle Statusupdates</h2>
+        <h2 v-font v-primary v-else>Aktuelle Mitglieder</h2>
     v-list(two-line)
       template(v-if="data.personen" v-for="person in data.personen")
-        v-list-tile(v-if="!showAll && person.currentStatus>0" :key="person.person.personID + '_c'" @click="$router.push({path: `/personen/${person.person.personID}`, query: {prev: $route.fullPath}})")
+        v-list-tile(v-if="!showAll && person.currentStatus!==0" :key="person.person.personID + '_c'" @click="$router.push({path: `/personen/${person.person.personID}`, query: {prev: $route.fullPath}})")
           v-list-tile-action
             v-icon person
           v-list-tile-content
@@ -17,10 +19,10 @@
             v-icon person
           v-list-tile-content
             v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
-            v-list-tile-sub-title {{stadien[state.neuerStatus]}} ({{state.date.german}})
+            v-list-tile-sub-title {{stadien[state.neuerStatus]}} (geändert am {{state.date.german}})
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
 
 @Component({})
@@ -133,6 +135,18 @@ export default class EcRootIndex extends Vue {
 
   private created() {
     this.loadData();
+    this.showAll = this.$route.query.all ? true : false;
+  }
+
+  @Watch('showAll')
+  onShowAllChange() {
+    this.$router.replace({
+      path: this.$route.path, 
+      query: <any>{
+        ...this.$route.query, 
+        all: this.showAll?1:undefined
+      }
+    })
   }
 }
 </script>
