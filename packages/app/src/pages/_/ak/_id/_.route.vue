@@ -139,13 +139,13 @@ export default class EcRootIndex extends Vue {
   public onShowAllChange() {
     this.$router.replace({
       path: this.$route.path,
-      query: <any>{
-        ...this.$route.query, 
+      query: {
+        ...this.$route.query,
         all: this.showAll?1:undefined
-      }
+      } as any
     })
   }
-}
+
   private addPersonSave() {
     this.addPersonShow = false
 
@@ -172,7 +172,7 @@ export default class EcRootIndex extends Vue {
       this.$dialog.error({
         text: err.message,
         title: 'Speichern fehlgeschlagen!'
-      }); 
+      });
     });
 
   }
@@ -187,7 +187,7 @@ export default class EcRootIndex extends Vue {
       }
     }
 
-    if(type==='add'&&this.allPersonen){
+    if(type==='add'&&this.allPersonen) {
       this.getPersonen()
     }
 
@@ -221,7 +221,7 @@ export default class EcRootIndex extends Vue {
         text: err.message,
         title: 'Laden fehlgeschlagen!'
       });
-    }); 
+    });
   }
 
   private loadData() {
@@ -264,12 +264,12 @@ export default class EcRootIndex extends Vue {
         text: err.message,
         title: 'Laden fehlgeschlagen!'
       });
-    }); 
+    });
   }
 
   private created() {
-    this.loadData(); 
+    this.loadData();
     this.showAll = this.$route.query.all ? true : false;
   }
-;
+}
 </script>
