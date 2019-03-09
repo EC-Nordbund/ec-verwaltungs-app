@@ -125,7 +125,11 @@ export default class EcRootAKRoot extends Vue {
   }
 
   private filterData(item: any): boolean {
-    return this.suche.toLowerCase().split(' ').map((suche: string) => this.filterPart(item, suche)).reduce((a, b) => a && b, true);
+    return this.suche
+      .toLowerCase()
+      .split(' ')
+      .map((suche: string) => this.filterPart(item, suche))
+      .reduce((a, b) => a && b, true);
   }
 
   private filterPart(item: any, suche: string): boolean {

@@ -24,7 +24,7 @@
     v-dialog(v-model="addPersonShow" max-width="400px" persistend)
       v-card
         v-card-title
-          h1(v-font v-primary) Neuen AK anlegen
+          h1(v-font v-primary) {{addPersonenType==='add' ? 'Neues Mitglied hinzufügen' : 'Mitglied bearbeiten'}}
         v-card-text
           v-form(v-model="addPersonValid")
             formular(v-model="addPersonValue" :schema=`[
@@ -141,13 +141,13 @@ export default class EcRootIndex extends Vue {
       path: this.$route.path,
       query: {
         ...this.$route.query,
-        all: this.showAll?1:undefined
+        all: this.showAll ? 1 : undefined
       } as any
-    })
+    });
   }
 
   private addPersonSave() {
-    this.addPersonShow = false
+    this.addPersonShow = false;
 
     this.$apolloClient.mutate({
       mutation:  gql`
@@ -178,17 +178,17 @@ export default class EcRootIndex extends Vue {
   }
 
   private edit(type: 'add'|'edit'|'delete') {
-    this.addPersonenType = type
-    this.addPersonValue = {}
+    this.addPersonenType = type;
+    this.addPersonValue = {};
 
-    if(type==='delete') {
+    if (type === 'delete') {
       this.addPersonValue = {
         status: 0
-      }
+      };
     }
 
-    if(type==='add'&&this.allPersonen) {
-      this.getPersonen()
+    if (type === 'add' && this.allPersonen) {
+      this.getPersonen();
     }
 
     this.addPersonShow = true;
