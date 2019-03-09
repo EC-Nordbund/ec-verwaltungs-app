@@ -7,7 +7,7 @@
     @click:prepend="schema.clickPrepend"
     @click:append-outer="schema.clickAppendOuter"
     @click:prepend-inner="schema.clickPrependInner"
-    :data-vv-name="schema.name"
+    :data-vv-name="schema.label"
     :error-messages="errors.collect(schema.name)"
     v-bind="schema"
   )

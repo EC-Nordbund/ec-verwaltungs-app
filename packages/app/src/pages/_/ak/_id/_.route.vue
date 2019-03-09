@@ -26,12 +26,13 @@
         v-card-title
           h1(v-font v-primary) {{addPersonenType==='add' ? 'Neues Mitglied hinzufügen' : 'Mitglied bearbeiten'}}
         v-card-text
-          v-form(v-model="addPersonValid")
+          v-form(v-model="addPersonValid" @submit.prevent)
             formular(v-model="addPersonValue" :schema=`[
               {
                 name: 'personID',
                 type: 'autocomplete',
                 rule: 'required',
+                'prepend-icon': 'person',
                 items: (addPersonenType==='add'?allPersonen:((data.personen||[]).filter(v=>(v.currentStatus>0)).map(v=>v.person))).map(pers=>({value: pers.personID, text: pers.vorname + ' ' + pers.nachname + ' (' + pers.gebDat.german + ')'})),
                 label: 'Person'
               },
