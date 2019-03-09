@@ -1,5 +1,5 @@
 <template lang="pug">
-  ec-wrapper(hasXBtn hasSheet hasHeader hasDial v-bind="config")
+  ec-wrapper(hasXBtn hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     template(#header)
       .head(style="padding: 2px 10px")
         v-switch(label="Alle Statusupdates anzeigen?" v-model="showAll")
@@ -21,6 +21,39 @@
           v-list-tile-content
             v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
             v-list-tile-sub-title {{stadien[state.neuerStatus]}} (geändert am {{state.date.german}})
+    v-dialog(v-model="addPersonShow" max-width="400px" persistend)
+      v-card
+        v-card-title
+          h1(v-font v-primary) Neuen AK anlegen
+        v-card-text
+          v-form(v-model="addPersonValid")
+            formular(v-model="addPersonValue" :schema=`[
+              {
+                name: 'personID',
+                type: 'autocomplete',
+                rule: 'required',
+                items: (addPersonenType==='add'?allPersonen:((data.personen||[]).filter(v=>(v.currentStatus>0)).map(v=>v.person))).map(pers=>({value: pers.personID, text: pers.vorname + ' ' + pers.nachname + ' (' + pers.gebDat.german + ')'})),
+                label: 'Person'
+              },
+              {
+                name: 'status',
+                rule: 'required',
+                type: 'select',
+                items: stadien.map((besch, id)=>({value: id, text: besch})),
+                label: 'Neuer Status'
+              },
+              {
+                name: 'date',
+                type: 'date',
+                label: 'Datum des Updates',
+                rule: 'required',
+                required: true
+              }
+            ]`)
+        v-card-actions
+          v-spacer
+          v-btn(flat @click="addPersonShow=false") Abbrechen
+          v-btn(color="primary" :disabled="!addPersonValid" @click="addPersonSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -29,6 +62,63 @@ import gql from 'graphql-tag';
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
+
+  private personenData = [];
+
+  private addPersonShow = false;
+  private addPersonValid = false;
+  private addPersonValue: any = {}
+  private addPersonSave() {
+    this.addPersonShow = false
+
+    this.$apolloClient.mutate({
+      mutation: gql`
+        mutation(
+          $personID: Int!, 
+          $akID: Int!, 
+          $date: String!, 
+          $status: Int!, 
+          $authToken: String!
+        ) {
+          updateAKStatus(
+            personID: $personID, 
+            akID: $akID, 
+            date: $date, 
+            status: $status, 
+            authToken: $authToken
+          )
+        }
+      `,
+      variables: {...this.addPersonValue, akID: this.$route.params.id, authToken: this.$authToken}
+    }).catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Speichern fehlgeschlagen!'
+      });
+    });
+
+  }
+  private addPersonenType: 'add'|'edit'|'delete'|'' = ''
+
+  private allPersonen:any = [];
+
+  private edit(type: 'add'|'edit'|'delete') {
+    this.addPersonenType = type
+    this.addPersonValue = {}
+
+    if(type==='delete') {
+      this.addPersonValue = {
+        status: 0
+      }
+    }
+
+    if(type==='add'&&this.allPersonen){
+      this.getPersonen()
+    }
+
+    this.addPersonShow = true;
+  }
+
   
   private showAll = false;
 
@@ -38,27 +128,57 @@ export default class EcRootIndex extends Vue {
     'Vertreter',
     'Leiter'
   ]
+  
+  private getPersonen() {
+    this.$apolloClient.query({
+      query: gql`
+        query($authToken: String!) {
+          personen(authToken: $authToken) {
+            personID,
+            vorname,
+            nachname,
+            gebDat {
+              german
+              input
+            }
+          }
+        }
+      `,
+      variables: {
+        authToken: this.$authToken
+      }
+    })
+    .then(res=>{
+      this.allPersonen = res.data.personen
+    })
+    .catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Laden fehlgeschlagen!'
+      });
+    });
+  }
 
   private get config() {
     return  {
       sheet: [
         {
           id: 'ak_m_add',
-          icon: 'menu',
+          icon: 'person_add',
           label: 'AK Mitglied hinzufügen',
-          click: this.sheetClick
+          click: ()=>{this.edit('add')}
         },
         {
           id: 'ak_m_update',
-          icon: 'menu',
+          icon: 'edit',
           label: 'AK Mitglied updaten',
-          click: this.sheetClick
+          click: ()=>{this.edit('edit')}
         },
         {
           id: 'ak_m_del',
-          icon: 'menu',
+          icon: 'delete',
           label: 'AK Mitglied entfernen',
-          click: this.sheetClick
+          click: ()=>{this.edit('delete')}
         },
         {
           id: 'ak_rep_current',
@@ -87,9 +207,7 @@ export default class EcRootIndex extends Vue {
       subTitle: "Arbeitskreis"
     };
   }
-
-  private data:any = {}
-  
+ 
   private loadData() {
     this.$apolloClient.query({
       query: gql`
@@ -132,7 +250,9 @@ export default class EcRootIndex extends Vue {
     });
   }
 
-  private sheetClick(item: {id: string}) {alert(item.id + '\nComming Soon...'); }
+  private data:any = {
+    personen: []
+  }
 
   private created() {
     this.loadData();

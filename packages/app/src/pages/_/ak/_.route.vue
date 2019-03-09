@@ -1,5 +1,5 @@
 <template lang="pug">
-  ec-wrapper(hasSheet hasHeader hasDial hasReload v-bind="config" @reload="loadData")
+  ec-wrapper(hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     template(#header)
       div(style="padding: 2px 10px")
         ec-search(label="AK suchen" @suche="suche = $event")
