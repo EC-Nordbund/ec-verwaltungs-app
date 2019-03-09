@@ -141,7 +141,7 @@ export default class EcRootIndex extends Vue {
       variables: {
         authToken: this.$authToken
       }
-    }).then(()=>{
+    }).then(() => {
       this.$setAuthToken('');
       this.$router.push({path: '/login'});
     });

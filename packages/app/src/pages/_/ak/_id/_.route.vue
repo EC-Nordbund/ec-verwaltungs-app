@@ -61,103 +61,6 @@ import gql from 'graphql-tag';
 
 @Component({})
 export default class EcRootIndex extends Vue {
-  public static meta = {};
-
-  private personenData = [];
-
-  private addPersonShow = false;
-  private addPersonValid = false;
-  private addPersonValue: any = {}
-  private addPersonSave() {
-    this.addPersonShow = false
-
-    this.$apolloClient.mutate({
-      mutation: gql`
-        mutation(
-          $personID: Int!, 
-          $akID: Int!, 
-          $date: String!, 
-          $status: Int!, 
-          $authToken: String!
-        ) {
-          updateAKStatus(
-            personID: $personID, 
-            akID: $akID, 
-            date: $date, 
-            status: $status, 
-            authToken: $authToken
-          )
-        }
-      `,
-      variables: {...this.addPersonValue, akID: this.$route.params.id, authToken: this.$authToken}
-    }).catch((err: any) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Speichern fehlgeschlagen!'
-      });
-    });
-
-  }
-  private addPersonenType: 'add'|'edit'|'delete'|'' = ''
-
-  private allPersonen:any = [];
-
-  private edit(type: 'add'|'edit'|'delete') {
-    this.addPersonenType = type
-    this.addPersonValue = {}
-
-    if(type==='delete') {
-      this.addPersonValue = {
-        status: 0
-      }
-    }
-
-    if(type==='add'&&this.allPersonen){
-      this.getPersonen()
-    }
-
-    this.addPersonShow = true;
-  }
-
-  
-  private showAll = false;
-
-  private stadien = [
-    'Ausgetreten',
-    'Mitglied',
-    'Vertreter',
-    'Leiter'
-  ]
-  
-  private getPersonen() {
-    this.$apolloClient.query({
-      query: gql`
-        query($authToken: String!) {
-          personen(authToken: $authToken) {
-            personID,
-            vorname,
-            nachname,
-            gebDat {
-              german
-              input
-            }
-          }
-        }
-      `,
-      variables: {
-        authToken: this.$authToken
-      }
-    })
-    .then(res=>{
-      this.allPersonen = res.data.personen
-    })
-    .catch((err: any) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Laden fehlgeschlagen!'
-      });
-    });
-  }
 
   private get config() {
     return  {
@@ -166,19 +69,19 @@ export default class EcRootIndex extends Vue {
           id: 'ak_m_add',
           icon: 'person_add',
           label: 'AK Mitglied hinzufügen',
-          click: ()=>{this.edit('add')}
+          click: () => {this.edit('add'); }
         },
         {
           id: 'ak_m_update',
           icon: 'edit',
           label: 'AK Mitglied updaten',
-          click: ()=>{this.edit('edit')}
+          click: () => {this.edit('edit'); }
         },
         {
           id: 'ak_m_del',
           icon: 'delete',
           label: 'AK Mitglied entfernen',
-          click: ()=>{this.edit('delete')}
+          click: () => {this.edit('delete'); }
         },
         {
           id: 'ak_rep_current',
@@ -204,10 +107,123 @@ export default class EcRootIndex extends Vue {
         }
       ],
       title: this.data.bezeichnung,
-      subTitle: "Arbeitskreis"
+      subTitle: 'Arbeitskreis'
     };
   }
- 
+  public static meta = {};
+
+  private personenData = [];
+
+  private addPersonShow = false;
+  private addPersonValid = false;
+  private addPersonValue: any = {};
+  private addPersonenType: 'add'|'edit'|'delete'|'' = '';
+
+  private allPersonen: any = [];
+
+
+  private showAll = false;
+
+  private stadien = [
+    'Ausgetreten',
+    'Mitglied',
+    'Vertreter',
+    'Leiter'
+  ];
+
+  private data: any = {
+    personen: []
+  };
+
+  @Watch('showAll')
+  public onShowAllChange() {
+    this.$router.replace({
+      path: this.$route.path,
+      query: <any>{
+        ...this.$route.query, 
+        all: this.showAll?1:undefined
+      }
+    })
+  }
+}
+  private addPersonSave() {
+    this.addPersonShow = false
+
+    this.$apolloClient.mutate({
+      mutation:  gql`
+        mutation(
+          $personID: Int!,
+          $akID: Int!,
+          $date: String!,
+          $status: Int!,
+          $authToken: String!
+        ) {
+          updateAKStatus(
+            personID:  $personID,
+            akID: $akID,
+            date: $date,
+            status: $status,
+            authToken: $authToken
+          )
+        }
+      `,
+      variables: {...this.addPersonValue,  akID: this.$route.params.id, authToken: this.$authToken}
+    }).catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Speichern fehlgeschlagen!'
+      }); 
+    });
+
+  }
+
+  private edit(type: 'add'|'edit'|'delete') {
+    this.addPersonenType = type
+    this.addPersonValue = {}
+
+    if(type==='delete') {
+      this.addPersonValue = {
+        status: 0
+      }
+    }
+
+    if(type==='add'&&this.allPersonen){
+      this.getPersonen()
+    }
+
+    this.addPersonShow = true;
+  }
+
+  private getPersonen() {
+    this.$apolloClient.query({
+      query: gql`
+        query($authToken: String!) {
+          personen(authToken: $authToken) {
+            personID,
+            vorname,
+            nachname,
+            gebDat {
+              german
+              input
+            }
+          }
+        }
+      `,
+      variables: {
+        authToken: this.$authToken
+      }
+    })
+    .then((res) => {
+      this.allPersonen = res.data.personen;
+    })
+    .catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Laden fehlgeschlagen!'
+      });
+    }); 
+  }
+
   private loadData() {
     this.$apolloClient.query({
       query: gql`
@@ -247,27 +263,12 @@ export default class EcRootIndex extends Vue {
         text: err.message,
         title: 'Laden fehlgeschlagen!'
       });
-    });
-  }
-
-  private data:any = {
-    personen: []
+    }); 
   }
 
   private created() {
-    this.loadData();
+    this.loadData(); 
     this.showAll = this.$route.query.all ? true : false;
   }
-
-  @Watch('showAll')
-  onShowAllChange() {
-    this.$router.replace({
-      path: this.$route.path, 
-      query: <any>{
-        ...this.$route.query, 
-        all: this.showAll?1:undefined
-      }
-    })
-  }
-}
+;
 </script>
