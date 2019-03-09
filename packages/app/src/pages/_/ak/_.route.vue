@@ -112,7 +112,8 @@ export default class EcRootAKRoot extends Vue {
       `,
       variables: {
         authToken: this.$authToken
-      }
+      },
+      fetchPolicy: 'no-cache'
     }).then((res: {data: {aks: Array<{akID: number, bezeichnung: string}>}}) => {
       this.data = res.data.aks;
     }).catch((err: any) => {
