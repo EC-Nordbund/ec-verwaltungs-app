@@ -48,7 +48,6 @@ export default class EcWrapper extends Vue {
   public showNav = false;
   public sheetOpen = false;
   public timer: any;
-  public timer2: any;
 
   @Prop({type: Boolean, default: false})
   public hasXBtn!: boolean;
@@ -93,17 +92,6 @@ export default class EcWrapper extends Vue {
 
   public created() {
     this.openNav();
-    this.updateData();
-
-    this.timer2 = setInterval(this.updateData, 60000);
-  }
-
-  public updateData() {
-    this.$emit('getData');
-  }
-
-  public beforeDestroy() {
-    clearInterval(this.timer2);
   }
 }
 </script>
