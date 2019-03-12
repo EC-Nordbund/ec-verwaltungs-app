@@ -13,13 +13,13 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  private suche = ''
+  private suche = '';
 
   private config = {
     sheet: [
@@ -33,7 +33,7 @@ export default class EcRootIndex extends Vue {
     title: 'Veranstaltungen'
   };
 
-  private data:any = []
+  private data: any = [];
 
   private loadData() {
     this.$apolloClient.query({
@@ -65,7 +65,7 @@ export default class EcRootIndex extends Vue {
   }
 
   private created() {
-    this.loadData()
+    this.loadData();
   }
 
   private filterData(item: any): boolean {

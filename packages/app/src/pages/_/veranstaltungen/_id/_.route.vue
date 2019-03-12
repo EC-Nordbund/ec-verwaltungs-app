@@ -1,26 +1,31 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config")
-    template(#menu)
+    
+    template
       v-menu(bottom left)
-        template(#activator="{on}")
+        template(v-slot:activator="{ on }")
           v-btn(icon v-on="on")
             v-icon menu
         v-list
-          v-list-tile(v-for="item in (tnListen || [])" @click="genList($route.params.id, item.name, $authToken, $apolloClient)")
-            v-list-title-title {{item.label}}
-    router-view
+          v-list-tile(v-for="item in tnListen" @click="g(item.name)")
+            v-list-tile-title {{item.label}}
+      router-view
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { generate, getTemplates } from '@/tnList'
+import { generate, getTemplates } from '@/tnList';
 
 
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  private tnListen = getTemplates()
-  private genList = generate
+  private tnListen:any = [];
+  private genList = generate;
+  
+  private g(name: string){
+    this.genList(this.$route.params.id, name, this.$authToken, this.$apolloClient)
+  }
 
   private config = {
     sheet: [
@@ -45,6 +50,10 @@ export default class EcRootIndex extends Vue {
     title: 'VERANSTALTUNGSNAME',
     subTitle: 'Veranstaltung'
   };
+
+  private created() {
+    getTemplates().then(res=>{this.tnListen = res})
+  }
 
   private sheetClick(item: {id: string}) {alert(item.id); }
 }
