@@ -1,10 +1,16 @@
-import gql from 'graphql-tag'
-import * as excel from 'xlsx-template'
-import { ApolloClient } from 'apollo-boost'
+import gql from 'graphql-tag';
+import * as excel from 'xlsx-template';
+import { ApolloClient } from 'apollo-boost';
 
-export async function generate(veranstaltungsID: number, template: string, authToken: string, apolloClient: ApolloClient, mitWarteListe = false) {
+export async function generate(
+  veranstaltungsID: number,
+  template: string,
+  authToken: string,
+  apolloClient: ApolloClient<any>,
+  mitWarteListe = false
+) {
   const url = `https://verwaltung.ec-nordbund.de/templates/${template}.xlsx`;
-  const templateData =  await fetch(url).then(v => v.arrayBuffer());
+  const templateData =  await fetch(url).then((v) => v.arrayBuffer());
   const instance = new excel(templateData);
 
   const replData = await apolloClient.query({
@@ -99,19 +105,19 @@ export async function generate(veranstaltungsID: number, template: string, authT
       veranstaltungsID
     }
   })
-  .then(v => v.data.veranstaltung)
-  .then(v => ({
+  .then((v) => v.data.veranstaltung)
+  .then((v) => ({
     ...v,
     vOrtLocation: `${v.veranstaltungsort.plz} ${v.veranstaltungsort.ort} (${v.veranstaltungsort.land})`,
     anmeldungen: v.anmeldungen
-      .filter(an => {
-        if(mitWarteListe) {
-          return an.wartelistenPlatz >= 0
+      .filter((an: any) => {
+        if (mitWarteListe) {
+          return an.wartelistenPlatz >= 0;
         } else {
-          return an.wartelistenPlatz === 0
+          return an.wartelistenPlatz === 0;
         }
       })
-      .map(h => ({
+      .map((h: any) => ({
         ...h,
         empty: '',
         m: h.person.geschlecht === 'm' ? 'X' : '',
@@ -127,13 +133,13 @@ export async function generate(veranstaltungsID: number, template: string, authT
 }
 
 export async function getTemplates() {
-  return await fetch('https://verwaltung.ec-nordbund.de/templates/list.json').then(res => res.json())
+  return await fetch('https://verwaltung.ec-nordbund.de/templates/list.json').then((res) => res.json());
 }
 
 function saveByteArray(reportName: string, byte: ArrayBuffer) {
   const blob = new Blob([byte], {type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
-  const link = <HTMLAnchorElement>document.getElementById('ec-download');
+  const link = document.getElementById('ec-download') as HTMLAnchorElement;
   link.href = window.URL.createObjectURL(blob);
   link.download = reportName;
   link.click();
-};
+}

@@ -1,11 +1,10 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config")
-    
     template
       v-menu(bottom left)
         template(v-slot:activator="{ on }")
-          v-btn(icon v-on="on")
-            v-icon menu
+          v-btn(v-on="on")
+            | TN-Liste gnerieren (Ohne Warteliste und abgemeldete)
         v-list
           v-list-tile(v-for="item in tnListen" @click="g(item.name)")
             v-list-tile-title {{item.label}}
@@ -20,12 +19,8 @@ import { generate, getTemplates } from '@/tnList';
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  private tnListen:any = [];
+  private tnListen: any = [];
   private genList = generate;
-  
-  private g(name: string){
-    this.genList(this.$route.params.id, name, this.$authToken, this.$apolloClient)
-  }
 
   private config = {
     sheet: [
@@ -51,8 +46,12 @@ export default class EcRootIndex extends Vue {
     subTitle: 'Veranstaltung'
   };
 
+  private g(name: string) {
+    this.genList(this.$route.params.id, name, this.$authToken, this.$apolloClient);
+  }
+
   private created() {
-    getTemplates().then(res=>{this.tnListen = res})
+    getTemplates().then((res) => {this.tnListen = res; });
   }
 
   private sheetClick(item: {id: string}) {alert(item.id); }
