@@ -3,11 +3,22 @@
     template
       v-menu(bottom left)
         template(v-slot:activator="{ on }")
-          v-btn(v-on="on")
-            | TN-Liste gnerieren (Ohne Warteliste und abgemeldete)
+          v-btn(v-on="on") TN-Liste gnerieren
         v-list
-          v-list-tile(v-for="item in tnListen" @click="g(item.name)")
+          v-list-tile(@click="all")
+            v-list-tile-title Alle (jeweils mit und ohne Warteliste)
+          v-divider
+          v-list-tile(v-for="item in tnListen" @click="g(item.name, v=>v==0)")
             v-list-tile-title {{item.label}}
+          v-divider
+          v-list-tile(v-for="item in tnListen" @click="g(item.name, v=>v>=0)")
+            v-list-tile-title {{item.label}} mit Warteliste
+          v-divider
+          v-list-tile(v-for="item in tnListen" @click="g(item.name, v=>v>0)")
+            v-list-tile-title {{item.label}} nur Warteliste
+          v-divider
+          v-list-tile(v-for="item in tnListen" @click="g(item.name, v=>v<0)")
+            v-list-tile-title {{item.label}} nur Abgemeldete
       router-view
 </template>
 <script lang="ts">
@@ -46,8 +57,15 @@ export default class EcRootIndex extends Vue {
     subTitle: 'Veranstaltung'
   };
 
-  private g(name: string) {
-    this.genList(this.$route.params.id, name, this.$authToken, this.$apolloClient);
+  private all() {
+    this.tnListen.forEach((el: {name: string, label: string}) => {
+      this.g(el.name, (v) => v === 0);
+      this.g(el.name, (v) => v >= 0);
+    });
+  }
+
+  private g(name: string, wList: (v: number) => boolean) {
+    this.genList(parseInt(this.$route.params.id, 10), name, this.$authToken, this.$apolloClient, wList);
   }
 
   private created() {

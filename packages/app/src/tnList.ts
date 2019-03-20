@@ -7,7 +7,7 @@ export async function generate(
   template: string,
   authToken: string,
   apolloClient: ApolloClient<any>,
-  mitWarteListe = false
+  wlistFilter: (wlist: number) => boolean
 ) {
   const url = `https://verwaltung.ec-nordbund.de/templates/${template}.xlsx`;
   const templateData =  await fetch(url).then((v) => v.arrayBuffer());
@@ -25,8 +25,10 @@ export async function generate(
         ) {
           veranstaltungsID
           bezeichnung
+          kurzBezeichnung
           begin {
             german
+            input
           }
           ende {
             german
@@ -65,6 +67,7 @@ export async function generate(
               nachname
               geschlecht
               gebDat {
+                input
                 german
               }
             }
@@ -110,26 +113,20 @@ export async function generate(
     ...v,
     vOrtLocation: `${v.veranstaltungsort.plz} ${v.veranstaltungsort.ort} (${v.veranstaltungsort.land})`,
     anmeldungen: v.anmeldungen
-      .filter((an: any) => {
-        if (mitWarteListe) {
-          return an.wartelistenPlatz >= 0;
-        } else {
-          return an.wartelistenPlatz === 0;
-        }
-      })
+      .filter((an: any) => wlistFilter(an.wartelistenPlatz))
       .map((h: any) => ({
         ...h,
         empty: '',
         m: h.person.geschlecht === 'm' ? 'X' : '',
         w: h.person.geschlecht === 'w' ? 'X' : '',
-        older27: '? (Soon...)',
+        older27: dateDiffInYears(h.person.gebDat.input, v.begin.input) > 27 ? 'X' : '',
         betreuer: h.position > 1 ? 'X' : ''
       })
     )}
   ));
   instance.substitute(1, replData);
   const resultList = instance.generate({type: 'arraybuffer'});
-  saveByteArray(`TN-Liste.${template}.${veranstaltungsID}.xlsx`, resultList);
+  saveByteArray(`TN-Liste.${template}.${replData.kurzBezeichnung}-${replData.begin.german.split('.')[3]}.${wlistFilter.toString()}.xlsx`, resultList);
 }
 
 export async function getTemplates() {
@@ -142,4 +139,25 @@ function saveByteArray(reportName: string, byte: ArrayBuffer) {
   link.href = window.URL.createObjectURL(blob);
   link.download = reportName;
   link.click();
+}
+
+
+function dateDiffInYears(dateoldS: string, datenewS: string) {
+  const dateold = new Date(dateoldS);
+  const datenew = new Date(datenewS);
+  const ynew = datenew.getFullYear();
+  const mnew = datenew.getMonth();
+  const dnew = datenew.getDate();
+  const yold = dateold.getFullYear();
+  const mold = dateold.getMonth();
+  const dold = dateold.getDate();
+  let diff = ynew - yold;
+  if (mold > mnew) {
+    diff--;
+  } else {
+      if (mold === mnew) {
+          if (dold > dnew) { diff--; }
+      }
+  }
+  return diff;
 }

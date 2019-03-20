@@ -21,7 +21,7 @@
       }
     ]` :items = "data.filter(filterData)" )
       template( #items="props")
-        tr(@click="$router.push({path: `/anmeldungen/${props.item.anmeldeID}`, query: {prev: $route.fullPath}})")
+        tr(@click="$router.push({path: `/anmeldungen/${props.item.anmeldeID}/home`, query: {prev: $route.fullPath}})")
           td {{props.item.anmeldeID}}
           td {{props.item.person.vorname}} {{props.item.person.nachname}} ({{props.item.person.gebDat.german}})
           td {{props.item.veranstaltung.bezeichnung}} ({{props.item.veranstaltung.begin.german}} - {{props.item.veranstaltung.ende.german}})
