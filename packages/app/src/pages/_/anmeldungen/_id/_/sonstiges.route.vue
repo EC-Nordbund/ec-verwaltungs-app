@@ -1,5 +1,57 @@
 <template lang="pug">
-  v-card-text EmptyComponent
+  v-card-text(style="overflow: auto")
+    v-list(two-line)
+      v-list-tile(v-if="data.vegetarisch")
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title Vegetarier
+      v-list-tile(v-else)
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title Kein Vegetarier
+      v-list-tile
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title {{data.lebensmittelAllergien || 'N/A'}}
+          v-list-tile-sub-title Lebensmittelallergien
+        v-list-tile-action
+          v-btn(icon @click="showAll('lebensmittelAllergien')")
+            v-icon search
+      v-divider
+      v-list-tile
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title {{data.gesundheitsinformationen || 'N/A'}}
+          v-list-tile-sub-title Gesundheitsinformationen
+        v-list-tile-action
+          v-btn(icon @click="showAll('gesundheitsinformationen')")
+            v-icon search
+      v-list-tile
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title {{data.bemerkungen || 'N/A'}}
+          v-list-tile-sub-title Bemerkungen
+        v-list-tile-action
+          v-btn(icon @click="showAll('bemerkungen')")
+            v-icon search
+      v-divider
+      v-list-tile
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title {{data.radfahren?'Rad fahren, ':''}} {{data.klettern?'Klettern, ':''}} {{data.bootfahren?'Boot fahren, ':''}} {{data.schwimmen > 0?'Schwimmen':''}} 
+          v-list-tile-sub-title Erlaubnisse
+      v-list-tile(v-if="data.schwimmen > 0")
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title {{schwimmStufen[data.schwimmen-1]}} 
+          v-list-tile-sub-title Schwimmen
 </template>
 
 <script lang="ts">
@@ -8,5 +60,14 @@ import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 @Component({})
 export default class EcNAME extends Vue {
   public static meta = {};
+
+  @Prop({default: {person: {}}})
+  private data!: any
+
+  private schwimmStufen = ['Nichtschwimmer', 'Mittelmäßiger Schwimmer', 'Guter Schwimmer']
+
+  showAll(keyName: string) {
+    this.$dialog.notify.info(this.data[keyName]||'N/A')
+  }
 }
 </script>

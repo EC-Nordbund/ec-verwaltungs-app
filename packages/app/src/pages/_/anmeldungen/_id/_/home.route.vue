@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card-text
+  v-card-text(style="overflow: auto;")
     v-list(two-line)
       v-list-tile
         v-list-tile-action
@@ -88,10 +88,7 @@
           v-icon person
         v-list-tile-content
           v-list-tile-title {{data.abmeldeZeitpunkt.german}}
-          v-list-tile-sub-title Abmeldezeitpunkt
-
-        
-      
+          v-list-tile-sub-title Abmeldezeitpunkt      
 </template>
 
 <script lang="ts">

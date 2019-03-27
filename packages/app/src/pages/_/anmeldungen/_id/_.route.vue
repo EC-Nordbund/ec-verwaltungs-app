@@ -57,14 +57,13 @@ export default class EcRootIndex extends Vue {
           to: `/anmeldungen/${this.$route.params.id}/sonstiges`
         }
       ],
-      title: `${this.data.person.vorname} ${this.data.person.nachname} - ${this.data.veranstatung.bezeichnung}`,
+      title: `${(this.data.person||{}).vorname} ${(this.data.person||{}).nachname} - ${(this.data.veranstaltung||{}).bezeichnung}`,
       subTitle: 'Anmeldung'
     }
   }
 
 
   private getData() {
-    // TODO: GET DATA FROM API
     this.$apolloClient.query({
       query: gql`
         query($authToken: String!, $anmeldeID: String!) {
