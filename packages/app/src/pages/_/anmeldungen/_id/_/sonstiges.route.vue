@@ -52,7 +52,7 @@
         v-list-tile-content
           v-list-tile-title {{schwimmStufen[data.schwimmen-1]}} 
           v-list-tile-sub-title Schwimmen
-      template(v-if="data.abmeldeZeitpunkt")
+      template(v-if="data.wartelistenPlatz<0")
         v-divider
         v-list-tile
           v-list-tile-action

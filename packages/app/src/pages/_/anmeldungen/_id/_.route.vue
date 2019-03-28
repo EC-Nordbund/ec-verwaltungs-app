@@ -1,5 +1,5 @@
 <template lang="pug">
-  ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config" @getData="getData")
+  ec-wrapper(hasSheet hasDial hasNav hasXBtn hasReload hasRouterView v-bind="config" @getData="getData")
     router-view(:data="data")
     template(#dialogs)
       v-dialog(v-model="abmeldenShow" max-width="400px")
