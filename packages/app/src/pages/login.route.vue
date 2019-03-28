@@ -41,15 +41,16 @@
 import { Component, Vue } from 'vue-property-decorator';
 // import * as settings from 'electron-settings'
 import gql from 'graphql-tag';
+import * as save from 'js-cookie'
 
 @Component({})
 export default class EcRootLogin extends Vue {
-  private dark = false;
+  private dark = (save.get('dark') === 'x')
   private isCapsOn = false;
   private valid = false;
   private loading = false;
   private data = {
-    username: '',
+    username: (<string>save.get('username')) || '',
     password: ''
   };
   private showPasword = false;
@@ -78,7 +79,7 @@ export default class EcRootLogin extends Vue {
       variables: this.data
     }).then((res: any) => {
       const path = this.$route.query.next || '/home';
-      // console.log(res.data.logIn);
+      save.set('username', this.data.username, { expires: 7 })
       this.$setAuthToken(res.data.logIn);
       this.$router.push(path as string);
       this.loading = false;

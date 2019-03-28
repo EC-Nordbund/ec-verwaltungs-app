@@ -8,7 +8,7 @@ declare module 'vue/types/vue' {
     $login: (username: string, password: string) => Promise<never>;
     $logout: () => void;
     $util: any;
-    // $auth: () => Auth;
     $setAuthToken: (authToken: string) => void;
+    $notifikation: (title: string, body: string) => Notification
   }
 }

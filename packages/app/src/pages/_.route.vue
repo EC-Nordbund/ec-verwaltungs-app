@@ -13,7 +13,7 @@
       v-spacer
       ec-lesezeichen-show
       div(style="padding-right: 20px") 
-      v-btn(icon v-white @click="dark=!dark")
+      v-btn(icon v-white @click="toggleDark")
         v-icon invert_colors
       v-btn(icon v-white @click="logout")
         v-icon exit_to_app
@@ -29,13 +29,13 @@
       v-list
         v-list-tile(to="/home")
           v-list-tile-action
-            v-icon menu
+            v-icon home
           v-list-tile-title Home
         v-divider
         v-subheader Personen
         v-list-tile(to="/personen")
           v-list-tile-action
-            v-icon menu
+            v-icon person
           v-list-tile-title Personen
         v-list-tile(to="/ak")
           v-list-tile-action
@@ -49,11 +49,11 @@
           v-list-tile-title Anmeldungen
         v-list-tile(to="/veranstaltungen")
           v-list-tile-action
-            v-icon menu
+            v-icon event
           v-list-tile-title Veranstaltungen
         v-list-tile(to="/veranstaltungsort")
           v-list-tile-action
-            v-icon menu
+            v-icon home
           v-list-tile-title Veranstaltungsorte
         v-list-tile(to="/organisationen")
           v-list-tile-action
@@ -63,17 +63,17 @@
         v-subheader Dublikate
         v-list-tile(to="/dublikate/personen")
           v-list-tile-action
-            v-icon menu
+            v-icon person
           v-list-tile-title Personen
         v-list-tile(to="/dublikate/adressen")
           v-list-tile-action
-            v-icon menu
+            v-icon home
           v-list-tile-title Adressen
         v-divider
         v-subheader Sonstiges
         v-list-tile(to="/sonstiges/admin")
           v-list-tile-action
-            v-icon menu
+            v-icon settings
           v-list-tile-title Administration
         v-list-tile(to="/sonstiges/datenschutz")
           v-list-tile-action
@@ -104,12 +104,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import pack from '@/plugins/package';
 import gql from 'graphql-tag';
+import * as save from 'js-cookie'
 // ()
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  private dark = false;
+  private dark = (save.get('dark') === 'x')
   private drawer = null;
   private version = pack.version || 'Fehler';
   private breadcrumbs = this.breadMap([
@@ -117,6 +118,11 @@ export default class EcRootIndex extends Vue {
     'EC-Nordbund',
     'T. Krause + S. Krüger'
   ]);
+
+  private toggleDark() {
+    this.dark = !this.dark
+    save.set('dark', this.dark?'x':'')
+  }
 
   private get breadcrumbsRouter(): any[] {
     return this.breadMap(

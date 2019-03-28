@@ -90,6 +90,7 @@ export default class EcRootAKRoot extends Vue {
         authToken: this.$authToken
       }
     }).then((res: any) => {
+      this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${this.addAKValue.bezeichnung}" angelegt`);
       this.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
     }).catch((err: any) => {
       this.$dialog.error({

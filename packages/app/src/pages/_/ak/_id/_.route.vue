@@ -168,6 +168,8 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {...this.addPersonValue,  akID: this.$route.params.id, authToken: this.$authToken}
+    }).then(()=>{
+      this.$notifikation('Neuer Eintrag im AK', `Du hast erfolgreich einen neuen Eintrag im AK angelegt`);
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

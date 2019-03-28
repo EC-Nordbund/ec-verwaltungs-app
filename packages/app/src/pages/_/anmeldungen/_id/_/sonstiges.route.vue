@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card-text(style="overflow: auto")
+  v-card-text(style="overflow: auto") {{data}}
     v-list(two-line)
       v-list-tile(v-if="data.vegetarisch")
         v-list-tile-action
@@ -52,6 +52,26 @@
         v-list-tile-content
           v-list-tile-title {{schwimmStufen[data.schwimmen-1]}} 
           v-list-tile-sub-title Schwimmen
+      template(v-if="data.abmeldeZeitpunkt")
+        v-divider
+        v-list-tile
+          v-list-tile-action
+            v-icon person
+          v-list-tile-content
+            v-list-tile-title {{data.kommentarAbmeldung || 'N/A'}}
+            v-list-tile-sub-title Kommentar zur Abmeldung
+          v-list-tile-action
+            v-btn(icon @click="showAll('kommentarAbmeldung')")
+              v-icon search
+        v-list-tile
+          v-list-tile-action
+            v-icon person
+          v-list-tile-content
+            v-list-tile-title {{data.wegDerAbmeldung || 'N/A'}}
+            v-list-tile-sub-title Weg der Abmeldung
+          v-list-tile-action
+            v-btn(icon @click="showAll('wegDerAbmeldung')")
+              v-icon search
 </template>
 
 <script lang="ts">

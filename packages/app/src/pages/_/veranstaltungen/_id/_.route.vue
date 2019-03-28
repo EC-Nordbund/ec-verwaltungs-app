@@ -43,7 +43,7 @@ export default class EcRootIndex extends Vue {
         to: 'home'
       },
       {
-        icon: 'menu',
+        icon: 'euro_symbol',
         label: 'Finanzen',
         to: 'finanzen'
       },
