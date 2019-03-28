@@ -1,43 +1,44 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config" @getData="getData")
     router-view(:data="data")
-    v-dialog(v-model="abmeldenShow" max-width="400px")
-      v-card
-        v-card-title
-          h1(v-font v-primary) Person abmelden
-        v-card-text
-          v-form(v-model="abmeldenValid")
-            formular(v-model="abmeldenValue" :schema=`[
-              {
-                name: 'weg',
-                type: 'input',
-                label: 'Weg der Abmeldung',
-                rule: "required|max:100",
-                required: true,
-                counter: 100
-              },
-              {
-                name: 'kommentar',
-                type: 'input',
-                label: 'Kommentar',
-                rule: "required|max:200",
-                required: true,
-                counter: 200
-              },
-              {
-                name: 'gebuehr',
-                type: 'input',
-                label: 'Abmeldegebühr (Ganze Euros)',
-                mask: '###',
-                rule: "required|max:3",
-                required: true,
-                counter: 3
-              }
-            ]`)
-        v-card-actions
-          v-spacer
-          v-btn(flat @click="abmeldenShow=false") Abbrechen
-          v-btn(color="primary" :disabled="!abmeldenValid" @click="abmeldenSave") Speichern
+    template(#dialogs)
+      v-dialog(v-model="abmeldenShow" max-width="400px")
+        v-card
+          v-card-title
+            h1(v-font v-primary) Person abmelden
+          v-card-text
+            v-form(v-model="abmeldenValid")
+              formular(v-model="abmeldenValue" :schema=`[
+                {
+                  name: 'weg',
+                  type: 'input',
+                  label: 'Weg der Abmeldung',
+                  rule: "required|max:100",
+                  required: true,
+                  counter: 100
+                },
+                {
+                  name: 'kommentar',
+                  type: 'input',
+                  label: 'Kommentar',
+                  rule: "required|max:200",
+                  required: true,
+                  counter: 200
+                },
+                {
+                  name: 'gebuehr',
+                  type: 'input',
+                  label: 'Abmeldegebühr (Ganze Euros)',
+                  mask: '###',
+                  rule: "required|max:3",
+                  required: true,
+                  counter: 3
+                }
+              ]`)
+          v-card-actions
+            v-spacer
+            v-btn(flat @click="abmeldenShow=false") Abbrechen
+            v-btn(color="primary" :disabled="!abmeldenValid" @click="abmeldenSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -106,7 +107,7 @@ export default class EcRootIndex extends Vue {
         },
         {
           id: 'anmel_abmelden',
-          icon: 'menu',
+          icon: 'person_add_disabled',
           label: 'Person abmelden',
           click: () => {
             self.abmeldenShow = true;

@@ -1,5 +1,5 @@
 <template lang="pug">
-  v-card-text(style="overflow: auto") {{data}}
+  v-card-text(style="overflow: auto")
     v-list(two-line)
       v-list-tile(v-if="data.vegetarisch")
         v-list-tile-action
