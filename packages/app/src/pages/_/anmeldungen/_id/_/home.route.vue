@@ -108,6 +108,6 @@ export default class AnmeldeDetailsHOME extends Vue {
   ]
 
   @Prop({default: {person: {}}})
-  private data!: any
+  private data!: any 
 }
 </script>
