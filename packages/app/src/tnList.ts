@@ -126,15 +126,24 @@ export async function generate(
   ));
   instance.substitute(1, replData);
   const resultList = instance.generate({type: 'arraybuffer'});
-  saveByteArray(`TN-Liste.${template}.${replData.kurzBezeichnung}-${replData.begin.german.split('.')[3]}.${wlistFilter.toString()}.xlsx`, resultList);
+  saveByteArray(
+    `TN-Liste.${template}.${replData.kurzBezeichnung}-${
+      replData.begin.german.split('.')[3]}.${wlistFilter.toString()}.xlsx`,
+    resultList
+  );
 }
 
 export async function getTemplates() {
   return await fetch('https://verwaltung.ec-nordbund.de/templates/list.json').then((res) => res.json());
 }
 
-function saveByteArray(reportName: string, byte: ArrayBuffer) {
-  const blob = new Blob([byte], {type: 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+export function saveByteArray(reportName: string, byte: ArrayBuffer, word: boolean = false) {
+  const blob = new Blob([byte], {
+    type: (
+      word ? 'vnd.openxmlformats-officedocument.wordprocessingml.document'
+      : 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    )
+  });
   const link = document.getElementById('ec-download') as HTMLAnchorElement;
   link.href = window.URL.createObjectURL(blob);
   link.download = reportName;
