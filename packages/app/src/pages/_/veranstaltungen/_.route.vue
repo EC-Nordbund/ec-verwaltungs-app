@@ -4,7 +4,7 @@
       div(style="padding: 2px 10px")
         ec-search(label="Veranstaltung suchen" @suche="suche = $event")
     v-list(two-line)
-      v-list-tile(v-for="item in data.filter(filterData)" :key="item.veranstaltungsID" @click="$router.push({path: `veranstaltungen/${item.veranstaltungsID}`, query: {prev: $route.fullPath}})")
+      v-list-tile(v-for="item in data.filter(filterData)" :key="item.veranstaltungsID" @click="$router.push({path: `veranstaltungen/${item.veranstaltungsID}/home`, query: {prev: $route.fullPath}})")
         v-list-tile-action
           v-icon group
         v-list-tile-content

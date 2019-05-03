@@ -1,6 +1,6 @@
 {
   "name": "app5",
-  "version": "2.0.0-alpha-2019-03-28-14",
+  "version": "2.0.0-alpha-2019-05-02-23",
   "private": true,
   "scripts": {
     "serve": "node --max-old-space-size=4096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js serve",

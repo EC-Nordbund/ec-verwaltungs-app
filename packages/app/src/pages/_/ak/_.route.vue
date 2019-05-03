@@ -39,6 +39,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
+import { genReport } from '@/report'
 
 @Component({})
 export default class EcRootAKRoot extends Vue {
@@ -58,25 +59,63 @@ export default class EcRootAKRoot extends Vue {
         icon: this.$util.icon.report,
         label: 'Aktuelle AK Mitglieder Report',
         click: () => {
-          this.$dialog.warning({
-            text: 'GENERATE CURRENT AK REPORT',
-            title: 'TODO'
-          });
+          this.gen('ak_all_current', 'ak-alle-current.docx')
         }
       },
       {
         icon: this.$util.icon.report,
         label: 'Alle AK Mitglieder Report',
         click: () => {
-          this.$dialog.warning({
-            text: 'GENERATE FULL AK REPORT',
-            title: 'TODO'
-          });
+          this.gen('ak_all_all', 'ak-alle-vollstaendig.docx')
         }
       }
     ],
     title: 'Arbeitskreise'
   };
+
+  private gen(name:string, save: string) {
+    this.$apolloClient.query({
+      query: gql`
+        query($authToken: String!) {
+          aks(authToken: $authToken) {
+            akID
+            bezeichnung
+            personen {
+              currentStatus
+              allUpdates {
+                akPersonID
+                neuerStatus
+                date {
+                  german
+                }
+              }
+              person {
+                personID
+                vorname
+                nachname
+                gebDat {
+                  german
+                }
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        authToken: this.$authToken
+      },
+      fetchPolicy: 'no-cache'
+    }).then((res: any) => {
+      res.data
+      genReport(name, res.data, save)
+    }).catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Laden fehlgeschlagen!'
+      });
+    });
+  }
+
   private addAKSave() {
     this.addAKShow = false;
     this.$apolloClient.mutate({
