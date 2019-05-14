@@ -49,5 +49,5 @@ Vue.prototype.$apolloClient = new ApolloClient({
 
 new Vue({
   router,
-  render: (h) => h('router-view')
+  render: (h) => h('keep-alive', {}, [h('router-view')])
 }).$mount('#app');

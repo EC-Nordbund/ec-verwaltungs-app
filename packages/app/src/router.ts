@@ -91,7 +91,8 @@ function generateRoutesMapperFolder(obj: any, key: string): RouteConfig {
     path: handlePath(key),
     children: [...generateRoutes(obj[key]), notFound],
     component: {
-      render: (h: CreateElement) => h('router-view')
+      // render: (h: CreateElement) => h('router-view')
+      render: (h) => h('keep-alive', {}, [h('router-view')])
     }
   };
 }
@@ -140,7 +141,8 @@ const router = new Router({
         notFound
       ],
       component: {
-        render: (h) => h('router-view')
+        // render: (h) => h('router-view')
+        render: (h) => h('keep-alive', {}, [h('router-view')])
       }
     }
   ]

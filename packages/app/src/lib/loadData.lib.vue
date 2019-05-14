@@ -41,7 +41,7 @@ export default class EcReport extends Vue {
 
   public created() {
     let _self = this;
-    this.$emit('refetch-cb', ()=>{
+    this.$emit('refetchCb', ()=>{
       _self.fetch()
     })
   }
