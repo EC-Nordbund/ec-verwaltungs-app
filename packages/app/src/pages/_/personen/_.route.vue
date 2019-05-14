@@ -17,7 +17,7 @@
         value: 'gebDat.input'
       }
     ]` :items = "data.filter(filterData)" )
-      template( #items="props")
+      template(#items="props")
         tr(@click="$router.push({path: `/personen/${props.item.personID}/home`, query: {prev: $route.fullPath}})" :class="'geschlecht-' + props.item.geschlecht")
           td {{props.item.vorname}} 
           td {{props.item.nachname}} 
