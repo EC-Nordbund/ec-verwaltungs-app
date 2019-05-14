@@ -3,6 +3,7 @@ import Vue from 'vue';
 import { Component } from 'vue-property-decorator';
 import VuetifyDialog from 'vuetify-dialog';
 import ApolloClient from 'apollo-boost';
+import gql from 'graphql-tag';
 
 import 'roboto-fontface/css/roboto/roboto-fontface.css';
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
@@ -35,6 +36,7 @@ Vue.prototype.$notifikation = (title: string, body: string) => {
 }
 
 Vue.prototype.$authToken = '';
+Vue.prototype.$gql = gql;
 
 Vue.prototype.$setAuthToken = (authToken: string) => {
   Vue.prototype.$authToken = authToken;
