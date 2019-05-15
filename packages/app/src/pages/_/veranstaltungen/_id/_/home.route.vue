@@ -19,7 +19,7 @@
         v-list-tile-content
           v-list-tile-title {{data.begin.german}} - {{data.ende.german}}
           v-list-tile-sub-title Zeitraum
-      v-list-tile(@click="$router.push({path: `/veranstaltungsort/${veranstaltungsort.vOrtID}/home`, query: {prev: $route.fullPath}})")
+      v-list-tile(@click="$router.push({path: `/veranstaltungsort/${data.veranstaltungsort.vOrtID}/home`, query: {prev: $route.fullPath}})")
         v-list-tile-action
           v-icon person
         v-list-tile-content
