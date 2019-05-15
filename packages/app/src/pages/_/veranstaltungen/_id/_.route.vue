@@ -1,6 +1,7 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config")
     template
+      router-view(:data="data")
       v-menu(bottom left)
         template(v-slot:activator="{ on }")
           v-btn(v-on="on") TN-Liste gnerieren
@@ -19,12 +20,11 @@
           v-divider
           v-list-tile(v-for="item in tnListen" @click="g(item.name, v=>v<0)")
             v-list-tile-title {{item.label}} nur Abgemeldete
-      router-view
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { generate, getTemplates } from '@/tnList';
-
+import gql from 'graphql-tag'
 
 @Component({})
 export default class EcRootIndex extends Vue {
@@ -33,29 +33,31 @@ export default class EcRootIndex extends Vue {
   private tnListen: any = [];
   private genList = generate;
 
-  private config = {
-    sheet: [
-    ],
-    nav: [
-      {
-        icon: 'menu',
-        label: 'Allgemein',
-        to: 'home'
-      },
-      {
-        icon: 'euro_symbol',
-        label: 'Finanzen',
-        to: 'finanzen'
-      },
-      {
-        icon: 'menu',
-        label: 'Erlaubnisse und Bemerkungen',
-        to: 'erlaubnisse'
-      }
-    ],
-    title: 'VERANSTALTUNGSNAME',
-    subTitle: 'Veranstaltung'
-  };
+  private get config() {
+    return {
+      sheet: [
+      ],
+      nav: [
+        {
+          icon: 'menu',
+          label: 'Allgemein',
+          to: 'home'
+        },
+        {
+          icon: 'euro_symbol',
+          label: 'Finanzen',
+          to: 'finanzen'
+        },
+        {
+          icon: 'menu',
+          label: 'Anmeldungen',
+          to: 'anmeldungen'
+        }
+      ],
+      title: `${this.data.bezeichnung} (${this.data.begin.german} - ${this.data.ende.german})`,
+      subTitle: 'Veranstaltung'
+    }
+  }
 
   private all() {
     this.tnListen.forEach((el: {name: string, label: string}) => {
@@ -68,10 +70,103 @@ export default class EcRootIndex extends Vue {
     this.genList(parseInt(this.$route.params.id, 10), name, this.$authToken, this.$apolloClient, wList);
   }
 
-  private created() {
-    getTemplates().then((res) => {this.tnListen = res; });
-  }
 
   private sheetClick(item: {id: string}) {alert(item.id); }
+
+  
+  data:any = {
+    anmeldungen: [],
+    begin: {},
+    ende: {},
+    veranstaltungsort: {}
+  }
+  
+  private loadData() {
+    this.$apolloClient.query({
+      query: gql`
+        query($authToken: String!, $veranstaltungsID: Int!) {
+          veranstaltung(
+            authToken: $authToken
+            veranstaltungsID: $veranstaltungsID
+          ) {
+            veranstaltungsID
+            bezeichnung
+            begin {
+              german
+              input
+            }
+            ende {
+              german
+              input
+            }
+            minTNAlter
+            maxTNAlter
+            anzahlPlaetze
+            anzahlPlaetzeW
+            anzahlPlaetzeM
+            preisNormal
+            preisLastMinute
+            preisFruehbucher
+            fruehbucherBis {
+              german
+              input
+            }
+            lastMinuteAb {
+              german
+              input
+            }
+            preisAnzahlungNormal
+            preisAnzahlungLastMinute
+            preisAnzahlungFruehbucher
+            kannVorortBezahltWerden
+            hatGWarteliste
+            veranstaltungsort {
+              vOrtID
+              bezeichnung
+              plz
+              ort
+              land
+            }
+            anmeldungen {
+              anmeldeID
+              position
+              person {
+                vorname
+                nachname
+                geschlecht
+                gebDat {
+                  german
+                }
+              }
+              wartelistenPlatz
+              anmeldeZeitpunkt {
+                german
+                day
+                month
+                year
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        authToken: this.$authToken,
+        veranstaltungsID: this.$route.params.id
+      },
+      fetchPolicy: 'no-cache'
+    }).then((res: any) => {
+      this.data = res.data.veranstaltung;
+    }).catch((err: any) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Laden fehlgeschlagen!'
+      });
+    });
+  }
+
+  private created() {
+    this.loadData();
+     getTemplates().then((res) => {this.tnListen = res; });
+  }
 }
 </script>
