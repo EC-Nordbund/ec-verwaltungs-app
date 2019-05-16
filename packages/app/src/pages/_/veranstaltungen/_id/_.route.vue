@@ -24,14 +24,10 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { generate, getTemplates } from '@/tnList';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 @Component({})
 export default class EcRootIndex extends Vue {
-  public static meta = {};
-
-  private tnListen: any = [];
-  private genList = generate;
 
   private get config() {
     return {
@@ -56,8 +52,20 @@ export default class EcRootIndex extends Vue {
       ],
       title: `${this.data.bezeichnung} (${this.data.begin.german} - ${this.data.ende.german})`,
       subTitle: 'Veranstaltung'
-    }
+    };
   }
+  public static meta = {};
+
+
+  public data: any = {
+    anmeldungen: [],
+    begin: {},
+    ende: {},
+    veranstaltungsort: {}
+  };
+
+  private tnListen: any = [];
+  private genList = generate;
 
   private all() {
     this.tnListen.forEach((el: {name: string, label: string}) => {
@@ -73,14 +81,6 @@ export default class EcRootIndex extends Vue {
 
   private sheetClick(item: {id: string}) {alert(item.id); }
 
-  
-  data:any = {
-    anmeldungen: [],
-    begin: {},
-    ende: {},
-    veranstaltungsort: {}
-  }
-  
   private loadData() {
     this.$apolloClient.query({
       query: gql`
@@ -166,7 +166,7 @@ export default class EcRootIndex extends Vue {
 
   private created() {
     this.loadData();
-     getTemplates().then((res) => {this.tnListen = res; });
+    getTemplates().then((res) => {this.tnListen = res; });
   }
 }
 </script>

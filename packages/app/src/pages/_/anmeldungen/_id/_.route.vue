@@ -45,7 +45,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import gql from 'graphql-tag';
 
-import { genReport, existsReport } from '@/report'
+import { genReport, existsReport } from '@/report';
 
 @Component({})
 export default class EcRootIndexAnmeldungenIdIndex extends Vue {
@@ -53,15 +53,15 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
 
   private data: any = {};
 
-  private abmeldenShow = false
-  private abmeldenValid = false
+  private abmeldenShow = false;
+  private abmeldenValid = false;
   private abmeldenValue = {
     gebuehr: 0,
     weg: '',
     kommentar: ''
-  }
+  };
   private abmeldenSave() {
-    this.abmeldenShow = false
+    this.abmeldenShow = false;
 
     this.$apolloClient.mutate({
       mutation: gql`
@@ -74,25 +74,25 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         authToken: this.$authToken,
         ...this.abmeldenValue
       }
-    }).then(()=>{
+    }).then(() => {
       this.$notifikation('Erfolgreich Abgemeldet', `Du hast erfolgreich die Person abgemeldet.`);
-      this.getData()
-    }).catch((err)=>{
+      this.getData();
+    }).catch((err) => {
       this.$dialog.error({
         text: err.message,
         title: 'Speichern fehlgeschlagen!'
       });
-    })
+    });
 
     this.abmeldenValue = {
       gebuehr: 0,
       weg: '',
       kommentar: ''
-    }
+    };
   }
 
   private get config() {
-    let self = this;
+    const self = this;
 
     return {
       sheet: [
@@ -100,9 +100,9 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_bestbrief',
           icon: 'menu',
           label: 'Bestätigungsbrief generieren und Drucken',
-          disabled: !existsReport(`best-brief-${this.$route.params.id}`),
-          click: ()=>{
-            genReport(`best-brief-${this.$route.params.id}`, this.data, `bestaetigungsbrief-${this.$route.params.id}.docx`).then(r=>{
+          disabled: !this.best,
+          click: () => {
+            genReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`, this.data, `bestaetigungsbrief-${this.$route.params.id}.docx`).then((r) => {
               this.$apolloClient.mutate({
                 mutation: gql`
                   mutation($anmeldeID: String!, $authToken: String!) {
@@ -113,17 +113,17 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   authToken: this.$authToken,
                   anmeldeID: this.$route.params.id
                 }
-              })
-            })
+              });
+            });
           }
         },
         {
           id: 'anmel_rep_infobrief',
           icon: 'menu',
           label: 'Infobrief generieren und Drucken',
-          disabled: !existsReport(`info-brief-${this.$route.params.id}`),
-          click: ()=>{
-            genReport(`info-brief-${this.$route.params.id}`, this.data, `infobrief-${this.$route.params.id}.docx`).then(r=>{
+          disabled: !this.info,
+          click: () => {
+            genReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`, this.data, `infobrief-${this.$route.params.id}.docx`).then((r) => {
               this.$apolloClient.mutate({
                 mutation: gql`
                   mutation($anmeldeID: String!, $authToken: String!) {
@@ -134,15 +134,15 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   authToken: this.$authToken,
                   anmeldeID: this.$route.params.id
                 }
-              })
-            })
+              });
+            });
           }
         },
         {
           id: 'anmel_abmelden',
           icon: 'person_add_disabled',
           label: 'Person abmelden',
-          disabled: this.data.wartelistenPlatz===-1,
+          disabled: this.data.wartelistenPlatz === -1,
           click: () => {
             self.abmeldenShow = true;
           }
@@ -152,14 +152,14 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           icon: 'person_add_disabled',
           label: 'Bemerkungen editieren',
           click: () => {
-            (<any>this.$refs.formEditBemerkungen).show()
+            (<any>this.$refs.formEditBemerkungen).show();
           }
         },
         {
           id: 'anmel_nachrücken',
           icon: 'menu',
           label: 'Nachrücken lassen',
-          disabled: this.data.wartelistenPlatz<=0,
+          disabled: this.data.wartelistenPlatz <= 0,
           click: () => {
             if (
               confirm(
@@ -204,7 +204,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           to: `/anmeldungen/${this.$route.params.id}/sonstiges`
         }
       ],
-      title: `${(this.data.person||{}).vorname} ${(this.data.person||{}).nachname} - ${(this.data.veranstaltung||{}).bezeichnung}`,
+      title: `${(this.data.person || {}).vorname} ${(this.data.person || {}).nachname} - ${(this.data.veranstaltung || {}).bezeichnung}`,
       subTitle: 'Anmeldung'
     }
   }
@@ -298,6 +298,10 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
       fetchPolicy: 'no-cache'
     }).then((res: any) => {
       this.data = res.data.anmeldung;
+      (async ()=>{
+        this.best = await existsReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`)
+        this.info = await existsReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`)
+      })
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -306,10 +310,13 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
     });
   }
 
-  private created() {
-    this.getData();
+  best = false
+  info = false
+
+  private async created() {
+    this.getData(); 
   }
 
-  private sheetClick(item: {id: string}) {alert(item.id); }
+  private sheetClick(item: {id:  string}) {alert(item.id);}
 }
 </script>

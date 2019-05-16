@@ -16,7 +16,7 @@ import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 export default class EcNAME extends Vue {
   public static meta = {};
   @Prop()
-  private data!: any 
+  private data!: any;
 
   private rollen = [
     'Teilnehmer',
@@ -25,15 +25,15 @@ export default class EcNAME extends Vue {
     'Küchenleitung',
     'Leitung',
     'Hauptleitung'
-  ]
+  ];
 
-  getTitle(wplatz: number) {
-    if(wplatz===0) {
-      return 'Angemeldet'
-    } else if(wplatz===-1) {
-      return 'Abgemeldet'
+  public getTitle(wplatz: number) {
+    if (wplatz === 0) {
+      return 'Angemeldet';
+    } else if (wplatz === -1) {
+      return 'Abgemeldet';
     } else {
-      return `Auf Wartelistenplatz ${wplatz}`
+      return `Auf Wartelistenplatz ${wplatz}`;
     }
   }
 }

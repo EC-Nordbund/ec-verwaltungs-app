@@ -9,6 +9,6 @@ declare module 'vue/types/vue' {
     $logout: () => void;
     $util: any;
     $setAuthToken: (authToken: string) => void;
-    $notifikation: (title: string, body: string) => Notification
+    $notifikation: (title: string, body: string) => Notification;
   }
 }

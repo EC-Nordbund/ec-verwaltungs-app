@@ -19,7 +19,7 @@ import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 export default class EcNAME extends Vue {
   public static meta = {};
   @Prop()
-  private data!: any 
+  private data!: any;
 
   private rollen = [
     'Teilnehmer',
@@ -28,6 +28,6 @@ export default class EcNAME extends Vue {
     'Küchenleitung',
     'Leitung',
     'Hauptleitung'
-  ]
+  ];
 }
 </script>

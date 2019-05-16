@@ -10,6 +10,6 @@ export default class EcRootIndexAnmeldungenIdIndexFinanzen extends Vue {
   public static meta = {};
 
   @Prop({default: {person: {}}})
-  private data!: any
+  private data!: any;
 }
 </script>

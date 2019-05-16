@@ -39,7 +39,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
-import { genReport } from '@/report'
+import { genReport } from '@/report';
 
 @Component({})
 export default class EcRootIndexAKIndex extends Vue {
@@ -59,21 +59,21 @@ export default class EcRootIndexAKIndex extends Vue {
         icon: this.$util.icon.report,
         label: 'Aktuelle AK Mitglieder Report',
         click: () => {
-          this.gen('ak_all_current', 'ak-alle-current.docx')
+          this.gen('ak_all_current', 'ak-alle-current.docx');
         }
       },
       {
         icon: this.$util.icon.report,
         label: 'Alle AK Mitglieder Report',
         click: () => {
-          this.gen('ak_all_all', 'ak-alle-vollstaendig.docx')
+          this.gen('ak_all_all', 'ak-alle-vollstaendig.docx');
         }
       }
     ],
     title: 'Arbeitskreise'
   };
 
-  private gen(name:string, save: string) {
+  private gen(name: string, save: string) {
     this.$apolloClient.query({
       query: gql`
         query($authToken: String!) {
@@ -106,8 +106,7 @@ export default class EcRootIndexAKIndex extends Vue {
       },
       fetchPolicy: 'no-cache'
     }).then((res: any) => {
-      res.data
-      genReport(name, res.data, save)
+      genReport(name, res.data, save);
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

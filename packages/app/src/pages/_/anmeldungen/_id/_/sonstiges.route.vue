@@ -82,12 +82,12 @@ export default class EcRootIndexAnmeldungenIdIndexSonstiges extends Vue {
   public static meta = {};
 
   @Prop({default: {person: {}}})
-  private data!: any
+  private data!: any;
 
-  private schwimmStufen = ['Nichtschwimmer', 'Mittelmäßiger Schwimmer', 'Guter Schwimmer']
+  private schwimmStufen = ['Nichtschwimmer', 'Mittelmäßiger Schwimmer', 'Guter Schwimmer'];
 
-  showAll(keyName: string) {
-    this.$dialog.notify.info(this.data[keyName]||'N/A')
+  public showAll(keyName: string) {
+    this.$dialog.notify.info(this.data[keyName] || 'N/A');
   }
 }
 </script>

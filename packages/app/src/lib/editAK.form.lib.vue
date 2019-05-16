@@ -37,19 +37,19 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
-import { genReport } from '@/report'
+import { genReport } from '@/report';
 
 @Component({})
 export default class EcRootIndex extends Vue {
   @Prop({default: []})
-  private data!: any 
+  private data!: any;
 
   private personenData = [];
 
   private addPersonShow = false;
   private addPersonValid = false;
   private addPersonValue: any = {};
-  private type!: 'add'|'edit'|'delete'|'' 
+  private type!: 'add'|'edit'|'delete'|'';
 
   private allPersonen: any = [];
 
@@ -59,6 +59,23 @@ export default class EcRootIndex extends Vue {
     'Vertreter',
     'Leiter'
   ];
+
+  public edit(type: 'add'|'edit'|'delete') {
+    this.type = type;
+    this.addPersonValue = {};
+
+    if (type === 'delete') {
+      this.addPersonValue = {
+        status: 0
+      };
+    }
+
+    if (type === 'add' && this.allPersonen) {
+      this.getPersonen();
+    }
+
+    this.addPersonShow = true;
+  }
 
   private addPersonSave() {
     this.addPersonShow = false;
@@ -82,7 +99,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {...this.addPersonValue,  akID: this.$route.params.id, authToken: this.$authToken}
-    }).then(()=>{
+    }).then(() => {
       this.$notifikation('Neuer Eintrag im AK', `Du hast erfolgreich einen neuen Eintrag im AK angelegt`);
     }).catch((err: any) => {
       this.$dialog.error({
@@ -91,23 +108,6 @@ export default class EcRootIndex extends Vue {
       });
     });
 
-  }
-
-  public edit(type: 'add'|'edit'|'delete') {
-    this.type = type;
-    this.addPersonValue = {};
-
-    if (type === 'delete') {
-      this.addPersonValue = {
-        status: 0
-      };
-    }
-
-    if (type === 'add' && this.allPersonen) {
-      this.getPersonen();
-    }
-
-    this.addPersonShow = true;
   }
 
   private getPersonen() {

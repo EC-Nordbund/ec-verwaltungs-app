@@ -61,7 +61,7 @@ export default class EcNAME extends Vue {
   public static meta = {};
 
   @Prop({default: {person: {}}})
-  private data!: any 
+  private data!: any;
 
   private stadien = [
     'Ausgetreten',
@@ -70,8 +70,8 @@ export default class EcNAME extends Vue {
     'Leiter'
   ];
 
-  showAll(value: string) {
-    this.$dialog.notify.info(value)
+  public showAll(value: string) {
+    this.$dialog.notify.info(value);
   }
 }
 </script>

@@ -104,13 +104,13 @@
 import { Component, Vue } from 'vue-property-decorator';
 import pack from '@/plugins/package';
 import gql from 'graphql-tag';
-import * as save from 'js-cookie'
+import * as save from 'js-cookie';
 // ()
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
 
-  private dark = (save.get('dark') === 'x')
+  private dark = (save.get('dark') === 'x');
   private drawer = null;
   private version = pack.version || 'Fehler';
   private breadcrumbs = this.breadMap([
@@ -120,8 +120,8 @@ export default class EcRootIndex extends Vue {
   ]);
 
   private toggleDark() {
-    this.dark = !this.dark
-    save.set('dark', this.dark?'x':'')
+    this.dark = !this.dark;
+    save.set('dark', this.dark ? 'x' : '');
   }
 
   private get breadcrumbsRouter(): any[] {

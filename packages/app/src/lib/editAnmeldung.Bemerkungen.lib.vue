@@ -35,16 +35,27 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
-import { genReport } from '@/report'
+import { genReport } from '@/report';
 
 @Component({})
 export default class EcRootIndex extends Vue {
   @Prop({default: {}})
-  private data!: any 
+  private data!: any;
 
   private addPersonShow = false;
   private addPersonValid = false;
   private addPersonValue: any = {};
+
+  public show() {
+    this.addPersonValue = {
+      vegetarisch: this.data.vegetarisch,
+      gesundheitsinformationen: this.data.gesundheitsinformationen,
+      bemerkungen: this.data.bemerkungen,
+      lebensmittelAllergien: this.data.lebensmittelAllergien
+    };
+
+    this.addPersonShow = true;
+  }
 
   private addPersonSave() {
     this.addPersonShow = false;
@@ -70,7 +81,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {...this.addPersonValue,  anmeldeID: this.$route.params.id, authToken: this.$authToken}
-    }).then(()=>{
+    }).then(() => {
       this.$notifikation('Neuer Eintrag im AK', `Du hast erfolgreich einen neuen Eintrag im AK angelegt`);
     }).catch((err: any) => {
       this.$dialog.error({
@@ -79,17 +90,6 @@ export default class EcRootIndex extends Vue {
       });
     });
 
-  }
-
-  public show() {
-    this.addPersonValue = {
-      vegetarisch: this.data.vegetarisch,
-      gesundheitsinformationen: this.data.gesundheitsinformationen,
-      bemerkungen: this.data.bemerkungen,
-      lebensmittelAllergien: this.data.lebensmittelAllergien
-    }
-
-    this.addPersonShow = true;
   }
 }
 </script>

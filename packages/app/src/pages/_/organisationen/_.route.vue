@@ -30,10 +30,10 @@ export default class EcRootIndex extends Vue {
     title: 'Organisationen'
   };
 
-  private sheetClick(item: {id: string}) {alert(item.id); }
-
   private suche = '';
   private data: any = [];
+
+  private sheetClick(item: {id: string}) {alert(item.id); }
 
   private loadData() {
     this.$apolloClient.query({
@@ -61,7 +61,7 @@ export default class EcRootIndex extends Vue {
     });
   }
 
-  
+
   private filterData(item: any): boolean {
     return this.suche
       .toLowerCase()

@@ -4,10 +4,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 @Component({})
 export default class EcRootIndex extends Vue {
-  public static meta = {};
 
   private get config() {
     return {
@@ -107,14 +106,11 @@ export default class EcRootIndex extends Vue {
       ],
       title: `${this.data.vorname} ${this.data.nachname} (${this.data.gebDat.german})`,
       subTitle: 'Person'
-    }
-  };
-
-  private sheetClick(item: {id: string}) {
-    alert(item.id);
+    };
   }
+  public static meta = {};
 
-  data:any = {
+  public data: any = {
     gebDat: {},
     adressen: [],
     telefone: [],
@@ -122,8 +118,12 @@ export default class EcRootIndex extends Vue {
     fzs: [],
     fzAntraege: [],
     ak: []
+  };
+
+  private sheetClick(item: {id: string}) {
+    alert(item.id);
   }
-  
+
   private loadData() {
     this.$apolloClient.query({
       query: gql`

@@ -25,7 +25,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 
 @Component({})
 export default class EcRootIndex extends Vue {

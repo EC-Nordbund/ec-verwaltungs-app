@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
-import { genReport } from '@/report'
+import { genReport } from '@/report';
 
 @Component({})
 export default class EcRootIndexAKIdIndex extends Vue {
@@ -39,26 +39,26 @@ export default class EcRootIndexAKIdIndex extends Vue {
           id: 'ak_m_add',
           icon: 'person_add',
           label: 'AK Mitglied hinzufügen',
-          click: () => {(<any>this.$refs.formEditAk).edit('add'); }
+          click: () => {(this.$refs.formEditAk as any).edit('add'); }
         },
         {
           id: 'ak_m_update',
           icon: 'edit',
           label: 'AK Mitglied updaten',
-          click: () => {(<any>this.$refs.formEditAk).edit('edit'); }
+          click: () => {(this.$refs.formEditAk as any).edit('edit'); }
         },
         {
           id: 'ak_m_del',
           icon: 'delete',
           label: 'AK Mitglied entfernen',
-          click: () => {(<any>this.$refs.formEditAk).edit('delete'); }
+          click: () => {(this.$refs.formEditAk as any).edit('delete'); }
         },
         {
           id: 'ak_rep_current',
           icon: this.$util.icon.report,
           label: 'Aktuelle AK Mitglieder Report',
           click: () => {
-            genReport('ak_single_current', this.data, `ak-${this.data.bezeichnung}-current.docx`)
+            genReport('ak_single_current', this.data, `ak-${this.data.bezeichnung}-current.docx`);
           }
         },
         {
@@ -66,7 +66,7 @@ export default class EcRootIndexAKIdIndex extends Vue {
           icon: this.$util.icon.report,
           label: 'Alle AK Mitglieder Report',
           click: () => {
-            genReport('ak_single_all', this.data, `ak-${this.data.bezeichnung}-all.docx`)
+            genReport('ak_single_all', this.data, `ak-${this.data.bezeichnung}-all.docx`);
           }
         }
       ],

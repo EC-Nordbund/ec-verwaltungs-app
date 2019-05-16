@@ -54,6 +54,6 @@ import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 export default class EcNAME extends Vue {
   public static meta = {};
   @Prop()
-  private data!: any 
+  private data!: any;
 }
 </script>

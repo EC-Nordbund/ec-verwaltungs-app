@@ -11,14 +11,21 @@ export default class EcReport extends Vue {
   public gql!: DocumentNode;
 
   @Prop({type: Object, required: true})
-  public vars!: any
+  public vars!: any;
 
   @Prop({type: String, required: true})
-  public key!: any
+  public key!: any;
 
-  data:any = null
+  public data: any = null;
 
-  dataLoaded = false
+  public dataLoaded = false;
+
+  public created() {
+    const SELF = this;
+    this.$emit('refetchCb', () => {
+      SELF.fetch();
+    });
+  }
 
   private fetch() {
     this.$apolloClient.query({
@@ -36,14 +43,7 @@ export default class EcReport extends Vue {
         text: err.message,
         title: 'Laden fehlgeschlagen!'
       });
-    });    
-  }
-
-  public created() {
-    let _self = this;
-    this.$emit('refetchCb', ()=>{
-      _self.fetch()
-    })
+    });
   }
 }
 </script>

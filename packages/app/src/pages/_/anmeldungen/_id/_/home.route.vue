@@ -105,9 +105,9 @@ export default class EcRootIndexAnmeldungenIdIndexHome extends Vue {
     'Küchenleitung',
     'Leitung',
     'Hauptleitung'
-  ]
+  ];
 
   @Prop({default: {person: {}}})
-  private data!: any 
+  private data!: any;
 }
 </script>
