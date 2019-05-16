@@ -3,43 +3,7 @@
     router-view(:data="data")
     template(#dialogs)
       ec-edit-anmeldung-bemerkungen(:data="data" ref="formEditBemerkungen")
-      v-dialog(v-model="abmeldenShow" max-width="400px")
-        v-card
-          v-card-title
-            h1(v-font v-primary) Person abmelden
-          v-card-text
-            v-form(v-model="abmeldenValid")
-              formular(v-model="abmeldenValue" :schema=`[
-                {
-                  name: 'weg',
-                  type: 'input',
-                  label: 'Weg der Abmeldung',
-                  rule: "required|max:100",
-                  required: true,
-                  counter: 100
-                },
-                {
-                  name: 'kommentar',
-                  type: 'input',
-                  label: 'Kommentar',
-                  rule: "required|max:200",
-                  required: true,
-                  counter: 200
-                },
-                {
-                  name: 'gebuehr',
-                  type: 'input',
-                  label: 'Abmeldegebühr (Ganze Euros)',
-                  mask: '###',
-                  rule: "required|max:3",
-                  required: true,
-                  counter: 3
-                }
-              ]`)
-          v-card-actions
-            v-spacer
-            v-btn(flat @click="abmeldenShow=false") Abbrechen
-            v-btn(color="primary" :disabled="!abmeldenValid" @click="abmeldenSave") Speichern
+      ec-abmelden(:data="data" ref="formAbmelden")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -51,57 +15,32 @@ import { genReport, existsReport } from '@/report';
 export default class EcRootIndexAnmeldungenIdIndex extends Vue {
   public static meta = {};
 
-  private data: any = {};
-
-  private abmeldenShow = false;
-  private abmeldenValid = false;
-  private abmeldenValue = {
-    gebuehr: 0,
-    weg: '',
-    kommentar: ''
+  private data: any = {
+    person: {gebDat: {}},
+    veranstaltung: {begin: {}, ende: {}},
+    adresse: {},
+    email: {},
+    telefon: {},
+    anmeldeZeitpunkt: {},
+    DSGVO_einverstaendnis: {}
   };
-  private abmeldenSave() {
-    this.abmeldenShow = false;
-
-    this.$apolloClient.mutate({
-      mutation: gql`
-        mutation($anmeldeID: String!, $weg: String!, $gebuehr: Int!, $kommentar: String!, $authToken: String!) {
-          abmelden(anmeldeID: $anmeldeID, weg: $weg, gebuehr: $gebuehr, kommentar: $kommentar, authToken: $authToken)
-        }
-      `,
-      variables: {
-        anmeldeID: this.$route.params.id,
-        authToken: this.$authToken,
-        ...this.abmeldenValue
-      }
-    }).then(() => {
-      this.$notifikation('Erfolgreich Abgemeldet', `Du hast erfolgreich die Person abgemeldet.`);
-      this.getData();
-    }).catch((err) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Speichern fehlgeschlagen!'
-      });
-    });
-
-    this.abmeldenValue = {
-      gebuehr: 0,
-      weg: '',
-      kommentar: ''
-    };
-  }
+  private best = false;
+  private info = false;
 
   private get config() {
-    const self = this;
-
     return {
       sheet: [
         {
           id: 'anmel_rep_bestbrief',
           icon: 'menu',
           label: 'Bestätigungsbrief generieren und Drucken',
-          disabled: !this.best,
+          disabled: !this.best || this.data.abmeldeZeitpunkt || this.data.wartelistenPlatz !== 0,
           click: () => {
+            if(this.data.besteatigungsbrief !== null) {
+              if(!confirm(`Brief wurde ${this.data.besteatigungsbrief.german} bereits generiert. Erneut generieren?`)) {
+                return
+              }
+            }
             genReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`, this.data, `bestaetigungsbrief-${this.$route.params.id}.docx`).then((r) => {
               this.$apolloClient.mutate({
                 mutation: gql`
@@ -121,8 +60,13 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_infobrief',
           icon: 'menu',
           label: 'Infobrief generieren und Drucken',
-          disabled: !this.info,
+          disabled: !this.info || this.data.abmeldeZeitpunkt || this.data.wartelistenPlatz !== 0,
           click: () => {
+            if(this.data.infoBrief !== null) {
+              if(!confirm(`Brief wurde ${this.data.infoBrief.german} bereits generiert. Erneut generieren?`)) {
+                return
+              }
+            }
             genReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`, this.data, `infobrief-${this.$route.params.id}.docx`).then((r) => {
               this.$apolloClient.mutate({
                 mutation: gql`
@@ -144,7 +88,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           label: 'Person abmelden',
           disabled: this.data.wartelistenPlatz === -1,
           click: () => {
-            self.abmeldenShow = true;
+            (<any>this.$refs.formAbmelden).show()
           }
         },
         {
@@ -208,7 +152,6 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
       subTitle: 'Anmeldung'
     }
   }
-
 
   private getData() {
     this.$apolloClient.query({
@@ -296,12 +239,11 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         anmeldeID: this.$route.params.id
       },
       fetchPolicy: 'no-cache'
-    }).then((res: any) => {
+    }).then(async (res: any) => {
       this.data = res.data.anmeldung;
-      (async ()=>{
-        this.best = await existsReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`)
-        this.info = await existsReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`)
-      })
+      
+      this.best = await existsReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`)
+      this.info = await existsReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`)
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -310,13 +252,8 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
     });
   }
 
-  best = false
-  info = false
-
   private async created() {
     this.getData(); 
   }
-
-  private sheetClick(item: {id:  string}) {alert(item.id);}
 }
 </script>

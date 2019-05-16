@@ -1,7 +1,7 @@
 <template lang="pug">
   v-card-text(style="overflow: auto;")
     v-list(two-line)
-      v-list-tile(@click="" v-for="anmeldung in data.anmeldungen.map(a=>a).sort((a,b)=>(b.wartelistenPlatz - a.wartelistenPlatz))" :class="`wlist-${anmeldung.wartelistenPlatz} wlist`")
+      v-list-tile(@click="$router.push({path: `/anmeldungen/${anmeldung.anmeldeID}/home`, query:{prev: $route.fullPath}})" v-for="anmeldung in data.anmeldungen.map(a=>a).sort((a,b)=>(b.wartelistenPlatz - a.wartelistenPlatz))" :class="`wlist-${anmeldung.wartelistenPlatz} wlist`")
         v-list-tile-action
           v-icon person
         v-list-tile-content

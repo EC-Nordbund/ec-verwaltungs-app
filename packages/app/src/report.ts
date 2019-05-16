@@ -15,6 +15,6 @@ export async function genReport(reportName: string, data: any, baseFileName: str
 
 export async function existsReport(reportName: string) {
   const url = `https://verwaltung.ec-nordbund.de/templates/${reportName}.docx`;
-  const _ = await fetch(url).then((res) => res.text()).then((v) => v.substr(0,5)).then((v) => v === '<!DOC');
+  const _ = await fetch(url).then((res) => res.text()).then((v) => v.substr(0, 5)).then((v) => v !== '<!DOC');
   return _;
 }
