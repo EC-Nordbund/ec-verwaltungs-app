@@ -16,7 +16,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import gql from 'graphql-tag';
 
 @Component({})
-export default class EcRootIndex extends Vue {
+export default class EcRootIndexVeranstaltungsortIndex extends Vue {
   public static meta = {};
   private config = {
     sheet: [

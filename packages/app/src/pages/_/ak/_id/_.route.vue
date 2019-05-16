@@ -30,7 +30,7 @@ import gql from 'graphql-tag';
 import { genReport } from '@/report'
 
 @Component({})
-export default class EcRootIndex extends Vue {
+export default class EcRootIndexAKIdIndex extends Vue {
   private get config() {
     return  {
       sheet: [

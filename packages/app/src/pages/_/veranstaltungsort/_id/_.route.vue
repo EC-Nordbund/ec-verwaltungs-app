@@ -6,7 +6,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class EcRootIndex extends Vue {
+export default class EcRootIndexVeranstaltungsortIdIndex extends Vue {
   public static meta = {};
 
   private config = {

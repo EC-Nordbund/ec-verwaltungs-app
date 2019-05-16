@@ -6,7 +6,7 @@
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
 @Component({})
-export default class EcNAME extends Vue {
+export default class EcRootIndexAnmeldungenIdIndexFinanzen extends Vue {
   public static meta = {};
 
   @Prop({default: {person: {}}})

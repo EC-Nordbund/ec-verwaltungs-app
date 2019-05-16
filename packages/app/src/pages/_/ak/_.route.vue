@@ -42,7 +42,7 @@ import gql from 'graphql-tag';
 import { genReport } from '@/report'
 
 @Component({})
-export default class EcRootAKRoot extends Vue {
+export default class EcRootIndexAKIndex extends Vue {
   public static meta = {};
 
   private suche: string = '';

@@ -95,7 +95,7 @@
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
 @Component({})
-export default class AnmeldeDetailsHOME extends Vue {
+export default class EcRootIndexAnmeldungenIdIndexHome extends Vue {
   public static meta = {};
 
   private rollen = [

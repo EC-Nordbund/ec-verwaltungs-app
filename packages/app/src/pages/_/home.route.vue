@@ -12,7 +12,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({})
-export default class EcRootIndex extends Vue {
+export default class EcRootIndexHome extends Vue {
 
   private config = {
     sheet: [
