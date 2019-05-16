@@ -41,6 +41,9 @@ import { genReport } from '@/report'
 
 @Component({})
 export default class EcRootIndex extends Vue {
+  @Prop({default: []})
+  private data!: any 
+
   private personenData = [];
 
   private addPersonShow = false;

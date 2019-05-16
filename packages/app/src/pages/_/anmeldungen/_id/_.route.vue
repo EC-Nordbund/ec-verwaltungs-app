@@ -2,6 +2,7 @@
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasReload hasRouterView v-bind="config" @getData="getData")
     router-view(:data="data")
     template(#dialogs)
+      ec-edit-anmeldung-bemerkungen(:data="data" ref="formEditBemerkungen")
       v-dialog(v-model="abmeldenShow" max-width="400px")
         v-card
           v-card-title
@@ -43,6 +44,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import gql from 'graphql-tag';
+
+import { genReport, existsReport } from '@/report'
 
 @Component({})
 export default class EcRootIndexAnmeldungenIdIndex extends Vue {
@@ -97,27 +100,91 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_bestbrief',
           icon: 'menu',
           label: 'Bestätigungsbrief generieren und Drucken',
-          click: this.sheetClick
+          disabled: !existsReport(`best-brief-${this.$route.params.id}`),
+          click: ()=>{
+            genReport(`best-brief-${this.$route.params.id}`, this.data, `bestaetigungsbrief-${this.$route.params.id}.docx`).then(r=>{
+              this.$apolloClient.mutate({
+                mutation: gql`
+                  mutation($anmeldeID: String!, $authToken: String!) {
+                    anmeldungBestaetigungsbrief(anmeldeID: $anmeldeID, authToken: $authToken)
+                  }
+                `,
+                variables: {
+                  authToken: this.$authToken,
+                  anmeldeID: this.$route.params.id
+                }
+              })
+            })
+          }
         },
         {
           id: 'anmel_rep_infobrief',
           icon: 'menu',
           label: 'Infobrief generieren und Drucken',
-          click: this.sheetClick
+          disabled: !existsReport(`info-brief-${this.$route.params.id}`),
+          click: ()=>{
+            genReport(`info-brief-${this.$route.params.id}`, this.data, `infobrief-${this.$route.params.id}.docx`).then(r=>{
+              this.$apolloClient.mutate({
+                mutation: gql`
+                  mutation($anmeldeID: String!, $authToken: String!) {
+                    anmeldunginfobrief(anmeldeID: $anmeldeID, authToken: $authToken)
+                  }
+                `,
+                variables: {
+                  authToken: this.$authToken,
+                  anmeldeID: this.$route.params.id
+                }
+              })
+            })
+          }
         },
         {
           id: 'anmel_abmelden',
           icon: 'person_add_disabled',
           label: 'Person abmelden',
+          disabled: this.data.wartelistenPlatz===-1,
           click: () => {
             self.abmeldenShow = true;
+          }
+        },
+        {
+          id: 'anmel_bemerkungenEdit',
+          icon: 'person_add_disabled',
+          label: 'Bemerkungen editieren',
+          click: () => {
+            (<any>this.$refs.formEditBemerkungen).show()
           }
         },
         {
           id: 'anmel_nachrücken',
           icon: 'menu',
           label: 'Nachrücken lassen',
-          click: this.sheetClick
+          disabled: this.data.wartelistenPlatz<=0,
+          click: () => {
+            if (
+              confirm(
+                'Sicher, dass die Person Nachrücken soll?\n\n Die Person hat also bestätigt, dass sie Nachrücken kann.'
+              )
+            ) {
+              this.$apolloClient.mutate({
+                mutation: gql`
+                  mutation(
+                    $anmeldeID: String!
+                    $authToken: String!
+                  ) {
+                    nachruecken(
+                      anmeldeID: $anmeldeID
+                      authToken: $authToken
+                    )
+                  }
+                `,
+                variables: {
+                  anmeldeID: this.data.anmeldung.anmeldeID,
+                  authToken: this.$authToken
+                }
+              })
+            }
+          }
         }
       ],
       nav: [

@@ -19,7 +19,7 @@
             v-icon apps
           v-list
             slot(name="sheet")
-            v-list-tile(v-for="item in sheet" :key="item.label" @click="sheetOpen = false;item.click(item)")
+            v-list-tile(v-for="item in sheet" :key="item.label" @click="sheetOpen = false;item.click(item)" :disabled="item.disabled")
               v-list-tile-action
                 v-icon {{item.icon}}
               v-list-tile-title {{item.label}}
