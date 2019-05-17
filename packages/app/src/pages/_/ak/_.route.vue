@@ -20,7 +20,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
-import { genReport } from '@/report';
 
 @Component({})
 export default class EcRootIndexAKIndex extends Vue {
@@ -57,45 +56,32 @@ export default class EcRootIndexAKIndex extends Vue {
   };
 
   private gen(name: string, save: string) {
-    this.$apolloClient.query({
-      query: gql`
-        query($authToken: String!) {
-          aks(authToken: $authToken) {
-            akID
-            bezeichnung
-            personen {
-              currentStatus
-              allUpdates {
-                akPersonID
-                neuerStatus
-                date {
-                  german
-                }
+    this.$util.report.loadData(this, gql`
+      query($authToken: String!) {
+        aks(authToken: $authToken) {
+          akID
+          bezeichnung
+          personen {
+            currentStatus
+            allUpdates {
+              akPersonID
+              neuerStatus
+              date {
+                german
               }
-              person {
-                personID
-                vorname
-                nachname
-                gebDat {
-                  german
-                }
+            }
+            person {
+              personID
+              vorname
+              nachname
+              gebDat {
+                german
               }
             }
           }
         }
-      `,
-      variables: {
-        authToken: this.$authToken
-      },
-      fetchPolicy: 'no-cache'
-    }).then((res: any) => {
-      genReport(name, res.data, save);
-    }).catch((err: any) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Laden fehlgeschlagen!'
-      });
-    });
+      }
+    `, name, save)
   }
 
   private loadData() {

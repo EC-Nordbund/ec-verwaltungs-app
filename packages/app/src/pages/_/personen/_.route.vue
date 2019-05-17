@@ -22,6 +22,8 @@
           td {{props.item.vorname}} 
           td {{props.item.nachname}} 
           td {{props.item.gebDat.german}}
+    template(#dialogs)
+      ec-add-person(ref="addPerson")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -40,13 +42,7 @@ export default class EcRootIndex extends Vue {
         id: 'pers_add',
         icon: 'menu',
         label: 'Person hinzufügen',
-        click: this.sheetClick
-      },
-      {
-        icon: 'menu',
-        id: 'pers_report',
-        label: 'Report erzeugen',
-        click: this.sheetClick
+        click: ()=>{(<any>this.$refs.addPerson).show()}
       }
     ],
     title: 'Personen'
@@ -117,7 +113,7 @@ export default class EcRootIndex extends Vue {
   }
 }
 </script>
-<style scoped>
+<style>
 .geschlecht-w {
   background-color: #f000a0;
   opacity: .9;

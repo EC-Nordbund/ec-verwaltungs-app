@@ -33,11 +33,11 @@
       slot
     slot(style="overflow-y: auto" v-if="hasRouterView")
     v-card-actions(@mouseover="openNav" v-if="hasNav")
-      slot(name="dialogs")
       v-bottom-nav(:value="showNav" class="elevation-0")
         v-btn(v-for="item in nav" :key="item.label" :to="{path: item.to, query: {prev: $route.query.prev}}")
           span {{item.label}}
           v-icon {{item.icon}}
+    slot(name="dialogs")
             
 </template>
 <script lang="ts">

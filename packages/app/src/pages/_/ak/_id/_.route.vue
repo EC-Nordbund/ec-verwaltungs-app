@@ -35,7 +35,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import gql from 'graphql-tag';
-import { genReport } from '@/report';
 
 @Component({})
 export default class EcRootIndexAKIdIndex extends Vue {
@@ -65,7 +64,7 @@ export default class EcRootIndexAKIdIndex extends Vue {
           icon: this.$util.icon.report,
           label: 'Aktuelle AK Mitglieder Report',
           click: () => {
-            genReport('ak_single_current', this.data, `ak-${this.data.bezeichnung}-current.docx`);
+            this.$util.report.withData('ak_single_current', this.data, `ak-${this.data.bezeichnung}-current.docx`);
           }
         },
         {
@@ -73,7 +72,7 @@ export default class EcRootIndexAKIdIndex extends Vue {
           icon: this.$util.icon.report,
           label: 'Alle AK Mitglieder Report',
           click: () => {
-            genReport('ak_single_all', this.data, `ak-${this.data.bezeichnung}-all.docx`);
+            this.$util.report.withData('ak_single_all', this.data, `ak-${this.data.bezeichnung}-all.docx`);
           }
         }
       ],
