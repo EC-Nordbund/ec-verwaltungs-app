@@ -5,6 +5,7 @@ import suche from './search.lib.vue';
 import editAK from './editAK.form.lib.vue';
 import abmelden from './abmelden.form.lib.vue';
 import editBemerkungen from './editAnmeldung.Bemerkungen.lib.vue';
+import addAK from './addAK.form.lib.vue';
 import anmeldungKontakt from './anmeldungKontakt.form.lib.vue'
 // import loadData from './loadData.lib.vue';
 
@@ -18,6 +19,7 @@ Vue.component('ec-lesezeichen-add', addLesezeichen);
 Vue.component('ec-lesezeichen-show', showLesezeichen);
 
 // Vue.component('ec-loadData', loadData);
+Vue.component('ec-add-ak', addAK);
 Vue.component('ec-form-edit-ak', editAK);
 Vue.component('ec-edit-anmeldung-bemerkungen', editBemerkungen);
 Vue.component('ec-abmelden', abmelden);

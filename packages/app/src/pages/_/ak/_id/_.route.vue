@@ -1,22 +1,29 @@
 <template lang="pug">  
   ec-wrapper(hasXBtn hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
-    //- Kopf
     template(#header)
       .head(style="padding: 2px 10px")
         v-switch(label="Alle Statusupdates anzeigen?" v-model="showAll")
         h2(v-font v-primary v-if="showAll") Alle Statusupdates
         h2(v-font v-primary v-else) Aktuelle Mitglieder
-    //- Main Content
     v-list(two-line)
       template(v-if="data.personen" v-for="(person, index) in data.personen")
-        v-list-tile(v-if="!showAll && person.currentStatus!==0" :key="person.person.personID + '_c'" @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})")
+        v-list-tile(
+          v-if="!showAll && person.currentStatus!==0" 
+          :key="person.person.personID + '_c'" 
+          @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
+        )
           v-list-tile-action
             v-icon person
           v-list-tile-content
             v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
             v-list-tile-sub-title {{stadien[person.currentStatus]}}
         v-divider(v-if="showAll && index!==0")
-        v-list-tile(v-for="state in person.allUpdates" v-if="showAll" :key="state.akPersonID + '_s'" @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})")
+        v-list-tile(
+          v-for="state in person.allUpdates" 
+          v-if="showAll" 
+          :key="state.akPersonID + '_s'" 
+          @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
+        )
           v-list-tile-action
             v-icon person
           v-list-tile-content
