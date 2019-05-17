@@ -26,7 +26,7 @@ import { genReport } from '@/report';
 export default class EcRootIndexAKIndex extends Vue {
   public static meta = {};
 
-  @Prop({default: {}})
+  @Prop()
   private data!: any;
 
   public show() {

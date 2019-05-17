@@ -2,7 +2,7 @@
   ec-wrapper(hasXBtn hasNav hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     router-view(:data="data")
     template(#dialogs)
-      ec-add-adresse(ref="addAdresse")
+      ec-add-adresse(ref="addAdresse" :data="data")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
