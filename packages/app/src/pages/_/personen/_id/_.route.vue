@@ -3,6 +3,9 @@
     router-view(:data="data")
     template(#dialogs)
       ec-add-adresse(ref="addAdresse" :data="data")
+      ec-add-tel(ref="addTel" :data="data")
+      ec-add-mail(ref="addMail" :data="data")
+      ec-fz-antrag(ref="fzAntrag" :data="data")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -14,7 +17,7 @@ export default class EcRootIndex extends Vue {
     return {
       sheet: [
         {
-          icon: 'menu',
+          icon: 'home',
           id: 'pers_add_adresse',
           label: 'Adresse hinzufügen',
           click: ()=>{(<any>this.$refs.addAdresse).show()}
@@ -25,29 +28,53 @@ export default class EcRootIndex extends Vue {
           label: 'Adresse Mergen'
         },
         {
-          icon: 'menu',
+          icon: 'mail',
           id: 'pers_add_email',
-          label: 'Email hinzufügen'
+          label: 'Email hinzufügen',
+          click: ()=>{(<any>this.$refs.addMail).show()}
         },
         {
-          icon: 'menu',
+          icon: 'phone',
           id: 'pers_add_telefon',
-          label: 'Telefon hinzufügen'
+          label: 'Telefon hinzufügen',
+          click: ()=>{(<any>this.$refs.addTel).show()}
         },
-        {
-          icon: 'menu',
-          id: 'pers_merge_telefon',
-          label: 'Telefon mergen'
-        },
+        // {
+        //   icon: 'menu',
+        //   id: 'pers_merge_telefon',
+        //   label: 'Telefon mergen'
+        // },
         {
           icon: 'menu',
           id: 'pers_merge',
           label: 'Person mergen'
         },
         {
-          icon: 'menu',
+          icon: 'assignment',
           id: 'pers_create_fz_antrag',
-          label: 'FZ-Antrag generieren'
+          label: 'FZ-Antrag generieren',
+          // click: ()=>{
+            // if (confirm(`TODO:...`)) {
+              // this.$apolloClient.mutate({
+              //   mutation: gql`
+              //     mutation(
+              //       $personID: Int!
+              //       $authToken: String!
+              //     ) {
+              //       addFZAntrag(
+              //         personID: $personID
+              //         authToken: $authToken
+              //       )
+              //     }
+              //   `,
+              //   variables: {
+              //     authToken: this.$authToken,
+              //     personID: this.$route.params.id
+              //   }
+              // })
+            // }
+          // }
+          click: ()=>{(<any>this.$refs.fzAntrag).show()}
         },
         {
           icon: 'menu',

@@ -49,7 +49,7 @@ export default class EcRootIndex extends Vue {
   private addPersonShow = false;
   private addPersonValid = false;
   private addPersonValue: any = {};
-  private type!: 'add'|'edit'|'delete'|'';
+  private type: 'add'|'edit'|'delete'|'' = '';
 
   private allPersonen: any = [];
 

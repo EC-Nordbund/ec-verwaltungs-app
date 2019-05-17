@@ -3,21 +3,21 @@
     v-list(two-line)
       v-list-tile(v-for="a in data.ak" @click="$router.push({path: `/ak/${a.ak.akID}`, query: {prev: $route.fullPath}})")
         v-list-tile-action
-          v-icon person
+          v-icon group
         v-list-tile-content
           v-list-tile-title AK: {{a.ak.bezeichnung}}
           v-list-tile-sub-title {{stadien[a.currentStatus]}}
       v-divider(v-if="data.fzs.length>0")
       v-list-tile(v-for="fz in data.fzs" @click="showAll(fz.kommentar)")
         v-list-tile-action
-          v-icon person
+          v-icon assignment
         v-list-tile-content
           v-list-tile-title FZ | {{fz.kommentar}}
           v-list-tile-sub-title gesehen von: {{fz.gesehenVon.vorname}} {{fz.gesehenVon.nachname}} am {{fz.fzVon.german}}
       v-divider(v-if="data.fzAntraege.length>0")
       v-list-tile(v-for="fz in data.fzAntraege")
         v-list-tile-action
-          v-icon person
+          v-icon mail
         v-list-tile-content
           v-list-tile-title {{fz.erzeugt.german}}
           v-list-tile-sub-title FZ-Antrag
@@ -25,28 +25,28 @@
         v-divider
         v-list-tile(@click="")
           v-list-tile-action
-            v-icon person
+            v-icon local_offer
           v-list-tile-content
             v-list-tile-title {{el}}
             v-list-tile-sub-title Tag
       v-divider(v-if="data.Notizen")
       v-list-tile(v-if="data.Notizen" @click="showAll(data.Notizen)")
         v-list-tile-action
-          v-icon person
+          v-icon notes
         v-list-tile-content
           v-list-tile-title {{data.Notizen}}
           v-list-tile-sub-title Notizen
       v-divider(v-if="data.juLeiCaNr")
       v-list-tile(v-if="data.juLeiCaNr" @click="")
         v-list-tile-action
-          v-icon person
+          v-icon credit_card
         v-list-tile-content
           v-list-tile-title {{data.juLeiCaNr}}
           v-list-tile-sub-title JuLeiCaNr
       v-divider(v-if="data.ecKreis")
       v-list-tile(v-if="data.ecKreis" @click="")
         v-list-tile-action
-          v-icon person
+          v-icon supervised_user_circle
         v-list-tile-content
           v-list-tile-title {{data.ecKreis.bezeichnung}}
           v-list-tile-sub-title EC-Kreis

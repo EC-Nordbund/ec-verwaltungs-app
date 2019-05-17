@@ -1,5 +1,6 @@
 <template lang="pug">
   v-card-text(style="overflow: auto;")
+    //- ec-edit-adresse(ref="editAdresse")
     v-list(two-line)
       v-list-tile(@click="")
         v-list-tile-action
@@ -26,17 +27,20 @@
         v-list-tile-content
           v-list-tile-title {{adresse.strasse}}
           v-list-tile-sub-title {{adresse.plz}} {{adresse.ort}}
+        //- v-list-tile-action
+        //-   v-btn(@click="$event.stopPropagation();($refs.editAdresse).show(adresse)" icon)
+        //-     v-icon edit
       v-divider
       v-list-tile(v-for="email in data.emails" :key="email.eMailID" :class="email.isOld?'isOld':''" @click="location.href='mailto:' + email.eMail")
         v-list-tile-action
-          v-icon home
+          v-icon mail
         v-list-tile-content
           v-list-tile-title {{email.eMail}}
           v-list-tile-sub-title E-Mail
       v-divider
       v-list-tile(v-for="telefon in data.telefone" :key="telefon.telefonID" :class="telefon.isOld?'isOld':''" @click="location.href = 'tel:' + telefon.telefon")
         v-list-tile-action
-          v-icon home
+          v-icon phone
         v-list-tile-content
           v-list-tile-title {{telefon.telefon}}
           v-list-tile-sub-title Telefon    
@@ -51,10 +55,18 @@ export default class EcNAME extends Vue {
   @Prop()
   private data!: any;
   private location = window.location;
+  alert = window.alert
+
+  // adresseClick(e, adresse) {
+  //   console.log(e);
+    
+  //   $event.stopPropagation();($refs.editAdresse).show(adresse)
+  // }
 }
 </script>
 <style scoped>
 .isOld {
-  background-color: red;
+  background-color: gray;
+  /* opacit */
 }
 </style>

@@ -5,7 +5,7 @@
         v-divider(v-if="id!==0")
         v-list-tile(@click="$router.push({path: `/anmeldungen/${anmeldung.anmeldeID}/home`, query: {prev: $route.fullPath}})")
           v-list-tile-action
-            v-icon person
+            v-icon event
           v-list-tile-content
             v-list-tile-title {{anmeldung.veranstaltung.bezeichnung}} | ({{anmeldung.veranstaltung.begin.german}} - {{anmeldung.veranstaltung.ende.german}})
             v-list-tile-sub-title Rolle: {{rollen[anmeldung.position-1]}} | AnmeldeID: {{anmeldung.anmeldeID}}
