@@ -16,7 +16,7 @@
         text: 'GebDat',
         value: 'gebDat.input'
       }
-    ]` :items = "data.filter(filterData)" )
+    ]` :items = "data.filter($util.filter(suche))" )
       template(#items="props")
         tr(@click="$router.push({path: `/personen/${props.item.personID}/home`, query: {prev: $route.fullPath}})" :class="'geschlecht-' + props.item.geschlecht")
           td {{props.item.vorname}} 
@@ -53,8 +53,6 @@ export default class EcRootIndex extends Vue {
     alert('test');
   }
 
-  private sheetClick(item: {id: string}) {alert(item.id); }
-
   private loadData() {
     this.$apolloClient.query({
       query: gql`
@@ -87,29 +85,6 @@ export default class EcRootIndex extends Vue {
 
   private created() {
     this.loadData();
-  }
-
-  private filterData(item: any): boolean {
-    return this.suche
-      .toLowerCase()
-      .split(' ')
-      .map((suche: string) => this.filterPart(item, suche))
-      .reduce((a, b) => a && b, true);
-  }
-
-  private filterPart(item: any, suche: string): boolean {
-    if (!suche) {
-      return true;
-    }
-    if (typeof item === 'string') {
-      return item.toLowerCase().includes(suche);
-    } else if (typeof item === 'number' || typeof item === 'boolean') {
-      return item.toString().toLowerCase().includes(suche);
-    } else if (item) {
-      return Object.keys(item).map((key) => this.filterPart(item[key], suche)).reduce((a, b) => a || b, false);
-    } else {
-      return false;
-    }
   }
 }
 </script>

@@ -4,6 +4,7 @@ import ApolloClient from 'apollo-boost';
 import filterUtil from "@/util/filter.util";
 import reportUtil from "@/util/report.util";
 import iconUtil from "@/util/icon.util";
+import lesezeichenUtil from "@/util/lesezeichen.util";
 declare module 'vue/types/vue' {
   interface Vue {
     $authToken: string;
@@ -13,7 +14,8 @@ declare module 'vue/types/vue' {
     $util: {
       filter: typeof filterUtil,
       report: typeof reportUtil,
-      icon: typeof iconUtil
+      icon: typeof iconUtil,
+      lesezeichen: typeof lesezeichenUtil
     };
     $setAuthToken: (authToken: string) => void;
     $notifikation: (title: string, body: string) => Notification;

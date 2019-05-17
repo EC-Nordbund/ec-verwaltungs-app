@@ -1,6 +1,8 @@
 <template lang="pug">
   ec-wrapper(hasXBtn hasNav hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     router-view(:data="data")
+    template(#dialogs)
+      ec-add-adresse(ref="addAdresse")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -14,7 +16,8 @@ export default class EcRootIndex extends Vue {
         {
           icon: 'menu',
           id: 'pers_add_adresse',
-          label: 'Adresse hinzufügen'
+          label: 'Adresse hinzufügen',
+          click: ()=>{(<any>this.$refs.addAdresse).show()}
         },
         {
           icon: 'menu',

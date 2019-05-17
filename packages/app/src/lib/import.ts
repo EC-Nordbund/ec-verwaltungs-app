@@ -7,6 +7,7 @@ import abmelden from './abmelden.form.lib.vue';
 import editBemerkungen from './editAnmeldung.Bemerkungen.lib.vue';
 import addAK from './addAK.form.lib.vue';
 import addPerson from './addPerson.form.lib.vue';
+import addAdresse from './addAdresse.form.lib.vue';
 import anmeldungKontakt from './anmeldungKontakt.form.lib.vue'
 // import loadData from './loadData.lib.vue';
 
@@ -26,3 +27,4 @@ Vue.component('ec-edit-anmeldung-bemerkungen', editBemerkungen);
 Vue.component('ec-abmelden', abmelden);
 Vue.component('ec-anmeldung-kontakt', anmeldungKontakt);
 Vue.component('ec-add-person', addPerson);
+Vue.component('ec-add-adresse', addAdresse);
