@@ -4,6 +4,7 @@
     template(#dialogs)
       ec-edit-anmeldung-bemerkungen(:data="data" ref="formEditBemerkungen")
       ec-abmelden(:data="data" ref="formAbmelden")
+      ec-anmeldung-kontakt(:data="data" ref="formKontakt")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -34,7 +35,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_bestbrief',
           icon: 'menu',
           label: 'Bestätigungsbrief generieren und Drucken',
-          disabled: !this.best || this.data.abmeldeZeitpunkt || this.data.wartelistenPlatz !== 0,
+          disabled: !this.best || this.data.abmeldeZeitpunkt!==null || this.data.wartelistenPlatz !== 0,
           click: () => {
             if(this.data.besteatigungsbrief !== null) {
               if(!confirm(`Brief wurde ${this.data.besteatigungsbrief.german} bereits generiert. Erneut generieren?`)) {
@@ -60,7 +61,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_infobrief',
           icon: 'menu',
           label: 'Infobrief generieren und Drucken',
-          disabled: !this.info || this.data.abmeldeZeitpunkt || this.data.wartelistenPlatz !== 0,
+          disabled: !this.info || this.data.abmeldeZeitpunkt!==null || this.data.wartelistenPlatz !== 0,
           click: () => {
             if(this.data.infoBrief !== null) {
               if(!confirm(`Brief wurde ${this.data.infoBrief.german} bereits generiert. Erneut generieren?`)) {
@@ -97,6 +98,14 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           label: 'Bemerkungen editieren',
           click: () => {
             (<any>this.$refs.formEditBemerkungen).show();
+          }
+        },
+        {
+          id: 'anmel_kontakt',
+          icon: 'person_add_disabled',
+          label: 'Kontaktdaten editieren',
+          click: () => {
+            (<any>this.$refs.formKontakt).show();
           }
         },
         {
