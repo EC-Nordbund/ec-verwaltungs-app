@@ -23,11 +23,6 @@ export default class EcRootIndex extends Vue {
           click: ()=>{(<any>this.$refs.addAdresse).show()}
         },
         {
-          icon: 'menu',
-          id: 'pers_merge_adresse',
-          label: 'Adresse Mergen'
-        },
-        {
           icon: 'mail',
           id: 'pers_add_email',
           label: 'Email hinzufügen',
@@ -39,11 +34,6 @@ export default class EcRootIndex extends Vue {
           label: 'Telefon hinzufügen',
           click: ()=>{(<any>this.$refs.addTel).show()}
         },
-        // {
-        //   icon: 'menu',
-        //   id: 'pers_merge_telefon',
-        //   label: 'Telefon mergen'
-        // },
         {
           icon: 'menu',
           id: 'pers_merge',
@@ -53,27 +43,6 @@ export default class EcRootIndex extends Vue {
           icon: 'assignment',
           id: 'pers_create_fz_antrag',
           label: 'FZ-Antrag generieren',
-          // click: ()=>{
-            // if (confirm(`TODO:...`)) {
-              // this.$apolloClient.mutate({
-              //   mutation: gql`
-              //     mutation(
-              //       $personID: Int!
-              //       $authToken: String!
-              //     ) {
-              //       addFZAntrag(
-              //         personID: $personID
-              //         authToken: $authToken
-              //       )
-              //     }
-              //   `,
-              //   variables: {
-              //     authToken: this.$authToken,
-              //     personID: this.$route.params.id
-              //   }
-              // })
-            // }
-          // }
           click: ()=>{(<any>this.$refs.fzAntrag).show()}
         },
         {
@@ -95,21 +64,6 @@ export default class EcRootIndex extends Vue {
           icon: 'menu',
           id: 'pers_edit_sonstiges',
           label: 'Sonstiges editieren'
-        },
-        {
-          icon: 'menu',
-          id: 'pers_old_Adresse',
-          label: 'Adresse als veraltet makieren'
-        },
-        {
-          icon: 'menu',
-          id: 'pers_old_Telefon',
-          label: 'Telefon als veraltet makieren'
-        },
-        {
-          icon: 'menu',
-          id: 'pers_old_Email',
-          label: 'E-Mail als veraltet makieren'
         },
         {
           icon: 'menu',
