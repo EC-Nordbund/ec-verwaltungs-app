@@ -114,7 +114,8 @@ export async function generate(
     vOrtLocation: `${v.veranstaltungsort.plz} ${v.veranstaltungsort.ort} (${v.veranstaltungsort.land})`,
     anmeldungen: v.anmeldungen
       .filter((an: any) => wlistFilter(an.wartelistenPlatz))
-      .map((h: any) => ({
+      .map((h: any, id) => ({
+        id,
         ...h,
         empty: '',
         m: h.person.geschlecht === 'm' ? 'X' : '',

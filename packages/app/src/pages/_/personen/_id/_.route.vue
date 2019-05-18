@@ -35,6 +35,7 @@ export default class EcRootIndex extends Vue {
           click: ()=>{(<any>this.$refs.addTel).show()}
         },
         {
+          disabled: true,
           icon: 'menu',
           id: 'pers_merge',
           label: 'Person mergen'
@@ -56,6 +57,7 @@ export default class EcRootIndex extends Vue {
           label: 'Stammdaten editieren'
         },
         {
+          disabled: true,
           icon: 'menu',
           id: 'pers_edit_kategor',
           label: 'Kategorien editieren'
