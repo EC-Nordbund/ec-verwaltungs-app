@@ -12,8 +12,8 @@
         v-list-tile-action
           v-icon assignment
         v-list-tile-content
-          v-list-tile-title FZ | {{fz.kommentar}}
-          v-list-tile-sub-title gesehen von: {{fz.gesehenVon.vorname}} {{fz.gesehenVon.nachname}} am {{fz.fzVon.german}}
+          v-list-tile-title FZ vom {{fz.fzVon.german}} | {{fz.kommentar}}
+          v-list-tile-sub-title gesehen von: {{fz.gesehenVon.vorname}} {{fz.gesehenVon.nachname}} gesehen am {{fz.gesehenAm.german}}
       v-divider(v-if="data.fzAntraege.length>0")
       v-list-tile(v-for="fz in data.fzAntraege")
         v-list-tile-action

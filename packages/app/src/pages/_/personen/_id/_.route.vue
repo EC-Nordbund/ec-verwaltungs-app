@@ -6,6 +6,8 @@
       ec-add-tel(ref="addTel" :data="data")
       ec-add-mail(ref="addMail" :data="data")
       ec-fz-antrag(ref="fzAntrag" :data="data")
+      ec-fz(ref="fz")
+      ec-edit-person(ref="stamm" :data="data")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -47,14 +49,16 @@ export default class EcRootIndex extends Vue {
           click: ()=>{(<any>this.$refs.fzAntrag).show()}
         },
         {
-          icon: 'menu',
+          icon: 'assignment',
           id: 'pers_add_fz',
-          label: 'FZ Eintragen'
+          label: 'FZ Eintragen',
+          click: ()=>{(<any>this.$refs.fz).show()}
         },
         {
           icon: 'menu',
           id: 'pers_edit_stamm',
-          label: 'Stammdaten editieren'
+          label: 'Stammdaten editieren',
+          click: ()=>{(<any>this.$refs.stamm).show()}
         },
         {
           disabled: true,
@@ -65,14 +69,16 @@ export default class EcRootIndex extends Vue {
         {
           icon: 'menu',
           id: 'pers_edit_sonstiges',
-          label: 'Sonstiges editieren'
+          label: 'Sonstiges editieren',
+          click: ()=>{alert('Comming Soon...')}
         },
         {
+          disabled: true,
           icon: 'menu',
           id: 'pers_report',
           label: 'Report erzeugen'
         }
-      ].map((v) => ({click: this.sheetClick, ...v})),
+      ],
       nav: [
         {
           icon: 'menu',
