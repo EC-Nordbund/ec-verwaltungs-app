@@ -11,7 +11,7 @@
     "types": [
       "webpack-env"
     ],
-    "target": "es5",
+    "target": "es2017",
     "module": "esnext",
     "importHelpers": true,
     "moduleResolution": "node",
