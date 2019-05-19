@@ -69,7 +69,7 @@ let auth = {
 }
 
 setInterval(()=>{
-  let cookiedate = save.get('logoutTime') || 0
+  let cookiedate = parseInt(save.get('logoutTime')|| '0')
 
   if (auth.logout.getTime() !== cookiedate) {
     auth.logout = new Date(cookiedate);
@@ -77,6 +77,7 @@ setInterval(()=>{
   if (auth.logout.getTime() < (new Date()).getTime() || cookiedate === 0) {
     auth.authToken = '';
     router.push({path: '/login'});
+    save.set('logoutTime', '0');
   }
 }, 10000)
 
