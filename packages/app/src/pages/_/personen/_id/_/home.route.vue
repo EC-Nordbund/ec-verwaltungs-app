@@ -90,7 +90,7 @@ export default class EcNAME extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         adressID
       }
     }).then((res: any) => {
@@ -110,7 +110,7 @@ export default class EcNAME extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         emailID
       }
     }).then((res: any) => {
@@ -130,7 +130,7 @@ export default class EcNAME extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         telefonID
       }
     }).then((res: any) => {
@@ -150,7 +150,7 @@ export default class EcNAME extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         adressID
       }
     }).then((res: any) => {
@@ -170,7 +170,7 @@ export default class EcNAME extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         emailID
       }
     }).then((res: any) => {
@@ -190,7 +190,7 @@ export default class EcNAME extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         telefonID
       }
     }).then((res: any) => {

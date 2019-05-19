@@ -89,7 +89,7 @@ export default class EcRootIndex extends Vue {
           )
         }
       `,
-      variables: {...this.addPersonValue,  personID: this.$route.params.id, authToken: this.$authToken}
+      variables: {...this.addPersonValue,  personID: this.$route.params.id, authToken: this.$authToken()}
     }).then(() => {
       this.$notifikation('Neues FZ eingetragen', `Du hast erfolgreich ein neues FZ eingetragen.`);
     }).catch((err: any) => {
@@ -117,7 +117,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     })
     .then((res) => {

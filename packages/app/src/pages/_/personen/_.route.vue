@@ -66,7 +66,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken
+        authToken: this.$authToken()
       },
       fetchPolicy: 'no-cache'
     }).then((res: any) => {

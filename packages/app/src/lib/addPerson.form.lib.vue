@@ -75,7 +75,7 @@ export default class ecAddPerson extends Vue {
           addPerson(vorname: $vorname, nachname: $nachname, gebDat: $gebDat, geschlecht: $geschlecht, authToken: $authToken)
         }
       `,
-      variables: {...this.addPersonValue,  anmeldeID: this.$route.params.id, authToken: this.$authToken}
+      variables: {...this.addPersonValue,  anmeldeID: this.$route.params.id, authToken: this.$authToken()}
     }).then((res:any) => {
       this.$notifikation('Neue Person', `Du hast erfolgreich eine neue Person angelegt`);
       this.$router.push({path: `/personen/${res.data.addPerson}/home`, query: {prev: this.$route.fullPath}})

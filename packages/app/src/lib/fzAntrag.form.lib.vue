@@ -46,7 +46,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         personID: this.$route.params.id,
         email: mail
       }

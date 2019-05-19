@@ -31,7 +31,7 @@ export default class EcReport extends Vue {
     this.$apolloClient.query({
       query: this.gql,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         ...this.vars
       },
       fetchPolicy: 'no-cache'

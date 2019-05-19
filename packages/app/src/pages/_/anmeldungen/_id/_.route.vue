@@ -50,7 +50,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   }
                 `,
                 variables: {
-                  authToken: this.$authToken,
+                  authToken: this.$authToken(),
                   anmeldeID: this.$route.params.id
                 }
               });
@@ -76,7 +76,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   }
                 `,
                 variables: {
-                  authToken: this.$authToken,
+                  authToken: this.$authToken(),
                   anmeldeID: this.$route.params.id
                 }
               });
@@ -133,7 +133,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                 `,
                 variables: {
                   anmeldeID: this.data.anmeldung.anmeldeID,
-                  authToken: this.$authToken
+                  authToken: this.$authToken()
                 }
               })
             }
@@ -244,7 +244,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         anmeldeID: this.$route.params.id
       },
       fetchPolicy: 'no-cache'

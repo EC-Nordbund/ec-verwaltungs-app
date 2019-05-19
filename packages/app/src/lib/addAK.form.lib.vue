@@ -48,7 +48,7 @@ export default class EcRootIndexAKIndex extends Vue {
       `,
       variables: {
         ...this.addAKValue,
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     }).then((res: any) => {
       this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${this.addAKValue.bezeichnung}" angelegt`);

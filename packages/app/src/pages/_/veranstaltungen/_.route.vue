@@ -52,7 +52,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     }).then((res: any) => {
       this.data = res.data.veranstaltungen;
