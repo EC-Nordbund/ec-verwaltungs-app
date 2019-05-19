@@ -91,6 +91,7 @@ export default class EcRootLogin extends Vue {
         text: err.message,
         title: 'Anmelden fehlgeschlagen!'
       });
+      this.loading = false;
     });
   }
 
