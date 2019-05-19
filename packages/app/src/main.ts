@@ -5,6 +5,7 @@ import VuetifyDialog from 'vuetify-dialog';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
 import '@/assets/style.css';
+import * as save from 'js-cookie';
 
 import router from '@/router';
 // import { Auth } from '@/plugins/auth';
@@ -75,7 +76,8 @@ Vue.prototype.$authToken = ()=>{
 Vue.prototype.$gql = gql;
 
 Vue.prototype.$setAuthToken = (authToken: string) => {
-  Vue.prototype.$authToken = authToken;
+  auth.logout = new Date();
+  auth.authToken = authToken;
 };
 
 Vue.prototype.$apolloClient = new ApolloClient({
