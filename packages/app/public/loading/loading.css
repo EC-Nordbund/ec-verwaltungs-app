@@ -6,6 +6,7 @@
 
 body {
   overflow: hidden;
+  border: solid 2px gray;
 }
 
 #title {
