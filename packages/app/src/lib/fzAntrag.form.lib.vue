@@ -66,7 +66,7 @@ export default class EcRootIndex extends Vue {
         alert('Du musste eine Mail erst eintragen!')
         break;
       case 1:
-        this.generate(data.emails[0].eMail)
+        this.generate(this.data.emails[0].eMail)
         break;
       default:
         this.abmeldenShow = true;
