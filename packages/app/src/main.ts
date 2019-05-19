@@ -68,15 +68,22 @@ let auth = {
   logout: new Date()
 }
 
+setInterval(()=>{
+  if (auth.logout.getTime() < (new Date()).getTime()) {
+    auth.authToken = '';
+    router.push({path: '/login'});
+  }
+}, 10000)
+
 Vue.prototype.$authToken = ()=>{
-  auth.logout = new Date();
+  auth.logout = new Date(new Date().getTime() + 29*60000);
   return auth.authToken;
 };
 
 Vue.prototype.$gql = gql;
 
 Vue.prototype.$setAuthToken = (authToken: string) => {
-  auth.logout = new Date();
+  auth.logout = new Date(new Date().getTime() + 29*60000);
   auth.authToken = authToken;
 };
 
