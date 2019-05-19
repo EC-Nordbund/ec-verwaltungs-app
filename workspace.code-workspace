@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"path": "packages\\anmeldung"
+		},
+		{
+			"path": "packages\\api"
+		},
+		{
+			"path": "packages\\api-new"
+		},
+		{
+			"path": "packages\\app"
+		},
+		{
+			"path": "packages\\docs"
+		},
+		{
+			"path": "packages\\ec-api"
+		},
+		{
+			"path": "packages\\help"
+		}
+	]
+}
