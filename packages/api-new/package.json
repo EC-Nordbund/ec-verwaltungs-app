@@ -1,0 +1,16 @@
+{
+  "name": "api-new",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodepack-service dev --dbg 1234",
+    "build": "nodepack-service build",
+    "lint": "nodepack-service lint",
+    "start": "node ./dist/app.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@nodepack/plugin-typescript": "^0.1.15",
+    "@nodepack/service": "^0.1.16"
+  }
+}

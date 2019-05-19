@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "strict": true,
+    "jsx": "preserve",
+    "importHelpers": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "types": ["node"],
+    "lib": ["esnext.asynciterable", "es2017"]
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules"]
+}
