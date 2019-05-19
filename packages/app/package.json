@@ -6,6 +6,7 @@
     "serve": "node --max-old-space-size=4096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
     "build": "node --max-old-space-size=4096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js build",
     "lint": "node --max-old-space-size=4096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js lint",
+    "lib": "vue-cli-service build --target lib --name myLib ./src/form/index.js",
     "electron:build": "node --max-old-space-size=8096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js electron:build",
     "electron:serve": "node --max-old-space-size=8096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js electron:serve",
     "postinstall": "electron-builder install-app-deps"

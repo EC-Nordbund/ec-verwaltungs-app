@@ -2,7 +2,7 @@
   ec-wrapper(hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData") 
     template(#header)
       div(style="padding: 2px 10px")
-        ec-search(label="Person suchen" @suche="suche = $event" filter @filter="moreFilter")
+        ec-search(label="Person suchen" @suche="suche = $event")
     v-data-table(:headers=`[
       {
         text: 'Vorname',
@@ -40,18 +40,14 @@ export default class EcRootIndex extends Vue {
     sheet: [
       {
         id: 'pers_add',
-        icon: 'menu',
+        icon: 'person_add',
         label: 'Person hinzufügen',
         click: ()=>{(<any>this.$refs.addPerson).show()}
       }
     ],
-    title: 'Personen'
+    title: 'Personen',
+    subTitle: 'Liste'
   };
-
-  public moreFilter() {
-    // TODO
-    alert('test');
-  }
 
   private loadData() {
     this.$apolloClient.query({

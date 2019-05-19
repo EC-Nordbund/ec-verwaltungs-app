@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VeeValidate, { Validator } from 'vee-validate';
 import de from 'vee-validate/dist/locale/de';
 import root from '@/form/root'
+import '@/plugins/vuetify'
 
 Vue.use(VeeValidate);
 

@@ -274,4 +274,40 @@ export default {
       return query(`DELETE FROM telefone WHERE telefonID = ${args.telefonID}`)
     }, 'deleteKontakt'),
   },
+  mergeAdresse: {
+    type: GraphQLBoolean,
+    description: 'Comming Soon...',
+    args: addAuth({
+      adressID_richtig: {
+        description: 'Comming Soon...',
+        type: new GraphQLNonNull(GraphQLInt),
+      },
+      adressID_falsch: {
+        description: 'Comming Soon...',
+        type: new GraphQLNonNull(GraphQLInt),
+      },
+    }),
+    resolve: handleAllowed(async (_, args) => {
+      await query(`UPDATE anmeldungen SET adressID = ${args.adressID_richtig} WHERE adressID = ${args.adressID_falsch}`);
+      await query(`DELETE adresse WHERE adressID = ${args.adressID_falsch}`);
+    }, 'mergePersonen'),
+  },
+  mergeTelefon: {
+    type: GraphQLBoolean,
+    description: 'Comming Soon...',
+    args: addAuth({
+      telefonID_richtig: {
+        description: 'Comming Soon...',
+        type: new GraphQLNonNull(GraphQLInt),
+      },
+      telefonID_falsch: {
+        description: 'Comming Soon...',
+        type: new GraphQLNonNull(GraphQLInt),
+      },
+    }),
+    resolve: handleAllowed(async (_, args) => {
+      await query(`UPDATE anmeldungen SET telefonID = ${args.telefonID_richtig} WHERE telefonID = ${args.telefonID_falsch}`);
+      await query(`DELETE telefone WHERE telefonID = ${args.telefonID_falsch}`);
+    }, 'mergePersonen'),
+  },
 }

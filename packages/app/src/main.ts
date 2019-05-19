@@ -4,9 +4,6 @@ import { Component } from 'vue-property-decorator';
 import VuetifyDialog from 'vuetify-dialog';
 import ApolloClient from 'apollo-boost';
 import gql from 'graphql-tag';
-
-import 'roboto-fontface/css/roboto/roboto-fontface.css';
-import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import '@/assets/style.css';
 
 import router from '@/router';
