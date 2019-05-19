@@ -16,7 +16,7 @@
         text: 'GebDat',
         value: 'gebDat.input'
       }
-    ]` :items = "data.filter($util.filter(suche))" )
+    ]` :items = "data.filter($util.filter(suche))" :rows-per-page-items="[rowCount]" )
       template(#items="props")
         tr(@click="$router.push({path: `/personen/${props.item.personID}/home`, query: {prev: $route.fullPath}})" :class="'geschlecht-' + props.item.geschlecht")
           td {{props.item.vorname}} 
@@ -85,6 +85,14 @@ export default class EcRootIndex extends Vue {
 
   private created() {
     this.loadData();
+    this.getCount();
+  }
+
+  rowCount = 0
+
+  private getCount() {
+    let tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5
+    this.rowCount = Math.floor(tableHeight / 50) 
   }
 }
 </script>

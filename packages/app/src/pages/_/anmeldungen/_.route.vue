@@ -19,7 +19,7 @@
         value: 'veranstaltung.veranstaltungsID',
         width: '45%'
       }
-    ]` :items = "data.filter(filterData)" )
+    ]` :items = "data.filter($util.filter(suche))" :rows-per-page-items="[rowCount]")
       template( #items="props")
         tr(@click="$router.push({path: `/anmeldungen/${props.item.anmeldeID}/home`, query: {prev: $route.fullPath}})")
           td {{props.item.anmeldeID}}
@@ -95,29 +95,14 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
 
   private created() {
     this.loadData();
+    this.getCount();
   }
 
-  private filterData(item: any): boolean {
-    return this.suche
-      .toLowerCase()
-      .split(' ')
-      .map((suche: string) => this.filterPart(item, suche))
-      .reduce((a, b) => a && b, true);
-  }
+  rowCount = 0
 
-  private filterPart(item: any, suche: string): boolean {
-    if (!suche) {
-      return true;
-    }
-    if (typeof item === 'string') {
-      return item.toLowerCase().includes(suche);
-    } else if (typeof item === 'number' || typeof item === 'boolean') {
-      return item.toString().toLowerCase().includes(suche);
-    } else if (item) {
-      return Object.keys(item).map((key) => this.filterPart(item[key], suche)).reduce((a, b) => a || b, false);
-    } else {
-      return false;
-    }
+  private getCount() {
+    let tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5
+    this.rowCount = Math.floor(tableHeight / 50) 
   }
 }
 </script>
