@@ -92,7 +92,7 @@ Vue.prototype.$gql = gql;
 Vue.prototype.$setAuthToken = (authToken: string) => {
   auth.logout = new Date(new Date().getTime() + 29*60000);
   auth.authToken = authToken;
-  save.set('authToken', authToken)
+  save.set('authToken', authToken, {expires: 1})
   save.set('logoutTime', auth.logout.getTime().toString())
 };
 
