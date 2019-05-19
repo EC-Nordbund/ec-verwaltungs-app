@@ -69,7 +69,12 @@ let auth = {
 }
 
 setInterval(()=>{
-  if (auth.logout.getTime() < (new Date()).getTime()) {
+  let cookiedate = save.get('logoutTime') || 0
+
+  if (auth.logout.getTime() !== cookiedate) {
+    auth.logout = new Date(cookiedate);
+  }
+  if (auth.logout.getTime() < (new Date()).getTime() || cookiedate === 0) {
     auth.authToken = '';
     router.push({path: '/login'});
   }
@@ -77,6 +82,7 @@ setInterval(()=>{
 
 Vue.prototype.$authToken = ()=>{
   auth.logout = new Date(new Date().getTime() + 29*60000);
+  save.set('logoutTime', auth.logout.getTime().toString())
   return auth.authToken;
 };
 
@@ -85,14 +91,41 @@ Vue.prototype.$gql = gql;
 Vue.prototype.$setAuthToken = (authToken: string) => {
   auth.logout = new Date(new Date().getTime() + 29*60000);
   auth.authToken = authToken;
+  save.set('authToken', authToken)
+  save.set('logoutTime', auth.logout.getTime().toString())
 };
 
 Vue.prototype.$apolloClient = new ApolloClient({
   uri: 'https://ec-api.de/graphql'
 });
 
+let at = save.get('authToken')
 
-new Vue({
-  router,
-  render: (h) => h('router-view')
-}).$mount('#app');
+if (at) {
+  Vue.prototype.$apolloClient.query({
+    query: gql`
+      query($at:String!) {
+        person(personID: 0, authToken: $at) {
+          personID
+        }
+      }
+    `,
+    variables: {
+      at
+    }
+  }).then(()=>{
+    Vue.prototype.$setAuthToken(at)
+  }).catch(()=>{
+    save.remove('authToken')
+  }).then(()=>{
+    new Vue({
+      router,
+        render: (h) => h('router-view')
+    }).$mount('#app');
+  })
+} else {
+  new Vue({
+    router,
+    render: (h) => h('router-view')
+  }).$mount('#app');
+}
