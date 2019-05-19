@@ -4,15 +4,12 @@ import * as save from 'js-cookie';
 
 import Vue from 'vue'
 
-let lesezeichen:{[path:string]: {title: string, subTitle: string, fullPath: string}} = Vue.observable({})// (<any>JSON.parse(<any>save.get('lesezeichen')) || {};
-
-let listeners:{[name:string]:()=>void} = {}
+let lesezeichen:{[path:string]: {title: string, subTitle: string, fullPath: string}} = Vue.observable(JSON.parse(save.get('lesezeichen')||'{}'))// (<any>JSON.parse(<any>save.get('lesezeichen')) || {};
 
 export default {
   remove(path: string) {
     Vue.delete(lesezeichen, path)
-    // delete lesezeichen[path];
-    handler()
+    save.set('lesezeichen', JSON.stringify(lesezeichen))
   },
   add(title: string, subTitle: string, fullPath: string, path: string) {
     Vue.set(lesezeichen, path, {
@@ -20,31 +17,10 @@ export default {
       subTitle,
       fullPath
     })
-    handler()
+    save.set('lesezeichen', JSON.stringify(lesezeichen))
   },
   check(path: string):boolean {
     return !!lesezeichen[path]
   },
-  // getListe() {
-  //   return lesezeichen
-  // },
-  lesezeichen,
-
-  addListener(name:string, cb: ()=>void) {
-    listeners[name] = cb;
-  },
-  removeListener(name:string) {
-    delete listeners[name];
-  }
+  lesezeichen
 };
-
-
-function handler() {
-  // save.remove('lesezeichen')
-  // save.set('lesezeichen', JSON.stringify(lesezeichen))
-  for (const key in listeners) {
-    if (listeners.hasOwnProperty(key)) {
-      listeners[key]();
-    }
-  }
-}
