@@ -112,7 +112,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         personID: this.data.person.personID
       }
     }).then((res) => {
@@ -138,7 +138,7 @@ export default class EcRootIndex extends Vue {
       `,
       variables: {
         anmeldeID: this.$route.params.id,
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         ...this.abmeldenValue
       }
     }).then(() => {

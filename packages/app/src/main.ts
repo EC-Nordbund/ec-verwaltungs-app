@@ -62,7 +62,16 @@ Vue.prototype.$notifikation = (title: string, body: string) => {
   return new Notification(title, {body, icon: '/img/ec-logo-512.361ca3c3.png'});
 };
 
-Vue.prototype.$authToken = '';
+let auth = {
+  authToken: '',
+  logout: new Date()
+}
+
+Vue.prototype.$authToken = ()=>{
+  auth.logout = new Date();
+  return auth.authToken;
+};
+
 Vue.prototype.$gql = gql;
 
 Vue.prototype.$setAuthToken = (authToken: string) => {

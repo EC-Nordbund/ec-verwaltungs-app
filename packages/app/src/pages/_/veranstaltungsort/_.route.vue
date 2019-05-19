@@ -49,7 +49,7 @@ export default class EcRootIndexVeranstaltungsortIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     }).then((res: any) => {
       this.data = res.data.vorte;

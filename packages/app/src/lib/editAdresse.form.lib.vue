@@ -44,7 +44,7 @@ export default class EcRootIndexAKIndex extends Vue {
       `,
       variables: {
         ...this.a,
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     }).then((res: any) => {
       this.$notifikation('Adresse veraltet', `Adresse erfolgreich als Veraltet makiert.`);
@@ -71,7 +71,7 @@ export default class EcRootIndexAKIndex extends Vue {
       variables: {
         ...this.a,
         ...this.editAdresseValue.adresse,
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     }).then((res: any) => {
       this.$notifikation('Adresse editiert', `Adresse erfolgreich geändert.`);

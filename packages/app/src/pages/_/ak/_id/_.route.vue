@@ -136,7 +136,7 @@ export default class EcRootIndexAKIdIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         akID: this.$route.params.id
       },
       fetchPolicy: 'no-cache'

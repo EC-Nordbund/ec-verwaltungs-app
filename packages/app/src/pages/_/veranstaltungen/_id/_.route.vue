@@ -75,7 +75,7 @@ export default class EcRootIndex extends Vue {
   }
 
   private g(name: string, wList: (v: number) => boolean) {
-    this.genList(parseInt(this.$route.params.id, 10), name, this.$authToken, this.$apolloClient, wList);
+    this.genList(parseInt(this.$route.params.id, 10), name, this.$authToken(), this.$apolloClient, wList);
   }
 
 
@@ -150,7 +150,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         veranstaltungsID: this.$route.params.id
       },
       fetchPolicy: 'no-cache'

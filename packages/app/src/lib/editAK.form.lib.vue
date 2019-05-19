@@ -98,7 +98,7 @@ export default class EcRootIndex extends Vue {
           )
         }
       `,
-      variables: {...this.addPersonValue,  akID: this.$route.params.id, authToken: this.$authToken}
+      variables: {...this.addPersonValue,  akID: this.$route.params.id, authToken: this.$authToken()}
     }).then(() => {
       this.$notifikation('Neuer Eintrag im AK', `Du hast erfolgreich einen neuen Eintrag im AK angelegt`);
     }).catch((err: any) => {
@@ -126,7 +126,7 @@ export default class EcRootIndex extends Vue {
         }
       `,
       variables: {
-        authToken: this.$authToken
+        authToken: this.$authToken()
       }
     })
     .then((res) => {

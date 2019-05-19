@@ -51,7 +51,7 @@ export default class EcRootIndexAKIndex extends Vue {
       `,
       variables: {
         ...this.addAKValue,
-        authToken: this.$authToken,
+        authToken: this.$authToken(),
         personID: this.data.personID
       }
     }).then((res: any) => {
