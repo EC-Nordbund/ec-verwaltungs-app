@@ -97,6 +97,13 @@ export default class EcRootLogin extends Vue {
 
   public created() {
     window.addEventListener('keyup', this.checkCaps);
+    if (this.$authToken()) {
+      let path = this.$route.query.next || '/home';
+      if (this.$route.query.next === '/404?prev=%2F') {
+        path = 'home';
+      }
+      this.$router.push(path as string);
+    }
   }
   public destroyed() {
     window.removeEventListener('keyup', this.checkCaps);
