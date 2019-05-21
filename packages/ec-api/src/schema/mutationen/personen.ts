@@ -198,10 +198,10 @@ export default {
         type: new GraphQLNonNull(GraphQLInt),
       },
     }),
-    resolve: handleAllowed((_, args) => {
-      //TODO: MySQL
+    resolve: handleAllowed(async (_, args: any) => {
+      await mergePersonen(args)
     }, 'mergePersonen'),
-  },
+  },  
   noMerge: {
     type: GraphQLBoolean,
     args: addAuth({
@@ -212,8 +212,42 @@ export default {
         type: new GraphQLNonNull(GraphQLInt),
       },
     }),
-    resolve: handleAllowed((_, args) => {
-      query(`INSERT INTO keineDublikate (personID_1, personID_2) VALUES (${args.personID_1},${args.personID_2}), (${args.personID_2},${args.personID_1})`)
+    resolve: handleAllowed(async (_, args) => {
+      await query(`INSERT INTO keineDublikate (personID_1, personID_2) VALUES (${args.personID_1},${args.personID_2}), (${args.personID_2},${args.personID_1})`)
+    }, 'mergePersonen'),
+  },
+  handleOldMerge: {
+    type: GraphQLBoolean,
+    args: addAuth({}),
+    resolve: handleAllowed(async (_, args) => {
+      let handle = await query(`SELECT d.zielPersonID as personID_richtig, p.personID as personID_falsch FROM dublikate d, personen p WHERE d.vorname = p.vorname AND d.nachname = p.nachname AND d.gebDat = p.gebDat`)
+      await Promise.all(handle.map(mergePersonen));
     }, 'mergePersonen'),
   },
 }
+
+
+async function mergePersonen (args: {personID_richtig: number, personID_falsch: number}) {
+  let mergeTabeles = ['adressen','akPerson','anmeldungen','eMails','fz','fzAntrag','telefone']
+    .map(table=>`UPDATE ${table} SET personID = ${args.personID_richtig} WHERE personID = ${args.personID_falsch}`)
+    .map(sql=>query(sql));
+  
+  await Promise.all(mergeTabeles);
+  await query(`UPDATE fz SET gesehenVon = ${args.personID_richtig} WHERE gesehenVon = ${args.personID_falsch}`)
+  await query(`UPDATE dublikate SET zielPersonID = ${args.personID_richtig} WHERE zielPersonID = ${args.personID_falsch}`)
+  let wrongData = await query(`SELECT vorname, nachname, gebDat FROM personen WHERE personID = ${args.personID_falsch}`);
+  await query(`DELETE FROM personen WHERE personID = ${args.personID_falsch}`);
+  await query(`INSERT INTO dublikate (vorname, nachname, gebDat, zielPersonID) VALUES (${wrongData[0].vorname},${wrongData[0].nachname},${wrongData[0].gebDat},${args.personID_richtig})`);
+}
+
+// function similarValue(personA: {personID: number, vorname: string, nachname: string, gebDat: string}, personB: {personID: number, vorname: string, nachname: string, gebDat: string}) {
+//   if (personA.personID < personB.personID) {
+//     return 0;
+//   }
+
+
+// }
+
+// function similarName(nameA:string, nameB:string) {
+
+// }
