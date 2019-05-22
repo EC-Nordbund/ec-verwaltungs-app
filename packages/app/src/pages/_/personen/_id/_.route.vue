@@ -33,7 +33,7 @@ export default class EcRootIndex extends Vue {
         {
           icon: 'phone',
           id: 'pers_add_telefon',
-          label: 'Telefon hinzufügen',
+          label: 'Telefon hinzufügen', 
           click: ()=>{(<any>this.$refs.addTel).show()}
         },
         {
@@ -64,7 +64,8 @@ export default class EcRootIndex extends Vue {
           disabled: true,
           icon: 'menu',
           id: 'pers_edit_kategor',
-          label: 'Kategorien editieren'
+          label: 'Kategorien editieren',
+          click: ()=>{alert('Comming later...')}
         },
         {
           icon: 'menu',
@@ -76,7 +77,8 @@ export default class EcRootIndex extends Vue {
           disabled: true,
           icon: 'menu',
           id: 'pers_report',
-          label: 'Report erzeugen'
+          label: 'Report erzeugen',
+          click: ()=>{alert('Kommt nach Bedarf...')}
         }
       ],
       nav: [

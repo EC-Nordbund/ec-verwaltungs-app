@@ -57,7 +57,7 @@
         v-list-tile-action
           v-icon person
         v-list-tile-content
-          v-list-tile-title {{data.telefon.telefon}}
+          v-list-tile-title {{data.telefon.telefon  | telefon}}
       v-divider
       v-list-tile
         v-list-tile-action
