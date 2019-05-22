@@ -55,7 +55,7 @@ export default class EcRootIndex extends Vue {
         authToken: this.$authToken()
       }
     }).then((res: any) => {
-      this.data = res.data.veranstaltungen;
+      this.data = res.data.veranstaltungen.reverse();
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
