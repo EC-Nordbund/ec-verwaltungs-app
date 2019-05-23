@@ -1,0 +1,20 @@
+  {
+  "name": "EC-Nordbund Verwaltungs-App",
+  "short_name": "EC-Verwaltung",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color" : "#fff" ,
+  "description": "Software für den EC-Nordbund die uns bei der Verwaltung hilft.",
+  "icons": [
+    {
+      "src": "./ec-logo-64.png",
+      "size": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "./ec-logo-512.png",
+      "size": "512x512",
+      "type": "image/png"
+    }
+  ]
+} 
