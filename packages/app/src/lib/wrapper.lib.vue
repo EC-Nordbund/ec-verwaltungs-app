@@ -11,9 +11,8 @@
       v-spacer
       h1(v-font v-primary) {{title}}
       v-spacer
-      v-speed-dial(direction="left" v-if="hasDial")
-        v-btn(slot="activator" icon)
-          v-icon more_vert
+      //- v-speed-dial(direction="left" v-if="hasDial")
+      template(v-if="hasDial")
         v-bottom-sheet(v-if="hasSheet" v-model="sheetOpen")
           v-btn(icon slot="activator")
             v-icon apps
