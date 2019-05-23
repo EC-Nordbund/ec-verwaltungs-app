@@ -37,6 +37,9 @@
         v-list-tile-action
           v-btn(@click="$event.stopPropagation();useAdresse(adresse.adressID)" icon)
             v-icon mouse
+        v-list-tile-action
+          v-btn(@click="$event.stopPropagation();copy(`${adresse.strasse}\n${adresse.plz} ${adresse.ort}`)" icon)
+            v-icon file_copy
       v-divider
       v-list-tile(v-for="email in data.emails" :key="email.eMailID" :class="email.isOld?'isOld':''" @click="location.href='mailto:' + email.eMail")
         v-list-tile-action
@@ -50,6 +53,9 @@
         v-list-tile-action
           v-btn(@click="$event.stopPropagation();useEmail(email.eMailID)" icon)
             v-icon mouse
+        v-list-tile-action
+          v-btn(@click="$event.stopPropagation();copy(email.eMail)" icon)
+            v-icon file_copy
       v-divider
       v-list-tile(v-for="telefon in data.telefone" :key="telefon.telefonID" :class="telefon.isOld?'isOld':''" @click="location.href = 'tel:' + telefon.telefon")
         v-list-tile-action
@@ -63,18 +69,24 @@
         v-list-tile-action
           v-btn(@click="$event.stopPropagation();useTelefon(telefon.telefonID)" icon)
             v-icon mouse
+        v-list-tile-action
+          v-btn(@click="$event.stopPropagation();copy(telefon.telefon)" icon)
+            v-icon file_copy
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 import gql from 'graphql-tag'
-
+import copy from 'copy-to-clipboard';
+ 
 @Component({})
 export default class EcNAME extends Vue {
   public static meta = {};
   @Prop()
   private data!: any;
   private location = window.location;
+
+  private copy = copy;
 
   showAdresse(adresse: any) {
     alert("Hier kommt noch eine Karte hin.");

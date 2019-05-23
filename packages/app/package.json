@@ -1,6 +1,6 @@
 {
   "name": "app5",
-  "version": "2.0.0--22.45--17.05",
+  "version": "2.0.1",
   "private": true,
   "scripts": {
     "serve": "node --max-old-space-size=4096 ./node_modules/@vue/cli-service/bin/vue-cli-service.js serve",
@@ -16,6 +16,7 @@
     "@types/graphql": "^14.2.0",
     "apollo-boost": "^0.3.1",
     "buffer": "^5.2.1",
+    "copy-to-clipboard": "^3.2.0",
     "deepmerge": "^3.2.0",
     "docx-templates": "^3.0.0",
     "electron-settings": "^3.2.0",
