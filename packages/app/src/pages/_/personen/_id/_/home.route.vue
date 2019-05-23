@@ -1,7 +1,7 @@
 <template lang="pug">
   v-card-text(style="overflow: auto;")
     //- ec-edit-adresse(ref="editAdresse")
-    ec-adresse-merge(ref="mergeAdresse" :data="data")
+    ec-adresse-merge(ref="mergeAdresse" :data="data" @reload="$emit('reload')")
     v-list(two-line)
       v-list-tile(@click="")
         v-list-tile-action
@@ -107,6 +107,7 @@ export default class EcNAME extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Als Alt makiert', `Erfolgreich als veraltet makiert`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -127,6 +128,7 @@ export default class EcNAME extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Als Alt makiert', `Erfolgreich als veraltet makiert`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -147,6 +149,7 @@ export default class EcNAME extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Als Alt makiert', `Erfolgreich als veraltet makiert`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -167,6 +170,7 @@ export default class EcNAME extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Als Aktuell Makiert', `Erfolgreich als aktuell makiert`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -187,6 +191,7 @@ export default class EcNAME extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Als Aktuell Makiert', `Erfolgreich als aktuell makiert`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -207,6 +212,7 @@ export default class EcNAME extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Als Aktuell Makiert', `Erfolgreich als aktuell makiert`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

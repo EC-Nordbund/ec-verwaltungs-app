@@ -63,6 +63,7 @@ export default class EcRootIndex extends Vue {
       }
     }).then(() => {
       this.$notifikation('Erfolgreich Gemergt', `Du hast erfolgreich die Kontaktdaten erfolgreich zusammengeführt.`);
+      this.$emit('reload');
     }).catch((err) => {
       this.$dialog.error({
         text: err.message,

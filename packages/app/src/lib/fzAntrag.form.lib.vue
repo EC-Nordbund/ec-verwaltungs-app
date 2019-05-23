@@ -58,6 +58,7 @@ export default class EcRootIndex extends Vue {
       }
     }).then(() => {
       this.$notifikation('Erfolgreich Generiert', `Du hast erfolgreich den Antrag generiert. An fz@ec-nordbund.de wurde eine Kopie gesendet!`);
+      this.$emit('reload');
     }).catch((err) => {
       this.$dialog.error({
         text: err.message,

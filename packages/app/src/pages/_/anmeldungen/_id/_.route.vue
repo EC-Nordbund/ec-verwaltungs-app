@@ -1,10 +1,10 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasReload hasRouterView v-bind="config" @getData="getData")
-    router-view(:data="data")
+    router-view(:data="data" @reload="$emit('reload')")
     template(#dialogs)
-      ec-edit-anmeldung-bemerkungen(:data="data" ref="formEditBemerkungen")
-      ec-abmelden(:data="data" ref="formAbmelden")
-      ec-anmeldung-kontakt(:data="data" ref="formKontakt")
+      ec-edit-anmeldung-bemerkungen(:data="data" ref="formEditBemerkungen" @reload="$emit('reload')")
+      ec-abmelden(:data="data" ref="formAbmelden" @reload="$emit('reload')")
+      ec-anmeldung-kontakt(:data="data" ref="formKontakt" @reload="$emit('reload')")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';

@@ -75,6 +75,7 @@ export default class EcRootIndexAKIndex extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Adresse editiert', `Adresse erfolgreich geändert.`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

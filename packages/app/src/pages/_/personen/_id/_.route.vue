@@ -1,14 +1,14 @@
 <template lang="pug">
   ec-wrapper(hasXBtn hasNav hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
-    router-view(:data="data")
+    router-view(:data="data" @reload="loadData")
     template(#dialogs)
-      ec-add-adresse(ref="addAdresse" :data="data")
-      ec-add-tel(ref="addTel" :data="data")
-      ec-add-mail(ref="addMail" :data="data")
-      ec-fz-antrag(ref="fzAntrag" :data="data")
-      ec-fz(ref="fz")
-      ec-edit-person(ref="stamm" :data="data")
-      ec-person-merge(ref="mergePerson")
+      ec-add-adresse(ref="addAdresse" :data="data" @reload="loadData")
+      ec-add-tel(ref="addTel" :data="data" @reload="loadData")
+      ec-add-mail(ref="addMail" :data="data" @reload="loadData")
+      ec-fz-antrag(ref="fzAntrag" :data="data" @reload="loadData")
+      ec-fz(ref="fz" @reload="loadData")
+      ec-edit-person(ref="stamm" :data="data" @reload="loadData")
+      ec-person-merge(ref="mergePerson" @reload="loadData")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';

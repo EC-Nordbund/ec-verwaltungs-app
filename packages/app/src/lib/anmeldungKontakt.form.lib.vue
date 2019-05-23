@@ -143,6 +143,7 @@ export default class EcRootIndex extends Vue {
       }
     }).then(() => {
       this.$notifikation('Erfolgreich editiert', `Du hast erfolgreich die Kontaktdaten erfolgreich angepasst.`);
+      this.$emit('reload');
     }).catch((err) => {
       this.$dialog.error({
         text: err.message,

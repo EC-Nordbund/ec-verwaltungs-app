@@ -58,6 +58,7 @@ export default class EcRootIndex extends Vue {
       variables: {...this.addPersonValue, authToken: this.$authToken(), richtig: this.richtig}
     }).then(() => {
       this.$notifikation('Personen gemergt', `Du hast erfolgreich die Personen zusammengeführt.`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

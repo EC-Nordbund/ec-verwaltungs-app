@@ -30,7 +30,7 @@
             v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
             v-list-tile-sub-title {{stadien[state.neuerStatus]}} (geändert am {{state.date.german}})
     template(#dialogs)
-      ec-form-edit-ak(ref="formEditAk" :data="data")
+      ec-form-edit-ak(ref="formEditAk" :data="data" @reload="loadData")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';

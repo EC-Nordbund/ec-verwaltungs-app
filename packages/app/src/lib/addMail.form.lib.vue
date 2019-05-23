@@ -55,6 +55,7 @@ export default class EcRootIndexAKIndex extends Vue {
       }
     }).then((res: any) => {
       this.$notifikation('Neue Email', `Email erfolgreich hinzugefügt`);
+      this.$emit('reload');
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,

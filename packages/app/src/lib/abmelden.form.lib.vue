@@ -74,6 +74,7 @@ export default class EcRootIndex extends Vue {
       }
     }).then(() => {
       this.$notifikation('Erfolgreich Abgemeldet', `Du hast erfolgreich die Person abgemeldet.`);
+      this.$emit('reload');
     }).catch((err) => {
       this.$dialog.error({
         text: err.message,
