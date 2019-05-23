@@ -68,7 +68,7 @@ export default class EcRootIndex extends Vue {
         text: err.message,
         title: 'Speichern fehlgeschlagen!'
       });
-    });1
+    });
   }
 }
-</script>
+</script> 
