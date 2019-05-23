@@ -12,7 +12,7 @@
               label: 'Richtige Adresse',
               rule: "required",
               required: true,
-              items: data.adressen.filter(v=>!v.isOld).map((a) => {
+              items: data.adressen.filter(v=>!v.isOld).filter(v=>v.adressID!==falsch).map((a) => {
                 return {
                   text: a.strasse + " | " + a.plz + " " + a.ort,
                   value: a.adressID
