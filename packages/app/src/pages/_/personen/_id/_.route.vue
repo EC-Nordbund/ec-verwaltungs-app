@@ -8,6 +8,7 @@
       ec-fz-antrag(ref="fzAntrag" :data="data")
       ec-fz(ref="fz")
       ec-edit-person(ref="stamm" :data="data")
+      ec-person-merge(ref="mergePerson")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -37,10 +38,10 @@ export default class EcRootIndex extends Vue {
           click: ()=>{(<any>this.$refs.addTel).show()}
         },
         {
-          disabled: true,
           icon: 'menu',
           id: 'pers_merge',
-          label: 'Person mergen'
+          label: 'Person mergen',
+          click: ()=>{(<any>this.$refs.mergePerson).show(this.$route.params.id)}
         },
         {
           icon: 'assignment',

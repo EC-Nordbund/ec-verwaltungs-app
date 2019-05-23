@@ -16,6 +16,7 @@ import anmeldungKontakt from './anmeldungKontakt.form.lib.vue'
 import fzAntrag from './fzAntrag.form.lib.vue'
 import fz from './fz.form.lib.vue'
 import mergeAdresse from './adresseMerge.form.lib.vue'
+import mergePerson from './mergePerson.form.lib.vue'
 // import loadData from './loadData.lib.vue';
 
 import addLesezeichen from './lesezeichen/add.lib.vue';
@@ -42,4 +43,5 @@ Vue.component('ec-edit-adresse', editAdresse);
 Vue.component('ec-fz-antrag', fzAntrag);
 Vue.component('ec-fz', fz);
 Vue.component('ec-adresse-merge', mergeAdresse);
+Vue.component('ec-person-merge', mergePerson);
 // ec-adresse-merge
