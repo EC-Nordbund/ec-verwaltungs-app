@@ -37,7 +37,7 @@ export default class EcRootIndex extends Vue {
 
   private richtig = 0
 
-  public edit(richtig: number) {
+  public show(richtig: number) {
     this.addPersonValue = {};
     this.addPersonShow = true;
     this.richtig = richtig
