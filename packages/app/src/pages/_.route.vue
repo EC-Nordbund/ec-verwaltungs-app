@@ -150,7 +150,7 @@ export default class EcRootIndex extends Vue {
     }).then(() => {
       this.$setAuthToken('');
       this.$router.push({path: '/login'});
-      save.set('logoutTime', 0)
+      save.set('logoutTime', 0);
     });
   }
 

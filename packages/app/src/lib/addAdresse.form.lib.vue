@@ -29,13 +29,13 @@ export default class EcRootIndexAKIndex extends Vue {
   @Prop()
   private data!: any;
 
-  public show() {
-    this.addAKShow = true;
-  }
-
   private addAKValid = false;
   private addAKShow = false;
   private addAKValue: {adresse: {strasse: string, plz: string, ort: string}} = {adresse: {strasse: '', plz: '', ort: ''}};
+
+  public show() {
+    this.addAKShow = true;
+  }
 
   private addAKSave() {
     this.addAKShow = false;

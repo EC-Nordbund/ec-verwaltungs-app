@@ -61,23 +61,31 @@ export default class EcRootIndex extends Vue {
   @Prop({default: {}})
   private data!: any;
 
-  show() {
-    this.abmeldenValue = {
-      adresse: this.data.adresse.adressID,
-      email: this.data.email.eMailID,
-      telefon: this.data.telefon.telefonID
-    }
-    this.abmeldenShow = true;
-  }
-
   private myData = {
     adressen: [],
     emails: [],
     telefone: []
+  };
+
+  private abmeldenShow = false;
+  private abmeldenValid = false;
+  private abmeldenValue = {
+    adresse: 0,
+    email: 0,
+    telefon: 0
+  };
+
+  public show() {
+    this.abmeldenValue = {
+      adresse: this.data.adresse.adressID,
+      email: this.data.email.eMailID,
+      telefon: this.data.telefon.telefonID
+    };
+    this.abmeldenShow = true;
   }
 
   @Watch('data')
-  onDataChange() {
+  public onDataChange() {
     this.$apolloClient.query({
       query: gql`
         query($authToken: String!, $personID: Int!) {
@@ -116,17 +124,9 @@ export default class EcRootIndex extends Vue {
         personID: this.data.person.personID
       }
     }).then((res) => {
-      this.myData = res.data.person
-    })
+      this.myData = res.data.person;
+    });
   }
-
-  private abmeldenShow = false;
-  private abmeldenValid = false;
-  private abmeldenValue = {
-    adresse: 0,
-    email: 0,
-    telefon: 0
-  };
   private abmeldenSave() {
     this.abmeldenShow = false;
 
@@ -148,7 +148,7 @@ export default class EcRootIndex extends Vue {
         text: err.message,
         title: 'Speichern fehlgeschlagen!'
       });
-    });1
+    }); 1;
   }
 }
 </script>

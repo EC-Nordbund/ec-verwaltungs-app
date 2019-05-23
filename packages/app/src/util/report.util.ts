@@ -1,11 +1,11 @@
 import { genReport } from '@/report';
-import Vue from 'vue'
+import Vue from 'vue';
 import { DocumentNode } from 'graphql';
 
 export const name = 'report';
 
 export default {
-  loadData: (self: Vue, query: DocumentNode, reportname: string, savename:string, variables:any = {}) => {
+  loadData: (self: Vue, query: DocumentNode, reportname: string, savename: string, variables: any = {}) => {
     self.$apolloClient.query({
       query,
       variables: {
@@ -24,4 +24,4 @@ export default {
     });
   },
   withData: genReport
-} 
+};

@@ -20,35 +20,35 @@ Component.registerHooks([
   'beforeRouteUpdate'
 ]);
 
-Vue.filter('telefon', function (value:string) {
-  let numOnly = value.replace(/\D/g,'');
+Vue.filter('telefon', function(value: string) {
+  let numOnly = value.replace(/\D/g, '');
   let ret = '';
   let found = false;
-  let find = (<any>window).$vorwahlen;
-  if (numOnly.substr(0, 4)=='0049') {
+  let find = (window as any).$vorwahlen;
+  if (numOnly.substr(0, 4) == '0049') {
     numOnly = '0' + numOnly.substr(4);
   }
-  if (numOnly.substr(0, 2)=='00') {
+  if (numOnly.substr(0, 2) == '00') {
     return numOnly;
   } else {
-    numOnly.split('').forEach((c, id)=>{
-      if (id===0) {
+    numOnly.split('').forEach((c, id) => {
+      if (id === 0) {
         ret = ret + c;
         return;
       }
       if (!found) {
         find = find[c];
-        if (find===undefined) {
+        if (find === undefined) {
           found = true;
           ret = ret + ' ';
         }
       }
       ret = ret + c;
-    })
+    });
 
     return ret;
   }
-})
+});
 
 // Vue.use(Auth);
 Vue.use(VuetifyDialog);
@@ -63,13 +63,13 @@ Vue.prototype.$notifikation = (title: string, body: string) => {
   return new Notification(title, {body, icon: '/img/ec-logo-512.361ca3c3.png'});
 };
 
-let auth = {
+const auth = {
   authToken: '',
   logout: new Date()
-}
+};
 
-setInterval(()=>{
-  let cookiedate = parseInt(save.get('logoutTime')|| '0')
+setInterval(() => {
+  const cookiedate = parseInt(save.get('logoutTime') || '0');
 
   if (auth.logout.getTime() !== cookiedate) {
     auth.logout = new Date(cookiedate);
@@ -79,28 +79,28 @@ setInterval(()=>{
     router.push({path: '/login'});
     save.set('logoutTime', '0');
   }
-}, 10000)
+}, 10000);
 
-Vue.prototype.$authToken = ()=>{
-  auth.logout = new Date(new Date().getTime() + 29*60000);
-  save.set('logoutTime', auth.logout.getTime().toString())
+Vue.prototype.$authToken = () => {
+  auth.logout = new Date(new Date().getTime() + 29 * 60000);
+  save.set('logoutTime', auth.logout.getTime().toString());
   return auth.authToken;
 };
 
 Vue.prototype.$gql = gql;
 
 Vue.prototype.$setAuthToken = (authToken: string) => {
-  auth.logout = new Date(new Date().getTime() + 29*60000);
+  auth.logout = new Date(new Date().getTime() + 29 * 60000);
   auth.authToken = authToken;
-  save.set('authToken', authToken, {expires: 1})
-  save.set('logoutTime', auth.logout.getTime().toString())
+  save.set('authToken', authToken, {expires: 1});
+  save.set('logoutTime', auth.logout.getTime().toString());
 };
 
 Vue.prototype.$apolloClient = new ApolloClient({
   uri: 'https://ec-api.de/graphql'
 });
 
-let at = save.get('authToken')
+const at = save.get('authToken');
 
 if (at) {
   Vue.prototype.$apolloClient.query({
@@ -114,16 +114,16 @@ if (at) {
     variables: {
       at
     }
-  }).then(()=>{
-    Vue.prototype.$setAuthToken(at)
-  }).catch(()=>{
-    save.remove('authToken')
-  }).then(()=>{
+  }).then(() => {
+    Vue.prototype.$setAuthToken(at);
+  }).catch(() => {
+    save.remove('authToken');
+  }).then(() => {
     new Vue({
       router,
         render: (h) => h('router-view')
     }).$mount('#app');
-  })
+  });
 } else {
   new Vue({
     router,

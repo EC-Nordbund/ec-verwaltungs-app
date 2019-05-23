@@ -25,10 +25,10 @@ import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 
 @Component({})
 export default class EcLesezeichenShow extends Vue {
-  liste = {}
+  public liste = {};
 
-  created() {
-    this.liste = this.$util.lesezeichen.lesezeichen
+  public created() {
+    this.liste = this.$util.lesezeichen.lesezeichen;
   }
 }
 </script>

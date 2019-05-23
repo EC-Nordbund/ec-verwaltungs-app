@@ -1,12 +1,12 @@
-export function filterGenerator(suche:string) {
-  return (item:any) => filterData(item, suche);
+export function filterGenerator(suche: string) {
+  return (item: any) => filterData(item, suche);
 }
 
-export function filter (items:Array<any>, suche:string) {
-  return items.filter((item)=>filterData(item, suche))
+export function filter(items: any[], suche: string) {
+  return items.filter((item) => filterData(item, suche));
 }
 
-function filterData(item: any, suche:string): boolean {
+function filterData(item: any, suche: string): boolean {
   return suche
     .toLowerCase()
     .split(' ')

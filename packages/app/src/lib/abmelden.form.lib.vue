@@ -47,10 +47,6 @@ export default class EcRootIndex extends Vue {
   @Prop({default: []})
   private data!: any;
 
-  show() {
-    this.abmeldenShow = true;
-  }
-
   private abmeldenShow = false;
   private abmeldenValid = false;
   private abmeldenValue = {
@@ -58,6 +54,10 @@ export default class EcRootIndex extends Vue {
     weg: '',
     kommentar: ''
   };
+
+  public show() {
+    this.abmeldenShow = true;
+  }
   private abmeldenSave() {
     this.abmeldenShow = false;
 

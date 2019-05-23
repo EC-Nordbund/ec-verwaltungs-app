@@ -27,11 +27,15 @@ import { genReport } from '@/report';
 export default class EcRootIndexAKIndex extends Vue {
   public static meta = {};
 
-  a:any = {}
+  public a: any = {};
+
+  private addAKValid = false;
+  private addAKShow = false;
+  private editAdresseValue: {adresse: {strasse: string, plz: string, ort: string}} = {adresse: {strasse: '', plz: '', ort: ''}};
 
   public show(adresse: any) {
-    this.a = adresse
-    this.editAdresseValue = {adresse}
+    this.a = adresse;
+    this.editAdresseValue = {adresse};
     this.addAKShow = true;
   }
 
@@ -55,10 +59,6 @@ export default class EcRootIndexAKIndex extends Vue {
       });
     });
   }
-
-  private addAKValid = false;
-  private addAKShow = false;
-  private editAdresseValue: {adresse: {strasse: string, plz: string, ort: string}} = {adresse: {strasse: '', plz: '', ort: ''}};
 
   private addAKSave() {
     this.addAKShow = false;

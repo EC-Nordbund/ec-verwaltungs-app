@@ -83,7 +83,7 @@ export default class ecAddPerson extends Vue {
         }
       `,
       variables: {...this.addPersonValue, personID: this.$route.params.id, authToken: this.$authToken()}
-    }).then((res:any) => {
+    }).then((res: any) => {
       this.$notifikation('Stammdaten editiert', `Du hast erfolgreich die Person editiert.`);
     }).catch((err: any) => {
       this.$dialog.error({

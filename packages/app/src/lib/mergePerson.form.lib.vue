@@ -35,12 +35,15 @@ export default class EcRootIndex extends Vue {
 
   private allPersonen: any = [];
 
-  private richtig = 0
+  private richtig = 0;
 
   public show(richtig: number) {
     this.addPersonValue = {};
     this.addPersonShow = true;
-    this.richtig = richtig
+    this.richtig = richtig;
+  }
+  public created() {
+    this.getPersonen();
   }
 
   private addPersonSave() {
@@ -49,8 +52,8 @@ export default class EcRootIndex extends Vue {
     this.$apolloClient.mutate({
       mutation:  gql`
         mutation($authToken: String!, $richtig: Int!, $falsch: Int!) {
-          mergePersons(authToken: $authToken, personID_richtig: $richtig, personID_falsch: $falsch) 
-        } 
+          mergePersons(authToken: $authToken, personID_richtig: $richtig, personID_falsch: $falsch)
+        }
       `,
       variables: {...this.addPersonValue, authToken: this.$authToken(), richtig: this.richtig}
     }).then(() => {
@@ -62,9 +65,6 @@ export default class EcRootIndex extends Vue {
       });
     });
 
-  }
-  created() {
-    this.getPersonen();
   }
 
   private getPersonen() {

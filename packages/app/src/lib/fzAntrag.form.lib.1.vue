@@ -24,29 +24,29 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component({})
 export default class EcRootIndex extends Vue {
   @Prop({default: []})
-  private items!: Array<{text:string, value: any}>;
-
-  private res = ()=>{}
-  private rej = ()=>{}
-
-  show() {
-    return new Promise((res, rej)=>{
-      this.res=()=>{
-        this.showDialog = false;
-        res(this.value.select);
-      };
-      this.rej=()=>{
-        this.showDialog = false;
-        rej();
-      };
-      this.showDialog = true;
-    })
-  }
+  private items!: Array<{text: string, value: any}>;
 
   private showDialog = false;
   private valid = false;
   private value = {
     select: ''
   };
+
+  public show() {
+    return new Promise((res, rej) => {
+      this.res = () => {
+        this.showDialog = false;
+        res(this.value.select);
+      };
+      this.rej = () => {
+        this.showDialog = false;
+        rej();
+      };
+      this.showDialog = true;
+    });
+  }
+
+  private res = () => {};
+  private rej = () => {};
 }
 </script>

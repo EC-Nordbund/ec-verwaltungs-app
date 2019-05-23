@@ -30,7 +30,13 @@ export default class EcRootIndex extends Vue {
   @Prop({default: {}})
   private data!: any;
 
-  generate(mail:string) {
+  private abmeldenShow = false;
+  private abmeldenValid = false;
+  private abmeldenValue = {
+    mail: ''
+  };
+
+  public generate(mail: string) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation(
@@ -60,28 +66,22 @@ export default class EcRootIndex extends Vue {
     });
   }
 
-  show() {
+  public show() {
     switch (this.data.emails.length) {
       case 0:
-        alert('Du musste eine Mail erst eintragen!')
+        alert('Du musste eine Mail erst eintragen!');
         break;
       case 1:
-        this.generate(this.data.emails[0].eMail)
+        this.generate(this.data.emails[0].eMail);
         break;
       default:
         this.abmeldenShow = true;
         break;
     }
   }
-
-  private abmeldenShow = false;
-  private abmeldenValid = false;
-  private abmeldenValue = {
-    mail: ''
-  };
   private abmeldenSave() {
     this.abmeldenShow = false;
-    this.generate(this.abmeldenValue.mail)
+    this.generate(this.abmeldenValue.mail);
   }
 }
 </script>

@@ -30,13 +30,13 @@ import { genReport } from '@/report';
 export default class EcRootIndexAKIndex extends Vue {
   public static meta = {};
 
-  public show() {
-    this.addAKShow = true;
-  }
-
   private addAKValid = false;
   private addAKShow = false;
   private addAKValue: {bezeichnung: string} = {bezeichnung: ''};
+
+  public show() {
+    this.addAKShow = true;
+  }
 
   private addAKSave() {
     this.addAKShow = false;

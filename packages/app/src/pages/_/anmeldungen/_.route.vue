@@ -33,6 +33,8 @@ import gql from 'graphql-tag';
 export default class EcRootIndexAnmeldungenIndex extends Vue {
   public static meta = {};
 
+  public rowCount = 0;
+
   private data: any = [];
 
   private suche = '';
@@ -98,11 +100,9 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
     this.getCount();
   }
 
-  rowCount = 0
-
   private getCount() {
-    let tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5
-    this.rowCount = Math.floor(tableHeight / 50) 
+    const tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5;
+    this.rowCount = Math.floor(tableHeight / 50);
   }
 }
 </script>

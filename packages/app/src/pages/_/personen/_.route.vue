@@ -34,6 +34,8 @@ export default class EcRootIndex extends Vue {
   public static meta = {};
 
   public suche = '';
+
+  public rowCount = 0
   private data: any = [];
 
   private config = {
@@ -83,8 +85,6 @@ export default class EcRootIndex extends Vue {
     this.loadData();
     this.getCount();
   }
-
-  rowCount = 0
 
   private getCount() {
     let tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5

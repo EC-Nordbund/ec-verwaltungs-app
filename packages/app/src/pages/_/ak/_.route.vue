@@ -48,7 +48,7 @@ export default class EcRootIndexAKIndex extends Vue {
         icon: 'group_add',
         label: 'AK-Hinzufügen',
         click: () => {
-          (<any>this.$refs.addAK).show()
+          (this.$refs.addAK as any).show();
         }
       }
     ],
@@ -81,7 +81,7 @@ export default class EcRootIndexAKIndex extends Vue {
           }
         }
       }
-    `, name, save)
+    `, name, save);
   }
 
   private loadData() {

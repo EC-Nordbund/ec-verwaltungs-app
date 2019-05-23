@@ -35,17 +35,17 @@ export default class EcRootIndex extends Vue {
   @Prop({default: {}})
   private data!: any;
 
-  private falsch = 0
-
-  show(falsch: number) {
-    this.abmeldenValue = {}
-    this.abmeldenShow = true;
-    this.falsch = falsch
-  }
+  private falsch = 0;
 
   private abmeldenShow = false;
   private abmeldenValid = false;
   private abmeldenValue = {};
+
+  public show(falsch: number) {
+    this.abmeldenValue = {};
+    this.abmeldenShow = true;
+    this.falsch = falsch;
+  }
 
   private abmeldenSave() {
     this.abmeldenShow = false;
@@ -53,8 +53,8 @@ export default class EcRootIndex extends Vue {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($authToken: String!, $richtig: Int!, $falsch: Int!) {
-          mergeAdresse(authToken: $authToken, adressID_richtig: $richtig, adressID_falsch: $falsch) 
-        } 
+          mergeAdresse(authToken: $authToken, adressID_richtig: $richtig, adressID_falsch: $falsch)
+        }
       `,
       variables: {
         authToken: this.$authToken(),

@@ -62,8 +62,8 @@ export default class EcRootIndex extends Vue {
     this.addPersonShow = true;
   }
 
-  created() {
-    this.getPersonen()
+  public created() {
+    this.getPersonen();
   }
 
   private addPersonSave() {

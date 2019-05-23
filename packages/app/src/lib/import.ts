@@ -12,11 +12,11 @@ import addAdresse from './addAdresse.form.lib.vue';
 import editAdresse from './editAdresse.form.lib.vue';
 import addTel from './addTel.form.lib.vue';
 import addMail from './addMail.form.lib.vue';
-import anmeldungKontakt from './anmeldungKontakt.form.lib.vue'
-import fzAntrag from './fzAntrag.form.lib.vue'
-import fz from './fz.form.lib.vue'
-import mergeAdresse from './adresseMerge.form.lib.vue'
-import mergePerson from './mergePerson.form.lib.vue'
+import anmeldungKontakt from './anmeldungKontakt.form.lib.vue';
+import fzAntrag from './fzAntrag.form.lib.vue';
+import fz from './fz.form.lib.vue';
+import mergeAdresse from './adresseMerge.form.lib.vue';
+import mergePerson from './mergePerson.form.lib.vue';
 // import loadData from './loadData.lib.vue';
 
 import addLesezeichen from './lesezeichen/add.lib.vue';
