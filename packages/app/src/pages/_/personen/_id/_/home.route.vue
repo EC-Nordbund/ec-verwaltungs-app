@@ -1,6 +1,7 @@
 <template lang="pug">
   v-card-text(style="overflow: auto;")
     //- ec-edit-adresse(ref="editAdresse")
+    ec-adresse-merge(ref="mergeAdresse" :data="data")
     v-list(two-line)
       v-list-tile(@click="")
         v-list-tile-action
@@ -28,7 +29,7 @@
           v-list-tile-title {{adresse.strasse}}
           v-list-tile-sub-title {{adresse.plz}} {{adresse.ort}} | Letzte Nutzung: {{adresse.lastUsed.german}}
         v-list-tile-action
-          v-btn(@click="$event.stopPropagation();mergeAdresse(adresse)" icon)
+          v-btn(@click="$event.stopPropagation();mergeAdresse(adresse.adressID)" icon)
             v-icon merge_type
         v-list-tile-action
           v-btn(@click="$event.stopPropagation();deleteAdresse(adresse.adressID)" icon)
@@ -67,7 +68,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
 import gql from 'graphql-tag'
-import { AnySoaRecord } from 'dns';
 
 @Component({})
 export default class EcNAME extends Vue {
@@ -80,7 +80,7 @@ export default class EcNAME extends Vue {
     alert("Hier kommt noch eine Karte hin.");
   }
   mergeAdresse(adressID: number) {
-    alert("Hier soll das mergen von Adressen passieren können.");
+    (<any>this.$refs.mergeAdresse).show(adressID)
   }
   deleteAdresse(adressID: number) {
     this.$apolloClient.mutate({

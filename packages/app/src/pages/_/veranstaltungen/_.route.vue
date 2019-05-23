@@ -4,7 +4,7 @@
       div(style="padding: 2px 10px")
         ec-search(label="Veranstaltung suchen" @suche="suche = $event")
     v-list(two-line)
-      v-list-tile(v-for="item in data.filter(filterData)" :key="item.veranstaltungsID" @click="$router.push({path: `veranstaltungen/${item.veranstaltungsID}/home`, query: {prev: $route.fullPath}})")
+      v-list-tile(v-for="item in data.filter(filterData).reverse()" :key="item.veranstaltungsID" @click="$router.push({path: `veranstaltungen/${item.veranstaltungsID}/home`, query: {prev: $route.fullPath}})")
         v-list-tile-action
           v-icon group
         v-list-tile-content
@@ -55,7 +55,7 @@ export default class EcRootIndex extends Vue {
         authToken: this.$authToken()
       }
     }).then((res: any) => {
-      this.data = res.data.veranstaltungen.reverse();
+      this.data = res.data.veranstaltungen;
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
