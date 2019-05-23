@@ -25,7 +25,7 @@ export default class EcRootIndex extends Vue {
     sheet: [
       {
         id: 'vera_add',
-        icon: 'menu',
+        icon: 'add',
         label: 'Veranstaltung hinzufügen',
         click: this.sheetClick
       }

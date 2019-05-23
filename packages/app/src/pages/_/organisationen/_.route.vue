@@ -22,7 +22,7 @@ export default class EcRootIndex extends Vue {
     sheet: [
       {
         id: 'orga_add',
-        icon: 'menu',
+        icon: 'add',
         label: 'Organisation hinzufügen',
         click: this.sheetClick
       }

@@ -12,7 +12,7 @@ export default class EcRootIndex extends Vue {
     sheet: [
       {
         id: 'pwd_change',
-        icon: 'menu',
+        icon: 'edit',
         label: 'Password ändern',
         click: this.sheetClick
       }

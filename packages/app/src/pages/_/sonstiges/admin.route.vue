@@ -12,7 +12,7 @@ export default class EcRootIndex extends Vue {
     sheet: [
       {
         id: 'user_add',
-        icon: 'menu',
+        icon: 'person_add',
         label: 'Benutzer hinzufügen',
         click: this.sheetClick
       }

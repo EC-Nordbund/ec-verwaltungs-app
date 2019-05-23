@@ -44,7 +44,7 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
     sheet: [
       {
         id: 'anmel_add',
-        icon: 'menu',
+        icon: 'assignment_ind',
         label: 'Anmeldung eingeben',
         click: this.sheetClick
       }

@@ -14,17 +14,17 @@ export default class EcRootIndex extends Vue {
     ],
     nav: [
       {
-        icon: 'menu',
+        icon: 'home',
         label: 'Allgemein',
         to: 'home'
       },
       {
-        icon: 'menu',
+        icon: 'events',
         label: 'Veranstaltungen',
         to: 'veranstaltungen'
       },
       {
-        icon: 'menu',
+        icon: 'home',
         label: 'Veranstaltungsorte',
         to: 'veranstaltungsorte'
       }

@@ -33,7 +33,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
       sheet: [
         {
           id: 'anmel_rep_bestbrief',
-          icon: 'menu',
+          icon: 'markunread_mailbox',
           label: 'Bestätigungsbrief generieren und Drucken',
           disabled: !this.best || this.data.abmeldeZeitpunkt!==null || this.data.wartelistenPlatz !== 0,
           click: () => {
@@ -59,7 +59,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         },
         {
           id: 'anmel_rep_infobrief',
-          icon: 'menu',
+          icon: 'markunread_mailbox',
           label: 'Infobrief generieren und Drucken',
           disabled: !this.info || this.data.abmeldeZeitpunkt!==null || this.data.wartelistenPlatz !== 0,
           click: () => {
@@ -94,7 +94,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         },
         {
           id: 'anmel_bemerkungenEdit',
-          icon: 'person_add_disabled',
+          icon: 'edit',
           label: 'Bemerkungen editieren',
           click: () => {
             (<any>this.$refs.formEditBemerkungen).show();
@@ -102,7 +102,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         },
         {
           id: 'anmel_kontakt',
-          icon: 'person_add_disabled',
+          icon: 'contact_mail',
           label: 'Kontaktdaten editieren',
           click: () => {
             (<any>this.$refs.formKontakt).show();
@@ -110,7 +110,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
         },
         {
           id: 'anmel_nachrücken',
-          icon: 'menu',
+          icon: 'transfer_within_a_station',
           label: 'Nachrücken lassen',
           disabled: this.data.wartelistenPlatz <= 0,
           click: () => {
@@ -142,7 +142,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
       ],
       nav: [
         {
-          icon: 'menu',
+          icon: 'home',
           label: 'Allgemein',
           to: `/anmeldungen/${this.$route.params.id}/home`
         },
@@ -152,7 +152,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           to: `/anmeldungen/${this.$route.params.id}/finanzen`
         },
         {
-          icon: 'menu',
+          icon: 'extension',
           label: 'Sonstiges',
           to: `/anmeldungen/${this.$route.params.id}/sonstiges`
         }

@@ -35,7 +35,7 @@ export default class EcRootIndex extends Vue {
       ],
       nav: [
         {
-          icon: 'menu',
+          icon: 'home',
           label: 'Allgemein',
           to: 'home'
         },
@@ -45,7 +45,7 @@ export default class EcRootIndex extends Vue {
           to: 'finanzen'
         },
         {
-          icon: 'menu',
+          icon: 'group',
           label: 'Anmeldungen',
           to: 'anmeldungen'
         }

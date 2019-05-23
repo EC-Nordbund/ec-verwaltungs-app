@@ -3,7 +3,7 @@
   "short_name": "EC-Verwaltung",
   "start_url": ".",
   "display": "standalone",
-  "background_color" : "#fff" ,
+  "background_color" : "#eef3dc" ,
   "description": "Software für den EC-Nordbund die uns bei der Verwaltung hilft.",
   "icons": [
     {

@@ -45,7 +45,7 @@
         v-subheader Veranstaltungen
         v-list-tile(to="/anmeldungen")
           v-list-tile-action
-            v-icon menu
+            v-icon assignment_ind
           v-list-tile-title Anmeldungen
         v-list-tile(to="/veranstaltungen")
           v-list-tile-action
@@ -57,7 +57,7 @@
           v-list-tile-title Veranstaltungsorte
         v-list-tile(to="/organisationen")
           v-list-tile-action
-            v-icon menu
+            v-icon library_books
           v-list-tile-title Organisationen
         v-divider
         v-subheader Dublikate
@@ -77,12 +77,12 @@
           v-list-tile-title Administration
         v-list-tile(to="/sonstiges/datenschutz")
           v-list-tile-action
-            v-icon menu
+            v-icon security
           v-list-tile-title Datenschutz
-        v-list-tile(to="/sonstiges/impressum")
-          v-list-tile-action
-            v-icon menu
-          v-list-tile-title Impressum
+        //- v-list-tile(to="/sonstiges/impressum")
+        //-   v-list-tile-action
+        //-     v-icon menu
+        //-   v-list-tile-title Impressum
     
     v-content
       router-view(:key="$route.path" style="margin: 5px; width: calc(100% - 10px);")
@@ -150,7 +150,7 @@ export default class EcRootIndex extends Vue {
     }).then(() => {
       this.$setAuthToken('');
       this.$router.push({path: '/login'});
-      save.set('logoutTime', 0);
+      save.set('logoutTime', '0');
     });
   }
 

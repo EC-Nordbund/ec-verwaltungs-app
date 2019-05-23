@@ -14,12 +14,12 @@ export default class EcRootIndexVeranstaltungsortIdIndex extends Vue {
     ],
     nav: [
       {
-        icon: 'menu',
+        icon: 'home',
         label: 'Allgemein',
         to: 'home'
       },
       {
-        icon: 'menu',
+        icon: 'event',
         label: 'Veranstaltungen',
         to: 'veranstaltungen'
       }

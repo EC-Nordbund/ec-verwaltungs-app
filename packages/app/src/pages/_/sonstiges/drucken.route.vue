@@ -12,7 +12,7 @@ export default class EcRootIndex extends Vue {
     sheet: [
       {
         id: 'print_all',
-        icon: 'menu',
+        icon: 'print',
         label: 'Alles Drucken',
         click: this.sheetClick
       }

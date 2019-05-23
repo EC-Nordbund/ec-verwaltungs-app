@@ -38,7 +38,7 @@ export default class EcRootIndex extends Vue {
           click: ()=>{(<any>this.$refs.addTel).show()}
         },
         {
-          icon: 'menu',
+          icon: 'call_merge',
           id: 'pers_merge',
           label: 'Person mergen',
           click: ()=>{(<any>this.$refs.mergePerson).show(this.$route.params.id)}
@@ -56,27 +56,27 @@ export default class EcRootIndex extends Vue {
           click: ()=>{(<any>this.$refs.fz).show()}
         },
         {
-          icon: 'menu',
+          icon: 'edit',
           id: 'pers_edit_stamm',
           label: 'Stammdaten editieren',
           click: ()=>{(<any>this.$refs.stamm).show()}
         },
         {
           disabled: true,
-          icon: 'menu',
+          icon: 'local_offer',
           id: 'pers_edit_kategor',
           label: 'Kategorien editieren',
           click: ()=>{alert('Comming later...')}
         },
         {
-          icon: 'menu',
+          icon: 'extension',
           id: 'pers_edit_sonstiges',
           label: 'Sonstiges editieren',
           click: ()=>{alert('Comming Soon...')}
         },
         {
           disabled: true,
-          icon: 'menu',
+          icon: 'assignment',
           id: 'pers_report',
           label: 'Report erzeugen',
           click: ()=>{alert('Kommt nach Bedarf...')}
@@ -84,17 +84,17 @@ export default class EcRootIndex extends Vue {
       ],
       nav: [
         {
-          icon: 'menu',
+          icon: 'home',
           label: 'Allgemein',
           to: 'home'
         },
         {
-          icon: 'menu',
+          icon: 'event',
           label: 'Veranstaltungen',
           to: 'veranstaltungen'
         },
         {
-          icon: 'menu',
+          icon: 'extension',
           label: 'Sonstiges',
           to: 'sonstiges'
         }

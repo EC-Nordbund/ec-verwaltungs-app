@@ -22,7 +22,7 @@ export default class EcRootIndexVeranstaltungsortIndex extends Vue {
     sheet: [
       {
         id: 'ver_ort_add',
-        icon: 'menu',
+        icon: 'add',
         label: 'Veranstaltungsort hinzufügen',
         click: this.sheetClick
       }
