@@ -132,7 +132,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   }
                 `,
                 variables: {
-                  anmeldeID: this.data.anmeldung.anmeldeID,
+                  anmeldeID: this.$route.params.id,
                   authToken: this.$authToken()
                 }
               })

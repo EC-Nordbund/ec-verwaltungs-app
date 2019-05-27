@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-dialog(v-model="abmeldenShow" max-width="400px")
+  v-dialog(v-model="visible" max-width="400px")
     v-card
       v-card-title
         h1(v-font v-primary) Person abmelden
       v-card-text
-        v-form(v-model="abmeldenValid")
-          formular(v-model="abmeldenValue" :schema=`[
+        v-form(v-model="valid")
+          formular(v-model="value" :schema=`[
             {
               name: 'adresse',
               type: 'autocomplete',
@@ -48,8 +48,8 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="abmeldenShow=false") Abbrechen
-        v-btn(color="primary" :disabled="!abmeldenValid" @click="abmeldenSave") Speichern
+        v-btn(flat @click="visible=false") Abbrechen
+        v-btn(color="primary" :disabled="!valid" @click="abmeldenSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -67,21 +67,21 @@ export default class EcRootIndex extends Vue {
     telefone: []
   };
 
-  private abmeldenShow = false;
-  private abmeldenValid = false;
-  private abmeldenValue = {
+  private visible = false;
+  private valid = false;
+  private value = {
     adresse: 0,
     email: 0,
     telefon: 0
   };
 
   public show() {
-    this.abmeldenValue = {
+    this.value = {
       adresse: this.data.adresse.adressID,
       email: this.data.email.eMailID,
       telefon: this.data.telefon.telefonID
     };
-    this.abmeldenShow = true;
+    this.visible = true;
   }
 
   @Watch('data')
@@ -128,7 +128,7 @@ export default class EcRootIndex extends Vue {
     });
   }
   private abmeldenSave() {
-    this.abmeldenShow = false;
+    this.visible = false;
 
     this.$apolloClient.mutate({
       mutation: gql`
@@ -139,7 +139,7 @@ export default class EcRootIndex extends Vue {
       variables: {
         anmeldeID: this.$route.params.id,
         authToken: this.$authToken(),
-        ...this.abmeldenValue
+        ...this.value
       }
     }).then(() => {
       this.$notifikation('Erfolgreich editiert', `Du hast erfolgreich die Kontaktdaten erfolgreich angepasst.`);

@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-dialog(v-model="abmeldenShow" max-width="400px")
+  v-dialog(v-model="visible" max-width="400px")
     v-card
       v-card-title
         h1(v-font v-primary) FZ-Antrag
       v-card-text
-        v-form(v-model="abmeldenValid")
-          formular(v-model="abmeldenValue" :schema=`[
+        v-form(v-model="valid")
+          formular(v-model="value" :schema=`[
             {
               name: 'mail',
               type: 'autocomplete',
@@ -17,8 +17,8 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="abmeldenShow=false") Abbrechen
-        v-btn(color="primary" :disabled="!abmeldenValid" @click="abmeldenSave") Speichern
+        v-btn(flat @click="visible=false") Abbrechen
+        v-btn(color="primary" :disabled="!valid" @click="abmeldenSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -30,9 +30,9 @@ export default class EcRootIndex extends Vue {
   @Prop({default: {}})
   private data!: any;
 
-  private abmeldenShow = false;
-  private abmeldenValid = false;
-  private abmeldenValue = {
+  private visible = false;
+  private valid = false;
+  private value = {
     mail: ''
   };
 
@@ -76,13 +76,13 @@ export default class EcRootIndex extends Vue {
         this.generate(this.data.emails[0].eMail);
         break;
       default:
-        this.abmeldenShow = true;
+        this.visible = true;
         break;
     }
   }
   private abmeldenSave() {
-    this.abmeldenShow = false;
-    this.generate(this.abmeldenValue.mail);
+    this.visible = false;
+    this.generate(this.value.mail);
   }
 }
 </script>

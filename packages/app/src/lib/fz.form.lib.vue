@@ -1,11 +1,11 @@
 <template lang="pug">  
-  v-dialog(v-model="addPersonShow" max-width="400px" persistend)
+  v-dialog(v-model="visible" max-width="400px" persistend)
     v-card
       v-card-title
         h1(v-font v-primary) FZ Eintragen
       v-card-text
-        v-form(v-model="addPersonValid" @submit.prevent)
-          formular(v-model="addPersonValue" :schema=`[
+        v-form(v-model="valid" @submit.prevent)
+          formular(v-model="value" :schema=`[
             {
               name: 'gesehenVon',
               type: 'autocomplete',
@@ -39,8 +39,8 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="addPersonShow=false") Abbrechen
-        v-btn(color="primary" :disabled="!addPersonValid" @click="addPersonSave") Speichern
+        v-btn(flat @click="visible=false") Abbrechen
+        v-btn(color="primary" :disabled="!valid" @click="addPersonSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -52,14 +52,14 @@ export default class EcRootIndex extends Vue {
 
   private personenData = [];
 
-  private addPersonShow = false;
-  private addPersonValid = false;
-  private addPersonValue: any = {};
+  private visible = false;
+  private valid = false;
+  private value: any = {};
 
   private allPersonen: any = [];
 
   public show() {
-    this.addPersonShow = true;
+    this.visible = true;
   }
 
   public created() {
@@ -67,7 +67,7 @@ export default class EcRootIndex extends Vue {
   }
 
   private addPersonSave() {
-    this.addPersonShow = false;
+    this.visible = false;
 
     this.$apolloClient.mutate({
       mutation:  gql`
@@ -89,7 +89,7 @@ export default class EcRootIndex extends Vue {
           )
         }
       `,
-      variables: {...this.addPersonValue,  personID: this.$route.params.id, authToken: this.$authToken()}
+      variables: {...this.value,  personID: this.$route.params.id, authToken: this.$authToken()}
     }).then(() => {
       this.$notifikation('Neues FZ eingetragen', `Du hast erfolgreich ein neues FZ eingetragen.`);
       this.$emit('reload');

@@ -1,11 +1,11 @@
 <template lang="pug">
-  v-dialog(v-model="abmeldenShow" max-width="400px")
+  v-dialog(v-model="visible" max-width="400px")
     v-card
       v-card-title
         h1(v-font v-primary) Adresse Mergen
       v-card-text
-        v-form(v-model="abmeldenValid")
-          formular(v-model="abmeldenValue" :schema=`[
+        v-form(v-model="valid")
+          formular(v-model="value" :schema=`[
             {
               name: 'richtig',
               type: 'autocomplete',
@@ -22,8 +22,8 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="abmeldenShow=false") Abbrechen
-        v-btn(color="primary" :disabled="!abmeldenValid" @click="abmeldenSave") Speichern
+        v-btn(flat @click="visible=false") Abbrechen
+        v-btn(color="primary" :disabled="!valid" @click="abmeldenSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -37,18 +37,18 @@ export default class EcRootIndex extends Vue {
 
   private falsch = 0;
 
-  private abmeldenShow = false;
-  private abmeldenValid = false;
-  private abmeldenValue = {};
+  private visible = false;
+  private valid = false;
+  private value = {};
 
   public show(falsch: number) {
-    this.abmeldenValue = {};
-    this.abmeldenShow = true;
+    this.value = {};
+    this.visible = true;
     this.falsch = falsch;
   }
 
   private abmeldenSave() {
-    this.abmeldenShow = false;
+    this.visible = false;
 
     this.$apolloClient.mutate({
       mutation: gql`
@@ -58,7 +58,7 @@ export default class EcRootIndex extends Vue {
       `,
       variables: {
         authToken: this.$authToken(),
-        ...this.abmeldenValue,
+        ...this.value,
         falsch: this.falsch
       }
     }).then(() => {

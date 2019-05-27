@@ -1,11 +1,11 @@
 <template lang="pug">  
-  v-dialog(v-model="addPersonShow" max-width="400px" persistend)
+  v-dialog(v-model="visible" max-width="400px" persistend)
     v-card
       v-card-title
         h1(v-font v-primary) {{type==='add' ? 'Neues Mitglied hinzufügen' : 'Mitglied bearbeiten'}}
       v-card-text
-        v-form(v-model="addPersonValid" @submit.prevent)
-          formular(v-model="addPersonValue" :schema=`[
+        v-form(v-model="valid" @submit.prevent)
+          formular(v-model="value" :schema=`[
             {
               name: 'personID',
               type: 'autocomplete',
@@ -31,8 +31,8 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="addPersonShow=false") Abbrechen
-        v-btn(color="primary" :disabled="!addPersonValid" @click="addPersonSave") Speichern
+        v-btn(flat @click="visible=false") Abbrechen
+        v-btn(color="primary" :disabled="!valid" @click="addPersonSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -46,9 +46,9 @@ export default class EcRootIndex extends Vue {
 
   private personenData = [];
 
-  private addPersonShow = false;
-  private addPersonValid = false;
-  private addPersonValue: any = {};
+  private visible = false;
+  private valid = false;
+  private value: any = {};
   private type: 'add'|'edit'|'delete'|'' = '';
 
   private allPersonen: any = [];
@@ -62,10 +62,10 @@ export default class EcRootIndex extends Vue {
 
   public edit(type: 'add'|'edit'|'delete') {
     this.type = type;
-    this.addPersonValue = {};
+    this.value = {};
 
     if (type === 'delete') {
-      this.addPersonValue = {
+      this.value = {
         status: 0
       };
     }
@@ -74,11 +74,11 @@ export default class EcRootIndex extends Vue {
       this.getPersonen();
     }
 
-    this.addPersonShow = true;
+    this.visible = true;
   }
 
   private addPersonSave() {
-    this.addPersonShow = false;
+    this.visible = false;
 
     this.$apolloClient.mutate({
       mutation:  gql`
@@ -98,7 +98,7 @@ export default class EcRootIndex extends Vue {
           )
         }
       `,
-      variables: {...this.addPersonValue,  akID: this.$route.params.id, authToken: this.$authToken()}
+      variables: {...this.value,  akID: this.$route.params.id, authToken: this.$authToken()}
     }).then(() => {
       this.$notifikation('Neuer Eintrag im AK', `Du hast erfolgreich einen neuen Eintrag im AK angelegt`);
       this.$emit('reload');

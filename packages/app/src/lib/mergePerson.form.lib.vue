@@ -1,11 +1,11 @@
 <template lang="pug">  
-  v-dialog(v-model="addPersonShow" max-width="400px" persistend)
+  v-dialog(v-model="visible" max-width="400px" persistend)
     v-card
       v-card-title
         h1(v-font v-primary) Person mergen
       v-card-text
-        v-form(v-model="addPersonValid" @submit.prevent)
-          formular(v-model="addPersonValue" :schema=`[
+        v-form(v-model="valid" @submit.prevent)
+          formular(v-model="value" :schema=`[
             {
               name: 'falsch',
               type: 'autocomplete',
@@ -17,8 +17,8 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="addPersonShow=false") Abbrechen
-        v-btn(color="primary" :disabled="!addPersonValid" @click="addPersonSave") Speichern
+        v-btn(flat @click="visible=false") Abbrechen
+        v-btn(color="primary" :disabled="!valid" @click="addPersonSave") Speichern
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -29,17 +29,17 @@ import { genReport } from '@/report';
 export default class EcRootIndex extends Vue {
   private personenData = [];
 
-  private addPersonShow = false;
-  private addPersonValid = false;
-  private addPersonValue: any = {};
+  private visible = false;
+  private valid = false;
+  private value: any = {};
 
   private allPersonen: any = [];
 
   private richtig = 0;
 
   public show(richtig: number) {
-    this.addPersonValue = {};
-    this.addPersonShow = true;
+    this.value = {};
+    this.visible = true;
     this.richtig = richtig;
   }
   public created() {
@@ -47,7 +47,7 @@ export default class EcRootIndex extends Vue {
   }
 
   private addPersonSave() {
-    this.addPersonShow = false;
+    this.visible = false;
 
     this.$apolloClient.mutate({
       mutation:  gql`
@@ -55,7 +55,7 @@ export default class EcRootIndex extends Vue {
           mergePersons(authToken: $authToken, personID_richtig: $richtig, personID_falsch: $falsch)
         }
       `,
-      variables: {...this.addPersonValue, authToken: this.$authToken(), richtig: this.richtig}
+      variables: {...this.value, authToken: this.$authToken(), richtig: this.richtig}
     }).then(() => {
       this.$notifikation('Personen gemergt', `Du hast erfolgreich die Personen zusammengeführt.`);
       this.$emit('reload');
