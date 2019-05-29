@@ -1,12 +1,11 @@
 {
   "name": "app5",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib -d ./public/lib --name ec-formLib ./src/form/index.js"
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -22,9 +21,6 @@
     "material-design-icons-iconfont": "^5.0.1",
     "register-service-worker": "^1.6.2",
     "roboto-fontface": "*",
-    "storyboard": "^3.1.4",
-    "storyboard-listener-console": "^3.1.4",
-    "vee-validate": "^2.2.7",
     "vue": "^2.6.10",
     "vue-class-component": "^7.1.0",
     "vue-property-decorator": "^8.1.1",

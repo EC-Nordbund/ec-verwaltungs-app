@@ -1,5 +1,5 @@
 <template lang="pug">  
-  v-dialog(v-model="show" max-width="400px" persistend)
+  v-dialog(v-model="visible" max-width="400px" persistend)
     v-card
       v-card-title
         h1(v-font v-primary) Person hinzufügen
@@ -48,7 +48,7 @@
           ]`)
       v-card-actions
         v-spacer
-        v-btn(flat @click="show=false") Abbrechen
+        v-btn(flat @click="visible=false") Abbrechen
         v-btn(color="primary" :disabled="!valid" @click="addPersonSave") Speichern
 </template>
 <script lang="ts">
@@ -61,12 +61,12 @@ export default class ecAddPerson extends Vue {
   @Prop({default: {}})
   private data!: any;
 
-  private show = false;
+  private visible = false;
   private valid = false;
   private value: any = {};
 
   public show() {
-    this.show = true;
+    this.visible = true;
     this.value = {
       ...this.data,
       gebDat: this.data.gebDat.input
@@ -74,7 +74,7 @@ export default class ecAddPerson extends Vue {
   }
 
   private addPersonSave() {
-    this.show = false;
+    this.visible = false;
 
     this.$apolloClient.mutate({
       mutation: gql`
