@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "preBuild": "node ./src/genRoutes.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -14,6 +15,7 @@
     "buffer": "^5.2.1",
     "copy-to-clipboard": "^3.2.0",
     "deepmerge": "^3.2.0",
+    "directory-tree": "^2.2.3",
     "docx-templates": "^3.0.0",
     "graphql": "^14.3.0",
     "graphql-tag": "^2.10.1",
@@ -21,6 +23,8 @@
     "material-design-icons-iconfont": "^5.0.1",
     "register-service-worker": "^1.6.2",
     "roboto-fontface": "*",
+    "storyboard": "^3.1.4",
+    "storyboard-listener-console": "^3.1.4",
     "vue": "^2.6.10",
     "vue-class-component": "^7.1.0",
     "vue-property-decorator": "^8.1.1",

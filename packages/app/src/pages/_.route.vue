@@ -23,9 +23,11 @@
         v-list
           v-list-tile(avatar to="/sonstiges/profil")
             v-list-tile-avatar
-              img(src="https://randomuser.me/api/portraits/men/85.jpg")
+              div(style="border-radius: 50%;width: 40px;height: 40px;padding: 8px 0;" v-primary-bg v-black)
+                | {{data.person.vorname[0]}}{{data.person.nachname[0]}}
+              //- img(src="https://randomuser.me/api/portraits/men/85.jpg")
             v-list-tile-content
-              v-list-tile-title Thomas Seeger
+              v-list-tile-title {{data.person.vorname}} {{data.person.nachname}} ({{data.ablaufDatum.german}})
       v-list
         v-list-tile(to="/home")
           v-list-tile-action
@@ -154,9 +156,35 @@ export default class EcRootIndex extends Vue {
     });
   }
 
+  private data:any = {person:{}, userGroup: {}}
+
   private created() {
     if (!this.$authToken()) {
       this.$router.push({path: '/login', query: {next: this.$route.fullPath}});
+    } else {
+      this.$apolloClient.query({
+        query: gql`
+          query($authToken: String!) {
+            getMyUserData(authToken: $authToken) {
+              userName
+              userGroup {
+                bezeichnung
+              }
+              person {
+                vorname
+                nachname
+              }
+              ablaufDatum {
+                german
+              }
+            }
+          }`,
+        variables: {
+          authToken: this.$authToken()
+        }
+      }).then((res)=>{
+        this.data = res.data.getMyUserData;
+      })
     }
   }
 }
