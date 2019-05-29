@@ -64,7 +64,7 @@ html {
   }
 }
 .ec-rotate {
-  animation: rotate 0.5s infinite;
+  animation: rotate 0.5s linear infinite;
 }
 .ec-alignCenter {
   display: grid;

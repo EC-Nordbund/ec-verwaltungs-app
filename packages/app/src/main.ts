@@ -10,9 +10,12 @@ import * as save from 'js-cookie';
 import router from '@/router';
 // import { Auth } from '@/plugins/auth';
 
-import '@/form';
+// import '@/form';
 import '@/plugins/vuetify';
 import '@/import';
+
+import '@/assets/ecForm.umd.min.js';
+import '@/assets/ecForm.css';
 
 Component.registerHooks([
   'beforeRouteEnter',

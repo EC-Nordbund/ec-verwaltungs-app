@@ -13,17 +13,17 @@
             },
             {
               name: 'gesundheitsinformationen',
-              type: 'textarea',
+              type: 'text',
               label: 'Gesundheitsinformationen'
             },
             {
               name: 'bemerkungen',
-              type: 'textarea',
+              type: 'text',
               label: 'Bemerkungen'
             },
             {
               name: 'lebensmittelAllergien',
-              type: 'textarea',
+              type: 'text',
               label: 'Lebensmittelallergien'
             }
           ]`)

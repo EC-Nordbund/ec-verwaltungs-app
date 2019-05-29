@@ -31,7 +31,7 @@
             },
             {
               name: 'kommentar',
-              type: 'textarea',
+              type: 'text',
               label: 'Kommentar',
               rule: 'required',
               required: true

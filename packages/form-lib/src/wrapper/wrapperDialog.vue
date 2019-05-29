@@ -1,0 +1,56 @@
+<template lang="pug">
+  v-app
+    v-dialog(v-model="visible" max-width="400px" v-bind="$attrs")
+      v-card
+        v-card-title
+          h1(color="primary") {{title}}
+        v-card-text
+          v-form(v-model="valid")
+            formular(v-model="value" :schema="schema")
+        v-card-actions
+          v-spacer
+          v-btn(flat @click="cancel") Abbrechen
+          v-btn(color="primary" :disabled="!valid" @click="save") Speichern
+</template>
+
+<script lang="ts">
+import { Component, Vue, Prop } from 'vue-property-decorator';
+
+@Component({})
+export default class EcRootIndexAKIndex extends Vue {
+  @Prop()
+  private title!: string;
+
+  @Prop()
+  private schema!: any;
+
+  @Prop()
+  private initval!: any;
+
+  private valid = false;
+  private visible = false;
+  private value: any = {}
+
+  private res = (val:any)=>{}
+  private rej = ()=>{}
+
+  public show(initval = this.initval) {
+    return new Promise((res, rej)=>{
+      this.res = res;
+      this.rej = rej;
+      this.value = initval;
+      this.visible = true;
+    })
+  }
+
+  private save() {
+    this.visible = false;
+    this.res(this.value);
+  }
+
+  private cancel() {
+    this.visible = false;
+    this.rej();
+  }
+}
+</script>

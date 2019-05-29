@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --name ec-formLib ./src/form/index.js"
+    "lib": "vue-cli-service build --target lib -d ./public/lib --name ec-formLib ./src/form/index.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",

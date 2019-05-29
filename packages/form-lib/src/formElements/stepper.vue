@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue, Mixins } from 'vue-property-decorator';
-import abstractField from '@/form/abstract';
+import abstractField from '../abstract';
 
 @Component({})
 export default class FormStepper extends Mixins(abstractField) {

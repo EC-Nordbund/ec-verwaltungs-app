@@ -1,0 +1,53 @@
+<meta charset="utf-8">
+<title>ec-formLib demo</title>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="./ec-formLib.umd.min.js"></script>
+<link rel="stylesheet" href="./ec-formLib.css">
+
+<div id="app">
+  
+</div>
+
+
+<script>
+// console.log(ec-formLib)
+
+let app = new Vue({
+  template: `<v-app><formular :schema="schema" v-model="value"/></v-app>`,
+  data: {
+    value: {
+      stepper: {
+        sorgeberechtigter: {}
+      }
+    },
+    schema: [
+      {
+        name: "stepper",
+        type: "stepper",
+        steps: [
+          {
+            label: "Sorgeberechtigter",
+            name: "sorgeberechtigter",
+            schema: [
+              {name: "label", type: "label", tag: "h3", config: {}, label: "Kontaktdaten des Sorgeberechtigten"},
+              {name: "label", type: "label", tag: "p", config: {}, label: "Im falle eines z.B. Medizinischen Problem brauchen wir Kontaktdaten von Ihnen um Sie im Zweifel erreichen zu können. Wir hoffen aber, dass wir sie nicht brauchen."},
+              {name: "vorname", type: "input", label: "Vorname"},
+              {name: "nachname", type: "input", label: "Nachname"},
+              {name: "adresse", type: "adresse"},
+              {name: "telefon", type: "input", label: "(Mobil)Telefon"},
+              {name: "email", type: "input", label: "E-Mail"},
+              {name: "label", type: "label", tag: "h3", config: {}, label: "Zusätzliche Kontaktdaten"},
+              {name: "label", type: "label", tag: "p", config: {}, label: "Wo können fals wir Sie nicht erreichen können jemanden erreichen z.B. VERWANDTEN, FREUNDINNEN/FREUNDEN etc."},
+              {name: "name_2", type: "input", label: "Name"},
+              {name: "telefon_2", type: "input", label: "(Mobil)Telefon"},
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}).$mount('#app')
+
+
+// app.schema = JSON.parse(new URLSearchParams(window.location.search).get('schema'))
+</script>
