@@ -7,10 +7,10 @@ export default (router: any, createVue: any) => {
     authToken: '',
     logout: new Date()
   };
-  
+
   setInterval(() => {
-    const cookiedate = parseInt(save.get('logoutTime') || '0');
-  
+    const cookiedate = parseInt(save.get('logoutTime') || '0', 10);
+
     if (auth.logout.getTime() !== cookiedate) {
       auth.logout = new Date(cookiedate);
     }
@@ -20,21 +20,21 @@ export default (router: any, createVue: any) => {
       save.set('logoutTime', '0');
     }
   }, 10000);
-  
+
   Vue.prototype.$authToken = () => {
     auth.logout = new Date(new Date().getTime() + 29 * 60000);
     save.set('logoutTime', auth.logout.getTime().toString());
     return auth.authToken;
   };
-  
+
   Vue.prototype.$setAuthToken = (authToken: string) => {
     auth.logout = new Date(new Date().getTime() + 29 * 60000);
     auth.authToken = authToken;
     save.set('authToken', authToken, {expires: 1});
     save.set('logoutTime', auth.logout.getTime().toString());
-  }; 
+  };
 
-  
+
   const at = save.get('authToken');
 
   if (at) {
@@ -59,4 +59,4 @@ export default (router: any, createVue: any) => {
   } else {
     createVue();
   }
-}
+};

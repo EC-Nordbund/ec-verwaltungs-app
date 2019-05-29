@@ -76,9 +76,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Emit } from 'vue-property-decorator';
-import gql from 'graphql-tag'
+import gql from 'graphql-tag';
 import copy from 'copy-to-clipboard';
- 
+
 @Component({})
 export default class EcNAME extends Vue {
   public static meta = {};
@@ -88,13 +88,13 @@ export default class EcNAME extends Vue {
 
   private copy = copy;
 
-  showAdresse(adresse: any) {
-    alert("Hier kommt noch eine Karte hin.");
+  public showAdresse(adresse: any) {
+    alert('Hier kommt noch eine Karte hin.');
   }
-  mergeAdresse(adressID: number) {
-    (<any>this.$refs.mergeAdresse).show(adressID)
+  public mergeAdresse(adressID: number) {
+    (this.$refs.mergeAdresse as any).show(adressID);
   }
-  deleteAdresse(adressID: number) {
+  public deleteAdresse(adressID: number) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($adressID: Int!, $authToken: String!) {
@@ -115,7 +115,7 @@ export default class EcNAME extends Vue {
       });
     });
   }
-  deleteEmail(emailID: number) {
+  public deleteEmail(emailID: number) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($emailID: Int!, $authToken: String!) {
@@ -136,7 +136,7 @@ export default class EcNAME extends Vue {
       });
     });
   }
-  deleteTelefon(telefonID: number) {
+  public deleteTelefon(telefonID: number) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($telefonID: Int!, $authToken: String!) {
@@ -157,7 +157,7 @@ export default class EcNAME extends Vue {
       });
     });
   }
-  useAdresse(adressID: number) {
+  public useAdresse(adressID: number) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($adressID: Int!, $authToken: String!) {
@@ -178,7 +178,7 @@ export default class EcNAME extends Vue {
       });
     });
   }
-  useEmail(emailID: number) {
+  public useEmail(emailID: number) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($emailID: Int!, $authToken: String!) {
@@ -199,7 +199,7 @@ export default class EcNAME extends Vue {
       });
     });
   }
-  useTelefon(telefonID: number) {
+  public useTelefon(telefonID: number) {
     this.$apolloClient.mutate({
       mutation: gql`
         mutation($telefonID: Int!, $authToken: String!) {

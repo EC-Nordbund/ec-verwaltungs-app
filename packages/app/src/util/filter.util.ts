@@ -12,7 +12,7 @@ function filterData(item: any, suche: string): boolean {
   return suche
     .toLowerCase()
     .split(' ')
-    .map((suche: string) => filterPart(item, suche))
+    .map((suchePart: string) => filterPart(item, suchePart))
     .reduce((a, b) => a && b, true);
 }
 

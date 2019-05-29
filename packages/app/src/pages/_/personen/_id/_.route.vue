@@ -23,63 +23,63 @@ export default class EcRootIndex extends Vue {
           icon: 'home',
           id: 'pers_add_adresse',
           label: 'Adresse hinzufügen',
-          click: ()=>{(<any>this.$refs.addAdresse).show()}
+          click: () => {(this.$refs.addAdresse as any).show(); }
         },
         {
           icon: 'mail',
           id: 'pers_add_email',
           label: 'Email hinzufügen',
-          click: ()=>{(<any>this.$refs.addMail).show()}
+          click: () => {(this.$refs.addMail as any).show(); }
         },
         {
           icon: 'phone',
           id: 'pers_add_telefon',
-          label: 'Telefon hinzufügen', 
-          click: ()=>{(<any>this.$refs.addTel).show()}
+          label: 'Telefon hinzufügen',
+          click: () => {(this.$refs.addTel as any).show(); }
         },
         {
           icon: 'call_merge',
           id: 'pers_merge',
           label: 'Person mergen',
-          click: ()=>{(<any>this.$refs.mergePerson).show(this.$route.params.id)}
+          click: () => {(this.$refs.mergePerson as any).show(this.$route.params.id); }
         },
         {
           icon: 'assignment',
           id: 'pers_create_fz_antrag',
           label: 'FZ-Antrag generieren',
-          click: ()=>{(<any>this.$refs.fzAntrag).show()}
+          click: () => {(this.$refs.fzAntrag as any).show(); }
         },
         {
           icon: 'assignment',
           id: 'pers_add_fz',
           label: 'FZ Eintragen',
-          click: ()=>{(<any>this.$refs.fz).show()}
+          click: () => {(this.$refs.fz as any).show(); }
         },
         {
           icon: 'edit',
           id: 'pers_edit_stamm',
           label: 'Stammdaten editieren',
-          click: ()=>{(<any>this.$refs.stamm).show()}
+          click: () => {(this.$refs.stamm as any).show(); }
         },
         {
           disabled: true,
           icon: 'local_offer',
           id: 'pers_edit_kategor',
           label: 'Kategorien editieren',
-          click: ()=>{alert('Comming later...')}
+          click: () => {alert('Comming later...'); }
         },
         {
           icon: 'extension',
           id: 'pers_edit_sonstiges',
           label: 'Sonstiges editieren',
-          click: ()=>{alert('Comming Soon...')}
+          click: () => {alert('Comming Soon...'); }
         },
         {
           disabled: true,
           icon: 'assignment',
           id: 'pers_report',
           label: 'Report erzeugen',
-          click: ()=>{alert('Kommt nach Bedarf...')}
+          click: () => {alert('Kommt nach Bedarf...'); }
         }
       ],
       nav: [

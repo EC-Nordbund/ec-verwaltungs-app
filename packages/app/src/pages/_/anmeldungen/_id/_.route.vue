@@ -35,14 +35,22 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_bestbrief',
           icon: 'markunread_mailbox',
           label: 'Bestätigungsbrief generieren und Drucken',
-          disabled: !this.best || this.data.abmeldeZeitpunkt!==null || this.data.wartelistenPlatz !== 0,
+          disabled: !this.best || this.data.abmeldeZeitpunkt !== null || this.data.wartelistenPlatz !== 0,
           click: () => {
-            if(this.data.besteatigungsbrief !== null) {
-              if(!confirm(`Brief wurde ${this.data.besteatigungsbrief.german} bereits generiert. Erneut generieren?`)) {
-                return
+            if (this.data.besteatigungsbrief !== null) {
+              if (
+                !confirm(`Brief wurde ${
+                  this.data.besteatigungsbrief.german
+                } bereits generiert. Erneut generieren?`)
+              ) {
+                return;
               }
             }
-            genReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`, this.data, `bestaetigungsbrief-${this.$route.params.id}.docx`).then((r) => {
+            genReport(
+              `best-brief-${this.data.veranstaltung.veranstaltungsID}`,
+              this.data,
+              `bestaetigungsbrief-${this.$route.params.id}.docx`
+            ).then((r) => {
               this.$apolloClient.mutate({
                 mutation: gql`
                   mutation($anmeldeID: String!, $authToken: String!) {
@@ -61,14 +69,18 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           id: 'anmel_rep_infobrief',
           icon: 'markunread_mailbox',
           label: 'Infobrief generieren und Drucken',
-          disabled: !this.info || this.data.abmeldeZeitpunkt!==null || this.data.wartelistenPlatz !== 0,
+          disabled: !this.info || this.data.abmeldeZeitpunkt !== null || this.data.wartelistenPlatz !== 0,
           click: () => {
-            if(this.data.infoBrief !== null) {
-              if(!confirm(`Brief wurde ${this.data.infoBrief.german} bereits generiert. Erneut generieren?`)) {
-                return
+            if (this.data.infoBrief !== null) {
+              if (!confirm(`Brief wurde ${this.data.infoBrief.german} bereits generiert. Erneut generieren?`)) {
+                return;
               }
             }
-            genReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`, this.data, `infobrief-${this.$route.params.id}.docx`).then((r) => {
+            genReport(
+              `info-brief-${this.data.veranstaltung.veranstaltungsID}`,
+              this.data,
+              `infobrief-${this.$route.params.id}.docx`
+            ).then((r) => {
               this.$apolloClient.mutate({
                 mutation: gql`
                   mutation($anmeldeID: String!, $authToken: String!) {
@@ -89,7 +101,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           label: 'Person abmelden',
           disabled: this.data.wartelistenPlatz === -1,
           click: () => {
-            (<any>this.$refs.formAbmelden).show()
+            (this.$refs.formAbmelden as any).show();
           }
         },
         {
@@ -97,7 +109,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           icon: 'edit',
           label: 'Bemerkungen editieren',
           click: () => {
-            (<any>this.$refs.formEditBemerkungen).show();
+            (this.$refs.formEditBemerkungen as any).show();
           }
         },
         {
@@ -105,7 +117,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           icon: 'contact_mail',
           label: 'Kontaktdaten editieren',
           click: () => {
-            (<any>this.$refs.formKontakt).show();
+            (this.$refs.formKontakt as any).show();
           }
         },
         {
@@ -135,7 +147,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   anmeldeID: this.$route.params.id,
                   authToken: this.$authToken()
                 }
-              })
+              });
             }
           }
         }
@@ -157,9 +169,15 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           to: `/anmeldungen/${this.$route.params.id}/sonstiges`
         }
       ],
-      title: `${(this.data.person || {}).vorname} ${(this.data.person || {}).nachname} - ${(this.data.veranstaltung || {}).bezeichnung}`,
+      title: `${
+        (this.data.person || {}).vorname
+      } ${
+        (this.data.person || {}).nachname
+      } - ${
+        (this.data.veranstaltung || {}).bezeichnung
+      }`,
       subTitle: 'Anmeldung'
-    }
+    };
   }
 
   private getData() {
@@ -250,9 +268,9 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
       fetchPolicy: 'no-cache'
     }).then(async (res: any) => {
       this.data = res.data.anmeldung;
-      
-      this.best = await existsReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`)
-      this.info = await existsReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`)
+
+      this.best = await existsReport(`best-brief-${this.data.veranstaltung.veranstaltungsID}`);
+      this.info = await existsReport(`info-brief-${this.data.veranstaltung.veranstaltungsID}`);
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
@@ -262,7 +280,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
   }
 
   private async created() {
-    this.getData(); 
+    this.getData();
   }
 }
 </script>

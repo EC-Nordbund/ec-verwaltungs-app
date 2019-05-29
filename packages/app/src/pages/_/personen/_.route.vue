@@ -35,7 +35,7 @@ export default class EcRootIndex extends Vue {
 
   public suche = '';
 
-  public rowCount = 0
+  public rowCount = 0;
   private data: any = [];
 
   private config = {
@@ -44,7 +44,7 @@ export default class EcRootIndex extends Vue {
         id: 'pers_add',
         icon: 'person_add',
         label: 'Person hinzufügen',
-        click: ()=>{(<any>this.$refs.addPerson).show()}
+        click: () => {(this.$refs.addPerson as any).show(); }
       }
     ],
     title: 'Personen',
@@ -87,8 +87,8 @@ export default class EcRootIndex extends Vue {
   }
 
   private getCount() {
-    let tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5
-    this.rowCount = Math.floor(tableHeight / 50) 
+    const tableHeight = window.innerHeight - 64 - 80 - 72 - 32 - 56 - 36 - 50 - 5;
+    this.rowCount = Math.floor(tableHeight / 50);
   }
 }
 </script>

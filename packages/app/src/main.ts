@@ -8,7 +8,7 @@ import '@/import';
 import '@/assets/ecForm.umd.min.js';
 import '@/assets/ecForm.css';
 import '@/assets/style.css';
-import "@/config/form";
+import '@/config/form';
 import '@/plugins/apollo';
 import '@/plugins/notify';
 import '@/plugins/telefonFilter';

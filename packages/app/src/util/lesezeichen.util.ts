@@ -4,7 +4,8 @@ import * as save from 'js-cookie';
 
 import Vue from 'vue';
 
-const lesezeichen: {[path: string]: {title: string, subTitle: string, fullPath: string}} = Vue.observable(JSON.parse(save.get('lesezeichen') || '{}')); // (<any>JSON.parse(<any>save.get('lesezeichen')) || {};
+const lesezeichen: {[path: string]: {title: string, subTitle: string, fullPath: string}} =
+  Vue.observable(JSON.parse(save.get('lesezeichen') || '{}'));
 
 export default {
   remove(path: string) {
