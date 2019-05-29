@@ -1,59 +1,62 @@
 import Vue from 'vue';
+import * as save from 'js-cookie';
+import gql from 'graphql-tag';
 
-export class Auth {
-  public static install(vue: typeof Vue) {
-    vue.prototype.$auth = () => {
-      return Auth.instance;
-    };
-    vue.prototype.$login = (username: string, password: string) => {
-      return new Auth(username, password).logedIn();
-    };
-    vue.prototype.$logout = () => {
-      Auth.instance.logout();
-    };
-  }
-  private static instance: Auth;
-
-  public logedInOnlyOnce = false;
-
-  private logInFinished = {
-    ok: (bol: boolean) => {
-      this.status = bol ? 1 : 2;
-    },
-    err: () => {
-      this.status = -1;
-    }
+export default (router: any, createVue: any) => {
+  const auth = {
+    authToken: '',
+    logout: new Date()
   };
-
-  private status = 0;
-  constructor(username: string, password: string) {
-    Auth.instance = this;
-  }
-
-  public logout() {
-    alert('SOON');
-  }
-
-  public get footerInfo(): string {
-    return 'Comming soon';
-  }
-
-  private logedIn(): Promise<boolean> {
-    if (this.logedInOnlyOnce) {
-      throw new Error('Logedin darf nur einmal aufgerufen werden');
+  
+  setInterval(() => {
+    const cookiedate = parseInt(save.get('logoutTime') || '0');
+  
+    if (auth.logout.getTime() !== cookiedate) {
+      auth.logout = new Date(cookiedate);
     }
-    this.logedInOnlyOnce = true;
-    return new Promise((res, rej) => {
-      if (this.status === 0) {
-        this.logInFinished = {
-          ok: res,
-          err: rej
-        };
-      } else if (this.status > 0) {
-        res(this.status === 1);
-      } else {
-        rej('Unbekannter Fehler');
+    if (auth.logout.getTime() < (new Date()).getTime() || cookiedate === 0) {
+      auth.authToken = '';
+      router.push({path: '/login'});
+      save.set('logoutTime', '0');
+    }
+  }, 10000);
+  
+  Vue.prototype.$authToken = () => {
+    auth.logout = new Date(new Date().getTime() + 29 * 60000);
+    save.set('logoutTime', auth.logout.getTime().toString());
+    return auth.authToken;
+  };
+  
+  Vue.prototype.$setAuthToken = (authToken: string) => {
+    auth.logout = new Date(new Date().getTime() + 29 * 60000);
+    auth.authToken = authToken;
+    save.set('authToken', authToken, {expires: 1});
+    save.set('logoutTime', auth.logout.getTime().toString());
+  }; 
+
+  
+  const at = save.get('authToken');
+
+  if (at) {
+    Vue.prototype.$apolloClient.query({
+      query: gql`
+        query($at:String!) {
+          person(personID: 0, authToken: $at) {
+            personID
+          }
+        }
+      `,
+      variables: {
+        at
       }
+    }).then(() => {
+      Vue.prototype.$setAuthToken(at);
+    }).catch(() => {
+      save.remove('authToken');
+    }).then(() => {
+      createVue();
     });
+  } else {
+    createVue();
   }
 }

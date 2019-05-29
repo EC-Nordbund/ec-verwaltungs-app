@@ -1,35 +1,45 @@
 # EC-Verwaltungs-App
 
-## Init
+> Unsere Software besteht aus mehreren Teilen, deren Zusammenspiel hier erklärt werden soll.
 
-Nach dem Clonen des Projekts sollte als erstes
-```sh
-  yarn :init
-```
-ausgeführt werden.
+## Form Generator
 
-Zum starten der App in zwei Terminals die folgenden Befehle eingeben.
+Wir haben einen eignen Formgenerator entwickelt. Dieser basiert auf Vuetify und wird in die anderen Projekte eingebunden.
+### Basis
+* Vuetify
+* Vue
+* Vee-Validate
 
-```sh
-  yarn serve
-  # Und wenn der Initale Compile-Vorgang fertig kann Electron mit
-  yarn start
-  # gestartet werden
-```
+## Anmeldung
 
-## MainProzess
+Hier soll die Anmeldung für den EC-Nordbund erstellt werden. Dabei gibt es den Generator der Anmeldung für die Verschieden Zwecke und Ziel ist eine js Datei, die eingebnden werden kann die Vue, Vuetify, unsern Form generator enthält. Dabei wird als Ziel eine Funktion in das Window Objekt hinzugefügt, die mit einigen Parametern aufgerufen werden kann und die Anmeldung automatisch einbindet.
 
-Der MainProzess kann unter `/electron/src/main/main.js` editiert werden. Einstellungen im DEV-MODE kommen in `electron/src/main/main.dev.js`
+### Basis
+* Form Generator
+* Vuetify
+* Vue
+* Vee-Validate
 
-## RenderProzess
+## API
+Wir nutzen GraphQL als API Framework dabei nutzen wir verschiedene Tools
+### Basis
+* GraphQL Server
+* Eigenes Auth System
 
-Der RenderProzess besteht aus Zwei Teilen
+## APP
+Wir nutzen verschiedene Packete etc. um uns das ganze zu vereinfachen. Wir haben ein automatischen Route generator der Anhand der Ordnerstrucktur die Routes generiert. Wir versuchen eher mehr Dateien zu erstellen als lange Dateien und wir wollen eher html als js.
 
-### Vue-App
+### Basis
+* Form Generator
+* Vuetify
+* Vue
+* Vee-Validate
 
-In `/src` befindet sich die VUE-APP hier ist vorallem der Ordner `/src/views` interessant da hier die einzelnen Angezeigten Routes gespeichert werden.
-In `/src/plugins` befinden sich alle Configuarationen und Plugins ordentlich sortiert.
+## Docs, Help
+Wir nutzen Vuepress um eine Dokumentation und eine Hilfeseite zu generieren. Nicht sehr spektakulär aber ganz interessant. Einige Docs seiten werden zur Buildzeit generiert.
+### Basis
+* Vuepress
 
-### Sonstiges
+## DB
+Aktuell nutzen wir MYSQL was wir aber durch NEO4J ersetzen wollen.
 
-In `/public` können für weitere Browser-Windows der `HTML`, `CSS` und `JS` Code angelegt werden. Hier ist z.B. auch das LadeFenster beheimatet.

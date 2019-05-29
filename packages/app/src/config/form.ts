@@ -1,6 +1,6 @@
 import Vue from "vue";
 
-const context = require.context('@/forms', true, /\w+\.form.ts/);
+const context = require.context('@/config/forms', true, /\w+\.form.ts/);
 
 let obj:any = {};
 
