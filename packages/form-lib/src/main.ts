@@ -15,7 +15,7 @@ Vue.component('formular-selector', selector)
 
 context.keys().forEach(key => {
   Vue.component('form_' + key.split('/')[1].split('.')[0], context(key).default || context(key));
-  console.log(key);
+  console.log("Formelement " + key.split('/')[1].split('.')[0] + " installiert.");
 });
 
 Vue.prototype.$ecForm = {}
