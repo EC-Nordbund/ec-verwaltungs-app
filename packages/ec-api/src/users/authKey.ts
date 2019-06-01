@@ -5,6 +5,7 @@ import { sha3_512 } from 'js-sha3';
 export class authKey {
   public authToken: string
   public ablaufTime: Date = new Date()
+  public wrongCounter = 0
 
   constructor(public user: user) {
     this.authToken = sha3_512(
@@ -33,7 +34,17 @@ export class authKey {
         return
       }
     }
-
+    this.wrongCounter = this.wrongCounter + 1
+    if (this.wrongCounter >= 3) {
+      this.authToken = sha3_512(
+        'authKey_123' +
+          this.user.pwdHash +
+          this.user.userName +
+          this.user.userGroup.bezeichnung +
+          new Date().toISOString() +
+          Math.random()
+      )
+    }
     throw 'Not Reactable - Zu Spät'
   }
 }
