@@ -6,7 +6,8 @@ import {
   getUser,
   login,
   logout,
-  updateUser
+  updateUser,
+  userReactivation
   } from '../../users';
 import mail from '../mail';
 import { query } from '../mysql';
@@ -192,6 +193,20 @@ export default {
           Bug: ${args.bug}<br/>
           Sonstiges: ${args.sonstiges}`,
       )
+    },
+  },
+  reActivate: {
+    type: GraphQLBoolean,
+    args: {
+      authToken: {
+        type: new GraphQLNonNull(GraphQLString)
+      },
+      pin: {
+        type: new GraphQLNonNull(GraphQLString)
+      }
+    },
+    resolve(_, args) {
+      return userReactivation(args.authToken, args.pin)      
     },
   },
 }

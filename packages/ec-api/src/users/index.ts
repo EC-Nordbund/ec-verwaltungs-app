@@ -66,6 +66,16 @@ export function getUser(authToken: string): user {
   return auth.user
 }
 
+export function userReactivation(authToken: string, pin: string) {
+  const auth = authKeys
+    .filter(v => v.authToken === authToken)[0]
+  if (auth === undefined) {
+    throw 'User not Found'
+  }
+  auth.reactivate(pin)
+  return auth.user
+}
+
 export let users: Array<user> = []
 export let userGroups: Array<userGroup> = []
 export let authKeys: Array<authKey> = []

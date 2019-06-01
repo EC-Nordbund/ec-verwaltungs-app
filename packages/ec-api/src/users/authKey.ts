@@ -24,4 +24,16 @@ export class authKey {
       new Date().getTime() + 1000 * 60 * 35
     )
   }
+
+  reactivate(pin: string) {
+    let tmpDate = new Date()
+    if(tmpDate.getTime() - this.ablaufTime.getTime() < 3*60*60*1000) {
+      if (pin === this.user.pin) {
+        this.extend()
+        return
+      }
+    }
+
+    throw 'Not Reactable - Zu Spät'
+  }
 }

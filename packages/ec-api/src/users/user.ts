@@ -16,7 +16,8 @@ export class user {
     public pwdHash: string,
     public salt: string,
     public ablaufDatum: string,
-    public userGroupID: number
+    public userGroupID: number,
+    public pin: string
   ) {
     this.userGroup = userGroups.filter(
       v => v.userGroupID === userGroupID
@@ -31,7 +32,8 @@ export class user {
           personID: this.personID,
           userName: this.userName,
           ablaufDatum: this.ablaufDatum,
-          userGroupID: this.userGroupID
+          userGroupID: this.userGroupID,
+          pin: this.pin
         },
         null,
         2
@@ -45,7 +47,8 @@ export class user {
           pwdHash: this.pwdHash,
           salt: this.salt,
           ablaufDatum: this.ablaufDatum,
-          userGroupID: this.userGroupID
+          userGroupID: this.userGroupID,
+          pin: this.pin
         },
         null,
         2
