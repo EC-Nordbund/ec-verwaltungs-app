@@ -9,8 +9,8 @@
             formular(v-model="value" :schema="schema")
         v-card-actions
           v-spacer
-          v-btn(flat @click="cancel") Abbrechen
-          v-btn(color="primary" :disabled="!valid" @click="save") Speichern
+          v-btn(flat @click="cancel" v-if="!$attrs.noCancel") Abbrechen
+          v-btn(color="primary" :disabled="!valid" @click="save") {{$attrs.saveName||'Speichern'}}
 </template>
 
 <script lang="ts">

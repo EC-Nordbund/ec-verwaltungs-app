@@ -104,6 +104,7 @@ export default class EcRootLogin extends Vue {
       }
       this.$router.push(path as string);
     }
+    this.$setInactiveHandler(()=>{})
   }
   public destroyed() {
     window.removeEventListener('keyup', this.checkCaps);

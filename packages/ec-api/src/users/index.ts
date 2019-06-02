@@ -88,7 +88,7 @@ function load() {
   })
 
   saveObj.users.map(JSON.parse).forEach(v => {
-    users.push(new user(v.userID, v.personID, v.userName, v.pwdHash, v.salt, v.ablaufDatum, v.userGroupID))
+    users.push(new user(v.userID, v.personID, v.userName, v.pwdHash, v.salt, v.ablaufDatum, v.userGroupID, v.pin))
   })
 }
 
@@ -130,7 +130,7 @@ export function addUser(personID: number, username: string, email: string, guelt
   })
   nID++
 
-  users.push(new user(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID))
+  users.push(new user(nID, personID, username, pwdHash, salt, gueltigBis, userGroupID, undefined))
 
   save()
 

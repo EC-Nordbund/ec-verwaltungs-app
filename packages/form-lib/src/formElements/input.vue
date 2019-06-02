@@ -10,6 +10,8 @@
 
     v-on="schema.on||{}"
     v-bind="schema"
+
+    :type="schema.typ"
   )
 </template>
 
