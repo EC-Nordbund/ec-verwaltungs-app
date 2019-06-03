@@ -38,8 +38,14 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
+import { VAutocomplete, VTextField } from 'vuetify/lib'
 
-@Component({})
+@Component({
+  components: {
+    VAutocomplete,
+    VTextField
+  }
+})
 export default class FormInput extends Mixins(abstractField) {
   public map: any = (window as any).$plz;
   public plz = Object.keys((window as any).$plz);

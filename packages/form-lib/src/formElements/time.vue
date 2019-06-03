@@ -40,7 +40,23 @@
 import { Component, Vue, Mixins, Watch } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-@Component({})
+import {
+  VSpacer,
+  VBtn,
+  VDialog,
+  VTimePicker,
+  VTextField
+} from 'vuetify/lib'
+
+@Component({
+  components: {
+    VSpacer,
+    VBtn,
+    VDialog,
+    VTimePicker,
+    VTextField
+  }
+})
 export default class FormInput extends Mixins(abstractField) {
   public modal = false;
   public date = '';

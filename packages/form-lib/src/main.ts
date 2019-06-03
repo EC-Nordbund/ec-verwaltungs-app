@@ -4,6 +4,7 @@ import dialog from './wrapper/wrapperDialog.vue'
 import selector from './wrapper/wrap.vue'
 import VeeValidate, { Validator } from 'vee-validate';
 import de from 'vee-validate/dist/locale/de';
+import 'vuetify/src/stylus/app.styl'
 Vue.use(VeeValidate);
 Validator.localize('de', de);
 
@@ -11,6 +12,7 @@ const context = require.context('./formElements', true);
 
 Vue.component('formular', formular)
 Vue.component('formular-dialog', dialog)
+Vue.component('ec-form-anmeldung', dialog)
 Vue.component('formular-selector', selector)
 
 context.keys().forEach(key => {

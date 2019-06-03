@@ -215,6 +215,14 @@ export default class EcRootIndex extends Vue {
                 this.logout()
               }, 5000);
             })
+          }).catch(()=>{
+            this.$dialog.error({
+              text: "Du wirst automatisch abgemeldet!",
+              title: 'Reaktivieren fehlgeschlagen!'
+            });
+            setTimeout(() => {
+              this.logout()
+            }, 5000);
           })
         }
       })

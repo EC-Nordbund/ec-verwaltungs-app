@@ -14,6 +14,12 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-@Component({})
+import { VAutocomplete } from 'vuetify/lib'
+
+@Component({
+  components: {
+    VAutocomplete
+  }
+})
 export default class FormInput extends Mixins(abstractField) {}
 </script>

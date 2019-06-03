@@ -6,7 +6,7 @@
           h1(color="primary") {{title}}
         v-card-text
           v-form(v-model="valid")
-            formular(v-model="value" :schema="schema")
+            formular(v-model="value" :schema="schema" :cancel="cancel" :save="save")
         v-card-actions
           v-spacer
           v-btn(flat @click="cancel" v-if="!$attrs.noCancel") Abbrechen
@@ -16,7 +16,29 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-@Component({})
+import {
+  VSpacer,
+  VBtn,
+  VDialog,
+  VApp,
+  VCard,
+  VCardTitle,
+  VCardText,
+  VCardActions
+} from 'vuetify/lib'
+
+@Component({
+  components: {
+    VSpacer,
+    VBtn,
+    VDialog,
+    VApp,
+    VCard,
+    VCardTitle,
+    VCardText,
+    VCardActions
+  }
+})
 export default class EcRootIndexAKIndex extends Vue {
   @Prop()
   private title!: string;

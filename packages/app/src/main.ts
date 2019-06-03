@@ -6,7 +6,6 @@ import auth from '@/plugins/auth';
 import router from '@/router';
 import '@/import';
 import '@/assets/ecForm.umd.min.js';
-import '@/assets/ecForm.css';
 import '@/assets/style.css';
 import '@/config/form';
 import '@/plugins/apollo';

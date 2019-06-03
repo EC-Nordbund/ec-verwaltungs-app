@@ -18,6 +18,12 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-@Component({})
+import { VCheckbox } from 'vuetify/lib'
+
+@Component({
+  components: {
+    VCheckbox
+  }
+})
 export default class FormCheckbox extends Mixins(abstractField) {}
 </script>

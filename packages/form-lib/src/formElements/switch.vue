@@ -15,6 +15,14 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-@Component({})
+import {
+  VSwitch
+} from 'vuetify/lib'
+
+@Component({
+  components: {
+    VSwitch
+  }
+})
 export default class FormSwitch extends Mixins(abstractField) {}
 </script>
