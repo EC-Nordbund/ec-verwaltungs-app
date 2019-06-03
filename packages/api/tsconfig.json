@@ -7,16 +7,11 @@
     "importHelpers": false,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true,
     "noImplicitAny": false,
     "outDir": "./dist",
     "types": ["node"],
-    "lib": ["esnext.asynciterable", "es2017"],
-    "typeRoots": ["node_modules/@types"]
+    "lib": ["esnext.asynciterable", "es2017"]
   },
-  "paths": {
-    "@/*": ["lib/*"]
-  },
-  "include": ["lib/**/*.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }
