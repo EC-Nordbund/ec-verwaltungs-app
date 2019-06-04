@@ -99,6 +99,13 @@ export default class EcRootIndex extends Vue {
               german
               input
             }
+            hauptleiter {
+              person {
+                personID
+                vorname
+                nachname
+              }
+            }
             minTNAlter
             maxTNAlter
             anzahlPlaetze

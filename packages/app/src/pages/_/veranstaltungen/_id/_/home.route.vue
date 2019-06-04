@@ -13,6 +13,12 @@
         v-list-tile-content
           v-list-tile-title {{data.bezeichnung}}
           v-list-tile-sub-title Bezeichnung
+      v-list-tile(@click="$router.push({path: `/personen/${data.hauptleiter.person.personID}/home`, query: {prev: $route.fullPath}})" v-if="data.hauptleiter")
+        v-list-tile-action
+          v-icon person
+        v-list-tile-content
+          v-list-tile-title {{data.hauptleiter.person.vorname}} {{data.hauptleiter.person.nachname}}
+          v-list-tile-sub-title Hauptleiter
       v-list-tile(@click="")
         v-list-tile-action
           v-icon person

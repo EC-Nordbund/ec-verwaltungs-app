@@ -21,6 +21,16 @@ export const _veranstaltung = new GraphQLObjectType({
     kurzBezeichnung: {
       type: new GraphQLNonNull(GraphQLString)
     },
+    hauptleiter: {
+      type: anmeldung,
+      resolve(parent) {
+        return query(
+          `SELECT * FROM anmeldungen WHERE veranstaltungsID = ${
+            parent.veranstaltungsID
+          } AND position = 6`
+        ).then((v:any)=>v[0]||null)
+      }
+    },
     anmeldungen: {
       type: new GraphQLList(anmeldung),
       resolve(parent) {
