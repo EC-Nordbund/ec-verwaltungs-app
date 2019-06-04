@@ -33,6 +33,13 @@ export async function generate(
           ende {
             german
           }
+          hauptleiter {
+            person {
+              personID
+              vorname
+              nachname
+            }
+          }
           minTNAlter
           maxTNAlter
           anzahlPlaetze

@@ -9,11 +9,11 @@ export default (router: any, createVue: any) => {
     logout: new Date()
   };
 
-  let handler = () => {}
+  let handler = () => {};
 
   Vue.prototype.$setInactiveHandler = (cb: () => void) => {
-    handler = cb
-  }
+    handler = cb;
+  };
 
   setInterval(() => {
     const cookiedate = parseInt(save.get('logoutTime') || '0', 10);
@@ -23,7 +23,7 @@ export default (router: any, createVue: any) => {
     }
     if (auth.logout.getTime() < (new Date()).getTime() || cookiedate === 0) {
       // TODO: Inactive
-      handler()
+      handler();
       // auth.authToken = '';
       // router.push({path: '/login'});
       // save.set('logoutTime', '0');

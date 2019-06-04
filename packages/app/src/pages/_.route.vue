@@ -111,7 +111,18 @@ import * as save from 'js-cookie';
 // ()
 @Component({})
 export default class EcRootIndex extends Vue {
+
+  private get breadcrumbsRouter(): any[] {
+    return this.breadMap(
+      this.$route.path
+        .split('/')
+        .slice(1)
+        .map((v) => v[0].toUpperCase() + v.slice(1))
+    );
+  }
   public static meta = {};
+
+  public inactive: boolean = false;
 
   private dark = (save.get('dark') === 'x');
   private drawer = null;
@@ -122,18 +133,11 @@ export default class EcRootIndex extends Vue {
     'T. Krause + S. Krüger'
   ]);
 
+  private data: any = {person: {vorname: {}, nachname: {}}, userGroup: {}, ablaufDatum: {}};
+
   private toggleDark() {
     this.dark = !this.dark;
     save.set('dark', this.dark ? 'x' : '');
-  }
-
-  private get breadcrumbsRouter(): any[] {
-    return this.breadMap(
-      this.$route.path
-        .split('/')
-        .slice(1)
-        .map((v) => v[0].toUpperCase() + v.slice(1))
-    );
   }
 
   private breadMap(arr: string[]) {
@@ -156,8 +160,6 @@ export default class EcRootIndex extends Vue {
       save.set('logoutTime', '0');
     });
   }
-
-  private data:any = {person:{vorname:{},nachname: {}}, userGroup: {},ablaufDatum:{}}
 
   private created() {
     if (!this.$authToken()) {
@@ -183,17 +185,17 @@ export default class EcRootIndex extends Vue {
         variables: {
           authToken: this.$authToken()
         }
-      }).then((res)=>{
+      }).then((res) => {
         this.data = res.data.getMyUserData;
-      })
-      this.$setInactiveHandler(()=>{
+      });
+      this.$setInactiveHandler(() => {
         if (this.inactive) {
-          
+
         } else {
-          console.log("inactive")
-          this.inactive = true
-          this.$refs.inactive.show().then((data: {pin: string})=>{
-            // 
+          console.log('inactive');
+          this.inactive = true;
+          this.$refs.inactive.show().then((data: {pin: string}) => {
+            //
             this.$apolloClient.mutate({
               mutation: gql`
                 mutation($authToken: String!, $pin: String!) {
@@ -205,30 +207,28 @@ export default class EcRootIndex extends Vue {
                 pin: data.pin
               }
             }).then(() => {
-              this.inactive = false
-            }).catch(()=>{
+              this.inactive = false;
+            }).catch(() => {
               this.$dialog.error({
-                text: "Du wirst automatisch abgemeldet!",
+                text: 'Du wirst automatisch abgemeldet!',
                 title: 'Reaktivieren fehlgeschlagen!'
               });
               setTimeout(() => {
-                this.logout()
+                this.logout();
               }, 5000);
-            })
-          }).catch(()=>{
+            });
+          }).catch(() => {
             this.$dialog.error({
-              text: "Du wirst automatisch abgemeldet!",
+              text: 'Du wirst automatisch abgemeldet!',
               title: 'Reaktivieren fehlgeschlagen!'
             });
             setTimeout(() => {
-              this.logout()
+              this.logout();
             }, 5000);
-          })
+          });
         }
-      })
+      });
     }
   }
-
-  inactive:boolean = false
 }
 </script>
