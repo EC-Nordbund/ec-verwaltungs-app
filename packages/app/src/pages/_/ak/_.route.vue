@@ -15,7 +15,8 @@
           v-list-tile-title {{item.bezeichnung}}
           v-list-tile-sub-title ID: {{item.akID}}
     template(#dialogs)
-      ec-add-ak(ref="addAK")
+      //- ec-add-ak(ref="addAK")
+      formular-selector(name="addAK" ref="addAK")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
@@ -48,7 +49,27 @@ export default class EcRootIndexAKIndex extends Vue {
         icon: 'group_add',
         label: 'AK-Hinzufügen',
         click: () => {
-          (this.$refs.addAK as any).show();
+          (this.$refs.addAK as any).show().then((data:{bezeichnung: string})=>{
+            this.$apolloClient.mutate({
+              mutation: gql`
+                mutation($authToken: String!, $bezeichnung: String!) {
+                  addAK(bezeichnung: $bezeichnung, authToken: $authToken)
+                }
+              `,
+              variables: {
+                bezeichnung: data.bezeichnung,
+                authToken: this.$authToken()
+              }
+            }).then((res: any) => {
+              this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${data.bezeichnung}" angelegt`);
+              this.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
+            }).catch((err: any) => {
+              this.$dialog.error({
+                text: err.message,
+                title: 'Speichern fehlgeschlagen!'
+              });
+            });
+          }).catch(()=>{});
         }
       }
     ],

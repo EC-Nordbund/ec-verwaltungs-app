@@ -40,6 +40,7 @@
 import { Component, Vue, Mixins, Watch } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
+//@ts-ignore
 import {
   VSpacer,
   VBtn,

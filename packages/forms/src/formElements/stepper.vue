@@ -13,7 +13,7 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-
+//@ts-ignore
 import {
   VForm,
   VStepper,

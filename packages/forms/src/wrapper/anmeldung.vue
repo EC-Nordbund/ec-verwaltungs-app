@@ -1,15 +1,16 @@
 <template lang="pug">
-  v-dialog(v-model="visible" max-width="400px" v-bind="$attrs")
-    v-card
-      v-card-title
-        h1(color="primary") {{title}}
-      v-card-text
-        v-form(v-model="valid")
-          formular(v-model="value" :schema="schema" :cancel="cancel" :save="save")
-      v-card-actions
-        v-spacer
-        v-btn(flat @click="cancel" v-if="!$attrs.noCancel") Abbrechen
-        v-btn(color="primary" :disabled="!valid" @click="save") {{$attrs.saveName||'Speichern'}}
+  v-app
+    v-dialog(v-model="visible" max-width="400px" v-bind="$attrs")
+      v-card
+        v-card-title
+          h1(color="primary") {{title}}
+        v-card-text
+          v-form(v-model="valid")
+            formular(v-model="value" :schema="schema" :cancel="cancel" :save="save")
+        v-card-actions
+          v-spacer
+          v-btn(flat @click="cancel" v-if="!$attrs.noCancel") Abbrechen
+          v-btn(color="primary" :disabled="!valid" @click="save") {{$attrs.saveName||'Speichern'}}
 </template>
 
 <script lang="ts">
