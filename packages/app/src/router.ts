@@ -1,5 +1,6 @@
 import Vue, { CreateElement } from 'vue';
 import Router from 'vue-router';
+//@ts-ignore
 import routes from '@/gen_routes.js';
 
 Vue.use(Router);

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag';
+//@ts-ignore
 import * as excel from 'xlsx-template';
 import { ApolloClient } from 'apollo-boost';
 
@@ -121,7 +122,7 @@ export async function generate(
     vOrtLocation: `${v.veranstaltungsort.plz} ${v.veranstaltungsort.ort} (${v.veranstaltungsort.land})`,
     anmeldungen: v.anmeldungen
       .filter((an: any) => wlistFilter(an.wartelistenPlatz))
-      .map((h: any, id) => ({
+      .map((h: any, id: number) => ({
         id,
         ...h,
         empty: '',

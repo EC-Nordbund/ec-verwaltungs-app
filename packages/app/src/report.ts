@@ -1,3 +1,4 @@
+//@ts-ignore
 import createReport from 'docx-templates';
 import { saveByteArray } from './tnList';
 

@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import { Auth } from '@/plugins/auth';
 import ApolloClient from 'apollo-boost';
 import filterUtil from '@/util/filter.util';
 import reportUtil from '@/util/report.util';
@@ -19,5 +18,6 @@ declare module 'vue/types/vue' {
     };
     $setAuthToken: (authToken: string) => void;
     $notifikation: (title: string, body: string) => Notification;
+    $setInactiveHandler: (cb: () => void) => void;
   }
 }
