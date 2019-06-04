@@ -24,10 +24,7 @@ import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
 //@ts-ignore
-import {
-  VRadioGroup,
-  VRadio
-} from 'vuetify/lib'
+import { VRadioGroup, VRadio } from 'vuetify/lib'
 
 @Component({
   components: {

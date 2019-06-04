@@ -16,16 +16,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 //@ts-ignore
-import {
-  VSpacer,
-  VBtn,
-  VDialog,
-  VApp,
-  VCard,
-  VCardTitle,
-  VCardText,
-  VCardActions
-} from 'vuetify/lib'
+import { VSpacer, VBtn, VDialog, VApp, VCard, VCardTitle, VCardText, VCardActions } from 'vuetify/lib'
 
 @Component({
   components: {

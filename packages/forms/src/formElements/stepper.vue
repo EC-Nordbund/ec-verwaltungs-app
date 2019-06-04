@@ -14,12 +14,7 @@ import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
 //@ts-ignore
-import {
-  VForm,
-  VStepper,
-  VStepperStep,
-  VBtn
-} from 'vuetify/lib'
+import { VForm, VStepper, VStepperStep, VBtn } from 'vuetify/lib'
 
 @Component({
   components: {
