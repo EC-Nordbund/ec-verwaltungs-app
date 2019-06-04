@@ -23,14 +23,14 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-//@ts-ignore
-import { VRadioGroup, VRadio } from 'vuetify/lib'
+// @ts-ignore
+import { VRadioGroup, VRadio } from 'vuetify/lib';
 
 @Component({
   components: {
     VRadioGroup,
-    VRadio
-  }
+    VRadio,
+  },
 })
 export default class FormRadio extends Mixins(abstractField) {}
 </script>

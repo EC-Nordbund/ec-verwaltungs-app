@@ -17,13 +17,13 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
-//@ts-ignore
-import { VCheckbox } from 'vuetify/lib'
+// @ts-ignore
+import { VCheckbox } from 'vuetify/lib';
 
 @Component({
   components: {
-    VCheckbox
-  }
+    VCheckbox,
+  },
 })
 export default class FormCheckbox extends Mixins(abstractField) {}
 </script>

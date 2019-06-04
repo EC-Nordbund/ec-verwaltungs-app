@@ -13,22 +13,22 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-//@ts-ignore
-import { VForm, VStepper, VStepperStep, VBtn } from 'vuetify/lib'
+// @ts-ignore
+import { VForm, VStepper, VStepperStep, VBtn } from 'vuetify/lib';
 
 @Component({
   components: {
     VForm,
     VStepper,
     VStepperStep,
-    VBtn
-  }
+    VBtn,
+  },
 })
 export default class FormStepper extends Mixins(abstractField) {
   public currStep: number = 0;
   public valid: any = {};
 
-  public clickBtn(cb: undefined|((currStep: number, valid: boolean, cancel: ()=>void, save: ()=>void, self: this ) => void | number) ) {
+  public clickBtn(cb: undefined|((currStep: number, valid: boolean, cancel: () => void, save: () => void, self: this ) => void | number) ) {
     if (cb) {
       const val = cb(this.currStep, this.valid[this.currStep], this.cancel, this.save, this);
       if (val) {

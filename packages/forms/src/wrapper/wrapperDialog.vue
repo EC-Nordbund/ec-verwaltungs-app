@@ -15,8 +15,8 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-//@ts-ignore
-import { VSpacer, VBtn, VDialog, VApp, VCard, VCardTitle, VCardText, VCardActions } from 'vuetify/lib'
+// @ts-ignore
+import { VSpacer, VBtn, VDialog, VApp, VCard, VCardTitle, VCardText, VCardActions } from 'vuetify/lib';
 
 @Component({
   components: {
@@ -27,8 +27,8 @@ import { VSpacer, VBtn, VDialog, VApp, VCard, VCardTitle, VCardText, VCardAction
     VCard,
     VCardTitle,
     VCardText,
-    VCardActions
-  }
+    VCardActions,
+  },
 })
 export default class EcRootIndexAKIndex extends Vue {
   @Prop()
@@ -42,19 +42,19 @@ export default class EcRootIndexAKIndex extends Vue {
 
   private valid = false;
   private visible = false;
-  private value: any = {}
-
-  private res = (val:any)=>{}
-  private rej = ()=>{}
+  private value: any = {};
 
   public show(initval = this.initval) {
-    return new Promise((res, rej)=>{
+    return new Promise((res, rej) => {
       this.res = res;
       this.rej = rej;
       this.value = initval;
       this.visible = true;
-    })
+    });
   }
+
+  private res = (val: any) => {};
+  private rej = () => {};
 
   private save() {
     this.visible = false;

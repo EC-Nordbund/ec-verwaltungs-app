@@ -1,25 +1,25 @@
 import Vue from 'vue';
-import formular from "./formular.vue";
-import dialog from './wrapper/wrapperDialog.vue'
-import anmeldung from './wrapper/anmeldung.vue'
-import selector from './wrapper/wrap.vue'
+import formular from './formular.vue';
+import dialog from './wrapper/wrapperDialog.vue';
+import anmeldung from './wrapper/anmeldung.vue';
+import selector from './wrapper/wrap.vue';
 import VeeValidate, { Validator } from 'vee-validate';
-//@ts-ignore
+// @ts-ignore
 import de from 'vee-validate/dist/locale/de';
-import 'vuetify/src/stylus/app.styl'
+import 'vuetify/src/stylus/app.styl';
 Vue.use(VeeValidate);
 Validator.localize('de', de);
 
 const context = require.context('./formElements', true);
 
-Vue.component('formular', formular)
-Vue.component('formular-dialog', dialog)
-Vue.component('ec-form-anmeldung', anmeldung)
-Vue.component('formular-selector', selector)
+Vue.component('formular', formular);
+Vue.component('formular-dialog', dialog);
+Vue.component('ec-form-anmeldung', anmeldung);
+Vue.component('formular-selector', selector);
 
-context.keys().forEach(key => {
+context.keys().forEach((key) => {
   Vue.component('form_' + key.split('/')[1].split('.')[0], context(key).default || context(key));
-  console.log("Formelement " + key.split('/')[1].split('.')[0] + " installiert.");
+  console.log('Formelement ' + key.split('/')[1].split('.')[0] + ' installiert.');
 });
 
-Vue.prototype.$ecForm = {}
+Vue.prototype.$ecForm = {};

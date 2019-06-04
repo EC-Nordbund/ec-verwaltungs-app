@@ -9,7 +9,7 @@ export default class EcRootIndexAKIndex extends Vue {
   @Prop()
   private name!: string;
 
-  public show(...args: Array<any>) {
+  public show(...args: any[]) {
     return (<any>this.$refs.form).show(...args);
   }
 }

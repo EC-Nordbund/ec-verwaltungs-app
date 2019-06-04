@@ -16,13 +16,13 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-//@ts-ignore
-import { VRating } from 'vuetify/lib'
+// @ts-ignore
+import { VRating } from 'vuetify/lib';
 
 @Component({
   components: {
-    VRating
-  }
+    VRating,
+  },
 })
 export default class FormRating extends Mixins(abstractField) {}
 </script>

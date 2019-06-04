@@ -13,13 +13,13 @@
 <script lang="ts">
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
-//@ts-ignore
-import { VAutocomplete } from 'vuetify/lib'
+// @ts-ignore
+import { VAutocomplete } from 'vuetify/lib';
 
 @Component({
   components: {
-    VAutocomplete
-  }
+    VAutocomplete,
+  },
 })
 export default class FormInput extends Mixins(abstractField) {}
 </script>
