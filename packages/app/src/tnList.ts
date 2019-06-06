@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-//@ts-ignore
+// @ts-ignore
 import * as excel from 'xlsx-template';
 import { ApolloClient } from 'apollo-boost';
 

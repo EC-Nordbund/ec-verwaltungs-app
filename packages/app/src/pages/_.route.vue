@@ -194,7 +194,7 @@ export default class EcRootIndex extends Vue {
         } else {
           console.log('inactive');
           this.inactive = true;
-          (<any>this.$refs.inactive).show().then((data: {pin: string}) => {
+          (this.$refs.inactive as any).show().then((data: {pin: string}) => {
             //
             this.$apolloClient.mutate({
               mutation: gql`

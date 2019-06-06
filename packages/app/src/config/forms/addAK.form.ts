@@ -6,7 +6,7 @@ export default {
       name: 'bezeichnung',
       type: 'input',
       label: 'Bezeichnung',
-      rule: "required|max:50",
+      rule: 'required|max:50',
       required: true,
       counter: 50
     }

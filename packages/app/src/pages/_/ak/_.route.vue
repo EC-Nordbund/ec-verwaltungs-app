@@ -49,27 +49,30 @@ export default class EcRootIndexAKIndex extends Vue {
         icon: 'group_add',
         label: 'AK-Hinzufügen',
         click: () => {
-          (this.$refs.addAK as any).show().then((data:{bezeichnung: string})=>{
-            this.$apolloClient.mutate({
-              mutation: gql`
-                mutation($authToken: String!, $bezeichnung: String!) {
-                  addAK(bezeichnung: $bezeichnung, authToken: $authToken)
+          (this.$refs.addAK as any).show()
+            .then((data: {bezeichnung: string}) => {
+              this.$apolloClient.mutate({
+                mutation: gql`
+                  mutation($authToken: String!, $bezeichnung: String!) {
+                    addAK(bezeichnung: $bezeichnung, authToken: $authToken)
+                  }
+                `,
+                variables: {
+                  bezeichnung: data.bezeichnung,
+                  authToken: this.$authToken()
                 }
-              `,
-              variables: {
-                bezeichnung: data.bezeichnung,
-                authToken: this.$authToken()
-              }
-            }).then((res: any) => {
-              this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${data.bezeichnung}" angelegt`);
-              this.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
-            }).catch((err: any) => {
-              this.$dialog.error({
-                text: err.message,
-                title: 'Speichern fehlgeschlagen!'
+              })
+              .then((res: any) => {
+                this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${data.bezeichnung}" angelegt`);
+                this.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
+              })
+              .catch((err: any) => {
+                this.$dialog.error({
+                  text: err.message,
+                  title: 'Speichern fehlgeschlagen!'
+                });
               });
             });
-          }).catch(()=>{});
         }
       }
     ],
