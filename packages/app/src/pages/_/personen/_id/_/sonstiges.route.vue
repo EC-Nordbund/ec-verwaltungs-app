@@ -35,7 +35,8 @@
             v-icon credit_card
           v-list-tile-content
             v-list-tile-title {{juleica.juleicanummer}} 
-            v-list-tile-sub-title JuLeiCa gültig bis {{juleica.gueltig_bis.german}}
+            v-list-tile-sub-title(v-if="juleica.gueltig_bis") JuLeiCa gültig bis {{juleica.gueltig_bis.german}}
+            v-list-tile-sub-title(v-else) JuLeiCa (Kein Gültigkeitsdatum hinterlegt)
       v-divider(v-if="data.ecKreis")
       v-list-tile(v-if="data.ecKreis" @click="")
         v-list-tile-action
