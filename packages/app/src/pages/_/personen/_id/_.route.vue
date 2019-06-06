@@ -133,9 +133,6 @@ export default class EcRootIndex extends Vue {
             }
             geschlecht
             alter(wann: null)
-            Fuehrerschein
-            Rettungsschwimmer
-            ErsteHilfe
             Notizen
             adressen {
               adressID
@@ -204,13 +201,25 @@ export default class EcRootIndex extends Vue {
             #   german
             # }
             # hatFZ(wann: null)
-            juLeiCaNr
             ecKreis {
               ecKreisID
               bezeichnung
               website
             }
             ecMitglied
+            juleica {
+              juleicanummer
+              gueltig_bis {
+                german
+              }
+            }
+            tags {
+              tag {
+                tagID
+                bezeichnung
+              }
+              notiz
+            }
             ak {
               ak {
                 akID
