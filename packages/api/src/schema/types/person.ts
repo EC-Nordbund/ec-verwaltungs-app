@@ -11,7 +11,8 @@ import {
   personAK,
   telefon,
   timeStamp,
-  juleica
+  juleica,
+  personTag
   } from '.';
 import {
   GraphQLBoolean,
@@ -199,6 +200,12 @@ export const _person = new GraphQLObjectType({
       type: new GraphQLList(juleica),
       resolve(parent, _, context: { user: user }) {
         return query(`SELECT * FROM juleica WHERE personID = ${parent.personID}`)
+      },
+    },
+    tags: {
+      type: new GraphQLList(personTag),
+      resolve(parent, _, context: { user: user }) {
+        return query(`SELECT * FROM tagsPersonen WHERE personID = ${parent.personID}`)
       },
     },
     ak: {

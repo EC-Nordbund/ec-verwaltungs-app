@@ -20,6 +20,8 @@ import { _organisationen } from './organisation'
 import { _vorte } from './vOrte'
 import { _vortKontakt } from './vOrtKontakt'
 import { _juleica } from './juleica';
+import { _tag } from './tag';
+import { _personTag } from './tagPerson';
 
 export const organisation = _organisationen
 export const vorte = _vorte
@@ -43,3 +45,5 @@ export const serienbrief = _serienbrief
 export const date = _date
 export const timeStamp = _timestamp
 export const juleica = _juleica
+export const tag = _tag
+export const personTag = _personTag
