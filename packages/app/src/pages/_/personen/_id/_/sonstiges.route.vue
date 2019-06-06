@@ -21,14 +21,6 @@
         v-list-tile-content
           v-list-tile-title {{fz.erzeugt.german}}
           v-list-tile-sub-title FZ-Antrag
-      template(v-if="data[el]" v-for='el in ["Fuehrerschein", "Rettungsschwimmer", "ErsteHilfe"]')
-        v-divider
-        v-list-tile(@click="")
-          v-list-tile-action
-            v-icon local_offer
-          v-list-tile-content
-            v-list-tile-title {{el}}
-            v-list-tile-sub-title Tag
       v-divider(v-if="data.Notizen")
       v-list-tile(v-if="data.Notizen" @click="showAll(data.Notizen)")
         v-list-tile-action
@@ -36,13 +28,14 @@
         v-list-tile-content
           v-list-tile-title {{data.Notizen}}
           v-list-tile-sub-title Notizen
-      v-divider(v-if="data.juLeiCaNr")
-      v-list-tile(v-if="data.juLeiCaNr" @click="")
-        v-list-tile-action
-          v-icon credit_card
-        v-list-tile-content
-          v-list-tile-title {{data.juLeiCaNr}}
-          v-list-tile-sub-title JuLeiCaNr
+      template(v-for="juleica in data.juleica")
+        v-divider()
+        v-list-tile(@click="")
+          v-list-tile-action
+            v-icon credit_card
+          v-list-tile-content
+            v-list-tile-title {{juleica.juleicanummer}} 
+            v-list-tile-sub-title JuLeiCa gültig bis {{juleica.gueltig_bis.german}}
       v-divider(v-if="data.ecKreis")
       v-list-tile(v-if="data.ecKreis" @click="")
         v-list-tile-action

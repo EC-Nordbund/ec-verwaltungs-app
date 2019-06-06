@@ -211,6 +211,7 @@ export default class EcRootIndex extends Vue {
               juleicanummer
               gueltig_bis {
                 german
+                input
               }
             }
             tags {
