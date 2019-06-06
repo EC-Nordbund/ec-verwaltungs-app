@@ -10,7 +10,8 @@ import {
   fzAntrag,
   personAK,
   telefon,
-  timeStamp
+  timeStamp,
+  juleica
   } from '.';
 import {
   GraphQLBoolean,
@@ -160,21 +161,6 @@ export const _person = new GraphQLObjectType({
           })
       },
     },
-    juLeiCaNr: {
-      type: GraphQLString,
-      resolve(parent, args, context: { user: user }) {
-        if (
-          context.user.checkAlowedFileds({
-            table: 'personen',
-            field: 'juLeiCa',
-          })
-        ) {
-          return parent.juLeiCaNr
-        } else {
-          return null
-        }
-      },
-    },
     ecKreis: {
       type: ecKreis,
       resolve(parent, args, context: { user: user }) {
@@ -209,6 +195,12 @@ export const _person = new GraphQLObjectType({
         }
       },
     },
+    juleica: {
+      type: new GraphQLList(juleica),
+      resolve(parent, _, context: { user: user }) {
+        return query(`SELECT * FROM juleica WHERE personID = ${parent.personID}`)
+      },
+    },
     ak: {
       type: new GraphQLList(personAK),
       resolve(parent, _, context: { user: user }) {
@@ -234,15 +226,6 @@ export const _person = new GraphQLObjectType({
       resolve(parent, _, context: { user: user }) {
         return query(`SELECT DISTINCT position FROM anmeldungen WHERE personID = ${parent.personID}`)
       },
-    },
-    Fuehrerschein: {
-      type: new GraphQLNonNull(GraphQLBoolean),
-    },
-    Rettungsschwimmer: {
-      type: new GraphQLNonNull(GraphQLBoolean),
-    },
-    ErsteHilfe: {
-      type: new GraphQLNonNull(GraphQLBoolean),
     },
     Notizen: {
       type: new GraphQLNonNull(GraphQLString),

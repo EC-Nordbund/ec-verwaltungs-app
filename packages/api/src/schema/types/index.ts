@@ -19,6 +19,7 @@ import { _personAK } from './personAK'
 import { _organisationen } from './organisation'
 import { _vorte } from './vOrte'
 import { _vortKontakt } from './vOrtKontakt'
+import { _juleica } from './juleica';
 
 export const organisation = _organisationen
 export const vorte = _vorte
@@ -41,3 +42,4 @@ export const alert = _alert
 export const serienbrief = _serienbrief
 export const date = _date
 export const timeStamp = _timestamp
+export const juleica = _juleica
