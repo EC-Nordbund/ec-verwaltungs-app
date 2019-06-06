@@ -44,7 +44,7 @@
       template(v-for="tag in data.tags")
         v-list-tile(@click="")
           v-list-tile-action
-            v-icon credit_card
+            v-icon label
           v-list-tile-content(v-if="tag.notiz")
             v-list-tile-title {{tag.notiz}}
             v-list-tile-sub-title {{tag.tag.bezeichnung}} 
