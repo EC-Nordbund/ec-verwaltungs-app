@@ -1,7 +1,5 @@
 import Vue from 'vue';
 
-import wrapper from './wrapper.lib.vue';
-import suche from './search.lib.vue';
 import editAK from './editAK.form.lib.vue';
 import abmelden from './abmelden.form.lib.vue';
 import editBemerkungen from './editAnmeldung.Bemerkungen.lib.vue';
@@ -15,18 +13,12 @@ import fzAntrag from './fzAntrag.form.lib.vue';
 import fz from './fz.form.lib.vue';
 import mergeAdresse from './adresseMerge.form.lib.vue';
 import mergePerson from './mergePerson.form.lib.vue';
-// import loadData from './loadData.lib.vue';
 
-import addLesezeichen from './lesezeichen/add.lib.vue';
-import showLesezeichen from './lesezeichen/show.lib.vue';
+Vue.component('ec-wrapper', ()=>import('./wrapper.lib.vue'));
+Vue.component('ec-search', ()=>import('./search.lib.vue'));
+Vue.component('ec-lesezeichen-add', ()=>import('./lesezeichen/add.lib.vue'));
+Vue.component('ec-lesezeichen-show', ()=>import('./lesezeichen/show.lib.vue'));
 
-Vue.component('ec-wrapper', wrapper);
-Vue.component('ec-search', suche);
-
-Vue.component('ec-lesezeichen-add', addLesezeichen);
-Vue.component('ec-lesezeichen-show', showLesezeichen);
-
-// Vue.component('ec-loadData', loadData);
 Vue.component('ec-form-edit-ak', editAK);
 Vue.component('ec-edit-anmeldung-bemerkungen', editBemerkungen);
 Vue.component('ec-abmelden', abmelden);
@@ -40,4 +32,3 @@ Vue.component('ec-fz-antrag', fzAntrag);
 Vue.component('ec-fz', fz);
 Vue.component('ec-adresse-merge', mergeAdresse);
 Vue.component('ec-person-merge', mergePerson);
-// ec-adresse-merge
