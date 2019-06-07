@@ -49,6 +49,7 @@ export default class EcRootIndexAKIndex extends Vue {
         icon: 'group_add',
         label: 'AK-Hinzufügen',
         click: () => {
+          let self = this;
           (this.$refs.addAK as any).show()
             .then((data: {bezeichnung: string}) => {
               this.$apolloClient.mutate({
@@ -64,7 +65,7 @@ export default class EcRootIndexAKIndex extends Vue {
               })
               .then((res: any) => {
                 this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${data.bezeichnung}" angelegt`);
-                this.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
+                self.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
               })
               .catch((err: any) => {
                 this.$dialog.error({

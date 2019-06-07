@@ -23,7 +23,7 @@
           td {{props.item.nachname}} 
           td {{props.item.gebDat.german}}
     template(#dialogs)
-      ec-add-person(ref="addPerson")
+      formular-selector(name="addPerson" ref="addPerson")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -44,7 +44,43 @@ export default class EcRootIndex extends Vue {
         id: 'pers_add',
         icon: 'person_add',
         label: 'Person hinzufügen',
-        click: () => {(this.$refs.addPerson as any).show(); }
+        click: () => {
+          let self = this;
+          (this.$refs.addPerson as any)
+            .show()
+            .then((data: {vorname: string, nachname: string, gebDat: string, geschlecht: string})=>{
+              this.$apolloClient.mutate({
+                mutation: gql`
+                  mutation(
+                    $vorname: String!, 
+                    $nachname: String!, 
+                    $gebDat: String!, 
+                    $geschlecht: String!, 
+                    $authToken: String!
+                  ) {
+                    addPerson(
+                      vorname: $vorname, 
+                      nachname: $nachname, 
+                      gebDat: $gebDat, 
+                      geschlecht: 
+                      $geschlecht, 
+                      authToken: $authToken
+                    )
+                  }
+                `,
+                variables: {...data,  anmeldeID: this.$route.params.id, authToken: this.$authToken()}
+              }).then((res: any) => {
+                this.$notifikation('Neue Person', `Du hast erfolgreich eine neue Person angelegt`);
+                self.$router.push({path: `/personen/${res.data.addPerson}/home`, query: {prev: this.$route.fullPath}});
+              }).catch((err: any) => {
+                this.$dialog.error({
+                  text: err.message,
+                  title: 'Speichern fehlgeschlagen!'
+                });
+              });
+            })
+            .catch(()=>{})
+        }
       }
     ],
     title: 'Personen',

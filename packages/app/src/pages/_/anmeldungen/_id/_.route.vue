@@ -2,8 +2,8 @@
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasReload hasRouterView v-bind="config" @getData="getData")
     router-view(:data="data" @reload="$emit('reload')")
     template(#dialogs)
-      ec-edit-anmeldung-bemerkungen(:data="data" ref="formEditBemerkungen" @reload="$emit('reload')")
-      ec-abmelden(:data="data" ref="formAbmelden" @reload="$emit('reload')")
+      formular-selector(name="abmelden" ref="abmelden")
+      formular-selector(name="editBemerkungen" ref="editBemerkungen")
       ec-anmeldung-kontakt(:data="data" ref="formKontakt" @reload="$emit('reload')")
 </template>
 <script lang="ts">
@@ -101,7 +101,44 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           label: 'Person abmelden',
           disabled: this.data.wartelistenPlatz === -1,
           click: () => {
-            (this.$refs.formAbmelden as any).show();
+            let self = this;
+            (this.$refs.abmelden as any)
+              .show()
+              .then((data:{weg: string, kommentar: string, gebuehr: string})=>{
+                this.$apolloClient.mutate({
+                  mutation: gql`
+                    mutation(
+                      $anmeldeID: String!, 
+                      $weg: String!, 
+                      $gebuehr: Int!, 
+                      $kommentar: String!, 
+                      $authToken: String!
+                    ) {
+                      abmelden(
+                        anmeldeID: $anmeldeID, 
+                        weg: $weg, 
+                        gebuehr: $gebuehr, 
+                        kommentar: $kommentar, 
+                        authToken: $authToken
+                      )
+                    }
+                  `,
+                  variables: {
+                    ...data,
+                    anmeldeID: this.$route.params.id,
+                    authToken: this.$authToken()
+                  }
+                }).then(() => {
+                  this.$notifikation('Erfolgreich Abgemeldet', `Du hast erfolgreich die Person abgemeldet.`);
+                  self.getData()
+                }).catch((err) => {
+                  this.$dialog.error({
+                    text: err.message,
+                    title: 'Speichern fehlgeschlagen!'
+                  });
+                });
+              })
+              .catch(()=>{})
           }
         },
         {
@@ -109,7 +146,44 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           icon: 'edit',
           label: 'Bemerkungen editieren',
           click: () => {
-            (this.$refs.formEditBemerkungen as any).show();
+            let self = this;
+            (this.$refs.editBemerkungen as any)
+              .show()
+              .then((data:any)=>{
+                this.$apolloClient.mutate({
+                  mutation: gql`
+                    mutation(
+                      $authToken: String!
+                      $anmeldeID: String!
+                      $vegetarisch: Boolean!
+                      $gesundheitsinformationen: String!
+                      $bemerkungen: String!
+                      $lebensmittelAllergien: String!
+                    ) {
+                      anmeldungBesonderheiten(
+                        authToken: $authToken
+                        anmeldeID: $anmeldeID
+                        vegetarisch: $vegetarisch
+                        gesundheitsinformationen: $gesundheitsinformationen
+                        bemerkungen: $bemerkungen
+                        lebensmittelAllergien: $lebensmittelAllergien
+                      )
+                    }
+                  `,
+                  variables: {...data,  anmeldeID: this.$route.params.id, authToken: this.$authToken()}
+                })
+                  .then(() => {
+                    this.$notifikation('Bemerkungen editieren', `Du hast erfolgreich die Bemerkungen geändert.`);
+                    self.getData();
+                  })
+                  .catch((err: any) => {
+                    this.$dialog.error({
+                      text: err.message,
+                      title: 'Speichern fehlgeschlagen!'
+                    });
+                  });
+              })
+              .catch(()=>{})
           }
         },
         {

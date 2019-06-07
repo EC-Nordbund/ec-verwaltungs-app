@@ -18,6 +18,12 @@ export default class AbstractField extends Vue {
   public cancel!: any;
 
   @Prop({
+    required: false,
+    default: {}
+  })
+  public parentData!: any;
+
+  @Prop({
     required: true,
   })
   public save!: any;

@@ -2,19 +2,20 @@
   ec-wrapper(hasXBtn hasNav hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     router-view(:data="data" @reload="loadData")
     template(#dialogs)
-      ec-add-adresse(ref="addAdresse" :data="data" @reload="loadData")
-      ec-add-tel(ref="addTel" :data="data" @reload="loadData")
-      ec-add-mail(ref="addMail" :data="data" @reload="loadData")
       ec-fz-antrag(ref="fzAntrag" :data="data" @reload="loadData")
       ec-fz(ref="fz" @reload="loadData")
-      ec-edit-person(ref="stamm" :data="data" @reload="loadData")
       ec-person-merge(ref="mergePerson" @reload="loadData")
+      formular-selector(name="addMail" ref="addMail")
+      formular-selector(name="addTelefon" ref="addTelefon")
+      formular-selector(name="addAdresse" ref="addAdresse")
+      formular-selector(name="personStamm" ref="editStamm")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import gql from 'graphql-tag';
 @Component({})
 export default class EcRootIndex extends Vue {
+  public static meta = {};
 
   private get config() {
     return {
@@ -23,19 +24,124 @@ export default class EcRootIndex extends Vue {
           icon: 'home',
           id: 'pers_add_adresse',
           label: 'Adresse hinzufügen',
-          click: () => {(this.$refs.addAdresse as any).show(); }
+          click: () => {
+            let self = this;
+            (this.$refs.addAdresse as any)
+              .show()
+              .then((data:{adresse:{strasse:string,plz:string,ort:string}})=>{
+                this.$apolloClient.mutate({
+                  mutation: gql`
+                    mutation(
+                      $authToken: String!, 
+                      $personID: Int!, 
+                      $strasse: String!, 
+                      $plz: String!, 
+                      $ort: String!
+                    ) {
+                      addAdresse(
+                        personID: $personID, 
+                        strasse: $strasse, 
+                        plz: $plz, 
+                        ort: $ort, 
+                        authToken: $authToken
+                      )
+                    }
+                  `,
+                  variables: {
+                    ...data.adresse,
+                    authToken: this.$authToken(),
+                    personID: this.data.personID
+                  }
+                }).then((res: any) => {
+                  this.$notifikation('Neue Adresse', `Adresse erfolgreich hinzugefügt`);
+                  self.loadData();
+                }).catch((err: any) => {
+                  this.$dialog.error({
+                    text: err.message,
+                    title: 'Speichern fehlgeschlagen!'
+                  });
+                });
+              })
+              .catch(()=>{})
+          }
         },
         {
           icon: 'mail',
           id: 'pers_add_email',
           label: 'Email hinzufügen',
-          click: () => {(this.$refs.addMail as any).show(); }
+          click: () => {
+            let self = this;
+            (this.$refs.addMail as any)
+              .show()
+              .then((data: {email: string}) => {
+                this.$apolloClient.mutate({
+                  mutation: gql`
+                    mutation($authToken: String!, $personID: Int!, $email: String!) {
+                      addEmail(personID: $personID, email: $email, authToken: $authToken)
+                    }
+                  `,
+                  variables: {
+                    email: data.email,
+                    authToken: this.$authToken(),
+                    personID: this.data.personID
+                  }
+                })
+                  .then((res: any) => {
+                    this.$notifikation('Neue Email', `Email erfolgreich hinzugefügt`);
+                    self.loadData()
+                  })
+                  .catch((err: any) => {
+                    this.$dialog.error({
+                      text: err.message,
+                      title: 'Speichern fehlgeschlagen!'
+                    });
+                  });
+              })
+              .catch(()=>{})
+          }
         },
         {
           icon: 'phone',
           id: 'pers_add_telefon',
           label: 'Telefon hinzufügen',
-          click: () => {(this.$refs.addTel as any).show(); }
+          click: () => {
+            let self = this;
+            (this.$refs.addTel as any)
+              .show()
+              .then((data: {telefon: string})=>{
+                this.$apolloClient.mutate({
+                  mutation: gql`
+                    mutation(
+                      $authToken: String!, 
+                      $personID: Int!, 
+                      $telefon: String!
+                    ) {
+                      addTelefon(
+                        personID: $personID, 
+                        telefon: $telefon, 
+                        authToken: $authToken
+                      )
+                    }
+                  `,
+                  variables: {
+                    telefon: data.telefon,
+                    authToken: this.$authToken(),
+                    personID: this.data.personID
+                  }
+                })
+                  .then((res: any) => {
+                    this.$notifikation('Neue Telefonnummer', `Telefonnummer erfolgreich hinzugefügt`);
+                    self.loadData()
+                  })
+                  .catch((err: any) => {
+                    this.$dialog.error({
+                      text: err.message,
+                      title: 'Speichern fehlgeschlagen!'
+                    });
+                  });
+              })
+              .catch(()=>{}) 
+          }
         },
         {
           icon: 'call_merge',
@@ -59,7 +165,55 @@ export default class EcRootIndex extends Vue {
           icon: 'edit',
           id: 'pers_edit_stamm',
           label: 'Stammdaten editieren',
-          click: () => {(this.$refs.stamm as any).show(); }
+          click: () => {
+            let self = this;
+            (this.$refs.editStamm as any)
+              .show({
+                vorname: this.data.vorname,
+                nachname: this.data.nachname,
+                gebDat: this.data.gebDat.input,
+                geschlecht: this.data.geschlecht
+              })
+              .then((data: {vorname: string, nachname: string, gebDat: string, geschlecht: string}) => {
+                this.$apolloClient.mutate({
+                  mutation: gql`
+                    mutation(
+                      $vorname: String!, 
+                      $nachname: String!, 
+                      $gebDat: String!, 
+                      $geschlecht: String!, 
+                      $authToken: String!, 
+                      $personID: Int!
+                    ) {
+                      editPersonStamm(
+                        vorname: $vorname, 
+                        nachname: $nachname, 
+                        gebDat: $gebDat, 
+                        geschlecht: $geschlecht, 
+                        authToken: $authToken, 
+                        personID: $personID
+                      )
+                    }
+                  `,
+                  variables: {
+                    ...data, 
+                    personID: this.$route.params.id, 
+                    authToken: this.$authToken()
+                  }
+                })
+                  .then((res: any) => {
+                    this.$notifikation('Stammdaten editiert', `Du hast erfolgreich die Person editiert.`);
+                    self.loadData()
+                  })
+                  .catch((err: any) => {
+                    this.$dialog.error({
+                      text: err.message,
+                      title: 'Speichern fehlgeschlagen!'
+                    });
+                  });
+              })
+              .catch(()=>{})
+          }
         },
         {
           disabled: true,
@@ -103,7 +257,6 @@ export default class EcRootIndex extends Vue {
       subTitle: 'Person'
     };
   }
-  public static meta = {};
 
   public data: any = {
     gebDat: {},
@@ -114,10 +267,6 @@ export default class EcRootIndex extends Vue {
     fzAntraege: [],
     ak: []
   };
-
-  private sheetClick(item: {id: string}) {
-    alert(item.id);
-  }
 
   private loadData() {
     this.$apolloClient.query({
@@ -258,6 +407,7 @@ export default class EcRootIndex extends Vue {
       });
     });
   }
+
   private created() {
     this.loadData();
   }

@@ -21,5 +21,13 @@ import { VAutocomplete } from 'vuetify/lib';
     VAutocomplete,
   },
 })
-export default class FormInput extends Mixins(abstractField) {}
+export default class FormInput extends Mixins(abstractField) {
+  items: Array<any>
+
+  async created () {
+    if(this.schema.calcItems) {
+      this.items = await this.schema.calcItems(this, this.parentData)
+    }
+  }
+}
 </script>
