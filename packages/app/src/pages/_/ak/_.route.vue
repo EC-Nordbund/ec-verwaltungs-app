@@ -49,7 +49,7 @@ export default class EcRootIndexAKIndex extends Vue {
         icon: 'group_add',
         label: 'AK-Hinzufügen',
         click: () => {
-          let self = this;
+          const self = this;
           (this.$refs.addAK as any).show()
             .then((data: {bezeichnung: string}) => {
               this.$apolloClient.mutate({

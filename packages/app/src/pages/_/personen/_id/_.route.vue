@@ -25,24 +25,24 @@ export default class EcRootIndex extends Vue {
           id: 'pers_add_adresse',
           label: 'Adresse hinzufügen',
           click: () => {
-            let self = this;
+            const self = this;
             (this.$refs.addAdresse as any)
               .show()
-              .then((data:{adresse:{strasse:string,plz:string,ort:string}})=>{
+              .then((data: {adresse: {strasse: string, plz: string, ort: string}}) => {
                 this.$apolloClient.mutate({
                   mutation: gql`
                     mutation(
-                      $authToken: String!, 
-                      $personID: Int!, 
-                      $strasse: String!, 
-                      $plz: String!, 
+                      $authToken: String!,
+                      $personID: Int!,
+                      $strasse: String!,
+                      $plz: String!,
                       $ort: String!
                     ) {
                       addAdresse(
-                        personID: $personID, 
-                        strasse: $strasse, 
-                        plz: $plz, 
-                        ort: $ort, 
+                        personID: $personID,
+                        strasse: $strasse,
+                        plz: $plz,
+                        ort: $ort,
                         authToken: $authToken
                       )
                     }
@@ -62,7 +62,7 @@ export default class EcRootIndex extends Vue {
                   });
                 });
               })
-              .catch(()=>{})
+              .catch(this.$empty);
           }
         },
         {
@@ -70,7 +70,7 @@ export default class EcRootIndex extends Vue {
           id: 'pers_add_email',
           label: 'Email hinzufügen',
           click: () => {
-            let self = this;
+            const self = this;
             (this.$refs.addMail as any)
               .show()
               .then((data: {email: string}) => {
@@ -88,7 +88,7 @@ export default class EcRootIndex extends Vue {
                 })
                   .then((res: any) => {
                     this.$notifikation('Neue Email', `Email erfolgreich hinzugefügt`);
-                    self.loadData()
+                    self.loadData();
                   })
                   .catch((err: any) => {
                     this.$dialog.error({
@@ -97,7 +97,7 @@ export default class EcRootIndex extends Vue {
                     });
                   });
               })
-              .catch(()=>{})
+              .catch(this.$empty);
           }
         },
         {
@@ -105,20 +105,20 @@ export default class EcRootIndex extends Vue {
           id: 'pers_add_telefon',
           label: 'Telefon hinzufügen',
           click: () => {
-            let self = this;
+            const self = this;
             (this.$refs.addTel as any)
               .show()
-              .then((data: {telefon: string})=>{
+              .then((data: {telefon: string}) => {
                 this.$apolloClient.mutate({
                   mutation: gql`
                     mutation(
-                      $authToken: String!, 
-                      $personID: Int!, 
+                      $authToken: String!,
+                      $personID: Int!,
                       $telefon: String!
                     ) {
                       addTelefon(
-                        personID: $personID, 
-                        telefon: $telefon, 
+                        personID: $personID,
+                        telefon: $telefon,
                         authToken: $authToken
                       )
                     }
@@ -131,7 +131,7 @@ export default class EcRootIndex extends Vue {
                 })
                   .then((res: any) => {
                     this.$notifikation('Neue Telefonnummer', `Telefonnummer erfolgreich hinzugefügt`);
-                    self.loadData()
+                    self.loadData();
                   })
                   .catch((err: any) => {
                     this.$dialog.error({
@@ -140,7 +140,7 @@ export default class EcRootIndex extends Vue {
                     });
                   });
               })
-              .catch(()=>{}) 
+              .catch(this.$empty);
           }
         },
         {
@@ -166,7 +166,7 @@ export default class EcRootIndex extends Vue {
           id: 'pers_edit_stamm',
           label: 'Stammdaten editieren',
           click: () => {
-            let self = this;
+            const self = this;
             (this.$refs.editStamm as any)
               .show({
                 vorname: this.data.vorname,
@@ -178,32 +178,32 @@ export default class EcRootIndex extends Vue {
                 this.$apolloClient.mutate({
                   mutation: gql`
                     mutation(
-                      $vorname: String!, 
-                      $nachname: String!, 
-                      $gebDat: String!, 
-                      $geschlecht: String!, 
-                      $authToken: String!, 
+                      $vorname: String!,
+                      $nachname: String!,
+                      $gebDat: String!,
+                      $geschlecht: String!,
+                      $authToken: String!,
                       $personID: Int!
                     ) {
                       editPersonStamm(
-                        vorname: $vorname, 
-                        nachname: $nachname, 
-                        gebDat: $gebDat, 
-                        geschlecht: $geschlecht, 
-                        authToken: $authToken, 
+                        vorname: $vorname,
+                        nachname: $nachname,
+                        gebDat: $gebDat,
+                        geschlecht: $geschlecht,
+                        authToken: $authToken,
                         personID: $personID
                       )
                     }
                   `,
                   variables: {
-                    ...data, 
-                    personID: this.$route.params.id, 
+                    ...data,
+                    personID: this.$route.params.id,
                     authToken: this.$authToken()
                   }
                 })
                   .then((res: any) => {
                     this.$notifikation('Stammdaten editiert', `Du hast erfolgreich die Person editiert.`);
-                    self.loadData()
+                    self.loadData();
                   })
                   .catch((err: any) => {
                     this.$dialog.error({
@@ -212,7 +212,7 @@ export default class EcRootIndex extends Vue {
                     });
                   });
               })
-              .catch(()=>{})
+              .catch(this.$empty);
           }
         },
         {

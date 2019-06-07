@@ -10,7 +10,7 @@ export default {
       name: 'weg',
       type: 'input',
       label: 'Weg der Abmeldung',
-      rule: "required|max:100",
+      rule: 'required|max:100',
       required: true,
       counter: 100
     },
@@ -18,7 +18,7 @@ export default {
       name: 'kommentar',
       type: 'input',
       label: 'Kommentar',
-      rule: "required|max:200",
+      rule: 'required|max:200',
       required: true,
       counter: 200
     },
@@ -27,7 +27,7 @@ export default {
       type: 'input',
       label: 'Abmeldegebühr (Ganze Euros)',
       mask: '###',
-      rule: "required|max:3",
+      rule: 'required|max:3',
       required: true,
       counter: 3
     }

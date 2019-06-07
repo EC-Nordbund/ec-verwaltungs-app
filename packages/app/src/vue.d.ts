@@ -19,5 +19,6 @@ declare module 'vue/types/vue' {
     $setAuthToken: (authToken: string) => void;
     $notifikation: (title: string, body: string) => Notification;
     $setInactiveHandler: (cb: () => void) => void;
+    $empty: () => void
   }
 }

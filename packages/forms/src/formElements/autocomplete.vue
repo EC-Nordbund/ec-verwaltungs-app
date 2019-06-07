@@ -5,7 +5,7 @@
     @change="changeValue"
     :data-vv-name="schema.label"
     :error-messages="errors.collect(schema.name)"
-    v-bind="schema"
+    v-bind="{items,...schema}"
     v-on="schema.on || {}"
   )
 </template>
@@ -22,11 +22,11 @@ import { VAutocomplete } from 'vuetify/lib';
   },
 })
 export default class FormInput extends Mixins(abstractField) {
-  items: Array<any>
+  private items: Array<any> = [];
 
   async created () {
     if(this.schema.calcItems) {
-      this.items = await this.schema.calcItems(this, this.parentData)
+      this.items = await this.schema.calcItems(this, this.parentData);
     }
   }
 }

@@ -45,25 +45,25 @@ export default class EcRootIndex extends Vue {
         icon: 'person_add',
         label: 'Person hinzufügen',
         click: () => {
-          let self = this;
+          const self = this;
           (this.$refs.addPerson as any)
             .show()
-            .then((data: {vorname: string, nachname: string, gebDat: string, geschlecht: string})=>{
+            .then((data: {vorname: string, nachname: string, gebDat: string, geschlecht: string}) => {
               this.$apolloClient.mutate({
                 mutation: gql`
                   mutation(
-                    $vorname: String!, 
-                    $nachname: String!, 
-                    $gebDat: String!, 
-                    $geschlecht: String!, 
+                    $vorname: String!,
+                    $nachname: String!,
+                    $gebDat: String!,
+                    $geschlecht: String!,
                     $authToken: String!
                   ) {
                     addPerson(
-                      vorname: $vorname, 
-                      nachname: $nachname, 
-                      gebDat: $gebDat, 
-                      geschlecht: 
-                      $geschlecht, 
+                      vorname: $vorname,
+                      nachname: $nachname,
+                      gebDat: $gebDat,
+                      geschlecht:
+                      $geschlecht,
                       authToken: $authToken
                     )
                   }
@@ -79,7 +79,7 @@ export default class EcRootIndex extends Vue {
                 });
               });
             })
-            .catch(()=>{})
+            .catch(this.$empty);
         }
       }
     ],

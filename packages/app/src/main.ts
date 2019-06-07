@@ -25,6 +25,8 @@ Vue.config.productionTip = false;
 
 auth(router, createVue);
 
+Vue.prototype.$empty = () => {};
+
 function createVue() {
   return new Vue({
     router,

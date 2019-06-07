@@ -189,13 +189,9 @@ export default class EcRootIndex extends Vue {
         this.data = res.data.getMyUserData;
       });
       this.$setInactiveHandler(() => {
-        if (this.inactive) {
-
-        } else {
-          console.log('inactive');
+        if (!this.inactive) {
           this.inactive = true;
           (this.$refs.inactive as any).show().then((data: {pin: string}) => {
-            //
             this.$apolloClient.mutate({
               mutation: gql`
                 mutation($authToken: String!, $pin: String!) {

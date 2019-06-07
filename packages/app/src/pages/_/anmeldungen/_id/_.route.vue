@@ -101,24 +101,24 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           label: 'Person abmelden',
           disabled: this.data.wartelistenPlatz === -1,
           click: () => {
-            let self = this;
+            const self = this;
             (this.$refs.abmelden as any)
               .show()
-              .then((data:{weg: string, kommentar: string, gebuehr: string})=>{
+              .then((data: {weg: string, kommentar: string, gebuehr: string}) => {
                 this.$apolloClient.mutate({
                   mutation: gql`
                     mutation(
-                      $anmeldeID: String!, 
-                      $weg: String!, 
-                      $gebuehr: Int!, 
-                      $kommentar: String!, 
+                      $anmeldeID: String!,
+                      $weg: String!,
+                      $gebuehr: Int!,
+                      $kommentar: String!,
                       $authToken: String!
                     ) {
                       abmelden(
-                        anmeldeID: $anmeldeID, 
-                        weg: $weg, 
-                        gebuehr: $gebuehr, 
-                        kommentar: $kommentar, 
+                        anmeldeID: $anmeldeID,
+                        weg: $weg,
+                        gebuehr: $gebuehr,
+                        kommentar: $kommentar,
                         authToken: $authToken
                       )
                     }
@@ -130,7 +130,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   }
                 }).then(() => {
                   this.$notifikation('Erfolgreich Abgemeldet', `Du hast erfolgreich die Person abgemeldet.`);
-                  self.getData()
+                  self.getData();
                 }).catch((err) => {
                   this.$dialog.error({
                     text: err.message,
@@ -138,7 +138,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                   });
                 });
               })
-              .catch(()=>{})
+              .catch(this.$empty);
           }
         },
         {
@@ -146,10 +146,10 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           icon: 'edit',
           label: 'Bemerkungen editieren',
           click: () => {
-            let self = this;
+            const self = this;
             (this.$refs.editBemerkungen as any)
               .show()
-              .then((data:any)=>{
+              .then((data: any) => {
                 this.$apolloClient.mutate({
                   mutation: gql`
                     mutation(
@@ -183,7 +183,7 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
                     });
                   });
               })
-              .catch(()=>{})
+              .catch(this.$empty);
           }
         },
         {

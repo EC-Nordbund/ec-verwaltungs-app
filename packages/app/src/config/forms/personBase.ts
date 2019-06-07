@@ -3,7 +3,7 @@ export default [
     name: 'vorname',
     type: 'input',
     label: 'Vorname',
-    rule: "required|max:50",
+    rule: 'required|max:50',
     required: true,
     counter: 50
   },
@@ -11,7 +11,7 @@ export default [
     name: 'nachname',
     type: 'input',
     label: 'Nachname',
-    rule: "required|max:50",
+    rule: 'required|max:50',
     required: true,
     counter: 50
   },
@@ -19,14 +19,14 @@ export default [
     name: 'gebDat',
     type: 'date',
     label: 'Geburtsdatum',
-    rule: "required",
+    rule: 'required',
     required: true
   },
   {
     name: 'geschlecht',
     type: 'radio',
     required: true,
-    rule: "required",
+    rule: 'required',
     radios: [
       {
         value: 'm',
@@ -38,4 +38,4 @@ export default [
       }
     ]
   }
-]
+];

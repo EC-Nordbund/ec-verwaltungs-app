@@ -10,3 +10,11 @@
 <IfModule mod_headers.c>
     Header set Access-Control-Allow-Origin "*"
 </IfModule>
+
+<IfModule mod_deflate.c>
+ <FilesMatch "\.(js|jpg|jpeg|gif|png|css|woff|eot|woff2|ttf|otf)$">
+  ExpiresActive on
+  ExpiresDefault "access plus 1 month"
+  SetOutputFilter DEFLATE
+ </FilesMatch>
+</IfModule>

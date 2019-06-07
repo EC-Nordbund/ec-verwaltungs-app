@@ -1,4 +1,4 @@
-import personBase from './personBase'
+import personBase from './personBase';
 export default {
   title: 'Person editieren',
   initval: {
