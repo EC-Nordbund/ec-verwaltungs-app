@@ -11,10 +11,10 @@ export default {
           btns: [
             {
               content: 'Weiter',
-              click: (cStep, valid, c,s, self) => {
-                if(self.errors[cStep]) delete self.errors[cStep]
+              click: (cStep, valid, c,s, self, set) => {
+                if(self.error[cStep]) delete self.error[cStep]
                 if(valid && self.value.person.vorname && self.value.person.nachname && self.value.person.gebDat && self.value.person.geschlecht) return cStep + 1
-                self.errors[cStep] = 'Es wurden nicht alle Felder korrekt ausgefüllt!'
+                set(self.error, cStep, true)
               }
             }
           ],
