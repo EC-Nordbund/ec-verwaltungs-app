@@ -41,9 +41,9 @@ if ($result = $mysqli->query("SELECT * FROM _anmeldung_config WHERE vid = '$vid'
       <script>
         window.$options = <?=$js?>;
         window.$rolle = <?=$position?>;
-        window.onload = function () {
-          window.show();
-        }
+        // window.onload = function () {
+        //   window.show();
+        // }
       </script>
     </head>
     <body>

@@ -12,7 +12,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 
 // @ts-ignore
 import { VToolbar, VSpacer, VBtn, VIcon, VDialog, VApp, VCard, VCardTitle, VCardText, VCardActions } from 'vuetify/lib';
@@ -46,6 +46,11 @@ export default class EcRootIndexAKIndex extends Vue {
 
   private save() {    
     this.$emit('save', this.value);
+  }
+
+  @Watch('initVal', {immediate: true})
+  onInitValChange() {
+    this.value = this.initval;
   }
 }
 </script>
