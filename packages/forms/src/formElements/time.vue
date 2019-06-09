@@ -9,6 +9,7 @@
     width="290px"
   )
     v-text-field(
+      v-validate="schema.rule"
       slot="activator"
       :value="date"
       :label="schema.label"

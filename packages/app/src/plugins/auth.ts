@@ -22,11 +22,7 @@ export default (router: any, createVue: any) => {
       auth.logout = new Date(cookiedate);
     }
     if (auth.logout.getTime() < (new Date()).getTime() || cookiedate === 0) {
-      // TODO: Inactive
       handler();
-      // auth.authToken = '';
-      // router.push({path: '/login'});
-      // save.set('logoutTime', '0');
     }
   }, 10000);
 

@@ -64,7 +64,10 @@ export default class EcRootIndexAKIndex extends Vue {
                 }
               })
               .then((res: any) => {
-                this.$notifikation('Neuer AK', `Du hast erfolgreich einen AK mit dem Namen "${data.bezeichnung}" angelegt`);
+                this.$notifikation(
+                  'Neuer AK',
+                  `Du hast erfolgreich einen AK mit dem Namen "${data.bezeichnung}" angelegt`
+                );
                 self.$router.push({path: `/ak/${res.data.addAK}`, query: {prev: this.$route.fullPath}});
               })
               .catch((err: any) => {

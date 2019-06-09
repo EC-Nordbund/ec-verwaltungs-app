@@ -132,8 +132,20 @@ export default class EcRootIndex extends Vue {
 
     this.$apolloClient.mutate({
       mutation: gql`
-        mutation($authToken: String!, $anmeldeID: String!, $adresse: Int!, $email: Int!, $telefon: Int!) {
-          anmeldungKontakt(anmeldeID: $anmeldeID, authToken: $authToken, adressID: $adresse, emailID: $email, telefonID: $telefon)
+        mutation(
+          $authToken: String!,
+          $anmeldeID: String!,
+          $adresse: Int!,
+          $email: Int!,
+          $telefon: Int!
+        ) {
+          anmeldungKontakt(
+            anmeldeID: $anmeldeID,
+            authToken: $authToken,
+            adressID: $adresse,
+            emailID: $email,
+            telefonID: $telefon
+          )
         }
       `,
       variables: {

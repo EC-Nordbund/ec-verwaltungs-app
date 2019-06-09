@@ -1,29 +1,28 @@
 <template lang="pug">
   v-app
-    v-dialog(v-model="visible" max-width="400px" v-bind="$attrs")
-      v-card
-        v-card-title
-          h1(color="primary") {{title}}
-        v-card-text
-          v-form(v-model="valid")
-            formular(v-model="value" :schema="schema" :cancel="cancel" :save="save")
-        v-card-actions
-          v-spacer
-          v-btn(flat @click="cancel" v-if="!$attrs.noCancel") Abbrechen
-          v-btn(color="primary" :disabled="!valid" @click="save") {{$attrs.saveName||'Speichern'}}
+    v-toolbar(app color="primary") 
+      v-spacer
+      h1(style="color: #fff") {{title}}
+      v-spacer
+      v-btn(icon @click="$emit('cancel')")
+        v-icon close
+    v-content(app)
+      v-form(v-model="valid")
+        formular(v-model="value" :schema="schema" :cancel="$emit('cancel')" :save="save")
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 // @ts-ignore
-import { VSpacer, VBtn, VDialog, VApp, VCard, VCardTitle, VCardText, VCardActions } from 'vuetify/lib';
+import { VToolbar, VSpacer, VBtn, VIcon, VDialog, VApp, VCard, VCardTitle, VCardText, VCardActions } from 'vuetify/lib';
 
 @Component({
   components: {
     VSpacer,
     VBtn,
     VDialog,
+    VToolbar,
     VApp,
     VCard,
     VCardTitle,
@@ -45,26 +44,8 @@ export default class EcRootIndexAKIndex extends Vue {
   private visible = false;
   private value: any = {};
 
-  public show(initval = this.initval) {
-    return new Promise((res, rej) => {
-      this.res = res;
-      this.rej = rej;
-      this.value = initval;
-      this.visible = true;
-    });
-  }
-
-  private res = (val: any) => {};
-  private rej = () => {};
-
-  private save() {
-    this.visible = false;
-    this.res(this.value);
-  }
-
-  private cancel() {
-    this.visible = false;
-    this.rej();
+  private save() {    
+    this.$emit('save', this.value);
   }
 }
 </script>

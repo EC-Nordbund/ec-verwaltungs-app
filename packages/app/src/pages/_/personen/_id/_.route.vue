@@ -2,13 +2,15 @@
   ec-wrapper(hasXBtn hasNav hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     router-view(:data="data" @reload="loadData")
     template(#dialogs)
-      ec-fz-antrag(ref="fzAntrag" :data="data" @reload="loadData")
-      ec-fz(ref="fz" @reload="loadData")
-      ec-person-merge(ref="mergePerson" @reload="loadData")
+      //- ec-fz-antrag(ref="fzAntrag" :data="data" @reload="loadData")
+      formular-dialog(v-bind="fzAntragConfig" ref="fzAntrag")
+      formular-dialog(v-bind="fzAddConfig" ref="addFZ")
+      formular-dialog(v-bind="mergePersonConfig" ref="mergePerson")
       formular-selector(name="addMail" ref="addMail")
       formular-selector(name="addTelefon" ref="addTelefon")
       formular-selector(name="addAdresse" ref="addAdresse")
       formular-selector(name="personStamm" ref="editStamm")
+     
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -16,6 +18,51 @@ import gql from 'graphql-tag';
 @Component({})
 export default class EcRootIndex extends Vue {
   public static meta = {};
+
+  private get mergePersonConfig() {
+    return this.$ecForm['personMerge'](this)
+  }
+
+  private get fzAntragConfig() {
+    return this.$ecForm['generateFZAntrag'](this)
+  }
+
+  private get fzAddConfig() {
+    return this.$ecForm['addFZ'](this)
+  }
+  
+
+  public allePersonen = []
+
+  private loadPersons() {
+    this.$apolloClient.query({
+      query: gql`
+        query($authToken: String!) {
+          personen(authToken: $authToken) {
+            personID,
+            vorname,
+            nachname,
+            gebDat {
+              german
+              input
+            }
+          }
+        }
+      `,
+      variables: {
+        authToken: this.$authToken()
+      }
+    })
+      .then((res) => {
+        this.allePersonen = res.data.personen;
+      })
+      .catch((err: any) => {
+        this.$dialog.error({
+          text: err.message,
+          title: 'Laden fehlgeschlagen!'
+        });
+      });
+  }
 
   private get config() {
     return {
@@ -106,7 +153,7 @@ export default class EcRootIndex extends Vue {
           label: 'Telefon hinzufügen',
           click: () => {
             const self = this;
-            (this.$refs.addTel as any)
+            (this.$refs.addTelefon as any)
               .show()
               .then((data: {telefon: string}) => {
                 this.$apolloClient.mutate({
@@ -147,19 +194,135 @@ export default class EcRootIndex extends Vue {
           icon: 'call_merge',
           id: 'pers_merge',
           label: 'Person mergen',
-          click: () => {(this.$refs.mergePerson as any).show(this.$route.params.id); }
+          click: () => {
+            const self = this;
+            (this.$refs.mergePerson as any)
+              .show()
+                .then((res:{falsch:number})=>{
+                  console.log(res)
+                  this.$apolloClient.mutate({
+                    mutation: gql`
+                      mutation($authToken: String!, $richtig: Int!, $falsch: Int!) {
+                        mergePersons(authToken: $authToken, personID_richtig: $richtig, personID_falsch: $falsch)
+                      }
+                    `,
+                    variables: {falsch: res.falsch, authToken: this.$authToken(), richtig: this.$route.params.id}
+                  })
+                    .then(() => {
+                      this.$notifikation('Personen gemergt', `Du hast erfolgreich die Personen zusammengeführt.`);
+                      self.loadData();
+                    })
+                    .catch((err: any) => {
+                      this.$dialog.error({
+                        text: err.message,
+                        title: 'Speichern fehlgeschlagen!'
+                      });
+                    });
+                })
+                .catch(this.$empty)
+          }
         },
         {
           icon: 'assignment',
           id: 'pers_create_fz_antrag',
           label: 'FZ-Antrag generieren',
-          click: () => {(this.$refs.fzAntrag as any).show(); }
+          click: () => {
+            const self = this;
+
+            const generate = (mail:string) => {
+              this.$apolloClient.mutate({
+                mutation: gql`
+                  mutation(
+                    $personID: Int!
+                    $authToken: String!
+                    $email: String!
+                  ) {
+                    addFZAntrag(
+                      personID: $personID
+                      authToken: $authToken
+                      email: $email
+                    )
+                  }
+                `,
+                variables: {
+                  authToken: this.$authToken(),
+                  personID: this.$route.params.id,
+                  email: mail
+                }
+              })
+                .then(() => {
+                  this.$notifikation(
+                    'Erfolgreich Generiert',
+                    `Du hast erfolgreich den Antrag generiert. An fz@ec-nordbund.de wurde eine Kopie gesendet!`
+                  );
+                  self.loadData();
+                })
+                .catch((err) => {
+                  this.$dialog.error({
+                    text: err.message,
+                    title: 'Speichern fehlgeschlagen!'
+                  });
+                });
+            }
+
+            switch (this.data.emails.length) {
+              case 0:
+                alert('Du musste eine Mail erst eintragen!');
+                break;
+              case 1:
+                generate(this.data.emails[0].eMail);
+                break;
+              default:
+                (this.$refs.fzAntrag as any)
+                  .show()
+                  .then((data: {mail: string})=>generate(data.mail))
+                  .catch(this.$empty)
+                break;
+            }
+          }
         },
         {
           icon: 'assignment',
           id: 'pers_add_fz',
           label: 'FZ Eintragen',
-          click: () => {(this.$refs.fz as any).show(); }
+          click: () => {
+            const self = this;
+            (this.$refs.addFZ as any)
+              .show()
+              .then((data:{gesehenVon:number, fzVon:string, gesehenAm: string, kommentrar: string})=>{
+                this.$apolloClient.mutate({
+                  mutation:  gql`
+                    mutation(
+                      $personID: Int!
+                      $authToken: String!
+                      $gesehenAm: String!
+                      $gesehenVon: Int!
+                      $kommentar: String!
+                      $fzVon: String!
+                    ) {
+                      addFZ(
+                        personID: $personID
+                        authToken: $authToken
+                        gesehenAm: $gesehenAm
+                        gesehenVon: $gesehenVon
+                        kommentar: $kommentar
+                        fzVon: $fzVon
+                      )
+                    }
+                  `,
+                  variables: {...data,  personID: this.$route.params.id, authToken: this.$authToken()}
+                }).then(() => {
+                  this.$notifikation('Neues FZ eingetragen', `Du hast erfolgreich ein neues FZ eingetragen.`);
+                  self.loadData();
+                }).catch((err: any) => {
+                  this.$dialog.error({
+                    text: err.message,
+                    title: 'Speichern fehlgeschlagen!'
+                  });
+                });
+              })
+              .catch(this.$empty)
+          }
         },
         {
           icon: 'edit',
@@ -410,6 +573,7 @@ export default class EcRootIndex extends Vue {
 
   private created() {
     this.loadData();
+    this.loadPersons();
   }
 }
 </script>
