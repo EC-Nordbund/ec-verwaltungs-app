@@ -51,8 +51,9 @@ Vue.config.productionTip = false;
 (<any>window).$save = function (data: any) {
   alert(JSON.stringify(data))
   //TODO: Tu was mit den Daten... => Bestätigungsmail
-}
+};
 
 (<any>window).$cancel = function () {
   alert('abrechen')
+  // Relink to ec-nb page
 }

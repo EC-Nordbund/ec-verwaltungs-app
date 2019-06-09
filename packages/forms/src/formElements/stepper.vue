@@ -28,6 +28,8 @@ export default class FormStepper extends Mixins(abstractField) {
   public currStep: number = 0;
   public valid: any = {};
 
+  public error: any = {};
+
   public clickBtn(cb: undefined|((currStep: number, valid: boolean, cancel: () => void, save: () => void, self: this ) => void | number) ) {
     // await this.$validator.validateAll()
     if (cb) {
