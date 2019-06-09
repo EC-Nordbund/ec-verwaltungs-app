@@ -4,7 +4,7 @@
       label="Straße"
       counter="50"
       required
-      :value="value.strasse"
+      :value="(value || {}).strasse"
       @input="changeValue({ort: value.ort, plz: value.plz, strasse: $event})"
       :data-vv-name="schema.name + '_strasse'"
       data-vv-as="Straße"
@@ -13,7 +13,7 @@
     )
     v-autocomplete.plz(
       v-validate="'required'"
-      :value="value.plz"
+      :value="(value || {}).plz"
       label="PLZ"
       @change="plzChange"
       required
@@ -23,8 +23,8 @@
       :error-messages="errors.collect(schema.name + '_plz')"
     )
     v-autocomplete.ort(
-      v-validate="'required'"
-      :value="value.ort"
+      v-validat.initial="'required'"
+      :value="(value || {}).ort"
       label="Ort"
       @change="changeValue({plz: value.plz, ort: $event, strasse: value.strasse})"
       :data-vv-name="schema.name + '_ort'"

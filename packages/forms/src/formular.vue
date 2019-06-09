@@ -1,6 +1,6 @@
 <template lang="pug">
   component(:is="tag||'div'")
-    component(v-for="field in schema" :is="'form_' + field.type" :parentData="parentData" :schema="field" :value="value[field.name]" @input="value[field.name] = $event" :save="save" :cancel="cancel")
+    component(v-for="field in schema" :is="'form_' + field.type" :schema="field" :value="value[field.name]" @input="value[field.name] = $event" :save="save" :cancel="cancel")
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -26,12 +26,6 @@ export default class FormRoot extends Vue {
     required: true,
   })
   public save!: any;
-
-  @Prop({
-    required: false,
-    default: {}
-  })
-  public parentData!: any;
 }
 
 </script>

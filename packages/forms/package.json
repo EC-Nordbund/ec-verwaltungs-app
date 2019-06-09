@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "vue-cli-service lint",
+    "serve": "vue-cli-service serve --name ecForm --target lib ./src/main.ts",
     "build": "vue-cli-service build --name ecForm --target lib ./src/main.ts"
   },
   "dependencies": {

@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card-text(style="overflow: auto;")
-    ec-adresse-merge(ref="mergeAdresse" :data="data" @reload="$emit('reload')")
+    //- ec-adresse-merge(ref="mergeAdresse" :data="data" @reload="$emit('reload')")
     v-list(two-line)
       v-list-tile(@click="")
         v-list-tile-action

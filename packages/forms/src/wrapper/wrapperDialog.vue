@@ -5,7 +5,7 @@
         h1(color="primary") {{title}}
       v-card-text
         v-form(v-model="valid")
-          formular(v-model="value" :schema="schema" :cancel="cancel" :save="save" :parentData="parentData")
+          formular(v-model="value" :schema="schema" :cancel="cancel" :save="save")
       v-card-actions
         v-spacer
         v-btn(flat @click="cancel" v-if="!$attrs.noCancel") Abbrechen
@@ -31,12 +31,6 @@ import { VSpacer, VBtn, VDialog, VApp, VCard, VCardTitle, VCardText, VCardAction
   },
 })
 export default class EcRootIndexAKIndex extends Vue {
-  @Prop({
-    required: false,
-    default: {}
-  })
-  public parentData!: any;
-
   @Prop()
   private title!: string;
 

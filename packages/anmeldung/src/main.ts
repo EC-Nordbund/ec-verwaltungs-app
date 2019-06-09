@@ -33,21 +33,26 @@ Vue.config.productionTip = false;
     options: (<any>window).$options
   },
   render: function (h) {
-    return h('ec-form-anmeldung', {props: this.options, attrs: this.options, ref: 'form'})
-  },
-  methods: {
-    show: function () {
-      return (<any>this.$refs.form).show()
-    }
+    return h(
+      'ec-form-anmeldung', 
+      {
+        props: this.options, 
+        attrs: this.options, 
+        on: {
+          save: (<any>window).$save,
+          cancel: (<any>window).$cancel
+        }
+      }
+    )
   }
 }).$mount('#anmeldung');
 
 
-(<any>window).show = async function (options?: any) {
-  if (options) {
-    (<any>window).anmeldung.options = options;
-  }
-  let data = await (<any>window).anmeldung.show();
+(<any>window).$save = function (data: any) {
   alert(JSON.stringify(data))
   //TODO: Tu was mit den Daten... => Bestätigungsmail
+}
+
+(<any>window).$cancel = function () {
+  alert('abrechen')
 }

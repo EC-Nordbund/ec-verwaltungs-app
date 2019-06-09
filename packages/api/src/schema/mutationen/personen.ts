@@ -7,7 +7,7 @@ import {
   GraphQLInt,
   GraphQLNonNull,
   GraphQLString
-  } from 'graphql';
+} from 'graphql';
 
 export default {
   editPersonStamm: {
@@ -228,26 +228,51 @@ export default {
 
 
 async function mergePersonen (args: {personID_richtig: number, personID_falsch: number}) {
-  let mergeTabeles = ['adressen','akPerson','anmeldungen','eMails','fz','fzAntrag','telefone']
-    .map(table=>`UPDATE ${table} SET personID = ${args.personID_richtig} WHERE personID = ${args.personID_falsch}`)
+  let mergeTabeles = ['adressen','akPerson','anmeldungen','eMails','fz','fzAntrag','telefone', 'juleica', 'tagsPersonen']
+    .map(table=>`UPDATE IGNORE ${table} SET personID = ${args.personID_richtig} WHERE personID = ${args.personID_falsch}`)
     .map(sql=>query(sql));
   
   await Promise.all(mergeTabeles);
+  let mergeTabeles2 = ['adressen','eMails','telefone']
+    .map(table=>`DELETE IGNORE FROM ${table} WHERE personID = ${args.personID_falsch}`)
+    .map(sql=>query(sql));
+  
+  await Promise.all(mergeTabeles2);
+  
+  let telefone = await query(`SELECT * FROM telefone WHERE personID = ${args.personID_falsch}`);
+  let telProms = telefone.map(async tel => {
+    let newTelID = await query(`SELECT telefonID FROM telefone WHERE telefon = '${tel.telefon}' AND personID = ${tel.personID}`);
+    await query(`UPDATE anmeldungen SET telefonID = ${newTelID[0].telefonID} WHERE telefonID = ${args.personID_richtig}`)
+  })
+  
+  await Promise.all(telProms);
+  
+  let emails = await query(`SELECT * FROM eMails WHERE personID = ${args.personID_falsch}`);
+  let mailProms = emails.map(async mail => {
+    let newMailID = await query(`SELECT eMailID FROM eMails WHERE eMail = '${mail.eMail}' AND personID = ${args.personID_richtig}`);
+    await query(`UPDATE anmeldungen SET eMailID = ${newMailID[0].eMailID} WHERE eMailID = ${mail.eMailID}`)
+  })
+  
+  await Promise.all(mailProms);
+  
+  
+  let adressen = await query(`SELECT * FROM adressen WHERE personID = ${args.personID_falsch}`);
+  let adressProms = adressen.map(async adresse => {
+    let newAdressID = await query(`SELECT adressID FROM adressen WHERE strasse = '${adresse.strasse}' AND plz = '${adresse.plz}' AND ort = '${adresse.ort}' AND personID = ${args.personID_richtig}`);
+    await query(`UPDATE anmeldungen SET adressID = ${newAdressID[0].adressID} WHERE adressID = ${adresse.adressID}`)
+  })
+  
+  await Promise.all(adressProms);
+  
+  let mergeTabeles3 = ['adressen','eMails','telefone']
+    .map(table=>`DELETE IGNORE FROM ${table} WHERE personID = ${args.personID_falsch}`)
+    .map(sql=>query(sql));
+  
+  await Promise.all(mergeTabeles3);
+  
   await query(`UPDATE fz SET gesehenVon = ${args.personID_richtig} WHERE gesehenVon = ${args.personID_falsch}`)
   await query(`UPDATE dublikate SET zielPersonID = ${args.personID_richtig} WHERE zielPersonID = ${args.personID_falsch}`)
   let wrongData = await query(`SELECT vorname, nachname, gebDat FROM personen WHERE personID = ${args.personID_falsch}`);
   await query(`DELETE FROM personen WHERE personID = ${args.personID_falsch}`);
-  await query(`INSERT INTO dublikate (vorname, nachname, gebDat, zielPersonID) VALUES (${wrongData[0].vorname},${wrongData[0].nachname},${wrongData[0].gebDat},${args.personID_richtig})`);
+  await query(`INSERT INTO dublikate (vorname, nachname, gebDat, zielPersonID) VALUES ('${wrongData[0].vorname}','${wrongData[0].nachname}','${wrongData[0].gebDat.toISOString().split('T')[0]}',${args.personID_richtig})`);
 }
-
-// function similarValue(personA: {personID: number, vorname: string, nachname: string, gebDat: string}, personB: {personID: number, vorname: string, nachname: string, gebDat: string}) {
-//   if (personA.personID < personB.personID) {
-//     return 0;
-//   }
-
-
-// }
-
-// function similarName(nameA:string, nameB:string) {
-
-// }
