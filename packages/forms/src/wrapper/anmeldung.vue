@@ -4,7 +4,7 @@
       v-spacer
       h1(style="color: #fff") {{title}}
       v-spacer
-      v-btn(icon @click="$emit('cancel')")
+      v-btn(icon @click="$emit('cancel')" style="color: #fff;")
         v-icon close
     v-content(app)
       v-form(v-model="valid")

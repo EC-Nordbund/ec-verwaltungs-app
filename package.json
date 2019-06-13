@@ -37,6 +37,7 @@
   "dependencies": {
     "@types/inquirer": "^0.0.43",
     "inquirer": "^6.2.1",
+    "merge-dirs": "^0.2.1",
     "socket.io": "^2.2.0"
   },
   "devDependencies": {
