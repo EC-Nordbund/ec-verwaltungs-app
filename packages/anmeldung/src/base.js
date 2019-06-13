@@ -1,5 +1,5 @@
 export default {
-  title: 'Anmeldung für FreizeitXY {Mitarbeiter}',
+  title: 'Anmeldung für',
   schema: [
     {
       name: 'stepper',
@@ -8,13 +8,14 @@ export default {
         {
           name: 'person',
           label: 'Persöhnliche Daten',
+          summerize: 'Name, Geburtsdatum, Geschlecht',
           btns: [
             {
               content: 'Weiter',
               click: (cStep, valid, c,s, self, set) => {
                 if(self.error[cStep]) delete self.error[cStep]
                 if(valid && self.value.person.vorname && self.value.person.nachname && self.value.person.gebDat && self.value.person.geschlecht) return cStep + 1
-                set(self.error, cStep, true)
+                self.error[cStep] = true
               }
             }
           ],
@@ -39,8 +40,10 @@ export default {
               name: 'gebDat',
               type: 'date',
               label: 'Geburtsdatum',
-              rule: '',
-              required: true
+              rule: 'required',
+              required: true,
+              max: new Date().toISOString().substr(0, 10),
+              min: "1950-01-01"
             },
             {
               name: 'geschlecht',
@@ -64,6 +67,7 @@ export default {
         {
           name: 'kontakt',
           label: 'Kontaktdaten',
+          summerize: 'Telefon, E-Mail, Adresse',
           btns: [
             {
               content: 'Zurück',
@@ -71,8 +75,10 @@ export default {
             },
             {
               content: 'Weiter',
-              click: (cStep, valid) => {
-                if(valid) return cStep + 1
+              click: (cStep, valid, c,s, self, set) => {
+                if(self.error[cStep]) delete self.error[cStep]
+                if(valid && self.value.kontakt.telefon && self.value.kontakt.mail && self.value.kontakt.adresse.strasse && self.value.kontakt.adresse.ort && self.value.kontakt.adresse.plz) return cStep + 1
+                self.error[cStep] = true
               }
             }
           ],
@@ -101,6 +107,7 @@ export default {
         {
           name: 'sonstiges',
           label: 'Sonstiges',
+          summerize: 'Essen, Gesundheit, Bemerkungen',
           btns: [
             {
               content: 'Zurück',
@@ -122,24 +129,31 @@ export default {
             {
               type: 'text',
               name: 'lebensmittelunvertraeglichkeiten',
-              label: 'Lebensmittelunverträglichkeiten'
+              label: 'Lebensmittelunverträglichkeiten',
+              counter: 500,
+              rule: 'max:500'
             },
             {
               type: 'text',
               name: 'gesundheitsinformationen',
               label: 'Gesundheitsinformationen',
-              placeholder: 'z.B. Allergien, Medikamente etc.'
+              placeholder: 'z.B. Allergien, Medikamente etc.',
+              counter: 5000,
+              rule: 'max:5000'
             },
             {
               type: 'text',
               name: 'bemerkungen',
-              label: 'Sonstige Bemerkungen'
+              label: 'Sonstige Bemerkungen',
+              counter: 5000,
+              rule: 'max:5000'
             }
           ]
         },
         {
           name: 'datenschutz',
           label: 'Datenschutz',
+          summerize: 'Verschiedene Erlaubnisse + Teilnahmebedingungen',
           btns: [
             {
               content: 'Zurück',

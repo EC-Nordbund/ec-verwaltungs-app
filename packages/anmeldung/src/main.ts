@@ -49,11 +49,24 @@ Vue.config.productionTip = false;
 
 
 (<any>window).$save = function (data: any) {
-  alert(JSON.stringify(data))
-  //TODO: Tu was mit den Daten... => Bestätigungsmail
+  console.log(data.stepper);  
+  window.fetch(`/index.php?content=${encodeURI(JSON.stringify(data.stepper))}&token=${(<any>window).token}&vid=${(<any>window).vid}`)
+    .then((res)=>{
+      res.json().then(console.log);
+      alert('Erfolgreich angemeldet. In wenigen Minuten erhälst du eine Bestätigungsmail.')
+    })
+    .catch((err)=>{
+      alert("Fehler" + err)
+    })
 };
 
 (<any>window).$cancel = function () {
-  alert('abrechen')
-  // Relink to ec-nb page
+  const prev = (<any>window).$prev;
+  if(prev) {
+    if(confirm('Sicher, dass du abbrechen willst?')) {
+      location.href = prev;
+    }
+  } else {
+    alert('Du kannst nicht abbrechen...')
+  }
 }

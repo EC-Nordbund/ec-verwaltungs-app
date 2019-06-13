@@ -2,7 +2,7 @@
   v-stepper(v-bind="schema" v-model="currStep")
     template(v-for="(step, stepID) in schema.steps")
       v-stepper-step(:step="stepID+1" :complete="stepID+1 < currStep" :key="stepID+'step'" :rules="[()=>!error[stepID+1]]") {{step.label}}
-        small(v-if="step.summerize") {{step.summerize}}
+        small(v-if="step.summerize&&!error[stepID+1]") {{step.summerize}}
         small(v-if="error[stepID+1]") Es wurden nicht alle Felder korrekt ausgefüllt!
       v-stepper-content(:step="stepID+1" :key="stepID+'content'")
         v-form(v-model="valid[stepID+1]")
