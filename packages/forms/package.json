@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "vue-cli-service lint",
-    "serve": "vue-cli-service serve --name ecForm --target lib ./src/main.ts",
-    "build": "vue-cli-service build --name ecForm --target lib ./src/main.ts"
+    "build": "vue-cli-service build --name ecForm --target lib ./src/main.ts && node a.js > ../anmeldung/src/assets/ecForm.umd.min.js && node a.js > ../app/src/assets/ecForm.umd.min.js"
   },
   "dependencies": {
     "core-js": "^2.6.5",
