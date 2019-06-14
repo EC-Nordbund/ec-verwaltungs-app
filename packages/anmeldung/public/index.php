@@ -182,7 +182,7 @@ if ($result = $mysqli->query("SELECT * FROM _anmeldung_config WHERE vid = '$vid'
           Sollte das Laden mehrere Minuten dauern unterstützen wir deinen Browser nicht.<br>
           Nutzt du nicht Internet Explorer 10 oder älter würde es uns helfen wenn du uns <a href="malto:datenschutz@ec-nordbund.de">informierst</a> welchen Browser du genau nutzt. Wir überprüfen dann ob wir den Browser unterstützen können. Überprüfe bitte vorher ob du die aktuellste Version deines Browsers nutzt.
         </div>
-        <!-- Hier müssen die Build files injected werden. -->
+        <inject>
       </body>
     </html>
     <?php

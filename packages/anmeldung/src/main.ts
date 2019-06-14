@@ -1,5 +1,6 @@
 import '@babel/polyfill'
 import Vue from 'vue';
+// @ts-ignore
 import Vuetify from 'vuetify/lib'
 import de from 'vuetify/src/locale/de'
 import '@/assets/ecForm.umd.min.js';
