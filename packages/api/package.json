@@ -4,7 +4,9 @@
   "description": "API für EC-NB",
   "main": "./dist/index.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "start:production": "node .",
+    "start:development": "node ."
   },
   "repository": {
     "type": "git",
