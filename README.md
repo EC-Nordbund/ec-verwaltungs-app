@@ -1,6 +1,6 @@
 # EC-Verwaltungs-App
 
-> Unsere Software besteht aus mehreren Teilen, deren Zusammenspiel hier erklärt werden soll.
+> Unsere Software besteht aus mehreren Teilen, deren Zusammenspiel hier erklärt werden soll. 
 
 ## Form Generator
 
