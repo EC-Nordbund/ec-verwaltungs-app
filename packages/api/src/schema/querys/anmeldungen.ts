@@ -9,9 +9,8 @@ import { query } from '../mysql'
 import { getUser } from '../../users'
 import { anmeldung } from '../types'
 
-const wpTokens: Array<string> = eval(
-  "require('../../../wpTokens.json')"
-)
+const wpTokens: Array<string> = [process.env.WP_TOKEN]
+
 import { addAuth, handleAuth } from '../sonstiges'
 
 export default {
