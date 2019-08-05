@@ -3,7 +3,6 @@ import { user } from './user';
 import { userGroup } from './userGroup';
 import sendMail from '../schema/mail';
 import { query } from '../schema/mysql';
-import { readFileSync, writeFileSync } from 'fs';
 import { sha3_512 } from 'js-sha3';
 
 function hash(pwd: string, salt: string): string {
@@ -80,8 +79,8 @@ export let users: Array<user> = []
 export let userGroups: Array<userGroup> = []
 export let authKeys: Array<authKey> = []
 
-function load() {
-  let saveObj = JSON.parse(readFileSync('./save.json').toString())
+async function load() {
+  let saveObj = JSON.parse(await query(`SELECT * FROM save`).then(res=>res[0].save))
 
   saveObj.userGroups.map(JSON.parse).forEach(v => {
     userGroups.push(new userGroup(v.userGroupID, v.bezeichnung, v.mutationRechte, v.fieldAccess))
@@ -92,12 +91,13 @@ function load() {
   })
 }
 
-function save() {
+async function save() {
   const saveObj = {
     users: users.map(user => user.toSave()),
     userGroups: userGroups.map(group => group.toSave()),
   }
-  writeFileSync('./save.json', JSON.stringify(saveObj, null, 2))
+
+  query(`UPDATE save SET save = '${JSON.stringify(saveObj)}'`)
 
   const saveObj2 = {
     users: users.map(user => JSON.parse(user.toSave(true))),
@@ -108,8 +108,10 @@ function save() {
   query(`INSERT INTO userLogging (JSON) VALUES ('${JSON.stringify(saveObj2)}');`).catch(console.log)
 }
 
-load()
-save()
+(async ()=>{
+  await load()
+  await save()
+})
 
 setInterval(save, 60 * 60 * 1000)
 
