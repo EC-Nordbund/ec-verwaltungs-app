@@ -18,7 +18,14 @@ export default async function sendMail(
     filename: string
   }> = [],
 ) {
-  const smtp = createTransport(eval("require('../../smtp.json')"))
+  const smtp = createTransport({
+    host: process.env.SMTP_SERVER,
+    port: process.env.SMTP_PORT,
+    auth: {
+      user: process.env.SMTP_USERNAME,
+      pass: process.env.SMTP_PASSWORD
+    }
+  })
   const mailData = {
     from,
     to: e.to,
