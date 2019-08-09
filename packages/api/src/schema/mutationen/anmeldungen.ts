@@ -255,7 +255,7 @@ export default {
         const h = sha3_512(j)
         const d = new Date().toISOString()
 
-        writeFileSync(__dirname + '/../../../log/anmel_' + h + '_' + d + '.log.json', j)
+        //writeFileSync(__dirname + '/../../../log/anmel_' + h + '_' + d + '.log.json', j)
 
         const vData = await query(`SELECT * FROM veranstaltungen WHERE veranstaltungsID = ${args.veranstaltungsID}`).then(row => row[0])
 
