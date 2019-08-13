@@ -12,10 +12,10 @@
       span(v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px;") Nordbund – Verwaltung
       v-spacer
       ec-lesezeichen-show
-      div(style="padding-right: 20px") 
-      v-btn(icon v-white @click="toggleDark")
+      div(style="padding-right: 0px") 
+      v-btn(icon large v-white @click="toggleDark")
         v-icon invert_colors
-      v-btn(icon v-white @click="logout")
+      v-btn(icon large v-white @click="logout")
         v-icon exit_to_app
     
     v-navigation-drawer(clipped app v-model="drawer")
@@ -27,7 +27,7 @@
                 | {{data.person.vorname[0]}}{{data.person.nachname[0]}}
               //- img(src="https://randomuser.me/api/portraits/men/85.jpg")
             v-list-tile-content
-              v-list-tile-title {{data.person.vorname}} {{data.person.nachname}} ({{data.ablaufDatum.german}})
+              v-list-tile-title {{data.person.vorname}} {{data.person.nachname}}
       v-list
         v-list-tile(to="/home")
           v-list-tile-action

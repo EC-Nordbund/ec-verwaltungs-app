@@ -1,10 +1,10 @@
 <template lang="pug">
-  v-menu(open-on-hover)
+  v-menu(bottom offset-y origin="top right" transition="scale-transition")
     template(#activator="{on}")
-      v-badge(overlap bottom color="red")
+      v-badge(overlap bottom color="secondary")
         template(#badge)
           span {{Object.keys(liste).length}}
-        v-btn(v-on="on" icon)
+        v-btn(large v-on="on" icon)
           v-icon(color="white") star
     v-card
       v-card-title
