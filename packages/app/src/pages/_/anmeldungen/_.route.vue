@@ -7,24 +7,35 @@
       {
         text: 'AnmeldeID',
         value: 'anmeldeID',
-        width: '75px'
+        width: '20%'
       },
       {
         text: 'Person',
         value: 'person.personID',
-        width: '45%'
+        width: '30%'
       },
       {
         text: 'Veranstaltung',
         value: 'veranstaltung.veranstaltungsID',
-        width: '45%'
-      }
-    ]` :items = "data.filter($util.filter(suche))" :rows-per-page-items="[rowCount]")
+        width: '30%'
+      },
+      {
+        text: 'Datum',
+        value: 'timestamp',
+        width: '20%'
+      },
+    ]`
+    :items = "data.filter($util.filter(suche))"
+    :rows-per-page-items="[rowCount]"
+    :loading="isLoading"
+    :sort-by='timestamp') //- TODO: default timestamp sorting doesnt work
       template( #items="props")
         tr(@click="$router.push({path: `/anmeldungen/${props.item.anmeldeID}/home`, query: {prev: $route.fullPath}})")
           td {{props.item.anmeldeID}}
-          td {{props.item.person.vorname}} {{props.item.person.nachname}} ({{props.item.person.gebDat.german}})
-          td {{props.item.veranstaltung.bezeichnung}} ({{props.item.veranstaltung.begin.german}} - {{props.item.veranstaltung.ende.german}})
+          td {{props.item.person.vorname}} {{props.item.person.nachname}}
+          td {{props.item.veranstaltung.bezeichnung}}
+          td {{('0' + props.item.timestamp.getDay()).slice(-2)}}.{{('0' + (props.item.timestamp.getMonth()+1)).slice(-2)}}.{{props.item.timestamp.getFullYear()}} {{('0' + props.item.timestamp.getHours()).slice(-2)}}:{{('0' + props.item.timestamp.getMinutes()).slice(-2)}}
+          
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -39,6 +50,7 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
 
   private suche = '';
 
+  private isLoading: boolean = false;
 
   private config = {
     sheet: [
@@ -53,11 +65,21 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
   };
 
   private loadData() {
+    this.isLoading = true
+
     this.$apolloClient.query({
       query: gql`
         query($authToken:String!) {
           anmeldungen(authToken:$authToken) {
             anmeldeID
+            anmeldeZeitpunkt {
+              day
+              month
+              year
+              h
+              min
+              s
+            }
             person {
               personID
               vorname
@@ -84,12 +106,25 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
       },
       fetchPolicy: 'no-cache'
     }).then((res: any) => {
+      res.data.anmeldungen.map(a => {
+        a.timestamp = new Date(
+          a.anmeldeZeitpunkt.year,
+          a.anmeldeZeitpunkt.month+1,
+          a.anmeldeZeitpunkt.day,
+          a.anmeldeZeitpunkt.h,
+          a.anmeldeZeitpunkt.min,
+          a.anmeldeZeitpunkt.s
+        )
+        return a
+      })
       this.data = res.data.anmeldungen;
+      this.isLoading = false
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
         title: 'Laden fehlgeschlagen!'
       });
+      this.isLoading = false
     });
   }
 
