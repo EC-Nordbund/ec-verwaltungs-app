@@ -34,8 +34,7 @@
           td {{props.item.anmeldeID}}
           td {{props.item.person.vorname}} {{props.item.person.nachname}}
           td {{props.item.veranstaltung.bezeichnung}}
-          td {{('0' + props.item.timestamp.getDay()).slice(-2)}}.{{('0' + (props.item.timestamp.getMonth()+1)).slice(-2)}}.{{props.item.timestamp.getFullYear()}} {{('0' + props.item.timestamp.getHours()).slice(-2)}}:{{('0' + props.item.timestamp.getMinutes()).slice(-2)}}
-          
+          td {{props.item.anmeldeZeitpunkt.german}}
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -79,6 +78,7 @@ export default class EcRootIndexAnmeldungenIndex extends Vue {
               h
               min
               s
+              german
             }
             person {
               personID
