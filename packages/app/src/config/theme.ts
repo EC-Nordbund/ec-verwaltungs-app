@@ -5,8 +5,8 @@
  */
 export const theme = {
   primary: '#8FB217',
-  secondary: '#46A215',
-  accent: '#AC1636',
+  secondary: '#365E36',
+  accent: '#C42D24',
   error: '#FF5252',
   info: '#2196F3',
   success: '#4CAF50',
@@ -14,6 +14,6 @@ export const theme = {
   white: '#FFFFFF',
   black: '#000000',
   bg: '#eef3dc',
-  male: '#4697BA',
-  female: '#C243AA'
+  male: '#53B6C7',
+  female: '#58315A'
 };
