@@ -18,7 +18,7 @@
       }
     ]` :items = "data.filter($util.filter(suche))" :rows-per-page-items="[rowCount]" )
       template(#items="props")
-        tr(@click="$router.push({path: `/personen/${props.item.personID}/home`, query: {prev: $route.fullPath}})" :class="'geschlecht-' + props.item.geschlecht")
+        tr(@click="$router.push({path: `/personen/${props.item.personID}/home`, query: {prev: $route.fullPath}})" :class="(props.item.geschlecht == 'm' ? 'male' : 'female') + ' darken-1 white--text'")
           td {{props.item.vorname}} 
           td {{props.item.nachname}} 
           td {{props.item.gebDat.german}}
@@ -129,12 +129,9 @@ export default class EcRootIndex extends Vue {
 }
 </script>
 <style>
-.geschlecht-w {
-  background-color: #f000a0;
-  opacity: .9;
-}
-.geschlecht-m {
-  background-color: #00a0f0;
-  opacity: .9;
+.male,
+.female {
+  /* opacity: .9; */
+  /* color: white */
 }
 </style>
