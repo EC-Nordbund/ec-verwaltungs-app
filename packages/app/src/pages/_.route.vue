@@ -6,10 +6,10 @@
       //-   v-icon undo
       //- v-btn(v-white icon @click="$router.forward()")
       //-   v-icon redo
-      v-spacer
+      v-spacer(class="hidden-sm-and-down")
       v-avatar(size="60px" style="margin-right: 10px")
         img(src="@/assets/ec-logo-without-bg-64.png")
-      span(v-white v-font style="font-size: 26px; padding-top: 5px; margin-right: 8px;") Nordbund – Verwaltung
+      span(v-white v-font class="hidden-sm-and-down" style="font-size: 26px; padding-top: 5px; margin-right: 8px;") Nordbund – Verwaltung
       v-spacer
       ec-lesezeichen-show
       div(style="padding-right: 0px") 
@@ -89,7 +89,7 @@
     v-content
       router-view(:key="$route.path" style="margin: 5px; width: calc(100% - 10px);")
     
-    v-footer(app style="padding: 0 10px;" fixed color="secondary")
+    v-footer(app style="padding: 0 10px;" fixed color="secondary" class="hidden-sm-and-down")
       v-breadcrumbs(:items="breadcrumbsRouter")
         v-icon(slot="divider" v-white) keyboard_arrow_right
         template(slot="item" slot-scope="props")
