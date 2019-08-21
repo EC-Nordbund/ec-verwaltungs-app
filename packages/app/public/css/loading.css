@@ -6,29 +6,27 @@
 
 body {
   overflow: hidden;
-  border: solid 2px gray;
+  /* border: solid 2px gray; */
 }
 
 #title {
   display: block;
   margin: 0 auto;
-  padding: 12px;
+  padding-bottom: 64px;
   color: #8fb217;
 }
 
 #content {
-  height: 248px;
-  background-image: url('../img/ec-logo-without-bg-48.png');
-  background-repeat: repeat;
-  background-color: #eeeeee;
+  height: 300px;
 }
 
 #footer {
   height: 28px;
-  padding: 6px;
+  padding: 6px 0;
   width: 100%;
-  background: #8fb217;
-  color: white;
+  background: #f2f2f2;
+  color: #8fb217;
+  border-radius: 28px;
 }
 
 .avatar {
@@ -37,9 +35,9 @@ body {
   width: 160px;
   height: 160px;
   border-radius: 50%;
-  background: white;
-  box-shadow: inset 0 0 6px 2px rgba(0, 0, 0, 0.25),
-    0 0 16px 8px #eeeeee;
+  /* background: #f2f2f2; */
+  /* box-shadow: inset 0 0 6px 2px rgba(0, 0, 0, 0.25),
+    0 0 16px 8px #eeeeee; */
 }
 
 .animation {
@@ -91,7 +89,7 @@ body {
 .text {
   font-family: 'ec-font';
   text-align: center;
-  padding: 4px;
+  padding: 4px 10px;
 }
 
 h1 {
