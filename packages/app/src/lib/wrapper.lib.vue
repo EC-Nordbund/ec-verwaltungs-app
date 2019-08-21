@@ -1,6 +1,6 @@
 <template lang="pug">
   v-card(:style="{height: h, display: 'grid', gridTemplateRows: 'auto ' + (hasHeader?'auto ':'') + '1fr ' + (hasNav?(showNav ? 'auto' : '20px'):'') }")
-    v-card-title
+    v-card-title(class="pa-2")
       v-btn(
         icon 
         v-if="hasXBtn" 
@@ -31,7 +31,7 @@
     v-card-text(style="overflow-y: auto" v-if="!hasRouterView")
       slot
     slot(style="overflow-y: auto" v-if="hasRouterView")
-    v-card-actions(@mouseover="openNav" v-if="hasNav")
+    v-card-actions(v-if="hasNav")
       v-bottom-nav(:value="showNav" class="elevation-0")
         v-btn(v-for="item in nav" :key="item.label" :to="{path: item.to, query: {prev: $route.query.prev}}")
           span {{item.label}}
@@ -45,7 +45,7 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component({})
 export default class EcWrapper extends Vue {
   public h = window.innerHeight - 110 + 'px';
-  public showNav = false;
+  public showNav = true;
   public sheetOpen = false;
   public timer: any;
 
@@ -81,17 +81,5 @@ export default class EcWrapper extends Vue {
 
   @Prop({type: Array, required: false})
   public nav!: any[];
-
-  public openNav() {
-    this.showNav = true;
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => {
-      this.showNav = false;
-    }, 2000);
-  }
-
-  public created() {
-    this.openNav();
-  }
 }
 </script>
