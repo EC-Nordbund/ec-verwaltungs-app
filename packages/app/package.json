@@ -36,6 +36,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@mdi/font": "^4.1.95",
     "@types/js-cookie": "^2.2.2",
     "@vue/cli-plugin-babel": "^3.9.2",
     "@vue/cli-plugin-typescript": "^3.9.0",
