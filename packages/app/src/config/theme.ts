@@ -15,5 +15,5 @@ export const theme = {
   black: '#000000',
   bg: '#eef3dc',
   male: '#53B6C7',
-  female: '#58315A'
+  female: '#DF5C50'
 };
