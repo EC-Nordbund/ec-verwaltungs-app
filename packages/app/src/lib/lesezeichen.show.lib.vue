@@ -1,11 +1,11 @@
 <template lang="pug">
   v-menu(bottom offset-y origin="top right" transition="scale-transition")
     template(#activator="{on}")
-      v-badge(overlap bottom color="secondary")
+      v-badge(overlap left bottom color="secondary")
         template(#badge)
           span {{Object.keys(liste).length}}
-        v-btn(large v-on="on" icon)
-          v-icon(color="white") star
+        v-btn(large v-on="on" v-white icon )
+          v-icon(color="white" size=26) star
     v-card
       v-card-title
         h1 Lesezeichen
