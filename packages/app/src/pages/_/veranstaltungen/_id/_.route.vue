@@ -1,10 +1,14 @@
 <template lang="pug">
   ec-wrapper(hasSheet hasDial hasNav hasXBtn hasRouterView v-bind="config")
+    v-progress-linear(:active="isLoading" buffer-value="100" indeterminate  value="99" height="3")
     template
-      router-view(:data="data")
-      v-menu(bottom left)
+      router-view(:data="data" v-if="!isLoading")
+      v-menu(bottom left y-offset)
         template(v-slot:activator="{ on }")
-          v-btn(v-on="on") TN-Liste gnerieren
+          v-btn(v-on="on" color="secondary")
+            v-icon(left small) build
+            | TN-Liste gnerieren
+            v-icon(right small) build
         v-list
           v-list-tile(@click="all")
             v-list-tile-title Alle (jeweils mit und ohne Warteliste)
@@ -35,7 +39,7 @@ export default class EcRootIndex extends Vue {
       ],
       nav: [
         {
-          icon: 'home',
+          icon: 'event',
           label: 'Allgemein',
           to: 'home'
         },
@@ -45,12 +49,12 @@ export default class EcRootIndex extends Vue {
           to: 'finanzen'
         },
         {
-          icon: 'group',
+          icon: 'assignment_ind',
           label: 'Anmeldungen',
           to: 'anmeldungen'
         }
       ],
-      title: `${this.data.bezeichnung} (${this.data.begin.german} - ${this.data.ende.german})`,
+      title: `${this.data.bezeichnung}`,
       subTitle: 'Veranstaltung'
     };
   }
@@ -63,6 +67,8 @@ export default class EcRootIndex extends Vue {
     ende: {},
     veranstaltungsort: {}
   };
+
+  private isLoading: boolean = false
 
   private tnListen: any = [];
   private genList = generate;
@@ -82,6 +88,8 @@ export default class EcRootIndex extends Vue {
   private sheetClick(item: {id: string}) {alert(item.id); }
 
   private loadData() {
+    this.isLoading = true
+
     this.$apolloClient.query({
       query: gql`
         query($authToken: String!, $veranstaltungsID: Int!) {
@@ -163,11 +171,14 @@ export default class EcRootIndex extends Vue {
       fetchPolicy: 'no-cache'
     }).then((res: any) => {
       this.data = res.data.veranstaltung;
+      setTimeout(() => this.isLoading = false, 300)
     }).catch((err: any) => {
       this.$dialog.error({
         text: err.message,
         title: 'Laden fehlgeschlagen!'
       });
+            this.isLoading = false
+
     });
   }
 
