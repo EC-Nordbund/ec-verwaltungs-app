@@ -150,4 +150,31 @@ export class connector extends connectorBase{
     new stringValidator('Notizen').required().maxLength(65535)
   ])
   addVeranstaltungsortKontakt(veranstaltungsortID:number, ansprechpartner:string, typ:string, telefon:string, email:string, notizen:string):Promise<0> {return}
+
+  @register(connector)
+  @inform('anmeldung', 0)
+  @mutation('anmeldungAbmelden', [
+    new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
+    new stringValidator('Weg der Abmeldung').minLength(1).required().maxLength(300),
+    new stringValidator('Kommentar').required().minLength(1).maxLength(500),
+    new numberValidator('Gebühr').required().ganz().min(0)
+  ])
+  anmeldungAbmelden(anmeldeID: string, weg:string, kommentar:string, gebuehr:number):Promise<0>{return}
+
+  @register(connector)
+  @inform('anmeldung', 0)
+  @mutation('anmeldungNachruecken', [
+    new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
+  ])
+  anmeldungNachruecken(anmeldeID: string):Promise<0>{return}
+
+  // TODO: anmeldung verarbeiten (mir grade zu lang)
+
+  @register(connector)
+  @inform('personen')
+  @inform('person', 0)
+  @mutation('anonymisieren', [
+    new numberValidator('Person ID').required().ganz().min(1),
+  ])
+  anonymisieren(personID: number):Promise<0>{return}
 }
