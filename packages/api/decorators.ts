@@ -76,8 +76,12 @@ export abstract class connectorBase {
       })
     })
 
+    connector.instances.push(this)
+
     socket.emit('welcome')
   }
+
+  static instances:Array<connectorBase> = []
 
   UUID():string {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);return v.toString(16);});
@@ -143,3 +147,21 @@ export const query = (
     });
   };
 };
+
+
+export const inform = (informName: string, idValue:null|number = null) => (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {
+  const old = descriptor.value
+
+  descriptor.value = (...args:Array<any>) => {
+    if(idValue === null) {
+      connector.instances.forEach(inst => {
+        inst.socket.emit('inform', informName)
+      })
+    } else {
+      connector.instances.forEach(inst => {
+        inst.socket.emit('inform', informName, args[idValue])
+      })
+    }
+    return old(...args)
+  }
+}
