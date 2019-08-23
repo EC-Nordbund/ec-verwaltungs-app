@@ -3,9 +3,6 @@ import { param } from "./validatoren";
 
 let connector: typeof connectorBase
 
-export function setAPIClass(api: any) {
-  connector = api
-}
 
 const sqlExcec = (sql: string): Promise<any> => {
   return;
@@ -14,12 +11,12 @@ const sqlExcec = (sql: string): Promise<any> => {
 /**
  * Registriert eine Methode zur nutzung mit SocketIO
  */
-export const register = () => (
+export const register = (c: any) => (
   target: any,
   propertyKey: string,
   descriptor: PropertyDescriptor
 ) => {
-  console.log(target)
+  connector = c
   connector.methods.push(propertyKey);  
 };
 
