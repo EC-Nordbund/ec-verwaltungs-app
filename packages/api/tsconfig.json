@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES5",
+    "target": "ES2016",
+    "module": "CommonJS",
+    "declarationMap": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "extendedDiagnostics": true,
     "experimentalDecorators": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "build/"
   }
 }
