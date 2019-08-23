@@ -9,6 +9,7 @@ const sqlExcec = (sql: string): Promise<any> => {
   return;
 };
 
+
 /**
  * Registriert eine Methode zur nutzung mit SocketIO
  */
@@ -79,6 +80,8 @@ export abstract class connectorBase {
     socket.emit('welcome')
   }
 
+  private userGroup: string
+
   static instances:Array<connectorBase> = []
 
   UUID():string {
@@ -135,7 +138,7 @@ export const query = (
             .then(results => {
               let r: any = {};
               results.forEach(v => {
-                r[v.name] = result;
+                r[v.name] = v.result;
               });
               res(r);
             })
