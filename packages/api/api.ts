@@ -2,6 +2,7 @@ import { stringValidator, numberValidator, booleanValidator } from "./validatore
 import { connectorBase, register, mutation, query, inform } from "./decorators";
 
 
+
 export class connector extends connectorBase{
   constructor(private username: string, socket: any, isClient:boolean = true) {
     super(isClient, socket)
@@ -52,7 +53,7 @@ export class connector extends connectorBase{
 
   @register(connector)
   @inform('person', 0)
-  @inform('ak', 1)
+  @inform('arbeitskreis', 1)
   @mutation('addPersonArbeitskreisStatus', [
     new numberValidator('Person ID').required().ganz().min(1),
     new numberValidator('Arbeitskreis ID').required().ganz().min(1),
@@ -360,4 +361,19 @@ export class connector extends connectorBase{
   @inform('', 0)
   @mutation('useTelefon', [])
   useTelefon():Promise<0>{return}
+  
+  @register(connector)
+  @query([], [
+    () => ({name: 'default', sql: 'SELECT * FROM arbeitskreise'})
+  ])
+  arbeitskreise():Promise<any> {return}
+
+  @register(connector)
+  @query([
+    new numberValidator('Arbeitskreis ID').required().ganz().min(1)
+  ], [
+    (self, akID: number) => ({name: 'default', sql: `SELECT * FROM arbeitskreise WHERE ID = ${akID}`}),
+    (self, akID: number) => ({name: 'mitglieder', sql: `SELECT a.personID, p.vorname, p.nachname, p.gebDat, p.geschlecht, a.date, a.neuerStatus, a.ID FROM person_arbeitskreis a, personen p WHERE p.ID = a.personID AND a.akID = ${akID} ORDER BY p.ID`})
+  ])
+  arbeitskreis(akID: number):Promise<any>{return}
 }
