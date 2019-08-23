@@ -17,14 +17,14 @@ export class connector extends connectorBase{
   addAnmeldungPayment(anmeldeID: string, betrag: number, eingang: string):Promise<0> {return}
 
   @register(connector)
-  @inform('aks')
+  @inform('arbeitskreise')
   @mutation('addArbeitskreis', [
     new stringValidator('Bezeichnung').required().maxLength(100).minLength(3)
   ])
   addArbeitskreis(bezeichnung:string):Promise<number> {return}
 
   @register(connector)
-  @inform('orgas')
+  @inform('organisationen')
   @mutation('addOrganisation', [
     new stringValidator('Bezeichnung').required().maxLength(100).minLength(3)
   ])
@@ -168,7 +168,11 @@ export class connector extends connectorBase{
   ])
   anmeldungNachruecken(anmeldeID: string):Promise<0>{return}
 
-  // TODO: anmeldung verarbeiten (mir grade zu lang)
+  //TODO: anmeldungVerarbeiten
+  @register(connector)
+  @inform('', 0)
+  @mutation('anmeldungVerarbeiten', [])
+  anmeldungVerarbeiten():Promise<0>{return}
 
   @register(connector)
   @inform('personen')
@@ -177,4 +181,183 @@ export class connector extends connectorBase{
     new numberValidator('Person ID').required().ganz().min(1),
   ])
   anonymisieren(personID: number):Promise<0>{return}
+ 
+  @register(connector)
+  @inform('anmeldung', 0)
+  @mutation('editAnmedungBemerkungen', [
+    new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
+    new booleanValidator('Vegetarisch').required(),
+    new stringValidator('Lebensmittelallergien').required().maxLength(500),
+    new stringValidator('Gesundheitsinformationen').required().maxLength(5000),
+    new stringValidator('Bemerkungen').required().maxLength(5000)
+  ])
+  editAnmedungBemerkungen(anmeldeID: string, vegetarisch: boolean, lebensmittelallergien: string, gesundheitsinformationen: string, bemerkungen: string):Promise<0>{return}
+
+  @register(connector)
+  @inform('anmeldung', 0)
+  @mutation('editAnmeldungErlaubnisse', [
+    new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
+    new booleanValidator('Rad fahren').required(),
+    new numberValidator('Schwimmen').ganz().required().max(3).min(0),
+    new booleanValidator('Fahrgemeinschaften').required(),
+    new booleanValidator('Klettern').required(),
+    new booleanValidator('Sich entfernen').required(),
+    new booleanValidator('Boot fahren').required(),
+  ])
+  editAnmeldungErlaubnisse(anmeldeID: string, radfahren: boolean, schwimmen: number, fahrgemeinschaften: boolean, klettern: boolean, sichEntfernen: boolean, bootFahren: boolean):Promise<0>{return}
+
+  @register(connector)
+  @inform('anmeldung', 0)
+  @mutation('editAnmeldungExtra', [
+    new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
+    new stringValidator('Extra').maxLength(65535).required()
+  ])
+  editAnmeldungExtra(anmeldeID: number, extra: string):Promise<0>{return}
+
+  @register(connector)
+  @inform('anmeldung', 0)
+  @mutation('editAnmeldungKontakt', [
+    new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
+    new numberValidator('Adress ID').ganz().required().min(1),
+    new numberValidator('Telefon ID').ganz().required().min(1),
+    new numberValidator('Mail ID').ganz().required().min(1)
+  ])
+  editAnmeldungKontakt(anmeldeID: number, adressID: number, telefonID: number, mailID: number):Promise<0>{return}
+  
+
+  @register(connector)
+  @inform('arbeitskreise')
+  @inform('arbeitskreis', 0)
+  @mutation('editArbeitskreis', [
+    new numberValidator('Arbeitskreis ID').required().ganz().min(1),   
+    new stringValidator('Bezeichnung').required().maxLength(100).minLength(3)
+  ])
+  editArbeitskreis(akID: number, bezeichnung: string):Promise<0>{return}
+
+  @register(connector)
+  @inform('organisation', 0)
+  @inform('organisationen')
+  @mutation('editOrganisationMain', [
+    new numberValidator('OrganisationsID').required().min(0).ganz(),
+    new stringValidator('Bezeichnung').required().maxLength(100).minLength(3)
+  ])
+  editOrganisationMain(organisationsID: number, bezeichnung: string):Promise<0>{return}
+
+  @register(connector)
+  @inform('organisation', 0)
+  @inform('organisationen')
+  @mutation('editOrganisationRest', [
+    new numberValidator('OrganisationsID').required().min(0).ganz(),
+    new stringValidator('Ansprechpartner').required().minLength(1).maxLength(255),   
+    new stringValidator('Strasse').required().minLength(1).maxLength(50),
+    new stringValidator('PLZ').required().minLength(1).maxLength(10),
+    new stringValidator('Ort').required().minLength(1).maxLength(50),
+    new stringValidator('Land').required().minLength(1).maxLength(50),
+    new stringValidator('Telefon').required().minLength(1).maxLength(50).numeric(),
+    new stringValidator('Email').required().minLength(1).maxLength(50).email(),
+    new stringValidator('Notizen').required().maxLength(65535)
+  ])
+  editOrganisationRest(organisationsID: number, ansprechpartner: string, strasse: string, plz: string, ort: string,land: string, telefon: string,email: string,notizen: string):Promise<0>{return}
+
+  //TODO: editPersonMain
+  @register(connector)
+  @inform('', 0)
+  @mutation('editPersonMain', [])
+  editPersonMain():Promise<0>{return}
+
+  //TODO: editPersonRest
+  @register(connector)
+  @inform('', 0)
+  @mutation('editPersonRest', [])
+  editPersonRest():Promise<0>{return}
+
+  //TODO: editPersonTag
+  @register(connector)
+  @inform('', 0)
+  @mutation('editPersonTag', [])
+  editPersonTag():Promise<0>{return}
+
+  //TODO: editVeranstaltungMain
+  @register(connector)
+  @inform('', 0)
+  @mutation('editVeranstaltungMain', [])
+  editVeranstaltungMain():Promise<0>{return}
+
+  //TODO: editVeranstaltungRest
+  @register(connector)
+  @inform('', 0)
+  @mutation('editVeranstaltungRest', [])
+  editVeranstaltungRest():Promise<0>{return}
+
+  //TODO: mergeAdresse
+  @register(connector)
+  @inform('', 0)
+  @mutation('mergeAdresse', [])
+  mergeAdresse():Promise<0>{return}
+
+  //TODO: mergePerson
+  @register(connector)
+  @inform('', 0)
+  @mutation('mergePerson', [])
+  mergePerson():Promise<0>{return}
+
+  //TODO: oldAdresse
+  @register(connector)
+  @inform('', 0)
+  @mutation('oldAdresse', [])
+  oldAdresse():Promise<0>{return}
+
+  //TODO: oldMail
+  @register(connector)
+  @inform('', 0)
+  @mutation('oldMail', [])
+  oldMail():Promise<0>{return}
+
+  //TODO: oldTelefon
+  @register(connector)
+  @inform('', 0)
+  @mutation('oldTelefon', [])
+  oldTelefon():Promise<0>{return}
+
+  //TODO: removePersonTag
+  @register(connector)
+  @inform('', 0)
+  @mutation('removePersonTag', [])
+  removePersonTag():Promise<0>{return}
+
+  //TODO: removeVeranstaltungPreis
+  @register(connector)
+  @inform('', 0)
+  @mutation('removeVeranstaltungPreis', [])
+  removeVeranstaltungPreis():Promise<0>{return}
+
+  //TODO: removeVeranstaltungsortKontakt
+  @register(connector)
+  @inform('', 0)
+  @mutation('removeVeranstaltungsortKontakt', [])
+  removeVeranstaltungsortKontakt():Promise<0>{return}
+
+  //TODO: useAdresse
+  @register(connector)
+  @inform('', 0)
+  @mutation('useAdresse', [])
+  useAdresse():Promise<0>{return}
+
+  //TODO: useMail
+  @register(connector)
+  @inform('', 0)
+  @mutation('useMail', [])
+  useMail():Promise<0>{return}
+
+  //TODO: usePerson
+  @register(connector)
+  @inform('', 0)
+  @mutation('usePerson', [])
+  usePerson():Promise<0>{return}
+
+  //TODO: useTelefon
+  @register(connector)
+  @inform('', 0)
+  @mutation('useTelefon', [])
+  useTelefon():Promise<0>{return}
 }
