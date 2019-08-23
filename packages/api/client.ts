@@ -3,7 +3,7 @@ import { connector } from "./api";
 
 
 async function login(username: string, password: string, superadmin: (users: Array<string>)=>Promise<string>):Promise<connector> {
-  return new Promise((res, rej) => {
+  return new Promise<connector>((res, rej) => {
     const socket = io.default(process.env.API_URL)
     let uname = username
     let r = false
