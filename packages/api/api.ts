@@ -1,9 +1,9 @@
 import { stringValidator, numberValidator, booleanValidator } from "./validatoren";
-import { connectorBase, register, mutation, query, inform, Socket } from "./decorators";
+import { connectorBase, register, mutation, query, inform } from "./decorators";
 
 
 export class connector extends connectorBase{
-  constructor(private username: string, socket: Socket, isClient:boolean = true) {
+  constructor(private username: string, socket: any, isClient:boolean = true) {
     super(isClient, socket)
   }
 

@@ -35,3 +35,5 @@ async function checkLogin(username:string, password: string):Promise<boolean|'su
 async function getUsers():Promise<Array<string>> {
   return
 }
+
+console.log('SERVER GESTARTET 🚀 auf PORT 4000')
