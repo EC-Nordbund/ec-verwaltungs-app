@@ -5,6 +5,8 @@
   "license": "MIT",
   "devDependencies": {
     "@types/exceljs": "^0.5.3",
+    "@types/express": "^4.17.1",
+    "@types/node": "^12.7.2",
     "@types/node-fetch": "^2.5.0",
     "@types/socket.io": "^2.1.2",
     "ts-node": "^8.3.0",
@@ -13,6 +15,7 @@
   "dependencies": {
     "docx-templates": "^3.1.1",
     "exceljs": "^1.15.0",
+    "express": "^4.17.1",
     "node-fetch": "^2.6.0",
     "socket.io": "^2.2.0",
     "xlsx-template": "^0.5.0"
