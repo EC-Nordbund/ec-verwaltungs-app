@@ -1,6 +1,5 @@
 import { stringValidator, numberValidator, booleanValidator } from "./validatoren";
-import { connectorBase, register, mutation, query, inform } from "./decorators";
-import { Socket } from "socket.io";
+import { connectorBase, register, mutation, query, inform, Socket } from "./decorators";
 
 
 export class connector extends connectorBase{
@@ -107,5 +106,3 @@ export class connector extends connectorBase{
   addPersonTelefon(personID: number, telefon: string):Promise<number> {return}
 
 }
-
-console.log(connector.methods)

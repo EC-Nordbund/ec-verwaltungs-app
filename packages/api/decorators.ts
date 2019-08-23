@@ -1,5 +1,9 @@
-import { Socket } from "socket.io";
 import { param } from "./validatoren";
+
+import { Socket as socketServer } from "socket.io";
+import { Socket as socketClient } from "socket.io-client";
+
+export type Socket = socketServer | typeof socketClient
 
 let connector: typeof connectorBase
 
