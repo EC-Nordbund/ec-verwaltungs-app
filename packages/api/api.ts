@@ -105,4 +105,49 @@ export class connector extends connectorBase{
   ])
   addPersonTelefon(personID: number, telefon: string):Promise<number> {return}
 
+  @register(connector) 
+  @inform('veranstaltungen')
+  @mutation('addVeranstaltung', [
+    new stringValidator('Bezeichnung').required().minLength(3).maxLength(100),
+    new stringValidator('kurz Bezeichnung').required().minLength(1).maxLength(4),
+    new stringValidator('Begin').isDate().required(),
+    new stringValidator('Ende').isDate().required(),
+    new numberValidator('Veranstaltungsort ID').min(1).ganz().required()
+  ])
+  addVeranstaltung(bezeichnung: string, kurzbezeichnung: string, begin: string, ende: string, veranstaltungsortID: number):Promise<number> {return}
+
+  @register(connector)
+  @inform('veranstaltung', 0)
+  @mutation('addVeranstaltungPreis', [
+    new numberValidator('Veranstaltungs ID').ganz().min(1).required(),
+    new numberValidator('Typ ID').required().ganz().min(1),
+    new numberValidator('Preis').required().ganz().min(1),
+    new stringValidator('Von').required().isDate(),
+    new stringValidator('Bis').required().isDate(),
+  ])
+  addVeranstaltungPreis(veranstaltungsID: number, typID: number, preis: number, von: string, bis: string):Promise<0> {return}
+
+  @register(connector)
+  @inform('veranstaltungsorte')
+  @mutation('addVeranstaltungsort', [
+    new stringValidator('Bezeichnung').required().minLength(1).maxLength(100),
+    new stringValidator('Strasse').required().minLength(1).maxLength(50),
+    new stringValidator('PLZ').required().minLength(1).maxLength(10),
+    new stringValidator('Ort').required().minLength(1).maxLength(50),
+    new stringValidator('Land').required().minLength(1).maxLength(50),
+    new stringValidator('TN-List-Info').required().maxLength(100)
+  ])
+  addVeranstaltungsort(bezeichnung: string, strasse:string, plz:string, ort:string, land:string, tnlistinfo:string) {return}
+
+  @register(connector)
+  @inform('veranstaltungsort', 0)
+  @mutation('addVeranstaltungsortKontakt', [
+    new numberValidator('Veranstaltungsort ID').min(1).ganz().required(),
+    new stringValidator('Ansprechpartner').required().minLength(1).maxLength(100),
+    new stringValidator('Typ').required().minLength(1).maxLength(100),
+    new stringValidator('Telefon').required().minLength(1).maxLength(50),
+    new stringValidator('Email').required().minLength(1).maxLength(50).email(),
+    new stringValidator('Notizen').required().maxLength(65535)
+  ])
+  addVeranstaltungsortKontakt(veranstaltungsortID:number, ansprechpartner:string, typ:string, telefon:string, email:string, notizen:string):Promise<0> {return}
 }
