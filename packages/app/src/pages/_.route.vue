@@ -2,32 +2,37 @@
   v-app(app :dark="dark")
     v-toolbar(fixed app clipped-left color="primary")
       v-toolbar-side-icon(v-white @click="drawer=!drawer")
-      //- v-btn(v-white icon @click="$router.back()")
-      //-   v-icon undo
-      //- v-btn(v-white icon @click="$router.forward()")
-      //-   v-icon redo
       v-spacer(class="hidden-sm-and-down")
       v-avatar(size="60px" style="margin-right: 10px")
         img(src="@/assets/ec-logo-without-bg-64.png")
       span(v-white v-font class="hidden-sm-and-down" style="font-size: 26px; padding-top: 5px; margin-right: 8px;") Nordbund – Verwaltung
       v-spacer
       ec-lesezeichen-show
-      div(style="padding-right: 0px") 
-      v-btn(icon large v-white @click="toggleDark")
-        v-icon invert_colors
-      v-btn(icon large v-white @click="logout")
-        v-icon exit_to_app
+      v-menu(:value="menu" :close-on-content-click="false" :nudge-width="256"  offset-y)
+        template(v-slot:activator="{ on }")
+          v-btn(dark icon v-on="on")
+            v-icon more_vert
+        v-card
+          v-list
+            v-list-tile(avatar to="/sonstiges/profil")
+              v-list-tile-avatar
+                div(style="border-radius: 50%;width: 40px;height: 40px;padding: 8px 0;" v-primary-bg v-black)
+                  | {{data.person.vorname[0]}}{{data.person.nachname[0]}}
+                //- img(src="https://randomuser.me/api/portraits/men/85.jpg")
+              v-list-tile-content
+                v-list-tile-title {{data.person.vorname}} {{data.person.nachname}}
+          v-divider
+          v-list
+            v-list-tile(@click="toggleDark")
+              v-list-tile-action
+                v-switch(:value="toggleDark")
+              v-list-tile-title Dunkles Design
+            v-list-tile(@click="logout")
+              v-list-tile-action
+                v-icon exit_to_app
+              v-list-tile-title Abmelden
     
     v-navigation-drawer(clipped app v-model="drawer")
-      v-toolbar(flat class="transparent")
-        v-list
-          v-list-tile(avatar to="/sonstiges/profil")
-            v-list-tile-avatar
-              div(style="border-radius: 50%;width: 40px;height: 40px;padding: 8px 0;" v-primary-bg v-black)
-                | {{data.person.vorname[0]}}{{data.person.nachname[0]}}
-              //- img(src="https://randomuser.me/api/portraits/men/85.jpg")
-            v-list-tile-content
-              v-list-tile-title {{data.person.vorname}} {{data.person.nachname}}
       v-list
         v-list-tile(to="/home")
           v-list-tile-action
@@ -126,6 +131,7 @@ export default class EcRootIndex extends Vue {
 
   private dark = (save.get('dark') === 'x');
   private drawer = null;
+  private menu = false;
   private version = pack.version || 'Fehler';
   private breadcrumbs = this.breadMap([
     `© 2017 - ${new Date().getFullYear()}`,
