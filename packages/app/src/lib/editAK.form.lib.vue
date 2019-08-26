@@ -2,7 +2,7 @@
   v-dialog(v-model="visible" max-width="400px" persistend)
     v-card
       v-card-title
-        h1(v-font v-primary) {{type==='add' ? 'Neues Mitglied hinzufügen' : 'Mitglied bearbeiten'}}
+        h1(v-font v-primary) {{type==='add' ? 'Neues Mitglied hinzufügen' : type==='delete' ? 'Mitglied entfernen' : 'Mitglied bearbeiten'}}
       v-card-text
         v-form(v-model="valid" @submit.prevent)
           formular(v-model="value" :schema=`[

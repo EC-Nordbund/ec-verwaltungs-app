@@ -2,33 +2,58 @@
   ec-wrapper(hasXBtn hasSheet hasHeader hasDial v-bind="config" hasReload @reload="loadData")
     template(#header)
       .head(style="padding: 2px 10px")
-        v-switch(label="Alle Statusupdates anzeigen?" v-model="showAll")
-        h2(v-font v-primary v-if="showAll") Alle Statusupdates
-        h2(v-font v-primary v-else) Aktuelle Mitglieder
-    v-list(two-line)
-      template(v-if="data.personen" v-for="(person, index) in data.personen")
-        v-list-tile(
-          v-if="!showAll && person.currentStatus!==0" 
-          :key="person.person.personID + '_c'" 
-          @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
-        )
-          v-list-tile-action
-            v-icon person
-          v-list-tile-content
-            v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
-            v-list-tile-sub-title {{stadien[person.currentStatus]}}
-        v-divider(v-if="showAll && index!==0")
-        v-list-tile(
-          v-for="state in person.allUpdates" 
-          v-if="showAll" 
-          :key="state.akPersonID + '_s'" 
-          @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
-        )
-          v-list-tile-action
-            v-icon person
-          v-list-tile-content
-            v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
-            v-list-tile-sub-title {{stadien[state.neuerStatus]}} (geändert am {{state.date.german}})
+    v-list(two-line subheader)
+      v-subheader Aktuell
+      v-list-group(v-if="data.personen" v-for="(person, index) in data.personen.filter(p=>p.currentStatus!==0)")
+        template( v-slot:activator)
+          v-list-tile(:key="person.person.personID + '_c'")
+            v-list-tile-action
+              v-btn(
+                icon
+                ripple
+                @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
+                )
+                v-icon person
+            v-list-tile-content
+              v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+              v-list-tile-sub-title {{stadien[person.currentStatus]}}
+        v-timeline(dense  class="ml-2")
+          v-timeline-item(
+            v-for="state in person.allUpdates"
+            small
+            :key="state.akPersonID + '_s'"
+            @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
+            )
+            v-list-tile
+              v-list-content
+                v-list-tile-title {{stadien[state.neuerStatus]}}
+                v-list-tile-sub-title seit {{state.date.german}}
+      v-divider(v-if="data.personen.filter(p=>p.currentStatus===0).length > 0")
+      v-subheader Ehemalige
+      v-list-group(v-if="data.personen" v-for="(person, index) in data.personen.filter(p=>p.currentStatus===0)")
+        template( v-slot:activator)
+          v-list-tile(:key="person.person.personID + '_c'")
+            v-list-tile-action
+              v-btn(
+                icon
+                ripple
+                @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
+                )
+                v-icon person
+            v-list-tile-content
+              v-list-tile-title {{person.person.vorname}} {{person.person.nachname}} ({{person.person.gebDat.german}})
+              v-list-tile-sub-title {{stadien[person.currentStatus]}}
+        v-timeline(align-top dense  class="ml-2")
+          v-timeline-item(
+            v-for="state in person.allUpdates"
+            small
+            :key="state.akPersonID + '_s'"
+            @click="$router.push({path: `/personen/${person.person.personID}/home`, query: {prev: $route.fullPath}})"
+            )
+            v-list-tile
+              v-list-content
+                v-list-tile-title {{stadien[state.neuerStatus]}}
+                v-list-tile-sub-title seit {{state.date.german}}
     template(#dialogs)
       ec-form-edit-ak(ref="formEditAk" :data="data" @reload="loadData")
 </template>
@@ -44,25 +69,25 @@ export default class EcRootIndexAKIdIndex extends Vue {
         {
           id: 'ak_m_add',
           icon: 'person_add',
-          label: 'AK Mitglied hinzufügen',
+          label: 'Mitglied hinzufügen',
           click: () => {(this.$refs.formEditAk as any).edit('add'); }
         },
         {
           id: 'ak_m_update',
           icon: 'edit',
-          label: 'AK Mitglied updaten',
+          label: 'Mitglied bearbeiten',
           click: () => {(this.$refs.formEditAk as any).edit('edit'); }
         },
         {
           id: 'ak_m_del',
           icon: 'delete',
-          label: 'AK Mitglied entfernen',
+          label: 'Mitglied entfernen',
           click: () => {(this.$refs.formEditAk as any).edit('delete'); }
         },
         {
           id: 'ak_rep_current',
           icon: this.$util.icon.report,
-          label: 'Aktuelle AK Mitglieder Report',
+          label: 'Report aktueller Mitglieder',
           click: () => {
             this.$util.report.withData('ak_single_current', this.data, `ak-${this.data.bezeichnung}-current.docx`);
           }
@@ -70,7 +95,7 @@ export default class EcRootIndexAKIdIndex extends Vue {
         {
           id: 'ak_rep_all',
           icon: this.$util.icon.report,
-          label: 'Alle AK Mitglieder Report',
+          label: 'Report aller Mitglieder',
           click: () => {
             this.$util.report.withData('ak_single_all', this.data, `ak-${this.data.bezeichnung}-all.docx`);
           }
@@ -82,8 +107,6 @@ export default class EcRootIndexAKIdIndex extends Vue {
   }
   public static meta = {};
 
-  private showAll = false;
-
   private stadien = [
     'Ausgetreten',
     'Mitglied',
@@ -94,18 +117,6 @@ export default class EcRootIndexAKIdIndex extends Vue {
   private data: any = {
     personen: []
   };
-
-  @Watch('showAll')
-  public onShowAllChange() {
-    this.$router.replace({
-      path: this.$route.path,
-      query: {
-        ...this.$route.query,
-        all: this.showAll ? 1 : undefined
-      } as any
-    });
-  }
-
 
   private loadData() {
     this.$apolloClient.query({
@@ -152,7 +163,6 @@ export default class EcRootIndexAKIdIndex extends Vue {
 
   private created() {
     this.loadData();
-    this.showAll = this.$route.query.all ? true : false;
   }
 }
 </script>
