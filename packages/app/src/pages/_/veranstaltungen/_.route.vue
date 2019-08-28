@@ -14,10 +14,10 @@
           avatar)
 
           //- Avatar: highlight future events
-          v-list-tile-avatar(
-            :color="daysToEvent(item) > 0 ? 'primary' : daysToEvent(item) == 15 ? 'accent' : undefined"
-            class="hidden-xs-only")
-            v-icon(:color="daysToEvent(item) > 0 ? 'white' : undefined") event
+          v-list-tile-avatar(dark
+            :color="daysToEvent(item) > 0 ? 'primary' : daysToEvent(item) == 15 ? 'accent' : 'grey'"
+            class="body-1 font-weight-bold white--text hidden-xs-only") {{item.kurzBezeichnung}}
+            v-icon(v-if="!item.kurzBezeichnung" color="white") event
 
           v-list-tile-content
             //- Title: highlight events when they are today
@@ -107,6 +107,7 @@ export default class EcRootIndex extends Vue {
             veranstaltungen(authToken: $authToken) {
               veranstaltungsID
               bezeichnung
+              kurzBezeichnung
               anmeldungen {
                 person {
                   geschlecht
