@@ -128,10 +128,3 @@ export default class EcRootIndex extends Vue {
   }
 }
 </script>
-<style>
-.male,
-.female {
-  /* opacity: .9; */
-  /* color: white */
-}
-</style>
