@@ -72,6 +72,17 @@
           v-list-tile-action
             v-btn(icon @click="showAll('wegDerAbmeldung')")
               v-icon search
+      template(v-if="data.extra_json.length > 2")
+        v-divider
+        p Extra Daten:
+        v-treeview(:items="h(JSON.parse(data.extra_json))" v-if="data.extra_json.length > 2")
+        //-   v-list-tile-action
+        //-     v-icon person
+        //-   v-list-tile-content
+        //-     v-list-tile-title {{data.extra_json}}
+        //-     v-list-tile-sub-title Sonstige Felder
+          
+
 </template>
 
 <script lang="ts">
@@ -88,6 +99,25 @@ export default class EcRootIndexAnmeldungenIdIndexSonstiges extends Vue {
 
   public showAll(keyName: string) {
     this.$dialog.notify.info(this.data[keyName] || 'N/A');
+  }
+
+  public h(v, r = false) {
+    let res = []
+
+    Object.keys(v).forEach(key=>{
+      if (typeof v[key] === 'object') {
+        res.push({
+          name: key + ':',
+          children: this.h(v[key])
+        })
+      } else {
+        res.push({
+          name: key + ': ' + v[key]
+        })
+      }
+    })
+
+    return res
   }
 }
 </script>
