@@ -14,5 +14,9 @@
   {
     "name": "zuschuesse",
     "label": "Zuschüsse"
+  },
+  {
+    "name": "spezialMA",
+    "label": "Spezial MA Tag"
   }
 ]
