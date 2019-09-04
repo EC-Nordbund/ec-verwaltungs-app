@@ -4,10 +4,10 @@ let pool:Pool
 
 (async ()=>{
   pool = await createPool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORT,
-    database: process.env.DB_DB,
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USERNAME || 'root',
+    password: process.env.DB_PASSWORT || '',
+    database: process.env.DB_DB || 'verwaltung',
     multipleStatements: false,
     dateStrings: true,
     connectionLimit: 50
@@ -34,4 +34,3 @@ export async function query(sql: string | Array<string>, noLog = false):Promise<
 
   return ergebnis
 }
-
