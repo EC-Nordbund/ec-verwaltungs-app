@@ -2,8 +2,15 @@ import { stringValidator, numberValidator, booleanValidator, builder, connectorB
 import { query as query_2 } from "./connector";
 import compiler from "office-compiler";
 
+const DEMO: boolean = true
+const f:any = async (...a)=>{
+  console.log(...a)
+  return a
+}
  
-const build = new builder<string, api>(
+const single = true
+
+const build = DEMO ? new builder<string, api>(f,f) : new builder<string, api>(
   query_2, 
   async (name:string, ...args: Array<any>) => {
     return await query_2(`SELECT ${name}(${args.map(v=>"'" + v + "'").join(',')}) AS r`).then(v=>v[0].r)
@@ -11,6 +18,34 @@ const build = new builder<string, api>(
 )
 
 const comp = new compiler(process.env.GOTENBERG, query_2)
+
+
+interface IAK_small {
+  ID: number,
+  bezeichnung: string
+}
+
+interface IAK {
+  default: IAK_small,
+  mitglieder: Array<{
+    ID: number
+    personID: number
+    vorname: string, 
+    nachname: string,
+    gebDat: string, 
+    geschlecht: 'm'|'w', 
+    date: string, 
+    neuerStatus: number
+  }>
+}
+
+
+
+
+
+
+
+
 
 @build.useClass()
 export class api extends connectorBase {
@@ -403,24 +438,66 @@ export class api extends connectorBase {
   @build.query([], [
     () => ({name: 'default', abfrage: 'SELECT * FROM arbeitskreise'})
   ])
-  arbeitskreise():Promise<any> {return}
+  arbeitskreise():Promise<Array<IAK_small>> {return}
 
   @build.register()
   @build.query([
     new numberValidator('Arbeitskreis ID').required().ganz().min(1)
   ], [
-    (self, akID: number) => ({name: 'default', abfrage: `SELECT * FROM arbeitskreise WHERE ID = ${akID}`}),
+    (self, akID: number) => ({name: 'default', abfrage: `SELECT * FROM arbeitskreise WHERE ID = ${akID}`, single}),
     (self, akID: number) => ({name: 'mitglieder', abfrage: `SELECT a.personID, p.vorname, p.nachname, p.gebDat, p.geschlecht, a.date, a.neuerStatus, a.ID FROM person_arbeitskreis a, personen p WHERE p.ID = a.personID AND a.akID = ${akID} ORDER BY p.ID`})
   ])
-  arbeitskreis(akID: number):Promise<any>{return}
-  
+  arbeitskreis(akID: number):Promise<IAK>{return}
+
   @build.register()
-  async excel(name:string, id?:number|string):Promise<Buffer>{
+  @build.query([], [
+    () => ({name: 'default', abfrage: `SELECT ID, vorname, nachname, gebDat, geschlecht FROM personen ORDER BY vorname, nachname`})
+  ])
+  personen():Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  person(personID: number):Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  anmeldungen() {}
+
+  //TODO:
+  @build.register()
+  anmeldung(anmeldeID: string):Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  veranstaltungen() {}
+
+  //TODO:
+  @build.register()
+  veranstaltung(veranstaltungsID:number):Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  veranstaltungsorte():Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  veranstaltungsort(veranstaltungsortID: number):Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  organisationen():Promise<any> {return}
+
+  //TODO:
+  @build.register()
+  organisation(organisationsID: number):Promise<any> {return}
+
+  @build.register()
+  excel(name:string, id?:number|string):Promise<Buffer>{
     return comp.pdfExcelTemplate(`./docs/${name}.xlsx`, id)
   }
   
   @build.register()
-  async word(name:string, id?:number|string):Promise<Buffer>{
+  word(name:string, id?:number|string):Promise<Buffer>{
     return comp.pdfWordTemplate(`./docs/${name}.docx`, id)
   }
 }
@@ -430,5 +507,5 @@ export function server() {
 }
 
 export function client() {
-  return client_api<api>(api, 'localhost:4000')
+  return client_api<api>(api, 'http://localhost:4000')
 }
