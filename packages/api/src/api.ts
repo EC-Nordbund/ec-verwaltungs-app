@@ -174,12 +174,14 @@ export class api extends connectorBase {
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
   ])
   anmeldungNachruecken(anmeldeID: string):Promise<0>{return}
-
-  //TODO: anmeldungVerarbeiten
+  
   @register
-  @inform('', 0)
-  @mutation('anmeldungVerarbeiten', [])
-  anmeldungVerarbeiten():Promise<0>{return}
+  @inform('veranstaltungen', 0)
+  @mutation('anmeldungVerarbeiten', [
+    //TODO: anmeldungVerarbeiten
+    //(`i_veranstaltungsID` INT, `i_rollenID` INT, `i_geschlecht` ENUM('m','w'), `i_vorname` VARCHAR(50), `i_nachname` VARCHAR(50), `i_gebDat` DATE, `i_strasse` VARCHAR(50), `i_plz` VARCHAR(5), `i_ort` VARCHAR(50), `i_telefon` VARCHAR(20), `i_email` VARCHAR(50), `i_schwimmen` INT, `i_radfahren` BOOLEAN, `i_bootfahren` BOOLEAN, `i_klettern` BOOLEAN, `i_sichEntfernen` BOOLEAN, `i_fahrgemeinschaften` BOOLEAN, `i_extra` TEXT, `i_vegetarisch` BOOLEAN, `i_lebensmittelAllergien` VARCHAR(500), `i_gesundheitsinformationen` VARCHAR(5000), `i_bemerkungen` VARCHAR(5000), `i_anmeldeZeitpunkt` TIMESTAMP)
+  ])
+  anmeldungVerarbeiten(veranstaltungsID: number, rollenID: number, geschlecht: 'm'|'w', vorname: string, nachname: string, gebDat: string, strasse:string, plz:string, ort:string, telefon:string, email: string, schwimmen:number, radfahren:boolean, bootfahren: boolean, klettern: boolean, sichEntfernen: boolean, fahrgemeinschaften: boolean, extra: string, vegetarisch: boolean, lebensmittelallergien: string, gesundheitsinformationen: string, bemerkungen: string):Promise<0>{return}
 
   @register
   @inform('personen')
@@ -307,11 +309,14 @@ export class api extends connectorBase {
   ])
   editVeranstaltungMain(veranstaltungsID: number, bezeichnung: string, kurzBezeichnung: string, begin: string, ende:string, veranstaltungsortID: number):Promise<0>{return}
 
-  //TODO: editVeranstaltungRest
+  
   @register
-  @inform('', 0)
-  @mutation('editVeranstaltungRest', [])
-  editVeranstaltungRest():Promise<0>{return}
+  @inform('veranstaltung', 0)
+  @mutation('editVeranstaltungRest', [
+    //TODO: editVeranstaltungRest
+    //(`i_veranstaltungsID` INT, `i_minTNAlter` INT, `i_maxTNAlter` INT, `i_vorortZahlung` BOOLEAN, `i_hatGeschlechterWarteliste` BOOLEAN, `i_anzahlPlaetze` INT, `i_anzahlPlaetzeWeiblich` INT, `i_anzahlPlaetzeMaennlich` INT) RETURNS int(11)
+  ])
+  editVeranstaltungRest(veranstaltungsID: number, minTNAlter: number, maxTNAlter: number, vorortZahlung: boolean, hatGeschlechterWarteliste: boolean, anzahlPlaetze: number, anzahlPlaetzeWeiblich: number, anzahlPlaetzeMaennlich: number):Promise<0>{return}
 
   @register
   @mutation('mergeAdresse', [
