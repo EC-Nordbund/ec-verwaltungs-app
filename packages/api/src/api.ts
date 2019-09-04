@@ -1,14 +1,15 @@
-import { stringValidator, numberValidator, booleanValidator } from "./validatoren";
-import { connectorBase, register, mutation, query, inform } from "./decorators";
+import { stringValidator, numberValidator, booleanValidator, builder, connectorBase } from "api-socket-io";
 
 
+const {dbSel, dbExec} = require('./server.js')
+let build = new builder<string, api>(dbSel, dbExec)
 
-export class connector extends connectorBase{
-  constructor(private username: string, socket: any, isClient:boolean = true) {
-    super(isClient, socket)
-  }
 
-  @register(connector)
+const {useClass, inform, query, mutation, register} = build
+
+@useClass
+export class api extends connectorBase {
+  @register
   @inform('anmeldung', 0)
   @mutation('addAnmeldungPayment', [
     new stringValidator('Anmelede ID').required().maxLength(15).minLength(10),
@@ -17,21 +18,21 @@ export class connector extends connectorBase{
   ])
   addAnmeldungPayment(anmeldeID: string, betrag: number, eingang: string):Promise<0> {return}
 
-  @register(connector)
+  @register
   @inform('arbeitskreise')
   @mutation('addArbeitskreis', [
     new stringValidator('Bezeichnung').required().maxLength(100).minLength(3)
   ])
   addArbeitskreis(bezeichnung:string):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('organisationen')
   @mutation('addOrganisation', [
     new stringValidator('Bezeichnung').required().maxLength(100).minLength(3)
   ])
   addOrganisation(bezeichnung:string):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('personen')
   @mutation('addPerson', [
     new stringValidator('Vorname').required().maxLength(50),
@@ -41,7 +42,7 @@ export class connector extends connectorBase{
   ])
   addPerson(vorname: string, nachname: string, gebDat: string, geschlecht: 'm'|'w'):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('person', 0)
   @mutation('addPersonAdresse', [
     new numberValidator('Person ID').required().ganz().min(1),
@@ -51,7 +52,7 @@ export class connector extends connectorBase{
   ])
   addPersonAdresse(personID: number, strasse: string, plz: string, ort: string):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('person', 0)
   @inform('arbeitskreis', 1)
   @mutation('addPersonArbeitskreisStatus', [
@@ -62,7 +63,7 @@ export class connector extends connectorBase{
   ])
   addPersonArbeitskreisStatus(personID: number, akID: number, date: string|null, status: number):Promise<0> {return}
 
-  @register(connector)
+  @register
   @inform('person', 0)
   @mutation('addPersonFZ', [
     new numberValidator('Person ID').required().ganz().min(1),
@@ -72,7 +73,7 @@ export class connector extends connectorBase{
   ])
   addPersonFZ(personID: number, gesehenAm: string, fzVom: string, kommentar: string):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('person', 1)
   @mutation('addPersonJuLeiCa', [
     new stringValidator('JuLeiCaNr.').required().numeric().exactLength(11),
@@ -81,7 +82,7 @@ export class connector extends connectorBase{
   ])
   addPersonJuLeiCa(juLeiCaNr: string, personID:number, gueltigBis: string):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('person', 0)
   @mutation('addPersonMail', [
     new numberValidator('Person ID').required().ganz().min(1),
@@ -89,7 +90,7 @@ export class connector extends connectorBase{
   ])
   addPersonMail(personID: number, email: string):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('person', 0)
   @mutation('addPersonTag', [
     new numberValidator('Person ID').required().ganz().min(1),
@@ -98,7 +99,7 @@ export class connector extends connectorBase{
   ])
   addPersonTag(personID: number, tagID: number, notiz: string):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('person', 0)
   @mutation('addPersonTelefon', [
     new numberValidator('Person ID').required().ganz().min(1),
@@ -106,7 +107,7 @@ export class connector extends connectorBase{
   ])
   addPersonTelefon(personID: number, telefon: string):Promise<number> {return}
 
-  @register(connector) 
+  @register 
   @inform('veranstaltungen')
   @mutation('addVeranstaltung', [
     new stringValidator('Bezeichnung').required().minLength(3).maxLength(100),
@@ -117,7 +118,7 @@ export class connector extends connectorBase{
   ])
   addVeranstaltung(bezeichnung: string, kurzbezeichnung: string, begin: string, ende: string, veranstaltungsortID: number):Promise<number> {return}
 
-  @register(connector)
+  @register
   @inform('veranstaltung', 0)
   @mutation('addVeranstaltungPreis', [
     new numberValidator('Veranstaltungs ID').ganz().min(1).required(),
@@ -128,7 +129,7 @@ export class connector extends connectorBase{
   ])
   addVeranstaltungPreis(veranstaltungsID: number, typID: number, preis: number, von: string, bis: string):Promise<0> {return}
 
-  @register(connector)
+  @register
   @inform('veranstaltungsorte')
   @mutation('addVeranstaltungsort', [
     new stringValidator('Bezeichnung').required().minLength(1).maxLength(100),
@@ -140,7 +141,7 @@ export class connector extends connectorBase{
   ])
   addVeranstaltungsort(bezeichnung: string, strasse:string, plz:string, ort:string, land:string, tnlistinfo:string) {return}
 
-  @register(connector)
+  @register
   @inform('veranstaltungsort', 0)
   @mutation('addVeranstaltungsortKontakt', [
     new numberValidator('Veranstaltungsort ID').min(1).ganz().required(),
@@ -152,7 +153,7 @@ export class connector extends connectorBase{
   ])
   addVeranstaltungsortKontakt(veranstaltungsortID:number, ansprechpartner:string, typ:string, telefon:string, email:string, notizen:string):Promise<0> {return}
 
-  @register(connector)
+  @register
   @inform('anmeldung', 0)
   @mutation('anmeldungAbmelden', [
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
@@ -162,7 +163,7 @@ export class connector extends connectorBase{
   ])
   anmeldungAbmelden(anmeldeID: string, weg:string, kommentar:string, gebuehr:number):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('anmeldung', 0)
   @mutation('anmeldungNachruecken', [
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
@@ -170,12 +171,12 @@ export class connector extends connectorBase{
   anmeldungNachruecken(anmeldeID: string):Promise<0>{return}
 
   //TODO: anmeldungVerarbeiten
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('anmeldungVerarbeiten', [])
   anmeldungVerarbeiten():Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('personen')
   @inform('person', 0)
   @mutation('anonymisieren', [
@@ -183,7 +184,7 @@ export class connector extends connectorBase{
   ])
   anonymisieren(personID: number):Promise<0>{return}
  
-  @register(connector)
+  @register
   @inform('anmeldung', 0)
   @mutation('editAnmedungBemerkungen', [
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
@@ -194,7 +195,7 @@ export class connector extends connectorBase{
   ])
   editAnmedungBemerkungen(anmeldeID: string, vegetarisch: boolean, lebensmittelallergien: string, gesundheitsinformationen: string, bemerkungen: string):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('anmeldung', 0)
   @mutation('editAnmeldungErlaubnisse', [
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
@@ -207,7 +208,7 @@ export class connector extends connectorBase{
   ])
   editAnmeldungErlaubnisse(anmeldeID: string, radfahren: boolean, schwimmen: number, fahrgemeinschaften: boolean, klettern: boolean, sichEntfernen: boolean, bootFahren: boolean):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('anmeldung', 0)
   @mutation('editAnmeldungExtra', [
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
@@ -215,7 +216,7 @@ export class connector extends connectorBase{
   ])
   editAnmeldungExtra(anmeldeID: number, extra: string):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('anmeldung', 0)
   @mutation('editAnmeldungKontakt', [
     new stringValidator('Anmelde ID').minLength(10).maxLength(20).required(),
@@ -226,7 +227,7 @@ export class connector extends connectorBase{
   editAnmeldungKontakt(anmeldeID: number, adressID: number, telefonID: number, mailID: number):Promise<0>{return}
   
 
-  @register(connector)
+  @register
   @inform('arbeitskreise')
   @inform('arbeitskreis', 0)
   @mutation('editArbeitskreis', [
@@ -235,7 +236,7 @@ export class connector extends connectorBase{
   ])
   editArbeitskreis(akID: number, bezeichnung: string):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('organisation', 0)
   @inform('organisationen')
   @mutation('editOrganisationMain', [
@@ -244,7 +245,7 @@ export class connector extends connectorBase{
   ])
   editOrganisationMain(organisationsID: number, bezeichnung: string):Promise<0>{return}
 
-  @register(connector)
+  @register
   @inform('organisation', 0)
   @inform('organisationen')
   @mutation('editOrganisationRest', [
@@ -261,119 +262,119 @@ export class connector extends connectorBase{
   editOrganisationRest(organisationsID: number, ansprechpartner: string, strasse: string, plz: string, ort: string,land: string, telefon: string,email: string,notizen: string):Promise<0>{return}
 
   //TODO: editPersonMain
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('editPersonMain', [])
   editPersonMain():Promise<0>{return}
 
   //TODO: editPersonRest
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('editPersonRest', [])
   editPersonRest():Promise<0>{return}
 
   //TODO: editPersonTag
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('editPersonTag', [])
   editPersonTag():Promise<0>{return}
 
   //TODO: editVeranstaltungMain
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('editVeranstaltungMain', [])
   editVeranstaltungMain():Promise<0>{return}
 
   //TODO: editVeranstaltungRest
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('editVeranstaltungRest', [])
   editVeranstaltungRest():Promise<0>{return}
 
   //TODO: mergeAdresse
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('mergeAdresse', [])
   mergeAdresse():Promise<0>{return}
 
   //TODO: mergePerson
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('mergePerson', [])
   mergePerson():Promise<0>{return}
 
   //TODO: oldAdresse
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('oldAdresse', [])
   oldAdresse():Promise<0>{return}
 
   //TODO: oldMail
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('oldMail', [])
   oldMail():Promise<0>{return}
 
   //TODO: oldTelefon
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('oldTelefon', [])
   oldTelefon():Promise<0>{return}
 
   //TODO: removePersonTag
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('removePersonTag', [])
   removePersonTag():Promise<0>{return}
 
   //TODO: removeVeranstaltungPreis
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('removeVeranstaltungPreis', [])
   removeVeranstaltungPreis():Promise<0>{return}
 
   //TODO: removeVeranstaltungsortKontakt
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('removeVeranstaltungsortKontakt', [])
   removeVeranstaltungsortKontakt():Promise<0>{return}
 
   //TODO: useAdresse
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('useAdresse', [])
   useAdresse():Promise<0>{return}
 
   //TODO: useMail
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('useMail', [])
   useMail():Promise<0>{return}
 
   //TODO: usePerson
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('usePerson', [])
   usePerson():Promise<0>{return}
 
   //TODO: useTelefon
-  @register(connector)
+  @register
   @inform('', 0)
   @mutation('useTelefon', [])
   useTelefon():Promise<0>{return}
   
-  @register(connector)
+  @register
   @query([], [
-    () => ({name: 'default', sql: 'SELECT * FROM arbeitskreise'})
+    () => ({name: 'default', abfrage: 'SELECT * FROM arbeitskreise'})
   ])
   arbeitskreise():Promise<any> {return}
 
-  @register(connector)
+  @register
   @query([
     new numberValidator('Arbeitskreis ID').required().ganz().min(1)
   ], [
-    (self, akID: number) => ({name: 'default', sql: `SELECT * FROM arbeitskreise WHERE ID = ${akID}`}),
-    (self, akID: number) => ({name: 'mitglieder', sql: `SELECT a.personID, p.vorname, p.nachname, p.gebDat, p.geschlecht, a.date, a.neuerStatus, a.ID FROM person_arbeitskreis a, personen p WHERE p.ID = a.personID AND a.akID = ${akID} ORDER BY p.ID`})
+    (self, akID: number) => ({name: 'default', abfrage: `SELECT * FROM arbeitskreise WHERE ID = ${akID}`}),
+    (self, akID: number) => ({name: 'mitglieder', abfrage: `SELECT a.personID, p.vorname, p.nachname, p.gebDat, p.geschlecht, a.date, a.neuerStatus, a.ID FROM person_arbeitskreis a, personen p WHERE p.ID = a.personID AND a.akID = ${akID} ORDER BY p.ID`})
   ])
   arbeitskreis(akID: number):Promise<any>{return}
 }
