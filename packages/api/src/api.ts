@@ -266,29 +266,46 @@ export class api extends connectorBase {
   ])
   editOrganisationRest(organisationsID: number, ansprechpartner: string, strasse: string, plz: string, ort: string,land: string, telefon: string,email: string,notizen: string):Promise<0>{return}
 
-  //TODO: editPersonMain
   @register
-  @inform('', 0)
-  @mutation('editPersonMain', [])
-  editPersonMain():Promise<0>{return}
+  @inform('person', 0)
+  @inform('personen')
+  @mutation('editPersonMain', [
+    new numberValidator('Person ID').required().ganz().min(1),
+    new stringValidator('Vorname').required().maxLength(50),
+    new stringValidator('Nachname').required().maxLength(50),
+    new stringValidator('Geburtsdatum').required().isDate(),
+    new stringValidator('Geschlecht').required().enum(['m','w'])
+  ])
+  editPersonMain(personID: number, vorname: string, nachname: string, gebDat: string, geschlecht: 'm'|'w'):Promise<0>{return}
 
-  //TODO: editPersonRest
   @register
-  @inform('', 0)
-  @mutation('editPersonRest', [])
-  editPersonRest():Promise<0>{return}
+  @inform('person', 0)
+  @mutation('editPersonRest', [
+    new numberValidator('Person ID').required().ganz().min(1),
+    new numberValidator('EC-Kreis').ganz().min(1),
+    new numberValidator('EC-Mitglied').ganz().min(0).max(2),
+    new stringValidator('Notizen').required().minLength(0).maxLength(65535)
+  ])
+  editPersonRest(personID: number, ecKreis: number|null, ecMitglied: 0|1|2, notizen: string):Promise<0>{return}
 
-  //TODO: editPersonTag
   @register
-  @inform('', 0)
-  @mutation('editPersonTag', [])
-  editPersonTag():Promise<0>{return}
+  @mutation('editPersonTag', [
+    new numberValidator('Tag-Person ID').required().ganz().min(1),
+    new stringValidator('Notizen').required().minLength(0).maxLength(65535)
+  ])
+  editPersonTag(tagPersonID: number, notiz: string):Promise<0>{return}
 
-  //TODO: editVeranstaltungMain
   @register
-  @inform('', 0)
-  @mutation('editVeranstaltungMain', [])
-  editVeranstaltungMain():Promise<0>{return}
+  @inform('veranstaltung', 0)
+  @mutation('editVeranstaltungMain', [
+    new numberValidator('Veranstaltung ID').min(1).ganz().required(),
+    new stringValidator('Bezeichnung').required().minLength(3).maxLength(100),
+    new stringValidator('kurz Bezeichnung').required().minLength(1).maxLength(4),
+    new stringValidator('Begin').isDate().required(),
+    new stringValidator('Ende').isDate().required(),
+    new numberValidator('Veranstaltungsort ID').min(1).ganz().required()
+  ])
+  editVeranstaltungMain(veranstaltungsID: number, bezeichnung: string, kurzBezeichnung: string, begin: string, ende:string, veranstaltungsortID: number):Promise<0>{return}
 
   //TODO: editVeranstaltungRest
   @register
@@ -296,77 +313,86 @@ export class api extends connectorBase {
   @mutation('editVeranstaltungRest', [])
   editVeranstaltungRest():Promise<0>{return}
 
-  //TODO: mergeAdresse
   @register
-  @inform('', 0)
-  @mutation('mergeAdresse', [])
-  mergeAdresse():Promise<0>{return}
+  @mutation('mergeAdresse', [
+    new numberValidator('richtig').required().ganz().min(1),
+    new numberValidator('falsch').required().ganz().min(1)
+  ])
+  mergeAdresse(richtig: number, falsch: number):Promise<0>{return}
 
-  //TODO: mergePerson
   @register
-  @inform('', 0)
-  @mutation('mergePerson', [])
-  mergePerson():Promise<0>{return}
+  @inform('person', 0)
+  @inform('person', 1)
+  @mutation('mergePerson', [
+    new numberValidator('richtig').required().ganz().min(1),
+    new numberValidator('falsch').required().ganz().min(1)
+  ])
+  mergePerson(richtig: number, falsch: number):Promise<0>{return}
 
-  //TODO: oldAdresse
   @register
-  @inform('', 0)
-  @mutation('oldAdresse', [])
-  oldAdresse():Promise<0>{return}
+  @mutation('oldAdresse', [
+    new numberValidator('old ID').required().ganz().min(1)
+  ])
+  oldAdresse(oldID: number):Promise<0>{return}
 
-  //TODO: oldMail
   @register
   @inform('', 0)
-  @mutation('oldMail', [])
-  oldMail():Promise<0>{return}
+  @mutation('oldMail', [
+    new numberValidator('old ID').required().ganz().min(1)
+  ])
+  oldMail(oldID: number):Promise<0>{return}
 
-  //TODO: oldTelefon
   @register
   @inform('', 0)
-  @mutation('oldTelefon', [])
-  oldTelefon():Promise<0>{return}
+  @mutation('oldTelefon', [
+    new numberValidator('old ID').required().ganz().min(1)
+  ])
+  oldTelefon(oldID: number):Promise<0>{return}
 
-  //TODO: removePersonTag
   @register
   @inform('', 0)
-  @mutation('removePersonTag', [])
-  removePersonTag():Promise<0>{return}
+  @mutation('removePersonTag', [
+    new numberValidator('Remove ID').required().ganz().min(1)
+  ])
+  removePersonTag(removeID: number):Promise<0>{return}
 
-  //TODO: removeVeranstaltungPreis
   @register
   @inform('', 0)
-  @mutation('removeVeranstaltungPreis', [])
-  removeVeranstaltungPreis():Promise<0>{return}
+  @mutation('removeVeranstaltungPreis', [
+    new numberValidator('Remove ID').required().ganz().min(1)
+  ])
+  removeVeranstaltungPreis(removeID: number):Promise<0>{return}
 
-  //TODO: removeVeranstaltungsortKontakt
   @register
   @inform('', 0)
-  @mutation('removeVeranstaltungsortKontakt', [])
-  removeVeranstaltungsortKontakt():Promise<0>{return}
+  @mutation('removeVeranstaltungsortKontakt', [
+    new numberValidator('Remove ID').required().ganz().min(1)
+  ])
+  removeVeranstaltungsortKontakt(removeID: number):Promise<0>{return}
 
-  //TODO: useAdresse
   @register
-  @inform('', 0)
-  @mutation('useAdresse', [])
-  useAdresse():Promise<0>{return}
+  @mutation('useAdresse', [
+    new numberValidator('Use ID').required().ganz().min(1)
+  ])
+  useAdresse(useID: number):Promise<0>{return}
 
-  //TODO: useMail
   @register
-  @inform('', 0)
-  @mutation('useMail', [])
-  useMail():Promise<0>{return}
+  @mutation('useMail', [
+    new numberValidator('Use ID').required().ganz().min(1)
+  ])
+  useMail(useID: number):Promise<0>{return}
 
-  //TODO: usePerson
   @register
-  @inform('', 0)
-  @mutation('usePerson', [])
-  usePerson():Promise<0>{return}
+  @mutation('usePerson', [
+    new numberValidator('Use ID').required().ganz().min(1)
+  ])
+  usePerson(useID: number):Promise<0>{return}
 
-  //TODO: useTelefon
   @register
-  @inform('', 0)
-  @mutation('useTelefon', [])
-  useTelefon():Promise<0>{return}
+  @mutation('useTelefon', [
+    new numberValidator('Use ID').required().ganz().min(1)
+  ])
+  useTelefon(useID: number):Promise<0>{return}
   
   @register
   @query([], [
