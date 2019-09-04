@@ -11,7 +11,7 @@
     "@types/nodemailer": "^6.2.1"
   },
   "dependencies": {
-    "api-socket-io": "^0.1.1",
+    "api-socket-io": "^0.3.2",
     "nodemailer": "^6.3.0",
     "office-compiler": "^0.0.1",
     "promise-mysql": "^4.1.0"
