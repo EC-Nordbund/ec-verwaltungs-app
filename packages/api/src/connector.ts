@@ -1,3 +1,37 @@
-import * as s from "promise-mysql";
+import {createPool, Pool} from "promise-mysql";
 
-s.
+let pool:Pool
+
+(async ()=>{
+  pool = await createPool({
+    host: process.env.DB_HOST,
+    user: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORT,
+    database: process.env.DB_DB,
+    multipleStatements: false,
+    dateStrings: true,
+    connectionLimit: 50
+  })
+})()
+
+export async function query(sql: Array<string>, noLog?:boolean):Promise<Array<Array<any>>>
+export async function query(sql: string, noLog?:boolean):Promise<Array<any>> 
+export async function query(sql: string | Array<string>, noLog = false):Promise<Array<any>|Array<Array<any>>> {
+  if (!noLog) {
+    console.log(`${sql}`)
+  }
+
+  const con = await pool.getConnection()
+
+  let ergebnis
+  if (typeof sql === 'string') {
+    ergebnis = await con.query(sql)
+  } else {
+    con.beginTransaction()
+    ergebnis = await Promise.all(sql.map(con.query))
+    con.commit()
+  }
+
+  return ergebnis
+}
+

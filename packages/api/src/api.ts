@@ -1,11 +1,16 @@
-import { stringValidator, numberValidator, booleanValidator, builder, connectorBase } from "api-socket-io";
+import { stringValidator, numberValidator, booleanValidator, builder, connectorBase, server as server_api, client as client_api } from "api-socket-io";
+import { query as query_2 } from "./connector";
+import compiler from "office-compiler";
 
+const {useClass, inform, query, mutation, register} = 
+  new builder<string, api>(
+    query_2, 
+    async (name:string, ...args: Array<any>) => {
+      return await query_2(`SELECT ${name}(${args.map(v=>"'" + v + "'").join(',')}) AS r`).then(v=>v[0].r)
+    }
+  )
 
-const {dbSel, dbExec} = require('./server.js')
-let build = new builder<string, api>(dbSel, dbExec)
-
-
-const {useClass, inform, query, mutation, register} = build
+const comp = new compiler(process.env.GOTENBERG, query_2)
 
 @useClass
 export class api extends connectorBase {
@@ -183,7 +188,7 @@ export class api extends connectorBase {
     new numberValidator('Person ID').required().ganz().min(1),
   ])
   anonymisieren(personID: number):Promise<0>{return}
- 
+
   @register
   @inform('anmeldung', 0)
   @mutation('editAnmedungBemerkungen', [
@@ -377,4 +382,22 @@ export class api extends connectorBase {
     (self, akID: number) => ({name: 'mitglieder', abfrage: `SELECT a.personID, p.vorname, p.nachname, p.gebDat, p.geschlecht, a.date, a.neuerStatus, a.ID FROM person_arbeitskreis a, personen p WHERE p.ID = a.personID AND a.akID = ${akID} ORDER BY p.ID`})
   ])
   arbeitskreis(akID: number):Promise<any>{return}
+  
+  @register
+  async excel(name:string, id?:number|string):Promise<Buffer>{
+    return comp.pdfExcelTemplate(`./docs/${name}.xlsx`, id)
+  }
+  
+  @register
+  async word(name:string, id?:number|string):Promise<Buffer>{
+    return comp.pdfWordTemplate(`./docs/${name}.docx`, id)
+  }
+}
+
+export function server() {
+  let servers = server_api(api, async (username:string, password:string)=>false, async ()=>[], 4000)
+}
+
+export function client() {
+  return client_api<api>(api, 'localhost:4000')
 }

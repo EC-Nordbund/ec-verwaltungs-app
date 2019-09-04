@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
   "devDependencies": {
-    "@types/exceljs": "^0.5.3",
-    "@types/node": "^12.7.2",
-    "@types/node-fetch": "^2.5.0"
+    "@types/node": "^12.7.4",
+    "@types/nodemailer": "^6.2.1"
   },
   "dependencies": {
-    "api-socket-io": "^0.0.1",
-    "docx-templates": "^3.1.1",
-    "exceljs": "^1.15.0",
-    "node-fetch": "^2.6.0",
-    "promise-mysql": "^4.1.0",
-    "xlsx-template": "^0.5.0"
+    "api-socket-io": "^0.1.1",
+    "nodemailer": "^6.3.0",
+    "office-compiler": "^0.0.1",
+    "promise-mysql": "^4.1.0"
   }
 }
