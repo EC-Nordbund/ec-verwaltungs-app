@@ -1209,10 +1209,10 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
-api-socket-io@^0.5.3:
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/api-socket-io/-/api-socket-io-0.5.3.tgz#a42c26f50f72c8e1328715ae70479d0033af8cd5"
-  integrity sha512-zF57gDLk+MHFht4u8ZQEFxrX9MQ0CqEMqPxDnC93I6SzFH6AgOUTN8/8IcdmE0DbQ2bnWBk0JIVXKzBGHBaTXw==
+api-socket-io@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/api-socket-io/-/api-socket-io-1.0.1.tgz#9ccb3a7b716b006bd911f79107f64ccf2f3db56a"
+  integrity sha512-qyYNYQzfh6s/QZ0DTmZUG7nT5pANA8ZzVu6lEDXxDL8a9i+LHDh/4FIlg3G2Y2YX2MnToBJBKrFDlgcpMaY0DQ==
   dependencies:
     express "^4.17.1"
     socket.io "^2.2.0"

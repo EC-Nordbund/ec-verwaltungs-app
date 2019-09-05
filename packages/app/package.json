@@ -11,7 +11,7 @@
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@types/graphql": "^14.2.2",
-    "api-socket-io": "^0.5.3",
+    "api-socket-io": "^1.0.1",
     "apollo-boost": "^0.4.3",
     "buffer": "^5.2.1",
     "copy-to-clipboard": "^3.2.0",
