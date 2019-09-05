@@ -37,7 +37,7 @@ interface IVeranstaltung_small {
 
 interface IVOrt_small {ID: number, bezeichnung: string, ort: string, land: string}
 
-interface IAK {
+interface IAK extends IAK_small {
   default: IAK_small,
   mitglieder: Array<{
     ID: number
