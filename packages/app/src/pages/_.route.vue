@@ -163,6 +163,7 @@ export default class EcRootIndex extends Vue {
 
   private created() {
     console.log(this.$api)
+    
     // if (!this.$authToken()) {
     //   this.$router.push({path: '/login', query: {next: this.$route.fullPath}});
     // } else {
