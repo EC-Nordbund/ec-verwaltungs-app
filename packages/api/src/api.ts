@@ -493,15 +493,15 @@ export class api extends connectorBase {
 
   //TODO:
   @build.register()
-  person(personID: number):Promise<any> {return}
+  getPerson(personID: number):Promise<any> {return}
 
   //TODO:
   @build.register()
-  anmeldungen() {}
+  getAnmeldungen() {}
 
   //TODO:
   @build.register()
-  anmeldung(anmeldeID: string):Promise<any> {return}
+  getAnmeldung(anmeldeID: string):Promise<any> {return}
 
   @build.register()
   @build.query([], [
@@ -511,7 +511,7 @@ export class api extends connectorBase {
 
   //TODO:
   @build.register()
-  veranstaltung(veranstaltungsID:number):Promise<any> {return}
+  getVeranstaltung(veranstaltungsID:number):Promise<any> {return}
 
   @build.register()
   @build.query([], [
@@ -521,15 +521,15 @@ export class api extends connectorBase {
 
   //TODO:
   @build.register()
-  veranstaltungsort(veranstaltungsortID: number):Promise<any> {return}
+  getVeranstaltungsort(veranstaltungsortID: number):Promise<any> {return}
 
   //TODO:
   @build.register()
-  organisationen():Promise<any> {return}
+  getOrganisationen():Promise<any> {return}
 
   //TODO:
   @build.register()
-  organisation(organisationsID: number):Promise<any> {return}
+  getOrganisation(organisationsID: number):Promise<any> {return}
 
   @build.register()
   excel(name:string, id?:number|string):Promise<Buffer>{
