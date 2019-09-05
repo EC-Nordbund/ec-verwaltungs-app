@@ -7,13 +7,13 @@ import compiler from "office-compiler";
 import { EventEmitter } from "events";
 // import { Socket } from "socket.io";
 
-const DEMO: boolean = true
+const DEMO: boolean = false
 const f:any = async (...a) => {
   console.log(...a)
   return a
 }
  
-const single = false
+const single = true
 
 const build = DEMO ? new builder<string, api>(f,f) : new builder<string, api>(
   query_2, 
