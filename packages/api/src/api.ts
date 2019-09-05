@@ -532,8 +532,12 @@ export class api extends connectorBase {
   ])
   getVeranstaltungsorte():Promise<{default: Array<IVOrt_small>}> {return}
 
-  //TODO:
   @build.register()
+  @build.query([], [
+    (self, veranstaltungsortID: number) => ({name: 'default', abfrage: `SELECT v.*, o.bezeichnung, o.ort, o.land FROM veranstaltungsorte v, organisationen o  WHERE v.ID=${veranstaltungsortID} AND v.organisitationID = o.ID`, single}),
+    (self, veranstaltungsortID: number) => ({name: 'kontakt', abfrage: `SELECT * FROM veranstaltungsort_kontakt WHERE veranstaltungsortID = ${veranstaltungsortID}`}),
+    (self, veranstaltungsortID: number) => ({name: 'veranstaltungen', abfrage: `SELECT ID,bezeichnung,kurzBezeichnung, begin,ende FROM veranstaltung WHERE veranstaltungsortID = ${veranstaltungsortID}`})
+  ])
   getVeranstaltungsort(veranstaltungsortID: number):Promise<any> {return}
 
   @build.register()
