@@ -13,7 +13,7 @@ const f:any = async (...a) => {
   return a
 }
  
-const single = true
+const single = false
 
 const build = DEMO ? new builder<string, api>(f,f) : new builder<string, api>(
   query_2, 
