@@ -491,8 +491,19 @@ export class api extends connectorBase {
   ])
   getPersonen():Promise<any> {return}
 
-  //TODO:
   @build.register()
+  @build.query([], [
+    (self, personID: number) => ({name: 'default', abfrage: `SELECT * FROM personen_admin WHERE ID = ${personID} ORDER BY vorname, nachname`, single}),
+    (self, personID: number) => ({name: 'anmeldungen', abfrage: `SELECT a.anmeldeID, a.rollenID, v.bezeichnung, v.kurzBezeichnung, v.begin, v.ende FROM anmeldungen_admin a, veranstaltung v WHERE a.veranstaltungsID = v.ID AND a.personID = ${personID}`}),
+    (self, personID: number) => ({name: 'adressen', abfrage: `SELECT * FROM person_adresse WHERE ID = ${personID} ORDER BY plz`}),
+    (self, personID: number) => ({name: 'email', abfrage: `SELECT * FROM person_email WHERE ID = ${personID} ORDER BY email`}),
+    (self, personID: number) => ({name: 'fzAntrag', abfrage: `SELECT * FROM person_fz_antrag WHERE ID = ${personID}`}),
+    (self, personID: number) => ({name: 'juleica', abfrage: `SELECT * FROM person_juleica WHERE ID = ${personID} ORDER BY juLeiCaNr`}),
+    (self, personID: number) => ({name: 'telefon', abfrage: `SELECT * FROM person_telefon WHERE ID = ${personID} ORDER BY telefon`}),
+    (self, personID: number) => ({name: 'tags', abfrage: `SELECT p.ID, p.notiz, t.ID, t.bezeichnung FROM person_tag p, stamm_tags t WHERE personID = ${personID} ORDER BY t.bezeichnung`}),
+    (self, personID: number) => ({name: 'fz', abfrage: `SELECT f.ID, f.gesehenAm, f.kommentar, p.vorname, p.nachname, p.ID AS gesehenVonID, p.gebDat FROM personen p, person_fz f WHERE f.gesehenVon = p.ID AND f.personID = ${personID}`}),
+    (self, personID: number) => ({name: 'ak', abfrage: `SELECT p.ID, p.date, p.neuerStatus, p.akID, s.bezeichnung, a.bezeichnung FROM person_arbeitskreis p, arbeitskreise a, stamm_arbeitskreis_stadien s WHERE p.personID = ${personID} ORDER BY p.date`})
+  ])
   getPerson(personID: number):Promise<any> {return}
 
   //TODO:
