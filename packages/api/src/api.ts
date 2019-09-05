@@ -474,7 +474,7 @@ export class api extends connectorBase {
   @build.query([], [
     () => ({name: 'default', abfrage: 'SELECT * FROM arbeitskreise'})
   ])
-  arbeitskreise():Promise<{ default: Array<IAK_small> }> {return}
+  getArbeitskreise():Promise<{ default: Array<IAK_small> }> {return}
 
   @build.register()
   @build.query([
@@ -483,13 +483,13 @@ export class api extends connectorBase {
     (self, akID: number) => ({name: 'default', abfrage: `SELECT * FROM arbeitskreise WHERE ID = ${akID}`, single}),
     (self, akID: number) => ({name: 'mitglieder', abfrage: `SELECT a.personID, p.vorname, p.nachname, p.gebDat, p.geschlecht, a.date, a.neuerStatus, a.ID FROM person_arbeitskreis a, personen p WHERE p.ID = a.personID AND a.akID = ${akID} ORDER BY p.ID`})
   ])
-  arbeitskreis(akID: number):Promise<IAK>{return}
+  getArbeitskreis(akID: number):Promise<IAK>{return}
 
   @build.register()
   @build.query([], [
     () => ({name: 'default', abfrage: `SELECT ID, vorname, nachname, gebDat, geschlecht FROM personen ORDER BY vorname, nachname`})
   ])
-  personen():Promise<any> {return}
+  getPersonen():Promise<any> {return}
 
   //TODO:
   @build.register()
@@ -507,7 +507,7 @@ export class api extends connectorBase {
   @build.query([], [
     () => ({name: 'default', abfrage: `SELECT ID, bezeichnung, kurzBezeichnung, begin, ende FROM veranstaltung ORDER BY begin DESC`})
   ])
-  veranstaltungen():Promise<{default: Array<IVeranstaltung_small>}> {return}
+  getVeranstaltungen():Promise<{default: Array<IVeranstaltung_small>}> {return}
 
   //TODO:
   @build.register()
@@ -517,7 +517,7 @@ export class api extends connectorBase {
   @build.query([], [
     () => ({name: 'default', abfrage: `SELECT ID, bezeichnung, ort, land FROM veranstaltungsorte ORDER BY bezeichnung`})
   ])
-  veranstaltungsorte():Promise<{default: Array<IVOrt_small>}> {return}
+  getVeranstaltungsorte():Promise<{default: Array<IVOrt_small>}> {return}
 
   //TODO:
   @build.register()
