@@ -512,7 +512,7 @@ export class api extends connectorBase {
 
   @build.register()
   @build.query([], [
-    (self, anmeldeID: number) => ({name: 'default', abfrage: `SELECT an.*, b.telefon, e.email, a.strasse, a.plz, a.ort, r.bezeichnung FROM anmeldungen_admin an, person_telefon b, person_email e, person_adresse a, stamm_rollen r WHERE an.ID = ${anmeldeID} AND an.rollenID = r.ID AND an.adressID = a.ID AND an.eMailID = e.ID AND an.telefonID = b.ID`})
+    (self, anmeldeID: number) => ({name: 'default', abfrage: `SELECT an.*, b.telefon, e.email, a.strasse, a.plz, a.ort, r.bezeichnung FROM anmeldungen_admin an, person_telefon b, person_email e, person_adresse a, stamm_rollen r WHERE an.ID = ${anmeldeID} AND an.rollenID = r.ID AND an.adressID = a.ID AND an.eMailID = e.ID AND an.telefonID = b.ID`, single})
   ])
   getAnmeldung(anmeldeID: string):Promise<any> {return}
 
