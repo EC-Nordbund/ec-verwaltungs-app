@@ -522,8 +522,14 @@ export class api extends connectorBase {
   ])
   getVeranstaltungen():Promise<{default: Array<IVeranstaltung_small>}> {return}
 
-  //TODO:
   @build.register()
+  @build.query([
+    new numberValidator('Veranstaltung ID').required().ganz().min(1)
+  ], [
+    (self, vID: number) => ({name: 'default', abfrage: `SELECT * FROM veranstaltung WHERE ID = ${vID}`, single}),
+    (self, vID: number) => ({name: 'finanzen', abfrage: `SELECT p.*, t.bezeichnung AS type_bezeichnung FROM veranstaltung_preise p, veranstaltung_preise_typen t WHERE p.veranstaltungsID = ${vID} AND p.typID = t.ID ORDER BY p.von ASC`}),
+    (self, vID: number) => ({name: 'anmeldungen', abfrage: `SELECT a.anmeldeID, a.wartelistenPlatz, p.vorname, p.nachname, p.gebDat, p.geschlecht, r.bezeichnung AS rolle FROM anmeldungen a, personen p, stamm_rollen r WHERE a.veranstaltungsID = ${vID} AND a.personID = p.ID AND a.rollenID = r.ID ORDER BY a.anmeldeZeitpunkt DESC`})
+  ])
   getVeranstaltung(veranstaltungsID:number):Promise<any> {return}
 
   @build.register()
