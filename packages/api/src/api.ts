@@ -1,9 +1,10 @@
 import { stringValidator, numberValidator, booleanValidator, builder, connectorBase, server as server_api, client as client_api } from "api-socket-io";
 import { query as query_2 } from "./connector";
 import compiler from "office-compiler";
+import { Socket } from "socket.io";
 
 const DEMO: boolean = true
-const f:any = async (...a)=>{
+const f:any = async (...a) => {
   console.log(...a)
   return a
 }
@@ -25,6 +26,17 @@ interface IAK_small {
   bezeichnung: string
 }
 
+
+interface IVeranstaltung_small {
+  ID: number,
+  bezeichnung: string,
+  kurzBezeichnung: string, 
+  begin: string, 
+  ende: string
+}
+
+interface IVOrt_small {ID: number, bezeichnung: string, ort: string, land: string}
+
 interface IAK {
   default: IAK_small,
   mitglieder: Array<{
@@ -40,15 +52,12 @@ interface IAK {
 }
 
 
-
-
-
-
-
-
-
 @build.useClass()
 export class api extends connectorBase {
+  constructor(isClient:boolean, socket:Socket) {
+    super(isClient, socket)
+  }
+
   @build.register()
   @build.inform('anmeldung', 0)
   @build.mutation('addAnmeldungPayment', [
@@ -438,7 +447,7 @@ export class api extends connectorBase {
   @build.query([], [
     () => ({name: 'default', abfrage: 'SELECT * FROM arbeitskreise'})
   ])
-  arbeitskreise():Promise<Array<IAK_small>> {return}
+  arbeitskreise():Promise<{ default: Array<IAK_small> }> {return}
 
   @build.register()
   @build.query([
@@ -467,17 +476,21 @@ export class api extends connectorBase {
   @build.register()
   anmeldung(anmeldeID: string):Promise<any> {return}
 
-  //TODO:
   @build.register()
-  veranstaltungen() {}
+  @build.query([], [
+    () => ({name: 'default', abfrage: `SELECT ID, bezeichnung, kurzBezeichnung, begin, ende FROM veranstaltung ORDER BY begin DESC`})
+  ])
+  veranstaltungen():Promise<{default: Array<IVeranstaltung_small>}> {return}
 
   //TODO:
   @build.register()
   veranstaltung(veranstaltungsID:number):Promise<any> {return}
 
-  //TODO:
   @build.register()
-  veranstaltungsorte():Promise<any> {return}
+  @build.query([], [
+    () => ({name: 'default', abfrage: `SELECT ID, bezeichnung, ort, land FROM veranstaltungsorte ORDER BY bezeichnung`})
+  ])
+  veranstaltungsorte():Promise<{default: Array<IVOrt_small>}> {return}
 
   //TODO:
   @build.register()
@@ -504,6 +517,27 @@ export class api extends connectorBase {
 
 export function server() {
   let servers = server_api(api, async (username:string, password:string)=>true, async ()=>[], 4000)
+
+  // CRON
+  setInterval(() => {
+    // TODO: Mail handler
+  }, 1000)
+
+  setInterval(() => {
+    
+  }, 10 * 1000)
+
+  setInterval(() => {
+    // TODO: FZ Anrang handler
+  }, 60 * 1000)
+
+  setInterval(() => {
+    
+  }, 60 * 60 * 1000)
+
+  setInterval(() => {
+    // TODO: LCleanup
+  }, 24 * 60 * 60 * 1000)
 }
 
 export function client() {
