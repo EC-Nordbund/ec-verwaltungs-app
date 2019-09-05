@@ -1,7 +1,11 @@
-import { stringValidator, numberValidator, booleanValidator, builder, connectorBase, server as server_api, client as client_api } from "api-socket-io";
+import { stringValidator, numberValidator, booleanValidator } from "api-socket-io/build/validatoren";
+import { builder, connectorBase } from "api-socket-io/build/apiBuilder";
+import { client as client_api } from "api-socket-io/build/client";
+
 import { query as query_2 } from "./connector";
 import compiler from "office-compiler";
-import { Socket } from "socket.io";
+import { EventEmitter } from "events";
+// import { Socket } from "socket.io";
 
 const DEMO: boolean = true
 const f:any = async (...a) => {
@@ -53,10 +57,9 @@ interface IAK extends IAK_small {
 
 
 @build.useClass()
-export class api extends connectorBase {
-  constructor(isClient:boolean, socket:Socket) {
-    super(isClient, socket)
-  }
+export class api {
+  ee: EventEmitter = new EventEmitter()
+  constructor(public isClient:boolean, public socket:any) {}
 
   @build.register()
   @build.inform('anmeldung', 0)
@@ -573,30 +576,7 @@ export class api extends connectorBase {
   }
 }
 
-export function server() {
-  let servers = server_api(api, async (username:string, password:string)=>true, async ()=>[], 4000)
 
-  // CRON
-  setInterval(() => {
-    // TODO: Mail handler
-  }, 1000)
-
-  setInterval(() => {
-    
-  }, 10 * 1000)
-
-  setInterval(() => {
-    // TODO: FZ Anrang handler
-  }, 60 * 1000)
-
-  setInterval(() => {
-    
-  }, 60 * 60 * 1000)
-
-  setInterval(() => {
-    
-  }, 24 * 60 * 60 * 1000)
-}
 
 export function client() {
   return client_api<api>(api, 'http://localhost:4000')

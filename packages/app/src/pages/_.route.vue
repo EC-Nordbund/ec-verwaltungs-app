@@ -162,69 +162,70 @@ export default class EcRootIndex extends Vue {
   }
 
   private created() {
-    if (!this.$authToken()) {
-      this.$router.push({path: '/login', query: {next: this.$route.fullPath}});
-    } else {
-      this.$apolloClient.query({
-        query: gql`
-          query($authToken: String!) {
-            getMyUserData(authToken: $authToken) {
-              userName
-              userGroup {
-                bezeichnung
-              }
-              person {
-                vorname
-                nachname
-              }
-              ablaufDatum {
-                german
-              }
-            }
-          }`,
-        variables: {
-          authToken: this.$authToken()
-        }
-      }).then((res) => {
-        this.data = res.data.getMyUserData;
-      });
-      this.$setInactiveHandler(() => {
-        if (!this.inactive) {
-          this.inactive = true;
-          (this.$refs.inactive as any).show().then((data: {pin: string}) => {
-            this.$apolloClient.mutate({
-              mutation: gql`
-                mutation($authToken: String!, $pin: String!) {
-                  reActivate(authToken: $authToken, pin: $pin)
-                }
-              `,
-              variables: {
-                authToken: this.$authToken(),
-                pin: data.pin
-              }
-            }).then(() => {
-              this.inactive = false;
-            }).catch(() => {
-              this.$dialog.error({
-                text: 'Du wirst automatisch abgemeldet!',
-                title: 'Reaktivieren fehlgeschlagen!'
-              });
-              setTimeout(() => {
-                this.logout();
-              }, 5000);
-            });
-          }).catch(() => {
-            this.$dialog.error({
-              text: 'Du wirst automatisch abgemeldet!',
-              title: 'Reaktivieren fehlgeschlagen!'
-            });
-            setTimeout(() => {
-              this.logout();
-            }, 5000);
-          });
-        }
-      });
-    }
+    console.log(this.$api)
+    // if (!this.$authToken()) {
+    //   this.$router.push({path: '/login', query: {next: this.$route.fullPath}});
+    // } else {
+    //   this.$apolloClient.query({
+    //     query: gql`
+    //       query($authToken: String!) {
+    //         getMyUserData(authToken: $authToken) {
+    //           userName
+    //           userGroup {
+    //             bezeichnung
+    //           }
+    //           person {
+    //             vorname
+    //             nachname
+    //           }
+    //           ablaufDatum {
+    //             german
+    //           }
+    //         }
+    //       }`,
+    //     variables: {
+    //       authToken: this.$authToken()
+    //     }
+    //   }).then((res) => {
+    //     this.data = res.data.getMyUserData;
+    //   });
+    //   this.$setInactiveHandler(() => {
+    //     if (!this.inactive) {
+    //       this.inactive = true;
+    //       (this.$refs.inactive as any).show().then((data: {pin: string}) => {
+    //         this.$apolloClient.mutate({
+    //           mutation: gql`
+    //             mutation($authToken: String!, $pin: String!) {
+    //               reActivate(authToken: $authToken, pin: $pin)
+    //             }
+    //           `,
+    //           variables: {
+    //             authToken: this.$authToken(),
+    //             pin: data.pin
+    //           }
+    //         }).then(() => {
+    //           this.inactive = false;
+    //         }).catch(() => {
+    //           this.$dialog.error({
+    //             text: 'Du wirst automatisch abgemeldet!',
+    //             title: 'Reaktivieren fehlgeschlagen!'
+    //           });
+    //           setTimeout(() => {
+    //             this.logout();
+    //           }, 5000);
+    //         });
+    //       }).catch(() => {
+    //         this.$dialog.error({
+    //           text: 'Du wirst automatisch abgemeldet!',
+    //           title: 'Reaktivieren fehlgeschlagen!'
+    //         });
+    //         setTimeout(() => {
+    //           this.logout();
+    //         }, 5000);
+    //       });
+    //     }
+    //   });
+    // }
   }
 }
 </script>

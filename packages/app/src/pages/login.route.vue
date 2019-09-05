@@ -39,8 +39,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-// import * as settings from 'electron-settings'
-import gql from 'graphql-tag';
 import * as save from 'js-cookie';
 
 @Component({})
@@ -70,29 +68,22 @@ export default class EcRootLogin extends Vue {
 
   public logIn() {
     this.loading = true;
-    this.$apolloClient.mutate({
-      mutation: gql`
-        mutation($username: String!, $password: String!) {
-          logIn(version: "2.0.0", username: $username, password: $password)
-        }
-      `,
-      variables: this.data
-    }).then((res: any) => {
+    this.$login(this.data.username, this.data.password, async ()=>'').catch((err) => {
+      this.$dialog.error({
+        text: err.message,
+        title: 'Anmelden fehlgeschlagen!'
+      });
+      throw err
+    }).then(() => {
       let path = this.$route.query.next || '/home';
       if (this.$route.query.next === '/404?prev=%2F') {
         path = 'home';
       }
       save.set('username', this.data.username, { expires: 7 });
-      this.$setAuthToken(res.data.logIn);
       this.$router.push(path as string);
       this.loading = false;
-    }).catch((err: any) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Anmelden fehlgeschlagen!'
-      });
-      this.loading = false;
-    });
+    })
+    this.loading = false
   }
 
   public created() {

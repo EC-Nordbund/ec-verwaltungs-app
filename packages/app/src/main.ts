@@ -12,6 +12,7 @@ import '@/plugins/apollo';
 import '@/plugins/notify';
 import '@/plugins/telefonFilter';
 import '@/plugins/vuetify';
+import '@/plugins/socketIOAPI';
 
 Component.registerHooks([
   'beforeRouteEnter',
