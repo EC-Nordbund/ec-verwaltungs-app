@@ -534,8 +534,10 @@ export class api extends connectorBase {
   @build.register()
   getVeranstaltungsort(veranstaltungsortID: number):Promise<any> {return}
 
-  //TODO:
   @build.register()
+  @build.query([], [
+    () => ({name: 'default', abfrage: `SELECT ID, bezeichnung FROM organisationen ORDER BY bezeichnung`})
+  ])
   getOrganisationen():Promise<any> {return}
 
   //TODO:
