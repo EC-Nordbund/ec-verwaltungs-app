@@ -33,9 +33,9 @@ after@0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/after/-/after-0.8.2.tgz#fedb394f9f0e02aa9768e702bda23b505fae7e1f"
 
-api-socket-io@^0.3.3:
-  version "0.3.3"
-  resolved "https://registry.yarnpkg.com/api-socket-io/-/api-socket-io-0.3.3.tgz#b41cb08aa8d7fad4242678f7707569f6f473b975"
+api-socket-io@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/api-socket-io/-/api-socket-io-0.5.0.tgz#c78d8a6cc18b67f50450b1b519842f648f5c1e89"
   dependencies:
     express "^4.17.1"
     socket.io "^2.2.0"
