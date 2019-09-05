@@ -12,6 +12,8 @@ let pool:Pool
     dateStrings: true,
     connectionLimit: 50
   })
+
+  console.log("DB Pool läuft 🚀");
 })()
 
 export async function query(sql: Array<string>, noLog?:boolean):Promise<Array<Array<any>>>
