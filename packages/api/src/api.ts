@@ -222,8 +222,29 @@ export class api extends connectorBase {
   @build.register()
   @build.inform('veranstaltungen', 0)
   @build.mutation('anmeldungVerarbeiten', [
-    //TODO: anmeldungVerarbeiten
-    //(`i_veranstaltungsID` INT, `i_rollenID` INT, `i_geschlecht` ENUM('m','w'), `i_vorname` VARCHAR(50), `i_nachname` VARCHAR(50), `i_gebDat` DATE, `i_strasse` VARCHAR(50), `i_plz` VARCHAR(5), `i_ort` VARCHAR(50), `i_telefon` VARCHAR(20), `i_email` VARCHAR(50), `i_schwimmen` INT, `i_radfahren` BOOLEAN, `i_bootfahren` BOOLEAN, `i_klettern` BOOLEAN, `i_sichEntfernen` BOOLEAN, `i_fahrgemeinschaften` BOOLEAN, `i_extra` TEXT, `i_vegetarisch` BOOLEAN, `i_lebensmittelAllergien` VARCHAR(500), `i_gesundheitsinformationen` VARCHAR(5000), `i_bemerkungen` VARCHAR(5000), `i_anmeldeZeitpunkt` TIMESTAMP)
+    new numberValidator('Veranstaltungs ID').ganz().min(1).required(),
+    new numberValidator('Rollen ID').ganz().min(1).required().max(5),
+    new stringValidator('Geschlecht').required().enum(['m','w']),
+    new stringValidator('Vorname').required().maxLength(50),
+    new stringValidator('Nachname').required().maxLength(50),
+    new stringValidator('Geburtsdatum').required().isDate(),
+    new stringValidator('Strasse').required().maxLength(50).minLength(1),
+    new stringValidator('Post Leit Zahl').required().exactLength(5).numeric(),
+    new stringValidator('Ort').required().maxLength(50).minLength(1),
+    new stringValidator('Telefon').required().maxLength(20).numeric(),
+    new stringValidator('Email').required().minLength(1).maxLength(50).email(),
+    new numberValidator('Schwimmen').ganz().required().max(3).min(0),
+    new booleanValidator('Rad fahren').required(),
+    new booleanValidator('Boot fahren').required(),
+    new booleanValidator('Klettern').required(),
+    new booleanValidator('Sich entfernen').required(),
+    new booleanValidator('Fahrgemeinschaften').required(),
+    new stringValidator('Extra').maxLength(65535).required(),
+    new booleanValidator('Vegetarisch').required(),
+    new stringValidator('Lebensmittelallergien').required().maxLength(500),
+    new stringValidator('Gesundheitsinformationen').required().maxLength(5000),
+    new stringValidator('Bemerkungen').required().maxLength(5000),
+    new stringValidator('anmelde Zeitpunkt').required().minLength(5),
   ])
   anmeldungVerarbeiten(veranstaltungsID: number, rollenID: number, geschlecht: 'm'|'w', vorname: string, nachname: string, gebDat: string, strasse:string, plz:string, ort:string, telefon:string, email: string, schwimmen:number, radfahren:boolean, bootfahren: boolean, klettern: boolean, sichEntfernen: boolean, fahrgemeinschaften: boolean, extra: string, vegetarisch: boolean, lebensmittelallergien: string, gesundheitsinformationen: string, bemerkungen: string):Promise<0>{return}
 
@@ -357,8 +378,14 @@ export class api extends connectorBase {
   @build.register()
   @build.inform('veranstaltung', 0)
   @build.mutation('editVeranstaltungRest', [
-    //TODO: editVeranstaltungRest
-    //(`i_veranstaltungsID` INT, `i_minTNAlter` INT, `i_maxTNAlter` INT, `i_vorortZahlung` BOOLEAN, `i_hatGeschlechterWarteliste` BOOLEAN, `i_anzahlPlaetze` INT, `i_anzahlPlaetzeWeiblich` INT, `i_anzahlPlaetzeMaennlich` INT) RETURNS int(11)
+    new numberValidator('Veranstaltung ID').min(1).ganz().required(),
+    new numberValidator('Min TN Alter').min(0).ganz().required(),
+    new numberValidator('Max TN Alter').min(0).ganz().required(),
+    new booleanValidator('vorort Zahlung möglich').required(),
+    new booleanValidator('hat Geschlechter Warteliste'),
+    new numberValidator('Anzahl Plätze').min(0).ganz().required(),
+    new numberValidator('Anzahl Plätze Weiblich').min(0).ganz().required(),
+    new numberValidator('Anzahl Plätze Männlich').min(0).ganz().required()
   ])
   editVeranstaltungRest(veranstaltungsID: number, minTNAlter: number, maxTNAlter: number, vorortZahlung: boolean, hatGeschlechterWarteliste: boolean, anzahlPlaetze: number, anzahlPlaetzeWeiblich: number, anzahlPlaetzeMaennlich: number):Promise<0>{return}
 
@@ -536,7 +563,7 @@ export function server() {
   }, 60 * 60 * 1000)
 
   setInterval(() => {
-    // TODO: LCleanup
+    
   }, 24 * 60 * 60 * 1000)
 }
 
