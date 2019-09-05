@@ -540,8 +540,14 @@ export class api extends connectorBase {
   ])
   getOrganisationen():Promise<any> {return}
 
-  //TODO:
   @build.register()
+  @build.query([
+    new numberValidator('Organisation ID').required().ganz().min(0)
+  ], [
+    (self, orgID: number) => ({name: 'default', abfrage: `SELECT * FROM organisationen WHERE ID = ${orgID}`, single}),
+    (self, orgID: number) => ({name: 'veranstaltungen', abfrage: `SELECT v.ID, v.bezeichnung, v.kurzBezeichnung, l.ID, l.organisitationID FROM veranstaltung v, veranstaltungsorte l WHERE l.organisitationID = ${orgID} AND v.veranstaltungsortID = l.ID ORDER BY v.begin DESC`}),
+    (self, orgID:number) => ({name: 'veranstaltungsorte', abfrage: `SELECT ID, bezeichnung, anzahl_min, anzahl_max, organisitationID FROM veranstaltungsorte WHERE organisitationID = ${orgID} ORDER BY bezeichnung`})
+  ])
   getOrganisation(organisationsID: number):Promise<any> {return}
 
   @build.register()
