@@ -107,47 +107,8 @@ export default class EcRootIndexAKIdIndex extends Vue {
   }
 
 
-  private loadData() {
-    this.$apolloClient.query({
-      query: gql`
-        query($authToken: String!, $akID: Int!) {
-          ak(akID: $akID, authToken: $authToken) {
-            akID
-            bezeichnung
-            personen {
-              currentStatus
-              allUpdates {
-                akPersonID
-                neuerStatus
-                date {
-                  german
-                }
-              }
-              person {
-                personID
-                vorname
-                nachname
-                gebDat {
-                  german
-                }
-              }
-            }
-          }
-        }
-      `,
-      variables: {
-        authToken: this.$authToken(),
-        akID: this.$route.params.id
-      },
-      fetchPolicy: 'no-cache'
-    }).then((res: any) => {
-      this.data = res.data.ak;
-    }).catch((err: any) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Laden fehlgeschlagen!'
-      });
-    });
+  private async loadData() {
+    this.data = await this.$api.getArbeitskreis(parseInt(this.$route.params.id))
   }
 
   private created() {
