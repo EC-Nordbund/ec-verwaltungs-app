@@ -112,28 +112,8 @@ export default class EcRootIndexAKIndex extends Vue {
     `, name, save);
   }
 
-  private loadData() {
-    this.$apolloClient.query({
-      query: gql`
-        query($authToken:String!) {
-          aks(authToken:$authToken) {
-            akID
-            bezeichnung
-          }
-        }
-      `,
-      variables: {
-        authToken: this.$authToken()
-      },
-      fetchPolicy: 'no-cache'
-    }).then((res: any) => {
-      this.data = res.data.aks;
-    }).catch((err: any) => {
-      this.$dialog.error({
-        text: err.message,
-        title: 'Laden fehlgeschlagen!'
-      });
-    });
+  private async loadData() {
+    this.data = await this.$api.getArbeitskreise()
   }
 
   private created() {
