@@ -10,13 +10,6 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-// @ts-ignore
-import { VAlert } from 'vuetify/lib';
-
-@Component({
-  components: {
-    VAlert,
-  },
-})
+@Component({})
 export default class FormTextarea extends Mixins(abstractField) {}
 </script>

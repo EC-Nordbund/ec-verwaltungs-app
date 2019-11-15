@@ -44,6 +44,6 @@ context.keys().forEach((key) => {
   a[key.split('/')[1].split('.')[0]] = true;
 });
 
-// console.log(Object.keys(a));
+console.log(Object.keys(a));
 
 Vue.prototype.$ecForm = {};
