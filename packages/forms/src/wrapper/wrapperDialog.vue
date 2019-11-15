@@ -44,7 +44,16 @@ export default class EcRootIndexAKIndex extends Vue {
   private visible = false;
   private value: any = {};
 
-  public show(initval = this.initval) {
+  public show(initval = this.initval, addToSchemaTop = []) {
+    addToSchemaTop.forEach(field => {
+
+      // only add if not exist
+      if(this.schema.every((f: any) =>
+        JSON.stringify(f) !== JSON.stringify(field))) {
+          this.schema.unshift(field);
+          }
+    });    
+
     return new Promise((res, rej) => {
       this.res = res;
       this.rej = rej;
