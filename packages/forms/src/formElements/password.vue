@@ -25,14 +25,7 @@
 import { Component, Vue, Mixins } from 'vue-property-decorator';
 import abstractField from '../abstract';
 
-// @ts-ignore
-import { VTextField } from 'vuetify/lib';
-
-@Component({
-  components: {
-    VTextField,
-  },
-})
+@Component({})
 export default class FormInput extends Mixins(abstractField) {
   private passwordVisible = false;
   private isCapsOn = false;
