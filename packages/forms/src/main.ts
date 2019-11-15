@@ -10,6 +10,26 @@ import 'vuetify/src/stylus/app.styl';
 Vue.use(VeeValidate);
 Validator.localize('de', de);
 
+Validator.extend('has_upper', {
+  validate: (value: string) => value.match(/[A-Z]/g) !== null,
+  getMessage: () => 'Enthält keine Großbuchstaben'
+});
+
+Validator.extend('has_lower', {
+  validate: (value: string) => value.match(/[a-z]/g) !== null,
+  getMessage: () => 'Enthält keine Kleinbuchstaben'
+});
+
+Validator.extend('has_digit', {
+  validate: (value: string) => value.match(/[0-9]/g) !== null,
+  getMessage: () => 'Enthält keine Ziffer'
+});
+
+Validator.extend('has_special', {
+  validate: (value: string) => value.match(/[!@#\$%\^\&*+=._\-?]/g) !== null,
+  getMessage: () => 'Enthält kein Sonderzeichen (!@#$^&*+=._-?)'
+});
+
 const context = require.context('./formElements', true);
 
 Vue.component('formular', formular);
