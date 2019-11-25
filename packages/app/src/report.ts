@@ -7,6 +7,7 @@ export async function genReport(reportName: string, data: any, baseFileName: str
   const template =  await fetch(url).then((v) => v.arrayBuffer());
 
   const report: ArrayBuffer = await createReport({
+    cmdDelimiter: ['{', '}'],
     data,
     template
   });
