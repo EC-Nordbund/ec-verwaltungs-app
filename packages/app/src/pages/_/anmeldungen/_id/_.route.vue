@@ -37,10 +37,10 @@ export default class EcRootIndexAnmeldungenIdIndex extends Vue {
           label: 'Bestätigungsbrief generieren und Drucken',
           disabled: !this.best || this.data.abmeldeZeitpunkt !== null || this.data.wartelistenPlatz !== 0,
           click: () => {
-            if (this.data.besteatigungsbrief !== null) {
+            if (this.data.bestaetigungsBrief !== null) {
               if (
                 !confirm(`Brief wurde ${
-                  this.data.besteatigungsbrief.german
+                  this.data.bestaetigungsBrief.german
                 } bereits generiert. Erneut generieren?`)
               ) {
                 return;
