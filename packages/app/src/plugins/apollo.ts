@@ -4,5 +4,5 @@ import Vue from 'vue';
 
 Vue.prototype.$gql = gql;
 Vue.prototype.$apolloClient = new ApolloClient({
-  uri: 'https://api.ec-nordbund.de/graphql'
+  uri: 'https://api.tmp.ec-nordbund.de/graphql'
 });

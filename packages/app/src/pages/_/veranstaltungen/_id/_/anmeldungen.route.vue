@@ -1,12 +1,44 @@
 <template lang="pug">
-  v-card-text(style="overflow: auto;")
-    v-list(two-line)
-      v-list-tile(@click="$router.push({path: `/anmeldungen/${anmeldung.anmeldeID}/home`, query:{prev: $route.fullPath}})" v-for="anmeldung in data.anmeldungen.map(a=>a).sort((a,b)=>(b.wartelistenPlatz - a.wartelistenPlatz))" :class="`wlist-${anmeldung.wartelistenPlatz} wlist`")
-        v-list-tile-action
-          v-icon person
-        v-list-tile-content
-          v-list-tile-title {{anmeldung.person.vorname}} {{anmeldung.person.nachname}} ({{anmeldung.person.gebDat.german}}) | {{getTitle(anmeldung.wartelistenPlatz)}}
-          v-list-tile-sub-title Rolle: {{rollen[anmeldung.position - 1]}}
+v-card-text(style='overflow: auto')
+  p(style='font-size: 12pt')
+    b Nicht abgemeldet und nicht auf Warteliste:
+    br
+    | Männlich: {{ data.anmeldungen.filter((a) => a.wartelistenPlatz === 0 && a.person.geschlecht === "m").length }}
+    br
+    | Weiblich: {{ data.anmeldungen.filter((a) => a.wartelistenPlatz === 0 && a.person.geschlecht === "w").length }}
+    br
+    | Gesamt: {{ data.anmeldungen.filter((a) => a.wartelistenPlatz === 0).length }}
+  v-list(two-line)
+    v-list-tile(
+      @click='$router.push({ path: `/anmeldungen/${anmeldung.anmeldeID}/home`, query: { prev: $route.fullPath } })',
+      v-for='(anmeldung, c) in data.anmeldungen.filter((a) => a.wartelistenPlatz > 0).sort((a, b) => b.wartelistenPlatz - a.wartelistenPlatz)',
+      :class='`wlist-${anmeldung.wartelistenPlatz} wlist`'
+    )
+      v-list-tile-action
+        | {{ c + 1 }}
+      v-list-tile-content
+        v-list-tile-title {{ anmeldung.person.vorname }} {{ anmeldung.person.nachname }} ({{ anmeldung.person.gebDat.german }}) | {{ getTitle(anmeldung.wartelistenPlatz) }}
+        v-list-tile-sub-title Rolle: {{ rollen[anmeldung.position - 1] }}
+    v-list-tile(
+      @click='$router.push({ path: `/anmeldungen/${anmeldung.anmeldeID}/home`, query: { prev: $route.fullPath } })',
+      v-for='(anmeldung, c) in data.anmeldungen.filter((a) => a.wartelistenPlatz === 0)',
+      :class='`wlist-${anmeldung.wartelistenPlatz} wlist`'
+    )
+      v-list-tile-action
+        | {{ c + 1 }}
+      v-list-tile-content
+        v-list-tile-title {{ anmeldung.person.vorname }} {{ anmeldung.person.nachname }} ({{ anmeldung.person.gebDat.german }}) | {{ getTitle(anmeldung.wartelistenPlatz) }}
+        v-list-tile-sub-title Rolle: {{ rollen[anmeldung.position - 1] }}
+    v-list-tile(
+      @click='$router.push({ path: `/anmeldungen/${anmeldung.anmeldeID}/home`, query: { prev: $route.fullPath } })',
+      v-for='(anmeldung, c) in data.anmeldungen.filter((a) => a.wartelistenPlatz < 0)',
+      :class='`wlist-${anmeldung.wartelistenPlatz} wlist`'
+    )
+      v-list-tile-action
+        | {{ c + 1 }}
+      v-list-tile-content
+        v-list-tile-title {{ anmeldung.person.vorname }} {{ anmeldung.person.nachname }} ({{ anmeldung.person.gebDat.german }}) | {{ getTitle(anmeldung.wartelistenPlatz) }}
+        v-list-tile-sub-title Rolle: {{ rollen[anmeldung.position - 1] }}
 </template>
 
 <script lang="ts">

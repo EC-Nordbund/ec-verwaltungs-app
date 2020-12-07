@@ -1,4 +1,4 @@
-export default (self:any)=>({
+export default (self: any) => ({
   title: 'FZ Antrag',
   initval: {
     mail: null
@@ -10,7 +10,7 @@ export default (self:any)=>({
       label: 'E-Mail',
       rule: "required",
       required: true,
-      items: self.data.emails.map(v=>v.eMail)
+      items: self.data.emails.map((v: any) => v.eMail)
     }
   ]
 })

@@ -20,5 +20,6 @@ declare module 'vue/types/vue' {
     $notifikation: (title: string, body: string) => Notification;
     $setInactiveHandler: (cb: () => void) => void;
     $empty: () => void;
+    $ecForm: any;
   }
 }
