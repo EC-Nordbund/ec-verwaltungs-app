@@ -10,8 +10,8 @@ export async function generate(
   apolloClient: ApolloClient<any>,
   wlistFilter: (wlist: number) => boolean
 ) {
-  const url = `https://verwaltung.ec-nordbund.de/templates/${template}.xlsx`;
-  const templateData =  await fetch(url).then((v) => v.arrayBuffer());
+  const url = `https://verwaltung.tmp.ec-nordbund.de/templates/${template}.xlsx`;
+  const templateData = await fetch(url).then((v) => v.arrayBuffer());
   const instance = new excel(templateData);
 
   const replData = await apolloClient.query({
@@ -116,41 +116,41 @@ export async function generate(
       veranstaltungsID
     }
   })
-  .then((v) => v.data.veranstaltung)
-  .then((v) => ({
-    ...v,
-    vOrtLocation: `${v.veranstaltungsort.plz} ${v.veranstaltungsort.ort} (${v.veranstaltungsort.land})`,
-    anmeldungen: v.anmeldungen
-      .filter((an: any) => wlistFilter(an.wartelistenPlatz))
-      .map((h: any, id: number) => ({
-        id,
-        ...h,
-        empty: '',
-        m: h.person.geschlecht === 'm' ? 'X' : '',
-        w: h.person.geschlecht === 'w' ? 'X' : '',
-        older27: dateDiffInYears(h.person.gebDat.input, v.begin.input) > 27 ? 'X' : '',
-        betreuer: h.position > 1 ? 'X' : ''
-      })
-    )}
-  ));
+    .then((v) => v.data.veranstaltung)
+    .then((v) => ({
+      ...v,
+      vOrtLocation: `${v.veranstaltungsort.plz} ${v.veranstaltungsort.ort} (${v.veranstaltungsort.land})`,
+      anmeldungen: v.anmeldungen
+        .filter((an: any) => wlistFilter(an.wartelistenPlatz))
+        .map((h: any, id: number) => ({
+          id,
+          ...h,
+          empty: '',
+          m: h.person.geschlecht === 'm' ? 'X' : '',
+          w: h.person.geschlecht === 'w' ? 'X' : '',
+          older27: dateDiffInYears(h.person.gebDat.input, v.begin.input) > 27 ? 'X' : '',
+          betreuer: h.position > 1 ? 'X' : ''
+        })
+        )
+    }
+    ));
   instance.substitute(1, replData);
-  const resultList = instance.generate({type: 'arraybuffer'});
+  const resultList = instance.generate({ type: 'arraybuffer' });
   saveByteArray(
-    `TN-Liste.${template}.${replData.kurzBezeichnung}-${
-      replData.begin.german.split('.')[3]}.${wlistFilter.toString()}.xlsx`,
+    `TN-Liste.${template}.${replData.kurzBezeichnung}-${replData.begin.german.split('.')[3]}.${wlistFilter.toString()}.xlsx`,
     resultList
   );
 }
 
 export async function getTemplates() {
-  return await fetch('https://verwaltung.ec-nordbund.de/templates/list.json').then((res) => res.json());
+  return await fetch('https://verwaltung.tmp.ec-nordbund.de/templates/list.json').then((res) => res.json());
 }
 
 export function saveByteArray(reportName: string, byte: ArrayBuffer, word: boolean = false) {
   const blob = new Blob([byte], {
     type: (
       word ? 'vnd.openxmlformats-officedocument.wordprocessingml.document'
-      : 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        : 'vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     )
   });
   const link = document.getElementById('ec-download') as HTMLAnchorElement;
@@ -173,9 +173,9 @@ function dateDiffInYears(dateoldS: string, datenewS: string) {
   if (mold > mnew) {
     diff--;
   } else {
-      if (mold === mnew) {
-          if (dold > dnew) { diff--; }
-      }
+    if (mold === mnew) {
+      if (dold > dnew) { diff--; }
+    }
   }
   return diff;
 }
